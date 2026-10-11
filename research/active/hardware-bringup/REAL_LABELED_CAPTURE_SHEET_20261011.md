@@ -29,6 +29,8 @@
 & .\artifacts.local\hardware-bringup\venv\Scripts\python.exe .\research\active\hardware-bringup\host\real_labeled_capture_web.py
 ```
 
+**已配置无线时**，在上述命令末尾加 `--tof-host 192.168.5.10`。RGB和ToF可由充电宝供电，电脑与两板保持同一局域网；USB线不再传ToF数据。页面“查看ToF实时读数”只预览、不保存段；开始录制会自动释放预览连接。第9段拔插ToF电源，脚本核对真正的boot_id变化。摆场景前先用书确认ToF网格与画面的上下左右，整体尽量水平固定；当前区序方向尚未标定。[无线说明](CNH_H3_WIFI_DEV_20261011.md)。
+
 打开本机页面`http://127.0.0.1:8791`，点“开始/续录”才连接设备；页面显示当前提示，点继续等同回车。中断后再点续录；指定重录填`4b`（其他段换成其编号）。终端版本仍可运行`host/real_labeled_capture.py`，加`--resume`或`--resume --redo 4b`。输出在本机`artifacts.local/work/real-labeled-capture-<date>/`，失败及旧重录段都保留。
 
 4/4b用于比较实际CNH ambient与噪声；脚本记录实测差异，开关灯后不一定产生足够的ToF ambient变化。拉帘也可能改变尽头回波，后处理需排除相关回波bin。距离为固件弱参考、高度为估计，边界不清的query标UNKNOWN。[标注说明](REAL_LABELED_ANNOTATION_PLAN_20261011.md) · [回放核验](REAL_LABELED_CAPTURE_REPLAY_TEST_20261011.md)。

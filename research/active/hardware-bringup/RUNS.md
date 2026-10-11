@@ -1,7 +1,8 @@
 # Hardware support run log
 
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
+| 2026-10-11 | H3 Wi-Fi固件/USB与TCP采集输入/内存预览 | 用户追加授权刷写；仅app0升级、现有Wi-Fi配置；完整8×8×16 TCP3335，区序未旋转；正式采集前释放预览 | 12s链路61帧、5.1038Hz、序号丢帧/解析issue均0；RGB与ToF同页更新；短mock断线重连释放PASS1.405command-wall秒；无模型执行 | [刷写、备份、核验及限制](CNH_H3_WIFI_DEV_20261011.md)。十段未开始；方向/充电宝切换待现场确认；服务留给用户，页面关闭可释放 |
 | 2026-10-11 | 本机十段采集台实时相机接入 | 用户要求实时画面；复用CameraFeed/CameraView、同源MJPEG，保持ToF显式开始 | 实际页面显示画面并更新380帧；API camera.available=true，ToF idle/worker=false；仅语法/依赖和实际画面focused检查，无模型执行 | 相机预览首末图/元数据独立保留于artifacts.local/work/real-labeled-camera-preview，不并入标注CNH。web-camera-receipt.json保留当前状态/PID；服务留给用户使用，页面关闭服务释放 |
 | 2026-10-11 | `simple-dorm-v2`；10段同日准备 | 用户改为4后插入同位置暗档4b，取消夜间两段；4/4b实际ambient配对，5/9恢复明档；不采集、不刷写、不运行标注 | 10×30s=5分钟录制，约20分钟含摆放；1个focused回放PASS（命令wall1.548s），仅检查顺序/配对/重录与续录；本机可视化采集台桥接同一脚本；沿用CPU≤900command-wall秒预算，无GPU | [操作单](REAL_LABELED_CAPTURE_SHEET_20261011.md)、[回放收据](REAL_LABELED_CAPTURE_REPLAY_TEST_20261011.md)。旧版录制目录不会静默混用；距离/几何保持弱参考，拉帘改变回波的混杂在标注计划注明 |
 

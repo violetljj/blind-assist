@@ -1,4 +1,4 @@
-param([ValidateSet('i2c_probe','tof_reader','tof_cnh','tof_cnh_h3','tof_cnh_diag','atom_camera','tof_wifi','atom_wifi')][string]$Sketch = 'tof_reader')
+param([ValidateSet('i2c_probe','tof_reader','tof_cnh','tof_cnh_h3','tof_cnh_h3_wifi','tof_cnh_diag','atom_camera','tof_wifi','atom_wifi')][string]$Sketch = 'tof_reader')
 $ErrorActionPreference = 'Stop'
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $configPath = Join-Path $repo 'artifacts.local/hardware-bringup/local-config.json'
@@ -9,11 +9,11 @@ $src = Join-Path $cfg.artifact_root "sketches/$Sketch"
 $build = Join-Path $cfg.artifact_root "build/$Sketch"
 New-Item -ItemType Directory -Path $src,$build -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot "firmware/$Sketch/$Sketch.ino") -Destination $src
-if ($Sketch -in @('tof_wifi','atom_wifi')) {
+if ($Sketch -in @('tof_wifi','tof_cnh_h3_wifi','atom_wifi')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'firmware/demo_wifi.h') -Destination $src
 }
 $hashes = [ordered]@{}
-if ($Sketch -in @('tof_reader','tof_cnh','tof_cnh_h3','tof_cnh_diag','tof_wifi')) {
+if ($Sketch -in @('tof_reader','tof_cnh','tof_cnh_h3','tof_cnh_h3_wifi','tof_cnh_diag','tof_wifi')) {
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'firmware/platform.h'),(Join-Path $PSScriptRoot 'firmware/platform.cpp') -Destination $src
     foreach ($file in $lock.files) {
         # Baseline needs no CNH implementation; headers remain identical to the vendor package.

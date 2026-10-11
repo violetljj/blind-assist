@@ -1,4 +1,4 @@
-"""Simple dorm H3 capture preparation: local serial only, no flashing/network.
+"""Simple dorm H3 capture: USB or explicit private-LAN full-CNH TCP, no flashing.
 
 Public offline seams: CaptureClock, ReplaySerial, GuidedCapture, segment_plan,
 check_preflight, summarize_distance, default_output_root. Distances are firmware
@@ -8,15 +8,19 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import hashlib
+import ipaddress
 import json
 import math
 from pathlib import Path
 import statistics
+import socket
 import sys
 import time
 from capture import Decoder, write_json
 
 FIRMWARE = "xiao-cnh-h3-v1"
+WIFI_FIRMWARE = "xiao-cnh-h3-wifi-v1"
+FIRMWARE_IDENTITIES = (FIRMWARE, WIFI_FIRMWARE)
 PROTOCOL_VERSION = "simple-dorm-v2"
 CONDITIONS = (
     (1, "near_no_echo", "测距头视线越过栏杆朝外，人和支架留栏杆内；不隔玻璃，避开衣物。", None),
@@ -84,6 +88,66 @@ def open_serial(port="COM5", baud=115200):
     return device
 
 
+def private_tof_host(host):
+    """Explicit RFC1918 IPv4 only; never discover or scan other devices."""
+    try:
+        address = ipaddress.IPv4Address(str(host).strip())
+    except ipaddress.AddressValueError as exc:
+        raise ValueError("ToF Wi-Fi需填写明确的局域网IPv4地址") from exc
+    if not any(address in ipaddress.IPv4Network(net) for net in ("10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16")):
+        raise ValueError("ToF Wi-Fi地址必须为10/172.16–31/192.168私有网段")
+    return str(address)
+
+
+class WiFiStream:
+    """Full H3 newline JSON over TCP; identical Decoder, no board commands."""
+    def __init__(self, host, port=3335, *, socket_factory=socket.create_connection):
+        self.host = private_tof_host(host)
+        self.port = int(port)
+        if not 1 <= self.port <= 65535:
+            raise ValueError("ToF TCP端口必须在1–65535")
+        self.socket = socket_factory((self.host, self.port), timeout=3)
+        self.socket.settimeout(.2)
+        self.closed = False
+
+    @property
+    def timeout(self):
+        return self.socket.gettimeout()
+
+    @timeout.setter
+    def timeout(self, value):
+        self.socket.settimeout(value)
+
+    def read(self, size=16384):
+        try:
+            chunk = self.socket.recv(size)
+        except socket.timeout:
+            return b""
+        if not chunk:
+            raise OSError("ToF Wi-Fi TCP连接已关闭")
+        return chunk
+
+    def reset_input_buffer(self):
+        # Discard only bytes already pending on the host socket. No command/reset
+        # is sent to the board; boot/config are retained by preflight (no drain).
+        prior = self.timeout
+        self.socket.setblocking(False)
+        try:
+            for _ in range(64):
+                try:
+                    if not self.socket.recv(16384):
+                        raise OSError("ToF Wi-Fi TCP连接已关闭")
+                except BlockingIOError:
+                    break
+        finally:
+            self.timeout = prior
+
+    def close(self):
+        if not self.closed:
+            self.closed = True
+            self.socket.close()
+
+
 def segment_plan():
     """Single ten-segment session; 4b is a string index, not a numeric pseudo-index."""
     return [{"segment_id": f"{i:02d}-{condition}" if isinstance(i, int) else f"{i}-{condition}", "condition": condition,
@@ -132,11 +196,12 @@ def default_output_root(work, today=None):
 def check_preflight(events, summary, minimum_frames=20):
     """Read-only identity/config/layout/rate gate, with explicit rejection reasons."""
     sensors = [e.get("sensor", e) for e in events]
-    identities = [e.get("firmware") for e in sensors if e.get("type") == "boot"]
+    boots = [e for e in sensors if e.get("type") == "boot"]
+    identities = [e.get("firmware") for e in boots]
     configs = [e for e in sensors if e.get("type") == "config"]
     reasons = []
-    if not identities or identities[-1] != FIRMWARE:
-        reasons.append(f"未收到H3 boot身份 {FIRMWARE}；不能仅由帧尺寸推断固件")
+    if not identities or identities[-1] not in FIRMWARE_IDENTITIES:
+        reasons.append(f"未收到H3 boot身份 {' / '.join(FIRMWARE_IDENTITIES)}；不能仅由帧尺寸推断固件")
     if not configs or any(configs[-1].get(k) != v for k, v in
                           (("zones", 64), ("bins", 16), ("start_bin", 0), ("sub_sample", 8))):
         reasons.append("未收到正确config：zones64/bins16/start_bin0/sub_sample8")
@@ -156,6 +221,7 @@ def check_preflight(events, summary, minimum_frames=20):
     if summary.get("issues", {}).get("invalid_frame", 0):
         reasons.append("自检期间出现无效帧")
     return {"passed": not reasons, "reasons": reasons, "firmware_identities": identities,
+            "boot_id": boots[-1].get("boot_id") if boots else None,
             "config": configs[-1] if configs else None, "drop_fraction": loss, "summary": summary}
 
 
@@ -163,13 +229,14 @@ class GuidedCapture:
     """One estimated height; Enter-led segments; inject IO/clock for offline replay."""
     def __init__(self, output_root, serial_factory, *, clock=None, input_fn=input,
                  print_fn=print, preflight_seconds=12, segment_seconds=30,
-                 countdown_seconds=3, probe_seconds=2, port="COM5", replay=False):
+                 countdown_seconds=3, probe_seconds=2, port="COM5", replay=False, transport=None):
         self.root = Path(output_root)
         self.serial_factory, self.clock = serial_factory, clock or CaptureClock()
         self.ask, self.print = input_fn, print_fn
         self.preflight_seconds, self.segment_seconds = preflight_seconds, segment_seconds
         self.countdown_seconds, self.probe_seconds = countdown_seconds, probe_seconds
         self.port, self.replay, self.device = port, replay, None
+        self.transport = dict(transport or {"kind": "recorded_serial_replay" if replay else "usb_serial", "port": port})
         self.startup_path = None
 
     def drain(self):
@@ -189,16 +256,25 @@ class GuidedCapture:
         self.device = self.serial_factory()
         n = len(list(self.root.glob("startup-*")))+1
         directory = self.root/f"startup-{n:02d}"
-        if not self.replay:
+        if self.transport["kind"] == "wifi_tcp":
+            self.print("ToF Wi-Fi已连接；等待本次TCP连接真实发送的H3 boot/config和帧，不需要按USB RESET。")
+        elif not self.replay:
             self.print("COM监听已打开；现在手动短按RESET后马上按Enter（不刷写，脚本不发控制命令）。")
             self.ask("读取新启动boot/config与H3自检，按Enter: ")
         result = self.collect(directory, self.preflight_seconds,
                               {"phase": "preflight", "reason": reason, "protocol_version": PROTOCOL_VERSION}, show=False)
         gate = check_preflight(result["preflight_events"], result["preflight_summary"])
         gate["path"] = directory.name
+        gate["transport"] = dict(self.transport)
+        gate["boot_record_source"] = "tcp_cached_actual_hardware_boot" if self.transport["kind"] == "wifi_tcp" else "recorded_serial_replay" if self.replay else "serial_observed_boot"
+        gate["transport_connection_events"] = [e["sensor"] for e in result["events"] if e["sensor"].get("type") == "transport_connection"]
+        if self.transport["kind"] == "wifi_tcp" and not (isinstance(gate["boot_id"], str) and gate["boot_id"].strip()):
+            gate["reasons"].append("Wi-Fi H3缺少真实hardware boot_id，无法区分连接与物理重启")
+            gate["passed"] = False
         write_json(directory/"gate.json", gate)
         if not gate["passed"]:
-            raise ValueError("自检未通过："+"；".join(gate["reasons"])+"；保持监听手动RESET，--resume重试")
+            retry = "检查Wi-Fi固件/地址，--resume重新连接重试" if self.transport["kind"] == "wifi_tcp" else "保持监听手动RESET，--resume重试"
+            raise ValueError("自检未通过："+"；".join(gate["reasons"])+"；"+retry)
         self.startup_path = directory.name
         self.print(f"自检通过：H3 8×8×16 {gate['summary']['observed_sensor_hz']:.2f}Hz，丢帧{gate['drop_fraction']:.1%}")
         return gate
@@ -278,7 +354,7 @@ class GuidedCapture:
                 except ValueError:
                     self.print("填大约厘米数，或Enter用估计120cm。")
             manifest = {"schema": "hardware-bringup.real-labeled-capture.v2", "protocol_version": PROTOCOL_VERSION,
-                        "created_utc": self.clock.utcnow(), "port": self.port, "attempts": [], "startups": [],
+                        "created_utc": self.clock.utcnow(), "port": self.port, "transport": dict(self.transport), "attempts": [], "startups": [],
                         "sensor_height_m": height/100, "sensor_height_source": "operator_estimate" if raw else "default_estimate",
                         "sensor_height_uncertainty_m": .15, "tilt_deg": 0, "tilt_source": "nominal_horizontal_assumption",
                         "status": "prepared", "session_complete": False}
@@ -290,6 +366,7 @@ class GuidedCapture:
         if selected - {s["segment_id"] for s in plan}:
             raise ValueError("--redo编号/名称不属于本次10段清单")
         manifest["status"] = "recording"
+        manifest["last_requested_transport"] = dict(self.transport)
         write_json(manifest_path, manifest)
         try:
             gate = self.preflight("session_start_or_resume")
@@ -303,12 +380,24 @@ class GuidedCapture:
                 if sid not in selected and any(a["status"] in ("complete", "needs_review", "skipped") for a in existing):
                     continue
                 if segment["condition_index"] == 9:
+                    previous_boot_id = manifest["startups"][-1].get("boot_id")
                     self.device.close()
                     self.device = None
-                    self.ask("第9段独立重启：现在拔下USB再插回，完成后按Enter（随后监听时手动RESET）: ")
+                    restart = "第9段独立重启：断开充电宝/USB供电再重新供电，等ToF重新连上同一Wi-Fi后按Enter: " if self.transport["kind"] == "wifi_tcp" else "第9段独立重启：现在拔下USB再插回，完成后按Enter（随后监听时手动RESET）: "
+                    self.ask(restart)
                     gate = self.preflight("independent_unplug_restart_before_segment9")
+                    if self.transport["kind"] == "wifi_tcp":
+                        changed = bool(previous_boot_id and gate.get("boot_id") and gate["boot_id"] != previous_boot_id)
+                        gate["independent_restart"] = {"previous_boot_id": previous_boot_id, "new_boot_id": gate.get("boot_id"), "verified": changed,
+                                                       "rule": "Hardware boot_id must change; a TCP reconnect alone is not independent restart"}
+                        if not changed:
+                            gate["passed"] = False
+                            gate["reasons"].append("第9段boot_id未变化：网络重连不是独立断电重启")
+                        write_json(self.root/gate["path"]/"gate.json", gate)
                     manifest["startups"].append(gate)
                     write_json(manifest_path, manifest)
+                    if not gate["passed"]:
+                        raise ValueError("第9段独立重启未通过："+"；".join(gate["reasons"]))
                 while True:
                     number = 1+len([a for a in manifest["attempts"] if a["segment_id"] == sid])
                     rel = f"{sid}/attempt-{number:02d}"
@@ -402,6 +491,7 @@ class GuidedCapture:
         directory = Path(directory)
         directory.mkdir(parents=True, exist_ok=allow_existing)
         metadata = dict(metadata, started_utc=self.clock.utcnow(), status="recording",
+                        transport=dict(self.transport),
                         evidence_scope="SIMULATED_SERIAL_REPLAY" if self.replay else "REAL_LABELED_CAPTURE",
                         host_timestamp_rule="chunk-final-newline receipt; host monotonic_ns + UTC; not synchronized")
         write_json(directory / "metadata.json", metadata)
@@ -448,13 +538,13 @@ class GuidedCapture:
                     except OSError:
                         if metadata.get("phase") != "preflight" or self.replay:
                             raise
-                        # Manual RESET may disconnect USB. Reopen this exact port only;
-                        # never toggle DTR/RTS, reset the device, or scan other ports.
+                        # Reopen only this exact endpoint during preflight: USB
+                        # manual RESET or Wi-Fi drop. Never command/reset/scan.
                         self.device.close()
                         self.clock.sleep(.2)
                         try:
                             self.device = self.serial_factory()
-                            decoder.issue("manual_reset_serial_reconnect", self.port, self.clock.monotonic_ns())
+                            decoder.issue("wifi_tcp_reconnect" if self.transport["kind"] == "wifi_tcp" else "manual_reset_serial_reconnect", self.port, self.clock.monotonic_ns())
                         except OSError:
                             pass
                         continue
@@ -498,8 +588,10 @@ def main(argv=None):
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
             stream.reconfigure(encoding="utf-8")
-    parser = argparse.ArgumentParser(description="宿舍最简H3 v2：一次10段，4后原位关灯拉帘录4b；Enter引导、3秒倒计时、每段30秒；不刷写/不联网")
+    parser = argparse.ArgumentParser(description="宿舍最简H3 v2：一次10段，USB或明确局域网Wi-Fi H3；不刷写")
     parser.add_argument("--port", default="COM5")
+    parser.add_argument("--tof-host", help="明确私有IPv4；使用完整H3 Wi-Fi TCP流，未填写则USB串口")
+    parser.add_argument("--tof-tcp-port", type=int, default=3335)
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--redo", action="append", default=[], metavar="编号或名称")
     parser.add_argument("--replay", type=Path, help="已有raw.bin模拟串口，标记REPLAY，不连接设备")
@@ -511,8 +603,15 @@ def main(argv=None):
         if not root.resolve().is_relative_to((repo/"artifacts.local").resolve()):
             parser.error("输出必须位于canonical artifacts.local内")
         clock = CaptureClock()
-        factory = (lambda: ReplaySerial(args.replay, clock)) if args.replay else (lambda: open_serial(args.port))
-        app = GuidedCapture(root, factory, clock=clock, port=args.port, replay=bool(args.replay))
+        if args.replay and args.tof_host:
+            parser.error("--replay与--tof-host不能同时使用")
+        host = private_tof_host(args.tof_host) if args.tof_host else None
+        if not 1 <= args.tof_tcp_port <= 65535:
+            parser.error("ToF TCP端口必须在1–65535")
+        transport = {"kind": "wifi_tcp", "host": host, "tcp_port": args.tof_tcp_port} if host else None
+        factory = (lambda: ReplaySerial(args.replay, clock)) if args.replay else (lambda: WiFiStream(host, args.tof_tcp_port)) if host else (lambda: open_serial(args.port))
+        source = f"tcp://{host}:{args.tof_tcp_port}" if host else args.port
+        app = GuidedCapture(root, factory, clock=clock, port=source, replay=bool(args.replay), transport=transport)
         app.run_session(resume=args.resume, redo=args.redo)
         return 0
     except KeyboardInterrupt:
