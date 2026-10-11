@@ -20,6 +20,12 @@ RGB [分带混合评价](nearfield/RGB_BAND_HYBRID_DEV_20261010.md)完成六新V
 
 ## ToF当前决定
 
+2026-10-11 [signed bias／LOCAL合同修复v4](../hardware-bringup/LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)通过EXPLORE，**去bin0＋DR＋新S＋v4合同替换为模拟Development默认候选**，真实效果待独立楼道录制，不接入App。[默认指针](nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)绑定既有193e4a21五M3／三ordinary／三S seed权重、原封存切点、v4源码和审计；[加载入口](../hardware-bringup/host/local_signed_bias_default.py)核对manifest与合同hash。LOCAL cut仍4.625390338985158，未重训或据pilot调点。实机物理背景只作非负、饱和扣除；signed负校正不加正证据。SIM保留原signed差分噪声；最多8帧因果历史无正证据时明确静默，诊断raw score另存且标无证据。
+
+主候选八种确定性控制（含墙2bin0／负bias零raw），M3／原5格／S HEAD/BODY各0强0轻/9；模拟空场景／纯ambient／纯串扰旧新链也全0。相同已消费1536scene×K2留出50331648输入值逐值相同，及时HEAD476/BODY410各/512、对共同旧原5格净185/1024（旧默认170），far+clear152/1536=9.896%（旧168/1536=10.938%），成本291.75（旧344.75），相对193成绩变化0。十段v4墙2/3和8HEAD全强；杆5/6 HEAD146/146强、BODY0强＋1/146轻；空4/4b/9 HEAD381/381、BODY373/381强，幕布约3m边界不可作误报率。7仍全强、1阳台主S静默，均仅描述。独立原始公式／全表／全模拟复算与CUDA首8scene、另10窗分数差0 PASS。CPU保守210.235/1200、GPU90.556/300command-wall s（含失败与整合reserve）；真实噪声单位与LOCAL均值仍未闭合，下一独立尽头>4.5m clear及墙／细杆对照。
+
+以下193e4a21及更早结论为历史记录，其失败不回溯改写；默认替换由上述后续v4合同修复完成。
+
 [去bin0＋仪器域随机化重训](nearfield/CNH_NO_BIN0_DR_RETRAIN_DEV_20261011.md)已完成EXPLORE，**模拟通过、真实链路未通过，保留旧默认S**。主臂M3五模型＋ordinary三seed及S三seed完整训练；去bin0/1敏感性各单骨干，仅描述。新1536scene×K2、4新结构背景族与33库存20796物理键无交集，全部切点先封存。新S及时HEAD476/BODY410各/512，旧默认467/404；对共同旧原5格净185 vs170，far+clear有通知152/1536=9.896% vs168/1536=10.938%，成本291.75 vs344.75，两工程门槛PASS。新原5格及时345/272 vs旧389/312下降，S补回轻提醒；暗薄新S60/36各/96 vs53/35，sign128/105各/128 vs128/104，仅描述。
 
 十段1507帧/1362满窗开发回放：主v2的墙2/3、杆5/6、8HEAD仍强，空4/4b/9原5格/S仍762/762 query-frames强，外侧7仍292/292；bin0背景空输入主M3 H/B0/9，但原5格/S H/B9/9。其LOCAL分数24.976–26.483/11.587–12.286>4.62539，raised未触发；v2 signed bias在保留bin1/2/3负值减法产生正证据。bias_only空输入全静默，但实际空段仍强，不能据此声称迁移。敏感性S模拟净178、far+clear168/1536，v2仍全强，不建议采用。删除bins任意污染前后score/grade完全一致；独立切点/监督/计数/hash＋12fresh CUDA窗与2poison检查PASS。噪声decoded→模拟能量单位桥接仍未识别，本次不能隔离bin删除与DR因果。下一先定位signed bias/LOCAL合同，再独立录制尽头>4.5m楼道clear、墙/细杆；不按pilot改切点，不接App，不读480/test。

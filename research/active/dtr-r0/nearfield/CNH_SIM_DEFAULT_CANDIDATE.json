@@ -1,0 +1,12 @@
+{
+  "candidate": "no_bin0_DR_S_v4",
+  "scope": "Simulation Development only",
+  "date": "2026-10-11",
+  "manifest_path": "artifacts.local/work/local-signed-bias-contract-dev-20261011/candidate_manifest.json",
+  "manifest_sha256": "753664a182b1f0cc9277873b44fffa610d0fda1a5fde9a55e7bb371a96108f34",
+  "contract_path": "research/active/hardware-bringup/host/local_signed_bias_adapter.py",
+  "contract_sha256": "7e9665f3f6c589c2dc51fb8b43413c0d3565c7eb1446c67cdc72211fd5251b14",
+  "loader": "research/active/hardware-bringup/host/local_signed_bias_default.py",
+  "report": "research/active/hardware-bringup/LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md",
+  "predecessor": "9e150dd8 old S baseline; 193e4a21 no_bin0_DR_S now succeeds through v4 contract"
+}

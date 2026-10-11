@@ -2,7 +2,13 @@
 
 更新：2026-10-11。工程接入属于避障主线的支持工作，不另开算法研究线。
 
-## 去bin0重训开发评价：强档链路仍未修复
+## signed bias／LOCAL合同v4：零证据链修复
+
+[v4合同修复报告](LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)EXPLORE完成，按预写PLAN把去bin0＋DR＋新S提升为**模拟Development默认候选，待独立实机确认**。[默认manifest指针](../dtr-r0/nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)与[加载器](host/local_signed_bias_default.py)已落地。实机非负背景仅饱和扣除，不把signed负bias加为回波；模拟保留原signed统计合同。因果≤8帧历史无正证据时三分支静默，未门控分数留存并标无证据。未重训、未改切点、无新bin/zone删除、无App变动。
+
+主八种确定性控制全链HEAD/BODY各0强0轻/9，旧v4墙bin0残留HEAD9/9、BODY0/9另列；模拟空／ambient／串扰三类旧新全静默。模拟相同已消费留出输入与成绩完全保持：及时净185/1024 vs旧170、far+clear152/1536 vs168、成本291.75 vs344.75。真实1507帧/1362满窗中，墙2/3与8HEAD全强；杆5/6 HEAD146/146强、BODY0强＋1/146轻；空4/4b/9 HEAD381/381、BODY373/381强，7仍全强，阳台主S静默。幕布约3m边界，宿舍只作合同／行为描述，非误报率；零输入修复不等于sim→real闭合。单位测试7项、独立全量输入／228表行／历史与hash审计、fresh CUDA首8scene＋10窗均PASS；CPU保守210.235/1200、GPU90.556/300command-wall s。下一clear选尽头>4.5m楼道，墙／细杆旧新并行；LOCAL真实噪声单位仍未识别，不按pilot调点。
+
+## 历史去bin0重训开发评价：原v2强档链路未修复
 
 [去bin0＋墙拟合仪器域随机化重训](../dtr-r0/nearfield/CNH_NO_BIN0_DR_RETRAIN_DEV_20261011.md)完成EXPLORE。新M3五模型、ordinary三seed和S三seed；敏感性去bin0/1只作单骨干描述。新模拟留出S对共同旧原5格及时净185 vs旧默认170，far+clear152/1536 vs168/1536，加权成本291.75 vs344.75，两预定工程门槛通过；新强档及时下降由S轻档补回。**真实链路未通过，不建议默认替换，旧S保留。**
 
