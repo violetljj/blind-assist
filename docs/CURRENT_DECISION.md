@@ -20,6 +20,8 @@ RGB [分带混合评价](../research/active/dtr-r0/nearfield/RGB_BAND_HYBRID_DEV
 
 ## ToF当前决定
 
+2026-10-12 实机：此前所有真实回放的zone顺序与模型上下颠倒，已修复；模型侧加近距串扰/直流干扰随机化后，宿舍pilot首次呈现合理报警（[实机路径候选](../research/active/hardware-bringup/REAL_NUISANCE_DR_M3_DEV_20261011.md)，仅已消费数据，模拟默认不变，待楼道独立录制）。
+
 2026-10-11 [signed bias／LOCAL v4合同修复](../research/active/hardware-bringup/LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)预写门槛与独立核验通过，**模拟Development默认候选更新为去bin0＋仪器DR＋新S＋v4合同**；[默认指针](../research/active/dtr-r0/nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)绑定193e4a21既有权重／切点与新合同，不接入App，真实效果待独立录制。主八种确定性控制全链HEAD/BODY各0强0轻/9；相同已消费模拟留出及时净185/1024 vs旧170，far+clear152/1536=9.896% vs168/1536=10.938%，成本291.75 vs344.75，v4成绩不变。实录幕布边界段仍大量报警，不能作误报率或闭合证据；下一尽头>4.5m楼道clear及墙／细杆。以下为旧默认及其原始历史结果，不回溯改193e4a21失败或既有冻结基线。
 
 用户2026-10-10决定：接受S集成的接触收益与轻提醒取舍，**S955/956/957任务成本HGB均值升为ToF模拟默认候选，未接入App**。冻结6e441f9a的6权重/47维，原5格强档逐slot不变，新增slot仅轻档。旧[确认](../research/active/dtr-r0/nearfield/CNH_S_ENSEMBLE_CONFIRM_DEV_20261010.md)净151/1024、a/d通过而b/c失败保留；用户改用取舍曲线与环境波动，不再按成本≤k×原5格二元判定。旧约2.7pp是通知次数归一，实际far+clear有通知clip增量2.214pp。
