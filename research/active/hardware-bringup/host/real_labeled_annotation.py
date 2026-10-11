@@ -210,13 +210,15 @@ def _finite(value):
 
 
 def condition_index(metadata):
-    """Simple day 1..9, night 10=repeat1/11=repeat4; explicit index preferred."""
+    """Single10: 1..9 plus dark 4b. Legacy night10/11 remain readable."""
     index = metadata.get("condition_index")
+    if isinstance(index, str) and index.strip().lower() == "4b":
+        return "4b"
     if isinstance(index, int) and 1 <= index <= 11:
         return index
     text = str(metadata.get("segment_id", metadata.get("condition", "")))
-    match = re.search(r"(?:^|[-_])(?:day|night)?[-_]?0?(1[01]|[1-9])(?:$|[-_])", text)
-    return int(match.group(1)) if match else None
+    match = re.search(r"(?:^|[-_])(?:day|night)?[-_]?0?(4b|1[01]|[1-9])(?:$|[-_])", text.lower())
+    return ("4b" if match.group(1) == "4b" else int(match.group(1))) if match else None
 
 
 def _weak_geometry(metadata, frame):
@@ -244,7 +246,7 @@ def _weak_geometry(metadata, frame):
 
 
 def approximate_labels(metadata, frame=None, attempt_status=None):
-    """Condition-weak labels for simple-dorm-v1; no tape measure/mesh review gate.
+    """Condition-weak labels for simple-dorm-single10; no tape/mesh review gate.
 
     Empty conditions support an intended-empty weak label. Target labels require
     approximate extents safely away from query boundaries; unrecorded pole height
@@ -263,7 +265,7 @@ def approximate_labels(metadata, frame=None, attempt_status=None):
                     for flag in ("invalid", "motion_during_capture", "pose_changed", "quality_failed"))
     expected = {q: "UNKNOWN" for q in QUERIES}
     condition_label, expected_response = "UNKNOWN", "UNKNOWN"
-    if index in (1, 4, 9, 10, 11):
+    if index in (1, 4, "4b", 9, 10, 11):
         expected = {q: "corridor_empty" for q in QUERIES}
         condition_label, expected_response = "corridor_empty", "silent"
     elif index in (2, 3):
@@ -283,7 +285,7 @@ def approximate_labels(metadata, frame=None, attempt_status=None):
         label, reason = "UNKNOWN", "condition/approximate geometry unavailable"
         if bad_status or quality_failed or frame_bad:
             reason = "failed quality, superseded/skipped attempt or movement"
-        elif index in (1, 4, 9, 10, 11):
+        elif index in (1, 4, "4b", 9, 10, 11):
             distance, de = geometry["distance_m"], geometry["distance_uncertainty_m"]
             observed = geometry["frame_central_weak_distance_m"]
             if (_finite(distance) and .30 <= distance <= 3.) or (_finite(observed) and .30 <= observed <= 3.):
@@ -340,6 +342,7 @@ def approximate_labels(metadata, frame=None, attempt_status=None):
                 elif x_low > .40:
                     reason = "target likely outside; missing scene geometry prevents per-query clear inference"
         results[query] = {"condition_index": index, "lighting": metadata.get("lighting"), "attempt_status": status,
+                          "noise_ambient_pair": "4/4b" if index in (4, "4b") else None,
                           "condition_label": condition_label, "expected_response": expected_response,
                           "expected_label": expected[query], "label": label,
                           "source": "CONDITION_WEAK_APPROXIMATE", "label_source": "CONDITION_WEAK_APPROXIMATE",

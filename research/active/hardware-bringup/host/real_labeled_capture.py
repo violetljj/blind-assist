@@ -17,19 +17,18 @@ import time
 from capture import Decoder, write_json
 
 FIRMWARE = "xiao-cnh-h3-v1"
-PROTOCOL_VERSION = "simple-dorm-v1"
+PROTOCOL_VERSION = "simple-dorm-v2"
 CONDITIONS = (
     (1, "near_no_echo", "测距头视线越过栏杆朝外，人和支架留栏杆内；不隔玻璃，避开衣物。", None),
     (2, "wall_near", "正对宿舍左白墙，让ToF读数大约0.6m。", .6),
     (3, "wall_far", "同一左白墙，整套支架移远，让ToF读数大约1.5m。", 1.5),
-    (4, "empty_corridor", "门口端沿过道中线朝尽头深色窗帘；清空中线地面杂物，保留左墙/右床梯背景。", None),
-    (5, "rod_near", "拖把/扫把杆落地竖在过道中线，大约1m。", 1.),
+    (4, "empty_corridor", "明档：门口端沿过道中线朝尽头深色窗帘；清空中线地面杂物，保留左墙/右床梯背景。", None),
+    ("4b", "empty_corridor_dark", "支架和场景保持第4段原位，关灯、合上遮光帘，再录同一空过道。", None),
+    (5, "rod_near", "先恢复明档（开灯、打开遮光帘）；拖把/扫把杆落地竖在过道中线，大约1m。", 1.),
     (6, "rod_far", "同一杆落地竖在过道中线，大约2m。", 2.),
     (7, "outside_rod", "竖杆大约1m，向右横移一大步约0.5m。", 1.),
     (8, "head_crossbar", "杆横绑床梯，伸进过道，约额头高度、大约1–1.5m。", 1.25),
-    (9, "empty_corridor_reboot", "独立拔插重启后，重录第4段的空过道。", None),
-    (10, "near_no_echo_night", "夜间关灯拉帘：重录第1段，测距头视线朝栏杆外，人和支架留栏杆内；不隔玻璃、避开衣物。", None),
-    (11, "empty_corridor_night", "夜间关灯拉帘：重录第4段空过道，其他摆放尽量相同。", None),
+    (9, "empty_corridor_reboot", "恢复第4段明档，独立拔插重启后，重录第4段的空过道。", None),
 )
 
 class CaptureClock:
@@ -85,13 +84,14 @@ def open_serial(port="COM5", baud=115200):
     return device
 
 
-def segment_plan(night=None):
-    """None = all eleven; False = day nine; True = night two."""
-    return [{"segment_id": f"{i:02d}-{condition}", "condition": condition,
+def segment_plan():
+    """Single ten-segment session; 4b is a string index, not a numeric pseudo-index."""
+    return [{"segment_id": f"{i:02d}-{condition}" if isinstance(i, int) else f"{i}-{condition}", "condition": condition,
              "condition_index": i, "instructions": text,
-             "nominal_distance_m": distance, "lighting": "night" if i > 9 else "day"}
-            for i, condition, text, distance in CONDITIONS
-            if night is None or (i > 9) == night]
+             "nominal_distance_m": distance, "lighting": "room",
+             "ambient_level": "low" if i == "4b" else "high",
+             "ambient_pair_id": "empty-corridor-fixed-setup" if i in (4, "4b") else None}
+            for i, condition, text, distance in CONDITIONS]
 
 
 def summarize_distance(directory):
@@ -124,20 +124,8 @@ def summarize_distance(directory):
             "geometry_limit": "firmware slant range, weak reference only; not measured z or query truth"}
 
 
-def default_output_root(work, night=False, today=None):
+def default_output_root(work, today=None):
     work = Path(work)
-    if night:
-        eligible = []
-        for path in work.glob("real-labeled-capture-*/capture.json"):
-            try:
-                manifest = json.loads(path.read_text(encoding="utf-8"))
-                if manifest.get("protocol_version") == PROTOCOL_VERSION and not manifest.get("night_complete", False):
-                    eligible.append((path.stat().st_mtime_ns, path.parent))
-            except (ValueError, OSError):
-                continue
-        if not eligible:
-            raise ValueError("没有待夜间续录的simple-dorm-v1目录；先做白天，或--output明确原目录")
-        return max(eligible, key=lambda item: item[0])[1]
     return work / f"real-labeled-capture-{today or datetime.now().strftime('%Y%m%d')}"
 
 
@@ -265,22 +253,21 @@ class GuidedCapture:
             lines.append(f"{a['segment_id']}\t{a['attempt']}\t{a['status']}\t{a.get('frames', '')}\t{a['path']}")
         (self.root/"inventory.tsv").write_text("\n".join(lines)+"\n", encoding="utf-8")
 
-    def run_session(self, session_number=1, *, resume=False, redo=None, night=False):
+    def run_session(self, session_number=1, *, resume=False, redo=None):
         manifest_path = self.root/"capture.json"
         if any(self.root.glob("session-*/session.json")):
-            raise ValueError("目录含旧复杂版会话，不能混写simple-dorm-v1；用--output另选artifacts.local目录")
+            raise ValueError("目录含旧复杂版会话，不能混写simple-dorm-v2；用--output另选artifacts.local目录")
         if manifest_path.exists():
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
             if manifest.get("protocol_version") != PROTOCOL_VERSION:
                 raise ValueError("目录协议不匹配；禁止混写")
-            if not (resume or redo or night):
+            if not (resume or redo):
                 raise ValueError("录制目录已存在，用--resume续录或--output新目录")
         else:
-            if night:
-                raise ValueError("夜间必须--output/自动选择原白天simple-dorm-v1目录")
             self.root.mkdir(parents=True, exist_ok=True)
             self.print("准备：椅子+纸箱+胶带固定ToF，拖把/扫把杆、一本书、手机；不用卷尺/三脚架。")
             self.print("尽量水平；换条件尽量只挪整套支架。人离开前方与两侧，带轮物体别动。照片可拍可不拍。")
+            self.print("一次完成10段：第4段明档空过道后，不挪支架，关灯拉帘录4b；第5段恢复明档，第9段明档独立重启。")
             while True:
                 raw = self.ask("大约离地多少厘米？Enter默认120（这是估计，不是实测）: ").strip()
                 try:
@@ -294,18 +281,18 @@ class GuidedCapture:
                         "created_utc": self.clock.utcnow(), "port": self.port, "attempts": [], "startups": [],
                         "sensor_height_m": height/100, "sensor_height_source": "operator_estimate" if raw else "default_estimate",
                         "sensor_height_uncertainty_m": .15, "tilt_deg": 0, "tilt_source": "nominal_horizontal_assumption",
-                        "status": "prepared", "day_complete": False, "night_complete": False}
+                        "status": "prepared", "session_complete": False}
             write_json(manifest_path, manifest)
-        plan = segment_plan(night)
+        plan = segment_plan()
         mapping = {str(s['condition_index']): s['segment_id'] for s in segment_plan()}
         mapping.update({s['condition']: s['segment_id'] for s in segment_plan()})
         selected = {mapping.get(str(s), str(s)) for s in (redo or [])}
         if selected - {s["segment_id"] for s in plan}:
-            raise ValueError("--redo编号/名称不属于本次白天或夜间清单")
-        manifest["status"] = "recording_night" if night else "recording_day"
+            raise ValueError("--redo编号/名称不属于本次10段清单")
+        manifest["status"] = "recording"
         write_json(manifest_path, manifest)
         try:
-            gate = self.preflight("night_start" if night else "day_start_or_resume")
+            gate = self.preflight("session_start_or_resume")
             manifest["startups"].append(gate)
             write_json(manifest_path, manifest)
             for segment in plan:
@@ -329,15 +316,15 @@ class GuidedCapture:
                     self.print(f"\n第{segment['condition_index']}段：{segment['instructions']}")
                     ready = self.ask("摆好按Enter；s跳过；也可直接填可选照片名后Enter: ").strip()
                     record = {"segment_id": sid, "condition": segment["condition"], "condition_index": segment["condition_index"],
-                              "lighting": segment["lighting"], "attempt": number, "path": rel,
+                              "lighting": segment["lighting"], "ambient_level": segment["ambient_level"],
+                              "ambient_pair_id": segment["ambient_pair_id"], "attempt": number, "path": rel,
                               "status": "skipped" if ready.lower() in ("s", "skip") else "preparing"}
                     manifest["attempts"].append(record)
                     write_json(manifest_path, manifest)
                     if record["status"] == "skipped":
                         break
                     metadata = {**segment, "protocol_version": PROTOCOL_VERSION,
-                                "ambient_level": segment["lighting"],
-                                "session_number": 2 if night else 1,
+                                "session_number": 1,
                                 "sensor_height_m": manifest["sensor_height_m"], "sensor_height_source": manifest["sensor_height_source"],
                                 "sensor_height_uncertainty_m": .15, "tilt_deg": 0,
                                 "tilt_source": "nominal_horizontal_assumption", "target_height_m": None,
@@ -351,7 +338,7 @@ class GuidedCapture:
                     write_json(attempt/"metadata.json", dict(metadata, status="preparing"))
                     try:
                         reference = self.probe(attempt, "distance-probe-01", metadata, "scene_central4")
-                        if 5 <= segment["condition_index"] <= 8 and self.off_nominal(reference, segment):
+                        if isinstance(segment["condition_index"], int) and 5 <= segment["condition_index"] <= 8 and self.off_nominal(reference, segment):
                             self.ask("杆读数不稳定或偏离建议；请在目标位置临时放一本书，放好按Enter测距: ")
                             reference = self.probe(attempt, "book-probe-02", metadata, "book_proxy")
                             self.ask("书测距完成；现在拿走书，恢复杆摆放，按Enter: ")
@@ -394,12 +381,10 @@ class GuidedCapture:
                         write_json(path, failed)
                         record["status"] = status
                         raise
-            target_key = "night_complete" if night else "day_complete"
-            manifest[target_key] = all(any(a["segment_id"] == s["segment_id"] and a["status"] in ("complete", "needs_review", "skipped") for a in manifest["attempts"]) for s in plan)
-            manifest["status"] = "complete" if manifest["day_complete"] and manifest["night_complete"] else "night_done" if night else "day_done"
+            manifest["session_complete"] = all(any(a["segment_id"] == s["segment_id"] and a["status"] in ("complete", "needs_review", "skipped") for a in manifest["attempts"]) for s in plan)
+            manifest["status"] = "complete" if manifest["session_complete"] else "partial"
             write_json(manifest_path, manifest)
-            if not night:
-                self.print(f'白天结束。夜间关灯拉帘后运行：& "{sys.executable}" "{Path(__file__).resolve()}" --night --output "{self.root}"')
+            self.print(f"本次10段结束；清单：{self.root / 'inventory.tsv'}")
             return manifest
         except BaseException as exc:
             manifest["status"] = "interrupted" if isinstance(exc, KeyboardInterrupt) else "failed"
@@ -421,6 +406,7 @@ class GuidedCapture:
                         host_timestamp_rule="chunk-final-newline receipt; host monotonic_ns + UTC; not synchronized")
         write_json(directory / "metadata.json", metadata)
         events, latest = [], None
+        ambient_frame_medians = []
         preflight_decoder, preflight_events = None, []
         digest, total, monitor = hashlib.sha256(), 0, self.clock.monotonic()
         started = self.clock.monotonic()
@@ -446,6 +432,9 @@ class GuidedCapture:
                             preflight_decoder.feed((json.dumps(record["sensor"])+"\n").encode(), record["host_received_monotonic_ns"])
                 elif kind == "frames":
                     latest = record
+                    ambient_values = record["derived"].get("ambient_normalized", [])
+                    if ambient_values:
+                        ambient_frame_medians.append(statistics.median(ambient_values))
                     if preflight_decoder is not None:
                         preflight_decoder.feed((json.dumps(record["sensor"])+"\n").encode(), record["host_received_monotonic_ns"])
                 elif kind == "issues" and preflight_decoder is not None and record["reason"] in ("invalid_frame", "malformed_line"):
@@ -491,6 +480,10 @@ class GuidedCapture:
                                 ended_utc=self.clock.utcnow(), host_elapsed_seconds=self.clock.monotonic()-started,
                                 raw_bytes=total, raw_sha256=digest.hexdigest(), summary=summary,
                                 error=f"{type(error).__name__}: {error}" if error else None)
+                metadata["ambient_summary"] = {
+                    "source": "derived.ambient_normalized; CNH raw/scaler-normalized units, not lux",
+                    "frames_with_ambient": len(ambient_frame_medians),
+                    "median_of_zone_medians": statistics.median(ambient_frame_medians) if ambient_frame_medians else None}
                 if metadata.get("phase") == "preflight":
                     metadata["startup_window_summary"] = preflight_decoder.summary() if preflight_decoder is not None else Decoder().summary()
                 write_json(directory / "metadata.json", metadata)
@@ -505,28 +498,25 @@ def main(argv=None):
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
             stream.reconfigure(encoding="utf-8")
-    parser = argparse.ArgumentParser(description="宿舍最简H3：白天9段，夜间2段；Enter引导、3秒倒计时、每段30秒；不刷写/不联网")
+    parser = argparse.ArgumentParser(description="宿舍最简H3 v2：一次10段，4后原位关灯拉帘录4b；Enter引导、3秒倒计时、每段30秒；不刷写/不联网")
     parser.add_argument("--port", default="COM5")
     parser.add_argument("--resume", action="store_true")
-    parser.add_argument("--night", action="store_true", help="续原目录夜间两段，跨日自动找最新未完成夜间的简版目录")
     parser.add_argument("--redo", action="append", default=[], metavar="编号或名称")
     parser.add_argument("--replay", type=Path, help="已有raw.bin模拟串口，标记REPLAY，不连接设备")
     parser.add_argument("--output", type=Path, help="明确原目录，尤其跨日/恢复；必须在artifacts.local内")
     args = parser.parse_args(argv)
     repo = Path(__file__).resolve().parents[4]
     try:
-        root = args.output or default_output_root(repo/"artifacts.local/work", args.night)
+        root = args.output or default_output_root(repo/"artifacts.local/work")
         if not root.resolve().is_relative_to((repo/"artifacts.local").resolve()):
             parser.error("输出必须位于canonical artifacts.local内")
-        if args.night:
-            print(f"夜间续录同一原目录：{root}")
         clock = CaptureClock()
         factory = (lambda: ReplaySerial(args.replay, clock)) if args.replay else (lambda: open_serial(args.port))
         app = GuidedCapture(root, factory, clock=clock, port=args.port, replay=bool(args.replay))
-        app.run_session(resume=args.resume, redo=args.redo, night=args.night)
+        app.run_session(resume=args.resume, redo=args.redo)
         return 0
     except KeyboardInterrupt:
-        print(f'已中断，证据保留：--resume --output "{root}"'+(" --night" if args.night else ""))
+        print(f'已中断，证据保留：--resume --output "{root}"')
         return 130
     except (ValueError, OSError) as exc:
         print(f"停止：{exc}")
