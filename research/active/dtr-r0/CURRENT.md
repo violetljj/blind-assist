@@ -20,6 +20,8 @@ RGB [分带混合评价](nearfield/RGB_BAND_HYBRID_DEV_20261010.md)完成六新V
 
 ## ToF当前决定
 
+[宿舍十条件实机pilot校准回放](../hardware-bringup/REAL_PILOT_CALIBRATION_REPLAY_DEV_20261011.md)完成EXPLORE，**仍不可迁移**：1507帧/1362满窗，v1继承06d49473与v2在空通道4/4b/9的原5格/S均762/762 query-frames强报警，外侧7也全强；墙/杆/8HEAD报警，无S新增light。用户授权宽松稳定规则，strict失败保留；4/4b观测Var=.145814·positive_mean+.089665·ambient+.081291、R²=.533699，阳台上半弱模板128/1024cell；2fit gain=.749185、核σ=.404742bin，3check能量L2残差11.16%/核逐bin109.98%。旧zone34两bin非所有场景共同异常。仅1–4b拟合、5–9评价，3不回流；模型/阈值/名义−10°/恒等历史保持冻结。独立raw/参数/计数与同CUDAfresh forward PASS，CPU跨后端S分数差留证。CPU保守300/1500、GPU65/300command-wall s；下一全空间bias/单位噪声→核零偏→固定模式/gain，更新模拟器重训骨干再拟合S仅草案；不读480/test、不作检出/误报或安全主张，不升候选/App。
+
 [sim→real输入合同第一步](../hardware-bringup/SIM2REAL_INPUT_CONTRACT_DEV_20261011.md)完成已有真实CNH EXPLORE：13片段12922帧/12726满窗，原M3、5格、S HEAD/BODY为61.88/15.33%、84.83/52.34%、84.86/52.85%；仅减far-selected bias并保留表面的新拟合floor后三模型100%/100%。bias340/1024格覆盖、噪声R²=.0024及ambient系数0边界不支持物理映射成功；新BODY2586无固件弱表面支撑。旧5格04 HEAD144中133对既定两格敏感，但其有柜面支撑；新路径消融0取消不能当FPN消失。独立raw/参数/三类闭合与真实forward核验PASS，CPU保守≤400/1800command-wall、GPU≤150/300s，权重释放。下一先建模拟器噪声/固件处理与空间串扰模板；重训/六条件标注录制仅草案。M3/原5格/S模拟默认保留，无新采集/刷写/调阈值/模型或App修改，不读480/test；只是真实回放描述，不作检出/误报或安全结论。
 
 用户2026-10-10决定：接受S集成的接触收益与轻提醒取舍，**S955/956/957任务成本HGB均值升为ToF模拟默认候选，未接入App**。冻结6e441f9a的6权重/47维，原5格强档逐slot不变，新增slot仅轻档。旧[确认](nearfield/CNH_S_ENSEMBLE_CONFIRM_DEV_20261010.md)净151/1024、a/d通过而b/c失败保留；用户改用取舍曲线与环境波动，不再按成本≤k×原5格二元判定。旧约2.7pp是通知次数归一，实际far+clear有通知clip增量2.214pp。
