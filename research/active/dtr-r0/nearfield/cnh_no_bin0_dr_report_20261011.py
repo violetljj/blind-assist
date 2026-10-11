@@ -111,7 +111,7 @@ def run(out=OUT, report=REPORT):
     index = index_real(real)
     interpretations = {path: summarize_real(index, path=path) for path in ('v2', 'bias_only')}
     accept = stats['acceptance']
-    cal_valid = seal['cuts']['no_bin0']['s_calibration']['status'] == 'SEALED'
+    cal_valid = read(out, 'sealed_calibration.json')['cuts']['no_bin0']['s_calibration']['status'] == 'SEALED'
     passed = cal_valid and accept['timely_pass'] and accept['far_clear_pass'] and interpretations['v2']['bin0_pass'] and interpretations['v2']['walls_rods_pass']
     verdict = '建议新骨干+S替换为默认候选（待独立实机确认）' if passed else '本次不建议替换默认候选，保留旧S候选'
     failures = []

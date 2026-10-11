@@ -33,8 +33,8 @@ CHECK=lambda:None
 
 def paths(arm):
     folder=OUT/'models'/arm
-    m3=sorted((folder/'M3').glob('model_seed*.pt'))
-    ordinary=sorted(folder.glob('ordinary_seed*.pt'))
+    m3=sorted(p for p in (folder/'M3').glob('model_seed*.pt') if p.stem.removeprefix('model_seed').isdigit())
+    ordinary=sorted(p for p in folder.glob('ordinary_seed*.pt') if p.stem.removeprefix('ordinary_seed').isdigit())
     if not m3 or not ordinary:raise FileNotFoundError('Missing completed backbone '+arm)
     return m3,ordinary
 

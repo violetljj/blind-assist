@@ -32,8 +32,10 @@ def describe(result,arm,path,sid):
             else:strong=result['S_grade'][mask,qi]==2;light=result['S_grade'][mask,qi]==1
             answer.append(dict(arm=arm,path=path,condition=sid,height=height,model=model,ready_frames=n,strong=int(strong.sum()),light=int(light.sum()),strong_rate=float(strong.mean()) if n else 0.,light_rate=float(light.mean()) if n else 0.))
     return answer
-def run(manifests):
+def run(manifests,seconds=600):
     began=time.monotonic();seal=OUT/'sealed_candidates.json'
+    def check_budget():
+        if time.monotonic()-began >= seconds:raise TimeoutError('Reserved real replay command-wall budget reached')
     if not seal.exists():raise ValueError('Seal all simulator cuts/models before opening consumed pilot')
     sealdata=json.loads(seal.read_text(encoding='utf8'))
     for section in ('scientific_code_sha256','old_frozen_dependencies_sha256','models_sha256'):
@@ -46,10 +48,12 @@ def run(manifests):
     bias=np.load(JOINT/'instrument_fit_arrays.npz')['bias'].reshape(64,16)
     all_data=P.data();tables=[];files=[];input_checks=[]
     for arm,manifest in {'old':None,**manifests}.items():
+        check_budget()
         engine=F.FrozenReplay() if manifest is None else DesignReplay(manifest)
         try:
             for sid,d in all_data.items():
                 for name,z in adapter(d,bias).items():
+                    check_budget()
                     result=engine.infer(z.reshape(-1,8,8,16),d['seq'],d['ms'])
                     folder=OUT/'real'/arm/name;folder.mkdir(parents=True,exist_ok=True)
                     path=folder/(sid+'.npz');np.savez_compressed(path,**result)
@@ -60,11 +64,13 @@ def run(manifests):
             empty=dict(H=background,A=ambient)
             seq=np.arange(16);ms=np.arange(16)*200
             for name,z in adapter(empty,bias).items():
+                check_budget()
                 result=engine.infer(z.reshape(-1,8,8,16),seq,ms)
                 tables.extend(describe(result,arm,name,'BIN0_BACKGROUND_ONLY'))
                 folder=OUT/'real'/arm/name;path=folder/'bin0_only.npz'
                 np.savez_compressed(path,**result);files.append(dict(path=str(path.relative_to(ROOT)),sha256=sha(path)))
             if manifest is not None:
+                check_budget()
                 rng=np.random.default_rng(20261011181)
                 clean=rng.normal(0,1,(16,8,8,16)).astype(np.float32)
                 poison=clean.copy();poison[...,engine.drop_bins]=rng.uniform(-1e4,1e4,poison[...,engine.drop_bins].shape)
@@ -80,7 +86,7 @@ def run(manifests):
     save('real_receipt.json',dict(status='COMPLETE',seconds=time.monotonic()-began,backend='CUDA FP32 engineering / CPU HGB',pilot_role='Consumed Development; never training/calibration',model_seal_sha256=sha(seal),tables=tables,outputs=files,input_checks=input_checks))
     print('REAL_COMPLETE',round(time.monotonic()-began,3),flush=True)
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--main',required=True);p.add_argument('--sensitivity');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--main',required=True);p.add_argument('--sensitivity');p.add_argument('--seconds',type=float,default=600);a=p.parse_args()
     manifests={'main':Path(a.main)}
     if a.sensitivity:manifests['drop01']=Path(a.sensitivity)
-    run(manifests)
+    run(manifests,a.seconds)

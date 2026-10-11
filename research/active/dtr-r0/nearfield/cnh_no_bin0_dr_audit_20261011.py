@@ -6,10 +6,13 @@ recomputation of descriptive evaluation, never for model inference or selection.
 import argparse
 import hashlib
 import json
+import csv
+import pickle
 from pathlib import Path
 import time
 
 import numpy as np
+from threadpoolctl import threadpool_limits
 
 ROOT = Path(__file__).resolve().parents[4]
 DEFAULT_OUT = ROOT/'artifacts.local/work/cnh-no-bin0-dr-retrain-dev-20261011'
@@ -25,6 +28,64 @@ def sha(path):
         for chunk in iter(lambda: stream.read(8*1024**2), b''):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def load_scores(path):
+    with np.load(path, allow_pickle=False) as saved:
+        return {name:saved[name].copy() for name in saved.files}
+
+
+def smooth(raw):
+    raw = np.asarray(raw, dtype=np.float64)
+    output = np.empty_like(raw)
+    assert raw.shape[-2:] == (13, 2)
+    for frame in range(13):
+        start = max(0, frame-4)
+        weights = 2.**np.arange(frame-start+1)
+        output[..., frame, :] = (raw[..., start:frame+1, :]*weights[:, None]).sum(-2)/weights.sum()
+    return output
+
+
+def strong_grades(scores, cuts):
+    return (2*((smooth(scores['m3_raw']) >= cuts['raised_tau']) |
+               (smooth(scores['local_raw']) >= cuts['local_tau']))).astype(np.int8)
+
+
+def features47(scores, single):
+    """Independent feature arithmetic, retaining inherited dtype transitions."""
+    raw = scores['ordinary_raw']
+    smoothed = smooth(raw)
+    slope, residual = np.zeros_like(raw, dtype=float), np.zeros_like(raw, dtype=float)
+    for frame in range(13):
+        y = raw[..., max(0, frame-4):frame+1, :]
+        x = np.arange(y.shape[-2], dtype=float)
+        x -= x.mean()
+        mean = y.mean(-2)
+        if len(x) > 1:
+            fit = (y*x[:, None]).sum(-2)/(x*x).sum()
+            slope[..., frame, :] = fit
+            residual[..., frame, :] = np.sqrt(((y-mean[..., None, :]-fit[..., None, :]*x[:, None])**2).mean(-2))
+    current = scores['current'].astype(float)
+    valid = scores['current_valid'] & np.isfinite(current)
+    spatial = np.concatenate((np.where(valid, current, np.nan), (~valid).astype(float)), -1)
+    return np.asarray([np.concatenate((np.stack((smoothed[i]-single[i], slope[i], residual[i]), -1),
+        spatial), -1) for i in range(3)], np.float32)
+
+
+def predict_hgb(folder, features):
+    output = np.empty(features.shape[:-1], np.float32)
+    with threadpool_limits(limits=2):
+        for i, seed in enumerate((2026100955, 2026100956, 2026100957)):
+            for q, height in enumerate(('HEAD', 'BODY')):
+                with (Path(folder)/'models'/f'S_{seed}_{height}.pickle').open('rb') as stream:
+                    model = pickle.load(stream)
+                values = features[i, ..., q, :]
+                output[i, ..., q] = model.decision_function(values.reshape(-1, 47)).reshape(values.shape[:-1])
+    return output.mean(0)
+
+
+def append_light(strong, score, tau):
+    return np.where(strong == 2, 2, np.where(np.isfinite(score) & (score >= tau), 1, 0)).astype(np.int8)
 
 
 def scalar_notifications(grades):
@@ -198,6 +259,12 @@ def identity_audit(out):
     seal = read(out/'sealed_candidates.json')
     assert seal['calibration_sha256'] == sha(out/'sealed_calibration.json')
     assert seal['plan_sha256'] == sha(out/'PLAN.json')
+    assert seal['plan_markdown_sha256'] == sha(out/'PLAN.md')
+    for mapping in ('scientific_code_sha256', 'old_frozen_dependencies_sha256'):
+        assert seal[mapping], mapping
+        for path, digest in seal[mapping].items():
+            assert sha(ROOT/path) == digest, (mapping, path)
+    calibration = read(out/'sealed_calibration.json')['cuts']
     for path, digest in seal['models_sha256'].items():
         assert sha(ROOT/path) == digest, path
     for arm, digest in seal['real_manifest_hashes'].items():
@@ -206,6 +273,7 @@ def identity_audit(out):
         parsed = read(manifest)
         assert parsed['drop_bins'] == ([0] if arm == 'main' else [0, 1])
         assert parsed['real_selection'] is False and parsed['hold_selection'] is False
+        assert parsed['cuts'] == calibration['no_bin0' if arm == 'main' else 'no_bin01']
         assert len(parsed['ordinary_paths']) == len(parsed['s_paths']) == 3
         entries = parsed['m3_paths']+parsed['ordinary_paths']+[e for pair in parsed['s_paths'] for e in pair]
         for entry in entries:
@@ -221,8 +289,9 @@ def identity_audit(out):
         assert draw['tail_scale_m'] == .5
         for name, (lo, hi) in limits.items():
             assert lo <= draw[name] <= hi, (name, draw[name])
-    model_files = list((out/'models').glob('*/M3/model_seed*.pt'))+list((out/'models').glob('*/ordinary_seed*.pt'))
+    model_files = [ROOT/path for path in seal['models_sha256'] if path.endswith('.pt')]
     for path in model_files:
+        assert '_partial_' not in path.name, 'Incomplete diagnostic checkpoint cannot be a candidate'
         receipt = read(path.with_suffix('.json'))
         assert receipt['sha256'] == sha(path)
         assert receipt['epochs'] == (20 if path.name.startswith('model_seed') else 32)
@@ -236,7 +305,9 @@ def identity_audit(out):
         for job in sreceipt['jobs']:
             assert sha(job['path']) == job['sha256'] and job['iterations'] == 100
     return dict(model_files=len(model_files), domain_randomization_episodes=len(draws),
-                bounds_checked=len(draws)*len(limits), model_hashes=len(seal['models_sha256']))
+                bounds_checked=len(draws)*len(limits), model_hashes=len(seal['models_sha256']),
+                scientific_code_hashes=len(seal['scientific_code_sha256']),
+                old_frozen_hashes=len(seal['old_frozen_dependencies_sha256']), plan_hashes=2)
 
 
 def calibration_audit(out):
@@ -248,6 +319,11 @@ def calibration_audit(out):
     for arm in ('no_bin0', 'no_bin01'):
         with np.load(out/arm/'pool_light_scores.npz', allow_pickle=False) as saved:
             score, strong = saved['score'], saved['strong']
+        raw = load_scores(out/(arm+'_pool_scores.npz'))
+        cuts = seal['cuts'][arm]
+        np.testing.assert_array_equal(strong, strong_grades(raw, cuts))
+        fresh_score = predict_hgb(out/arm, features47(raw, cuts['single']))
+        np.testing.assert_array_equal(score, fresh_score)
         recomputed, _, _ = selected_threshold(strong, score, category, pool_rows, baseline_fixed=original_old5)
         record = seal['cuts'][arm]['s_calibration']
         for name, audit_name in (('old5_far_clear_clips', 'baseline'), ('far_clear_denominator', 'denominator'),
@@ -264,12 +340,75 @@ def calibration_audit(out):
     return answer
 
 
+def supervision_audit(out):
+    source = ROOT/'artifacts.local/work/cnh-task-cost-retrain-dev-20261010'
+    rows = read(source/'scene_rows.json')['train']
+    with np.load(source/'data/train/geometry.npz', allow_pickle=False) as geometry:
+        category, support = geometry['category'], geometry['target_support']
+    cuts = read(out/'sealed_calibration.json')['cuts']
+    answer = {}
+    for arm in ('no_bin0', 'no_bin01'):
+        scores = load_scores(out/'S_train_scores'/(arm+'_scores.npz'))
+        strong = strong_grades(scores, cuts[arm])
+        visibility = np.broadcast_to(support[:, None], strong.shape) if support.ndim == 3 else support
+        visible_before = np.logical_or.accumulate(visibility, axis=2)
+        contact = np.broadcast_to((category == 'contact')[:, None, None], strong.shape)
+        timely = np.arange(3, 16) <= 13
+        positive = contact & visible_before & timely[None, None, :, None]
+        mask = (~contact | positive) & (strong == 0)
+        near = (category == 'pass').any(1) & np.array([float(r['lateral_gap_m']) <= .10+1e-10 for r in rows])
+        weights = np.broadcast_to(np.where(near, .25, 1.)[:, None, None, None], strong.shape).copy()*mask
+        counts = {}
+        for q, height in enumerate(('HEAD', 'BODY')):
+            active_pos = positive[..., q] & mask[..., q]
+            active_neg = ~positive[..., q] & mask[..., q]
+            negative_weight = weights[..., q][active_neg].sum()
+            npos = int(active_pos.sum())
+            assert npos and negative_weight > 0
+            weights[..., q][active_pos] = negative_weight/npos
+            counts[height] = dict(positive_slots=npos, negative_slots=int(active_neg.sum()),
+                ignored_slots=int((~mask[..., q]).sum()), positive_weight=float(weights[..., q][active_pos].sum()),
+                negative_weight=float(negative_weight))
+        labels = load_scores(out/arm/'S_train_labels.npz')
+        np.testing.assert_array_equal(labels['labels'], positive.astype(np.float32))
+        np.testing.assert_array_equal(labels['mask'], mask)
+        np.testing.assert_array_equal(labels['weights'], weights.astype(np.float32))
+        assert counts == read(out/arm/'supervision_receipt.json')
+        saved_features = np.load(out/arm/'S_train_features.npy', mmap_mode='r')
+        recomputed = features47(scores, cuts[arm]['single'])
+        np.testing.assert_array_equal(saved_features, recomputed)
+        answer[arm] = dict(labels_checked=int(mask.size), features_checked=int(recomputed.size),
+                          ignored_new_strong_only=True, counts=counts)
+    return answer
+
+
 def hold_audit(out, rows):
     saved = np.load(out/'hold_grades_notifications.npz', allow_pickle=False)
     keys = [str(k) for k in saved['keys']]
     grades, notifications, category = saved['grades'], saved['notifications'], saved['category']
     reference = grades[keys.index('original_old5')]
     producer = read(out/'simulation_evaluation.json')
+    sealed_cuts = read(out/'sealed_calibration.json')['cuts']
+    old = load_scores(out/'hold_scores/old_scores.npz')
+    old_cuts = dict(raised_tau=.9404184587540165, local_tau=4.625390338985158)
+    old_strong = strong_grades(old, old_cuts)
+    thresholds = read(ROOT/'artifacts.local/work/cnh-graded-evidence-dev-20261010/thresholds.json')
+    single = [thresholds[str(seed)]['single'] for seed in (2026100955, 2026100956, 2026100957)]
+    old_light = predict_hgb(ROOT/'artifacts.local/work/cnh-task-cost-retrain-dev-20261010', features47(old, single))
+    old_manifest = read(ROOT/'artifacts.local/work/cnh-s-ensemble-tradeoff-dev-20261010/candidate_manifest.json')
+    reconstructed = dict(original_old5=old_strong,
+        old_default_S=append_light(old_strong, old_light, old_manifest['threshold']['tau']))
+    for arm in ('no_bin0', 'no_bin01'):
+        scores = load_scores(out/'hold_scores'/(arm+'_scores.npz'))
+        cuts = sealed_cuts[arm]
+        strong = strong_grades(scores, cuts)
+        light = predict_hgb(out/arm, features47(scores, cuts['single']))
+        reconstructed[arm+'_old5'] = strong
+        reconstructed[arm+'_S'] = append_light(strong, light, cuts['s_tau'])
+        reconstructed[arm+'_M3'] = (2*(smooth(scores['m3_raw']) >= cuts['m3_tau'])).astype(np.int8)
+    assert set(keys) == set(reconstructed)
+    for i, name in enumerate(keys):
+        np.testing.assert_array_equal(grades[i], reconstructed[name])
     answer = {}
     for i, arm in enumerate(keys):
         result, emitted = statistics(grades[i], reference, category, rows)
@@ -280,7 +419,33 @@ def hold_audit(out, rows):
         assert result['far_clear_clip_denominator'] == reported['far_clear']['denominator'], arm
         for height, data in result['contacts'].items():
             assert data == reported[height], (arm, height)
+        hit, baseline_hit = (emitted[:, :, :11] > 0).any(2), (scalar_notifications(reference)[:, :, :11] > 0).any(2)
+        groups = {}
+        for name, selected in (('dark_thin', np.array([r['dark_thin'] for r in rows])),
+                               ('sign_edge', np.array([r['shape_family'] == 'sign_edge' for r in rows]))):
+            groups[name] = []
+            for q in range(2):
+                mask = selected & (category[:, q] == 'contact')
+                groups[name].append(dict(denominator=int(mask.sum()*grades[i].shape[1]),
+                    timely=int(hit[mask, :, q].sum()), baseline=int(baseline_hit[mask, :, q].sum())))
+            assert groups[name] == reported['groups'][name], (arm, name)
+        result['groups'] = groups
         answer[arm] = result
+    with (out/'simulation_comparison.csv').open(encoding='utf8', newline='') as stream:
+        summary_rows = list(csv.DictReader(stream))
+    assert len(summary_rows) == len(keys)*2
+    for row in summary_rows:
+        result = answer[row['arm']]
+        assert all(int(row[name]) == value for name, value in result['contacts'][row['height']].items())
+        assert int(row['far_clear_notified_clips']) == result['far_clear_notified_clips']
+        assert int(row['far_clear_clip_denominator']) == result['far_clear_clip_denominator']
+        assert float(row['weighted_cost']) == result['weighted_cost']
+    with (out/'simulation_groups.csv').open(encoding='utf8', newline='') as stream:
+        group_rows = list(csv.DictReader(stream))
+    assert len(group_rows) == len(keys)*4
+    for row in group_rows:
+        result = answer[row['arm']]['groups'][row['group']][('HEAD', 'BODY').index(row['height'])]
+        assert all(int(row[name]) == value for name, value in result.items())
     calculated = acceptance(answer['no_bin0_S'], answer['old_default_S'])
     declared = producer['acceptance']
     assert calculated['timely_pass'] == declared['timely_pass']
@@ -289,6 +454,8 @@ def hold_audit(out, rows):
     assert calculated['old_gain'] == declared['old_gain_vs_common_old5']
     assert abs(calculated['far_clear_increase_pp']-declared['far_clear_increment_pp']) < 1e-10
     return dict(arms=len(keys), notifications_checked=int(notifications.size),
+                grades_rebuilt_from_scores=True, HGB_models_reloaded=18,
+                subgroup_rows_checked=len(group_rows), summary_rows_checked=len(summary_rows),
                 statistics=answer, acceptance=calculated)
 
 
@@ -318,8 +485,20 @@ def real_audit(out):
     for check in receipt['input_checks']:
         assert all(check['poison_score_and_grade_exact'].values())
         assert check['drop_bins'] == ([0] if check['arm'] == 'main' else [0, 1])
+    index = {(r['arm'], r['path'], r['condition'], r['height'], r['model']):r for r in receipt['tables']}
+    gates = {}
+    for path in ('v2', 'bias_only'):
+        empty = [index[('main', path, 'BIN0_BACKGROUND_ONLY', height, model)]
+            for height in ('HEAD', 'BODY') for model in ('M3', 'old5', 'S')]
+        bin0_pass = all(row['strong'] == row['light'] == 0 for row in empty)
+        presence = {}
+        for sid in ('2', '3', '5', '6', '8'):
+            heights = ('HEAD',) if sid == '8' else ('HEAD', 'BODY')
+            presence[sid] = any(index[('main', path, sid, height, 'S')]['strong']+
+                               index[('main', path, sid, height, 'S')]['light'] > 0 for height in heights)
+        gates[path] = dict(bin0_pass=bin0_pass, reminder_present=presence, walls_rods_pass=all(presence.values()))
     return dict(table_rows_checked=checks, output_hashes=len(receipt['outputs']),
-                poison_invariance_receipts=receipt['input_checks'])
+                poison_invariance_receipts=receipt['input_checks'], gate_interpretations=gates)
 
 
 def run(out):
@@ -327,11 +506,16 @@ def run(out):
     identities = identity_audit(out)
     rows, source = source_audit(out)
     calibration = calibration_audit(out)
+    supervision = supervision_audit(out)
     hold = hold_audit(out, rows)
     real = real_audit(out) if (out/'real_receipt.json').exists() else None
+    recommendation = None if real is None else bool(calibration['no_bin0']['status'] == 'SEALED' and
+        hold['acceptance']['timely_pass'] and hold['acceptance']['far_clear_pass'] and
+        real['gate_interpretations']['v2']['bin0_pass'] and real['gate_interpretations']['v2']['walls_rods_pass'])
     result = dict(status='PASS', seconds=time.monotonic()-start, independent=True,
         protected_access=0, training=0, source_sha256=sha(__file__), identities=identities,
-        source=source, calibration=calibration, hold=hold, real=real)
+        source=source, calibration=calibration, supervision=supervision, hold=hold, real=real,
+        independent_recommendation=recommendation)
     output = out/('independent_audit_real.json' if real is not None else 'independent_audit_sim.json')
     with output.open('x', encoding='utf8') as stream:
         json.dump(result, stream, ensure_ascii=False, indent=2, allow_nan=False)
@@ -341,7 +525,7 @@ def run(out):
     return result
 
 
-def forward_audit(out):
+def forward_audit(out, seconds=60.):
     """Fresh CUDA process: sealed candidate, first16 pilot frames and poison.
 
     Prefix windows have exactly the same causal history as saved full episodes.
@@ -352,6 +536,12 @@ def forward_audit(out):
     import real_pilot_calibration as pilot
     from cnh_no_bin0_dr_replay import DesignReplay
     started = time.monotonic()
+    if seconds <= 0:
+        raise ValueError('Forward audit needs a positive reserved command-stage budget')
+    def deadline():
+        if time.monotonic()-started >= seconds:
+            raise TimeoutError('Independent forward audit reached reserved wall budget')
+    deadline()
     data = pilot.data()
     old_parameters = pilot.read('instrument_parameters.json')['noise']
     with np.load(pilot.OUT/'instrument_arrays.npz', allow_pickle=False) as arrays:
@@ -367,12 +557,14 @@ def forward_audit(out):
             b*np.maximum(observation['A'], 0)[..., None]+c, old_parameters['numerical_variance_floor']))
         return (observation['H']-(old_bias if path == 'v2' else new_bias))/denominator
     for arm, manifest in manifests.items():
+        deadline()
         engine = DesignReplay(manifest)
         try:
             for sid in ('4', '8'):
                 observation = {key:np.asarray(data[sid][key])[:16] for key in ('H', 'A', 'seq', 'ms')}
                 for path in ('v2', 'bias_only'):
-                    result = engine.infer(adapt(observation, path).reshape(16, 8, 8, 16), observation['seq'], observation['ms'])
+                    deadline()
+                    result = engine.infer(adapt(observation, path).reshape(16, 8, 8, 16), observation['seq'], observation['ms'], deadline)
                     with np.load(out/'real'/arm/path/(sid+'.npz'), allow_pickle=False) as original:
                         maximum = 0.
                         for name in ('m3_raw', 'local_raw', 'ordinary_raw', 's_seed_score', 's_score'):
@@ -393,15 +585,17 @@ def forward_audit(out):
             base = rng.normal(0, 1, (16, 8, 8, 16)).astype(np.float32)
             poisoned = base.copy()
             poisoned[..., engine.drop_bins] = rng.uniform(-2e4, 2e4, poisoned[..., engine.drop_bins].shape)
-            first = engine.infer(base, seq, ms)
-            second = engine.infer(poisoned, seq, ms)
+            deadline()
+            first = engine.infer(base, seq, ms, deadline)
+            second = engine.infer(poisoned, seq, ms, deadline)
             for name in ('m3_raw', 'local_raw', 'ordinary_raw', 's_seed_score', 's_score', 'm3', 'old5', 'S_grade'):
                 np.testing.assert_array_equal(first[name], second[name])
             checks.append(dict(arm=arm, dropped_bins=list(engine.drop_bins), exact_poison_invariance=True))
             ambient = data['2']['A'][data['2']['stable']].mean(0)
             observation = dict(H=np.repeat(new_bias[None], 16, 0), A=np.repeat(ambient[None], 16, 0))
             for path in ('v2', 'bias_only'):
-                result = engine.infer(adapt(observation, path).reshape(16, 8, 8, 16), seq, ms)
+                deadline()
+                result = engine.infer(adapt(observation, path).reshape(16, 8, 8, 16), seq, ms, deadline)
                 with np.load(out/'real'/arm/path/'bin0_only.npz', allow_pickle=False) as original:
                     for name in ('m3_raw', 'local_raw', 'ordinary_raw', 's_seed_score', 's_score'):
                         np.testing.assert_allclose(result[name], original[name], atol=1e-4, rtol=1e-5, equal_nan=True)
@@ -410,6 +604,7 @@ def forward_audit(out):
                 rows.append(dict(arm=arm, condition='BIN0_BACKGROUND_ONLY', path=path, frames=16, exact_grades=True))
         finally:
             engine.close()
+    deadline()
     result = dict(status='PASS', seconds=time.monotonic()-started, backend='Fresh CUDA FP32 engineering and CPU HGB',
         independent_adapter=True, sealed_models=True, windows=rows, poison_checks=checks,
         protected_access=0, training=0)
@@ -424,5 +619,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, default=DEFAULT_OUT)
     parser.add_argument('--forward', action='store_true')
+    parser.add_argument('--seconds', type=float, default=60., help='Reserved forward-audit stage wall seconds; full command wall is booked externally')
     args = parser.parse_args()
-    (forward_audit if args.forward else run)(args.out)
+    if args.forward:
+        forward_audit(args.out, args.seconds)
+    else:
+        run(args.out)
