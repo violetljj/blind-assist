@@ -49,6 +49,10 @@ class Bridge:
         self.preview_stop=threading.Event();self.preview_worker=None;self.preview_device=None
         self.preview_latest=None;self.preview_frames=0;self.preview_error=None
         self.preview_status='未开启ToF预览'
+        try:
+            if json.loads((self.output/'capture.json').read_text(encoding='utf-8-sig')).get('session_complete'):
+                self.phase='complete'
+        except (OSError, ValueError):pass
     def log(self,*values,**kwargs):
         with self.lock:self.logs.append(' '.join(str(v) for v in values))
     def ask(self,prompt):
@@ -63,7 +67,7 @@ class Bridge:
                 except queue.Empty:
                     # H3 disconnects a stalled TCP consumer. Drain unsaved bytes
                     # during placement prompts so waiting never fills its socket.
-                    if self.tof_host and self.capture and self.capture.device is not None:
+                    if self.tof_host and self.capture and self.capture.device is not None and '下一段' not in prompt:
                         wait_decoder.feed(self.capture.device.read(16384),time.monotonic_ns())
             raise KeyboardInterrupt('网页停止')
         finally:
