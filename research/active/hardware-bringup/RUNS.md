@@ -3,4 +3,5 @@
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
 | --- | --- | --- | --- | --- |
 
+| 2026-10-11 | `host/real_labeled_capture.py` / `real_labeled_annotation.py` / `test_real_labeled_capture.py` | EXPLORE首次标注录制准备；6条件×2照明×2独立开始，30s/段、5s倒计时；COM5只读H3自检/原字节与实测照片关联 | 独立模拟串口11case PASS；12段流程每段虚拟1s，10段needs_review为场景不匹配；另30s虚拟collect154帧；CPU保守≤300/1200command-wall秒，无GPU | 引导脚本/实测几何标注骨架已备；用户无需打印版。本任务无采集/刷写/真实标注/冻结模型修改，未读保护480/test。[操作](REAL_LABELED_CAPTURE_SHEET_20261011.md)、[回放收据](REAL_LABELED_CAPTURE_REPLAY_TEST_20261011.md) |
 | 2026-10-11 | `host/cnh_sim2real_*.py` (source hashes in payload) | EXPLORE，既有13真实CNH片段；far-only模板/差分floor，冻结三模型两路径及既定两格诊断 | 12922decoded/12726满窗；旧M3 H/B7875/1951、5格10795/6661、S10799/6726；新各12726/12726；bias340/1024、floorR².0024；CPU保守≤400/1800command-wall、GPU≤150/300s | 适配原型完成，物理合同/迁移未修复；独立raw/forward PASS；仅真实回放，重训/标注采集仅草案。[报告](SIM2REAL_INPUT_CONTRACT_DEV_20261011.md) |
