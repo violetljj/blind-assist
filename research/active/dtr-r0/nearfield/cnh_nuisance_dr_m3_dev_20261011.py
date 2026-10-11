@@ -75,7 +75,8 @@ def features():
     return receipt
 
 
-def train(seeds):
+def train(seeds, amp=False):
+    """amp=True runs forward/loss under bf16 autocast (Tensor Core throughput); default keeps FP32."""
     from cnh_cvr_pilot import CVR
     from cnh_cvr_projection import query_masks
     T.configure()
@@ -96,14 +97,16 @@ def train(seeds):
             for begin in range(0, len(x), 256):
                 ix = torch.as_tensor(np.sort(order[begin:begin + 256]), device='cuda')
                 opt.zero_grad(set_to_none=True)
-                loss = F.binary_cross_entropy_with_logits(net(T.prep_cvr(x[ix], masks)), y[ix])
+                with torch.autocast('cuda', dtype=torch.bfloat16, enabled=amp):
+                    logits = net(T.prep_cvr(x[ix], masks))
+                loss = F.binary_cross_entropy_with_logits(logits.float(), y[ix])
                 loss.backward(); opt.step(); total += float(loss.detach()) * len(ix)
             scheduler.step()
             history.append(dict(epoch=epoch + 1, loss=total / len(x), seconds=time.monotonic() - t0))
             print('TRAIN_M3', seed, epoch + 1, round(history[-1]['loss'], 6), round(history[-1]['seconds'], 1), flush=True)
         torch.save({k: v.detach().cpu() for k, v in net.state_dict().items()}, target)
         (target.with_suffix('.json')).write_text(json.dumps(dict(seed=seed, epochs=20, rows=len(x),
-            steps=20 * math.ceil(len(x) / 256), sha256=T.sha(target), history=history), indent=1), encoding='utf8')
+            steps=20 * math.ceil(len(x) / 256), amp_bf16=amp, sha256=T.sha(target), history=history), indent=1), encoding='utf8')
         del net, opt, scheduler
     torch.cuda.empty_cache()
 
