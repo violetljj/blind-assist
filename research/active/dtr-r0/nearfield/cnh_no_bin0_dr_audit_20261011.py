@@ -163,7 +163,9 @@ def selected_threshold(fixed, score, category, rows, cap_increment=.03, baseline
     baseline = int(strong.sum()) if baseline_fixed is None else int(
         (np.asarray(baseline_fixed)[far_clear] > 0).any((-2, -1)).sum())
     vals = np.sort(maxima[~strong & np.isfinite(maxima)])
-    counts = baseline+len(vals)-np.searchsorted(vals, taus, side='left')
+    # The operating budget references original old5; the candidate curve must
+    # start from this arm's own immutable strong clips, which can differ.
+    counts = int(strong.sum())+len(vals)-np.searchsorted(vals, taus, side='left')
     cap = baseline+cap_increment*den
     valid = np.flatnonzero(counts <= cap)
     index = int(valid[0]) if valid.size else len(taus)-1
@@ -615,13 +617,64 @@ def forward_audit(out, seconds=60.):
     return result
 
 
+def branch_audit(out):
+    """Saved-output mechanism check: retained-bin signed bias and LOCAL.
+
+    This does not replay, fit, remove another bin, or alter a frozen candidate.
+    It identifies the exact sufficient strong branch in the synthetic empty test.
+    """
+    started = time.monotonic()
+    producer = read(out/'bin0_remaining_branch_diagnostic.json')
+    pilot_out = ROOT/'artifacts.local/work/real-pilot-calibration-replay-dev-20261011/relaxed-pilot'
+    with np.load(pilot_out/'instrument_arrays.npz', allow_pickle=False) as saved:
+        bias = saved['bias']
+    bins = [dict(bin=b, min=float(bias[:, b].min()), max=float(bias[:, b].max()),
+                 negative_cells=int((bias[:, b] < 0).sum()), positive_cells=int((bias[:, b] > 0).sum()))
+            for b in range(5)]
+    assert bins == producer['v2_bias_by_bin']
+    cuts = read(out/'main_real_manifest.json')['cuts']
+    with np.load(out/'real/main/v2/bin0_only.npz', allow_pickle=False) as arrays:
+        ready = arrays['ready']
+        local, m3 = arrays['local_score'][ready], arrays['m3_score'][ready]
+        local_crossings = (local >= cuts['local_tau']).sum(0).tolist()
+        raised_crossings = (m3 >= cuts['raised_tau']).sum(0).tolist()
+        score_ranges = dict(m3_score=[m3.min(0).tolist(), m3.max(0).tolist()],
+                            local_score=[local.min(0).tolist(), local.max(0).tolist()])
+        assert local_crossings == producer['local_crossings'] == [int(ready.sum())]*2
+        assert raised_crossings == producer['raised_crossings'] == [0, 0]
+        assert score_ranges == producer['main_empty_v2_score_ranges']
+        np.testing.assert_array_equal(arrays['old5'][ready], local >= cuts['local_tau'])
+        np.testing.assert_array_equal(arrays['S_grade'][ready], 2*(local >= cuts['local_tau']))
+    for name, value in producer['cuts'].items():
+        assert cuts[name] == value
+    with np.load(out/'real/main/bias_only/bin0_only.npz', allow_pickle=False) as arrays:
+        mask = arrays['ready']
+        assert not arrays['m3'][mask].any() and not arrays['old5'][mask].any() and not arrays['S_grade'][mask].any()
+    result = dict(status='PASS', seconds=time.monotonic()-started, GPU_seconds=0.,
+        role='Independent saved-output sufficient-branch diagnosis; no repair',
+        v2_bias_by_bin=bins, ready_frames=int(ready.sum()), cuts={k:cuts[k] for k in producer['cuts']},
+        score_ranges=score_ranges, local_crossings=local_crossings, raised_crossings=raised_crossings,
+        bin0_mask_cannot_remove_retained_signed_bias=True, bias_only_empty_silent=True,
+        result='Main v2 bin0-only strong failure is inherited LOCAL support, not retrained M3 raised threshold.',
+        producer_diagnostic_sha256=sha(out/'bin0_remaining_branch_diagnostic.json'), source_sha256=sha(__file__))
+    with (out/'independent_branch_audit.json').open('x', encoding='utf8') as stream:
+        json.dump(result, stream, ensure_ascii=False, indent=2, allow_nan=False)
+        stream.write('\n')
+    print(json.dumps(dict(status='PASS', seconds=result['seconds'], local_crossings=local_crossings,
+        raised_crossings=raised_crossings, bias_only_empty_silent=True)), flush=True)
+    return result
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, default=DEFAULT_OUT)
     parser.add_argument('--forward', action='store_true')
+    parser.add_argument('--branch', action='store_true')
     parser.add_argument('--seconds', type=float, default=60., help='Reserved forward-audit stage wall seconds; full command wall is booked externally')
     args = parser.parse_args()
-    if args.forward:
+    if args.branch:
+        branch_audit(args.out)
+    elif args.forward:
         forward_audit(args.out, args.seconds)
     else:
         run(args.out)

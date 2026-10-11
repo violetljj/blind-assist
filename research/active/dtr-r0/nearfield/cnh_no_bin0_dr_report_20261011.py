@@ -57,8 +57,8 @@ def figures(out, stats, real):
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     import numpy as np
-    arms = ('original_old5', 'old_default_S', 'no_bin0_S', 'no_bin01_S')
-    labels = ('Original old5', 'Old default S', 'Drop bin0 + DR S', 'Drop bins0/1 + DR S')
+    arms = ('original_old5', 'old_default_S', 'no_bin0_old5', 'no_bin0_S', 'no_bin01_S')
+    labels = ('Original old5', 'Old default S', 'Drop bin0 strong', 'Drop bin0 + DR S', 'Drop bins0/1 + DR S')
     x = np.arange(len(arms))
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.2), layout='constrained')
     for i, height in enumerate(('HEAD', 'BODY')):
@@ -70,7 +70,7 @@ def figures(out, stats, real):
     axes[0].legend(fontsize=8)
     for panel, key, title, ylabel in ((1, 'far_clear', 'Far + clear clips with any notice', 'Notified clips (%)'), (2, 'weighted_cost', 'Joint notification cost (v2)', 'Weighted cost units')):
         vals = [100*stats[a][key]['rate'] if key == 'far_clear' else stats[a][key] for a in arms]
-        axes[panel].bar(x, vals, color=('#777777', '#bb6666', '#4488bb', '#77aa77'))
+        axes[panel].bar(x, vals, color=('#777777', '#bb6666', '#88bbcc', '#4488bb', '#77aa77'))
         axes[panel].set(title=title, ylabel=ylabel)
         for pos, val in zip(x, vals): axes[panel].text(pos, val, f'{val:.2f}', ha='center', va='bottom', fontsize=8)
     for ax in axes:
@@ -106,7 +106,7 @@ def run(out=OUT, report=REPORT):
     for arm in manifests:
         assert sha(out/(arm+'_real_manifest.json')) == seal['real_manifest_hashes'][arm]
     assert real['model_seal_sha256'] == sha(out/'sealed_candidates.json')
-    audits = {name: read(out, name) for name in ('independent_audit_real.json', 'independent_forward_audit.json')}
+    audits = {name: read(out, name) for name in ('independent_audit_real.json', 'independent_forward_audit.json', 'independent_branch_audit.json')}
     assert all(row['status'] == 'PASS' for row in audits.values())
     index = index_real(real)
     interpretations = {path: summarize_real(index, path=path) for path in ('v2', 'bias_only')}
@@ -128,6 +128,7 @@ def run(out=OUT, report=REPORT):
     text = [f'# 去bin0与仪器域随机化骨干重训：开发评价\n\n2026-10-11；EXPLORE。\n\n**{verdict}。**']
     if failures: text.append('失败项：'+'；'.join(failures)+'。')
     text.append(f"共同参照为同一新hold上的旧原5格：旧默认S及时净增{accept['old_gain_vs_common_old5']:+d}，主臂S净增{accept['new_gain_vs_common_old5']:+d}；预定80%收益保留门槛{'通过' if accept['timely_pass'] else '未通过'}。主臂相对旧S的far+clear有通知clip率变化{accept['far_clear_increment_pp']:+.3f}pp，≤+1pp门槛{'通过' if accept['far_clear_pass'] else '未通过'}。这些是预定点估计工程门槛，描述区间不构成统计非劣性确认。")
+    text.append('去bin0主M3的背景空输入HEAD/BODY均0/9，旧M3均9/9；但完整原5格/S仍均9/9，失败来自保留的解析LOCAL分支。因此本轮是“新骨干对该背景已安静，完整报警链未修复”，不能概括为全链迁移成功。真实v2路径4/4b/9原5格/S仍762/762 query-frames强，外侧杆7也292/292强；bias_only空输入虽静默，真实空通道仍接近全强。')
     text.append(f"设计由已消费宿舍pilot诊断驱动；真实十段1507帧、满8帧历史1362帧只作开发观察，不能把本次新模拟留出解释成独立实机确认。协议在训练/新hold前提交：73a28096→167b3c69；{link(Path(__file__).with_name('CNH_NO_BIN0_DR_RETRAIN_PLAN_20261011.md'),'PLAN')}。")
     text.append('## 输入、仪器随机化与训练\n\n全部64 zone去bin0，保留16-bin张量形状并将该bin置零。mask在CVR、ordinary、LOCAL、S当前峰特征之前统一应用；敏感性臂另去任务范围内bin1。其余训练合同继承。每个训练物理场景×噪声副本独立抽取仪器参数，历史内固定、epoch复用，不按真实回放重采样或选点。')
     drrows = [('有效增益','U[0.42,0.73]'),('Gaussian σ','U[70,115] mm'),('正向拖尾比例/尺度','U[0,5%] / 固定0.50 m'),('range零偏','U[−100,+100] mm'),('noise a','U[0,0.25357091365]'),('noise b','U[0.08671592722,0.09326653791]'),('noise c','U[0.58070959930,0.68960300094]'),('ambient','名义4 × U[1,2.6]')]
@@ -151,7 +152,7 @@ def run(out=OUT, report=REPORT):
             feature_receipts.append([arm,r.get('status','COMPLETE'),r.get('ordinary_rows','—'),r.get('m3_rows','—'),str(r.get('paired_projection_max_abs','—')),str(r.get('resumed_ordinary',False))])
     if feature_receipts:
         text.append(table(('特征臂','状态','ordinary行','M3行','双臂投影vs独立投影最大绝对差','恢复既有ordinary缓存'),feature_receipts))
-    text.append('过程失败与恢复保留：首次profile在PLAN.json缺少字段时中止（3.22s），首次冷渲染耗时不宜外推，另存原receipt并改用热态profile。双臂特征阶段完成ordinary缓存后，因paired_errors初始化遗漏发生UnboundLocalError（20.165s）；仅修复初始化，显式resume对两臂缓存首尾各4行逐值验证，将未完成M3缓存按时间戳保留，再续作投影。失败耗时计入预算，训练配方、数据、随机化范围及判读门槛未因此改变。')
+    text.append('过程失败与恢复保留：首次profile在PLAN.json未就绪时中止（3.22s），首次冷渲染耗时不宜外推，另存原receipt并改用热态profile。双臂特征阶段完成ordinary缓存后，因paired_errors初始化遗漏发生UnboundLocalError（20.165s）；仅修复初始化，显式resume对两臂缓存首尾各4行逐值验证，将未完成M3缓存按时间戳保留，再续作投影。失败耗时计入预算，训练配方、数据、随机化范围及判读门槛未因此改变。')
     text.append('## 模拟留出与成本\n\n切点仅模拟cal。新M3/raised按whole-score ties匹配原clear成本，解析LOCAL保留原cut；S池化六组已消费负例，contact不选点，选择相对旧原5格far+clear有通知clip增量≤3pp的最低tau。全部权重/切点hash封存后才生成新hold，旧新候选用同一名义光子观测配对。')
     source=read(out,'fresh_hold_source_receipt.json')
     text.append(f"新hold {source['physical_scenes']}物理scene×K{source['replicas']}，四新背景family；HEAD/BODY接触event各{source['contact_events_per_height'][0]}/{source['contact_events_per_height'][1]}。对{source['inventory_file_count']}份允许库存metadata、{source['inventory_keys']}物理key预检，物理key、背景几何、family、目标尺寸和rho交集均为0。未读取保护480/test。")
@@ -159,6 +160,8 @@ def run(out=OUT, report=REPORT):
     text.append(f"![同一新模拟留出对照]({(out/'simulation_comparison.png').as_posix()})")
     paired=stats['new_vs_old_paired']
     text.append('直接对照旧默认S：'+ '；'.join(f"{h}救{paired[h]['rescue']}/损{paired[h]['loss']}，净{paired[h]['net']:+d}/{paired[h]['denominator']}" for h in ('HEAD','BODY'))+'。及时为f3–13，f14–15为晚；gap1逐query重放、同帧联合最高档。near-pass≤10cm轻档成本0.25/强档1，far/clear任何通知1；不是slot计数替代clip率。')
+    text.append('总体及时收益由新S轻档补回：主臂原5格强档HEAD345/512、BODY272/512，低于旧原5格389/512、312/512（分别净−44、−40）；加新S后为476/512、410/512。不能用集成及时总数保留推断强档能力不变。暗薄强档HEAD7/96、BODY4/96也低于旧19/96、7/96，而新S为60/96、36/96；sign-edge强档92/128、73/128低于旧105/128、77/128，新S为128/128、105/128。')
+    text.append('敏感性去bin0+bin1的S及时净增178/1024（旧默认170/1024），far+clear168/1536与旧S相同；主臂为185/1024、152/1536。敏感性v2背景空输入M3 HEAD仍9/9、BODY0/9，原5格/S均9/9；并未进一步解决全链背景报警，且其backbone各一seed不与主臂等规模。')
     boot=stats.get('new_vs_old_clustered_bootstrap',{})
     if 'intervals' in boot:
         rr=[]
@@ -188,13 +191,17 @@ def run(out=OUT, report=REPORT):
         for model in ('M3','old5','S'):
             rr.append([path,model,*[cell(index[(a,path,'BIN0_BACKGROUND_ONLY',h,model)]) for a in ('old','main','drop01') for h in ('HEAD','BODY')]])
     text.append(table(('路径','模型','旧HEAD','旧BODY','主HEAD','主BODY','敏HEAD','敏BODY'),rr))
+    diagnostic=read(out,'bin0_remaining_branch_diagnostic.json')
+    d=diagnostic['main_empty_v2_score_ranges']['local_score']
+    text.append(f"保存输出的分支诊断：v2模板在bin1/2/3有负bias单元{diagnostic['v2_bias_by_bin'][1]['negative_cells']}/{diagnostic['v2_bias_by_bin'][2]['negative_cells']}/{diagnostic['v2_bias_by_bin'][3]['negative_cells']}个；原始空输入这些bin为0，减去负bias后创造正输入。主臂mask虽去掉bin0，bin1–3仍传给LOCAL，满窗LOCAL HEAD分数{d[0][0]:.3f}–{d[1][0]:.3f}、BODY{d[0][1]:.3f}–{d[1][1]:.3f}，均高于固定cut {diagnostic['cuts']['local_tau']:.5f}，HEAD/BODY各9/9跨cut；raised M3均0/9。因此旧5格/S仍强由LOCAL充分解释。这是保存输出复核，未改模板、分支或阈值；{link(out/'bin0_remaining_branch_diagnostic.json')}。")
+    text.append('bias_only不对bin1–3减signed模板，主臂背景空输入三模型HEAD/BODY均0/9。该辅助路径对真实空通道4/4b/9的主S仍HEAD381/381、BODY373/381强（9段BODY81/89，其余全强），说明修掉上述空输入来源并不足以解释真实走廊响应。主臂bias_only近/远杆BODY各仅1/146纯轻、无强，HEAD仍146/146强；低比例BODY不称为稳定保留。')
     text.append('所有新score和grade对被删除bin的任意大幅污染逐值一致（主臂bin0、敏感性bin0/1），覆盖M3、LOCAL、ordinary、S每seed与均值。这里检验信息确实删除，不证明真实全域迁移。')
     text.append('## 判读、核验与下一步\n\n'+verdict+'。'+('失败项：'+'；'.join(failures)+'。' if failures else '主模拟门槛、v2路径bin0空输入无提醒、墙/杆仍有提醒均满足预定工程条件。'))
-    text.append('分别看v2和bias_only，bin0删除可以验证已知失配来源；空通道行为仍受3m窗边缘幕布和剩余bin分布影响。敏感性去bin1损失任务范围内信息，且backbone seed数不同，结果只描述。建议后续先独立录制尽头>4.5m楼道clear及墙/细杆，再决定默认落地；保留主臂参数范围，若剩余失配仍突出，再按bin/zone定位空间背景、固件处理、相关噪声与多径，而不通过pilot调cut。')
-    text.append('独立核验从封存权重/切点、池化whole-tie选点、成本账、模拟逐event与真实逐query计数复算，并以fresh CUDA FP32窗重放两路径及空输入。'+ '；'.join(f"{name}: {r['status']}" for name,r in audits.items())+'。'+link(out/'independent_audit_real.json')+'、'+link(out/'independent_forward_audit.json')+'。')
+    text.append('下一步优先定位signed bias与LOCAL的共同输入合同：无真实表面的零输入应保留零均值，区分signed基线校正与物理非负串扰模板，并核对解析LOCAL对剩余bin噪声的尺度；先写新协议与预定模拟cal规则，不在本轮删分支或改cut。第二步补独立尽头>4.5m楼道clear及墙/细杆录制，分开识别真实近返回与3m幕布边缘；第三步确认decoded→模拟噪声单位桥接/相关噪声，若需名义噪声混合或新增随机化，应新立训练对照。bin0删除的骨干机制结果保留，完整候选暂不替换；不据已消费pilot选阈值。')
+    text.append('独立核验从封存权重/切点、池化whole-tie选点、成本账、模拟逐event与真实逐query计数复算，并以fresh CUDA FP32窗重放两路径及空输入；另独立复核保存输出中LOCAL为充分触发分支。首次CPU审计自身的clip通知计数曲线实现有缺陷，保留失败receipt、修正审计代码后重算通过；模型、切点与原结果不变，失败审计耗时计费。'+ '；'.join(f"{name}: {r['status']}" for name,r in audits.items())+'。'+'、'.join(link(out/name) for name in audits)+'。')
     if (out/'budget_summary.json').exists():
         budget=read(out,'budget_summary.json')
-        text.append(f"最终预算：GPU command-wall {budget['gpu_command_wall_seconds']:.3f}/5400 s；CPU科学计算/评价command-wall {budget['cpu_command_wall_seconds']:.3f}/1800 s。报告绘图另有轻量receipt，由主任务汇总。")
+        text.append(f"最终预算保守上界：GPU command-wall {budget['gpu_command_wall_seconds']:.3f}/5400 s；CPU科学计算/评价command-wall {budget['cpu_command_wall_seconds']:.3f}/1800 s。含失败耗时、启动与未包装操作reserve，CPU reserve已包含最终报告绘图；wrapper外部wall与stage内部receipt不重复计费。{link(out/'budget_summary.json')}。")
     else:
         gpu=sum(read(out/'gpu_receipts',p.name)['seconds'] for p in (out/'gpu_receipts').glob('*.json'))
         cpu=sum(read(out/'cpu_receipts',p.name)['seconds'] for p in (out/'cpu_receipts').glob('*.json'))
