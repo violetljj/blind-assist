@@ -10,31 +10,19 @@ Atom 写入前完整 8MB flash 已备份并校验，IMU 阶段只刷 Atom；相�
 
 人工支架零参考为 `MEASURED_IMU_OPERATOR_PILOT_ZERO`，回正 pitch 差 +3.856718°，绝对光轴精度尚未核验；安装记录与既有 zone 方向记录并存，支架位置未改。采集台逐帧保存姿态/质量/残差，实时引擎按每次曝光的姿态投影并保留历史；真实 12 帧 CPU 集成通过，五份冻结模型和阈值保持。后续楼道可同时记录实测姿态，但该近似零点不足以排除此前 ±5° 敏感性；不作精确角度或避障性能结论。下文旧 App／未采集／未刷写描述保留为各历史阶段记录。
 
-## 实机路径候选：zone方向修正＋干扰随机化M3（优先于下文真实回放结论）
+## 实机路径候选：方向修正＋稳健栈（优先于更早的真实回放结论）
 
-此前实机回放按原始zone顺序入模；原始行0在下、列0在右，模型约定行0在上、列0在左，场景上下颠倒（[v5报告](REAL_CONTRACT_V5_ORIENTATION_DEV_20261011.md)；[方向模块](host/cnh_zone_orientation.py)带安装校验，[实时引擎](host/m3_live_engine.py)已修）。真实bin0串扰拖尾约1σ而模拟仅约0.02σ；注入模拟即复现全报警（clear 3.5→82.5%）。[干扰随机化M3](REAL_NUISANCE_DR_M3_DEV_20261011.md)：模拟干扰下及时检出9.6→58.5%（M3单独强档，干净60.7%）；宿舍重放（只修方向、强档仅新M3）空通道8/3、20/0、7/1，竖杆BODY 40/42%，外侧杆4/6，横杆HEAD 93%，墙100/100。[俯角敏感性](REAL_PITCH_ROBUSTNESS_DEV_20261012.md)：假设俯角±5°即在合理/错误间切换；俯角随机化M3在模拟中偏5°检出近翻倍，宿舍因真实俯角未知无法裁决。仅已消费pilot，不换模拟默认；楼道录制须固定支架并记录俯角。
+此前实机回放zone顺序上下颠倒，已修（[v5报告](REAL_CONTRACT_V5_ORIENTATION_DEV_20261011.md)、[方向模块](host/cnh_zone_orientation.py)）。真实bin0串扰拖尾约1σ（模拟约0.02σ），注入模拟即复现全报警（[干扰M3](REAL_NUISANCE_DR_M3_DEV_20261011.md)）；假设俯角±5°即翻转（[俯角](REAL_PITCH_ROBUSTNESS_DEV_20261012.md)）。[稳健栈](REAL_ROBUST_STACK_DEV_20261012.md)（M3/ordinary/S全加干扰与俯角随机化，强档仅M3）：模拟干扰±5°下及时83–85%、far+clear 7–10%，原默认栈同条件约95%误报；干净模拟82.5%/15.1%（原86.5%/9.9%）。宿舍假设+5°时空通道0/1、0/0、17/0，近杆BODY51%，外侧杆1/1，横杆HEAD97%。仅已消费数据，不换模拟默认；下一次录制用IMU实测俯角检验。
+
+## 早期实机回放（按原始zone顺序，已被取代）
+
+[去bin0重训](../dtr-r0/nearfield/CNH_NO_BIN0_DR_RETRAIN_DEV_20261011.md)、[联合校准](REAL_TWIN_JOINT_CALIBRATION_DEV_20261011.md)、[孪生判别](DORM_TWIN_DISCRIMINATION_DEV_20261011.md)、[pilot校准回放](REAL_PILOT_CALIBRATION_REPLAY_DEV_20261011.md)均在方向修正前完成，真实侧结论需按方向修正重读；模拟结果与仪器参数（零偏−4.8mm、σ91.5mm、gain .53）保留。
 
 ## signed bias／LOCAL合同v4：零证据链修复
 
 [v4合同修复报告](LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)EXPLORE完成，按预写PLAN把去bin0＋DR＋新S提升为**模拟Development默认候选，待独立实机确认**。[默认manifest指针](../dtr-r0/nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)与[加载器](host/local_signed_bias_default.py)已落地。实机非负背景仅饱和扣除，不把signed负bias加为回波；模拟保留原signed统计合同。因果≤8帧历史无正证据时三分支静默，未门控分数留存并标无证据。未重训、未改切点、无新bin/zone删除、无App变动。
 
 主八种确定性控制全链HEAD/BODY各0强0轻/9，旧v4墙bin0残留HEAD9/9、BODY0/9另列；模拟空／ambient／串扰三类旧新全静默。模拟相同已消费留出输入与成绩完全保持：及时净185/1024 vs旧170、far+clear152/1536 vs168、成本291.75 vs344.75。真实1507帧/1362满窗中，墙2/3与8HEAD全强；杆5/6 HEAD146/146强、BODY0强＋1/146轻；空4/4b/9 HEAD381/381、BODY373/381强，7仍全强，阳台主S静默。幕布约3m边界，宿舍只作合同／行为描述，非误报率；零输入修复不等于sim→real闭合。单位测试7项、独立全量输入／228表行／历史与hash审计、fresh CUDA首8scene＋10窗均PASS；CPU保守210.235/1200、GPU90.556/300command-wall s。下一clear选尽头>4.5m楼道，墙／细杆旧新并行；LOCAL真实噪声单位仍未识别，不按pilot调点。
-
-## 历史去bin0重训开发评价：原v2强档链路未修复
-
-[去bin0＋墙拟合仪器域随机化重训](../dtr-r0/nearfield/CNH_NO_BIN0_DR_RETRAIN_DEV_20261011.md)完成EXPLORE。新M3五模型、ordinary三seed和S三seed；敏感性去bin0/1只作单骨干描述。新模拟留出S对共同旧原5格及时净185 vs旧默认170，far+clear152/1536 vs168/1536，加权成本291.75 vs344.75，两预定工程门槛通过；新强档及时下降由S轻档补回。**真实链路未通过，不建议默认替换，旧S保留。**
-
-两条输入路径、十段1507帧/1362满窗：主v2除阳台外原5格/S仍HEAD/BODY100%强，墙/杆/8HEAD保留，空4/4b/9仍762/762、外侧7仍292/292 query-frames强；阳台主S从HEAD38/105降到0。bin0背景空输入主M3 H/B0/9，但LOCAL越线使原5格/S仍H/B9/9；旧v2 bias在保留bin1–3含signed负值，零raw减负bias会增加正证据。“只减墙2bin0 bias”路径空输入全部0/9，但实录空段仍强，未闭合。敏感性v2同样失败，不能用删除更多bin替代定位。独立计数/hash/监督及freshCUDA12窗/2任意污染检查PASS。全部为已消费pilot开发观察，非检出/误报或独立确认；空通道尽头约3m属边界场景。下一定位signed bias/LOCAL输入合同，后续clear选尽头>4.5m楼道；不按pilot改阈值、不接App、不读480/test。预算及完整逐条件三模型表见报告。
-
-## 联合校准记录（已被方向修正取代）
-
-[联合校准](REAL_TWIN_JOINT_CALIBRATION_DEV_20261011.md)与[孪生判别](DORM_TWIN_DISCRIMINATION_DEV_20261011.md)均基于原始zone顺序，结论需按方向修正重读；参数（零偏−4.8mm、σ91.5mm、gain .53）保留为先验。
-
-## 实机pilot校准与回放（继承）
-
-[十条件校准回放](REAL_PILOT_CALIBRATION_REPLAY_DEV_20261011.md)完成EXPLORE：1507帧/1362满窗，用户要求宽松pilot稳定筛选后各段80–99.3%通过（阳台/重启大部分仅回波代理）；原严格pass失败/回放保留。4/4b噪声31934窗-cell拟合Var=.145814·positive_mean+.089665·ambient+.081291，R²=.533699、奇偶窗外推R²=.4371/.6929，未识别光子单位；阳台上半弱场景模板仅128/1024cell，其他896不可评。2fit有效gain=.749185/核σ=.404742聚合bin，3check总能量L2残差11.16%、固定核逐bin109.98%。zone34 bin1/2并非10条件共同异常。
-
-**仍不可迁移**：继承06d49473的v1和本轮v2下，原5格/S在4/4b/9及7均HEAD/BODY100%强报警；空通道762/762 query-frames未下降，墙/杆/8HEAD也报警；无S新增light，strong逐帧继承。阳台UNKNOWN的S降至HEAD38/105、BODY0/105不作迁移收益。拟合仅1–4b，5–9评价，2fit/3check未回流；冻结模型/阈值/原始zone/名义−10°/恒等历史不改。raw/参数/grade独立复算与6短窗同CUDAfresh forward PASS；CPU跨后端S分数差失败保留。CPU保守300/1500、GPU65/300command-wall秒，资源释放，不读480/test。下一优先全空间串扰/bias与单位噪声合同，再核/零偏、固定模式、gain；更新模拟器重训骨干后再拟合S为草案，不单靠S撤销强档。
 
 ## 当前无线预览
 
