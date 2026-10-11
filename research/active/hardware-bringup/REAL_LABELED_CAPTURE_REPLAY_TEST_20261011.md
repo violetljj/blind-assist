@@ -1,39 +1,33 @@
-# 有标注 CNH 引导脚本：独立模拟串口核验
+# 宿舍最简 CNH 引导脚本：独立回放核验
 
-2026-10-11，EXPLORE。**11 个测试 PASS**；这次只回放已有串口字节、注入主机时钟与中断，不连接 COM，不采集、不刷写、不运行真实标注或模型，也不访问保护480/test。
-
-测试代码：[`host/test_real_labeled_capture.py`](host/test_real_labeled_capture.py)。独立检查采集及标注接口后修复的行为，未由测试修改采集/标注实现。
+2026-10-11，EXPLORE，协议 `simple-dorm-v1`。**8个测试全部PASS**；只用既有录制和合成串口/时钟fixture，不连接COM、不采集、不刷写、不联网、不访问保护480/test，不生成真实录制标签。测试见 [`host/test_real_labeled_capture.py`](host/test_real_labeled_capture.py)。此前复杂24段版的旧回放payload保留，但不作为当前11段版验收结果。
 
 ## 来源与留证
 
-- 原录制：`artifacts.local/hardware-bringup/captures/cnh-h3-1mhz-20260927/raw.bin`，2,800,855 bytes，186 个既有 H3 帧。
-- 原 SHA256：`ee3a93e91dde441baaf4665af3b23cb6a7e86693cf437933013a67ace7994e06`；测试前后相同。
-- 最终留证：`artifacts.local/work/real-labeled-capture-prep-20261011/independent-replay-mx07u5re/`；逐次 raw/frames/events/issues/metadata、session/inventory 全部保留。
-- 命令日志：同 prep 目录下 `independent-replay-test.log`，机器收据 `independent-replay-receipt.json`。首次测试因测量提示接口正在调整而 mock 未满足输入，已中止；随后改为显式测量回答并最终完整通过，旧测试目录保留。
-- `synthetic-stale-before-boot.bin` 仅把原录制末尾5个帧前置于原 boot，用于模拟 RESET 前缓存；它是**合成串口调度 fixture**，不是新录制。缺身份、错误尺寸/配置、失帧率、低帧率和重复序号判据使用合成 summary mutation，不伪称实机异常。标注接口仅用一帧合成 envelope，不给真实录制生成标签。
+- H3启动/帧原字节：`artifacts.local/hardware-bringup/captures/cnh-h3-1mhz-20260927/raw.bin`，2,800,855B，SHA256 `ee3a93e91dde441baaf4665af3b23cb6a7e86693cf437933013a67ace7994e06`。
+- 稳定平面探距原字节：`artifacts.local/hardware-bringup/captures/simple-20260927T164234Z-cc4d0e/01-background-attempt1/tof/raw.bin`，2,324,611B，SHA256 `47c2699e2d9f6db03342ddb09cd6ac2d4c4917bfe9add1fb5b670735d35a4740`。两源测试前后hash相同。
+- 当前payload：`artifacts.local/work/real-labeled-capture-simple-prep-20261011/independent-simple-ud2w_jnp/`。原始保存、frames/events/issues、metadata、capture.json、inventory、book-probe与失败启动门控都保留。
+- 同prep目录 `independent-simple-test.log`、`independent-simple-receipt.json`。先前测试误假设H3启动录制具有稳定中央距离，失败证据保留；诊断实际中央读数不稳定后，稳定2s测距改用已知平面录制，未知/不稳行为继续单独核验。
 
 ## 实际覆盖
 
-| Case | 核验结果 |
+| Case | 结果 |
 |---|---|
-| 真实字节自检与引导 | H3 boot/config、8×8×16、既有序号/时钟通过；前后照片、距离、高度、俯角、ambient 元数据和距离/ambient 8×8显示可用 |
-| 异常自检 | 缺/错身份，错config/尺寸，帧不足，3.81Hz，丢帧>2%，固件错误、重置、重复及 invalid_frame 均拒绝 |
-| RESET旧帧隔离 | 原raw保留旧缓存与序号重置；门控只统计最后boot后的新启动窗口，可通过 |
-| 30s窗口完整性 | 独立重新打开原录制，虚拟30.184s保存154帧；每字节SHA/长度、逐原始sensor对象、逐帧UTC+monotonic时间戳与重新解码一致 |
-| 全12段会话 | 6条件×暗/亮全部提示与保存；本case每段虚拟1s，12段均有帧，流程complete；10段needs_review因同一既有场景与摆放条件不匹配，警告不被隐藏 |
-| 录制中断/续录/重录 | 部分raw与解析帧保留，interrupted保留；resume新attempt，redo旧成功attempt标superseded且raw字节不变 |
-| 倒计时中断 | 使用默认5s倒计时；中断后会话及attempt明确interrupted_before_recording，不遗留recording状态，串口关闭 |
-| 显式实测输入 | 空Enter不能把建议数值当测量；未知开阔距离可None |
-| JPEG不可用 | 注入Wi-Fi不可用，首末相机receipt留unavailable，CNH全流程完成，不发网络请求 |
-| 相机地址边界 | 公网IP、DNS名、HTTPS和非stream路径拒绝，避免外部上传/错误目标 |
-| 标注骨架 | 合成HEAD/BODY杆POS、外侧clear、擦边pass、误差跨边界UNKNOWN、未审核背景UNKNOWN；nested sensor seq/ms和UTC/monotonic字段不丢失 |
+| 白天9段＋夜间2段全流程 | 同root独立启动续夜间，11段均保存帧，3次startup、最终complete；本case探距虚拟0.4s、录制虚拟1s，默认倒计时3s。1段needs_review保留，不假称真实摆放通过 |
+| 启动自检拒绝 | 真实H3 boot/config与64×16通过；缺/错身份、错误config/尺寸、帧不足、3.81Hz、丢帧>2%、重复、固件错误及invalid_frame拒绝；异常summary mutation明确为合成fixture |
+| 2s探距与30s保存 | 稳定平面2s窗口聚合中央27/28/35/36的status5、nb_target>0距离；独立重新打开H3原录制，虚拟30.184s保存154帧，raw长度/hash、逐sensor对象、UTC/monotonic时间戳与重解码一致 |
+| 跳过、重录、中断续录 | s标skipped，r与--redo编号新attempt；旧成功段superseded但raw不变；部分raw与帧、interrupted保留，resume完成白天剩余段 |
+| 跨日夜间目录 | --night默认选最新未完成夜间的simple manifest，即使日期变化；旧复杂协议排除，已完成夜间目录不被误选 |
+| 第9段独立重启 | 先close、提示拔插、再打开并保存新startup gate；合成删boot的第二连接被拒绝，失败raw/gate保留，不沿用第一次身份 |
+| 整窗口距离与QC | 跨帧跳动标unknown，status无效不用；丢帧/低帧率提示；准备距离稳定但capture中央未知显示无法核对。杆5–8触发书替代探距；book-probe单独保存，提示拿走书，book/准备帧序号与正式capture不交叉 |
+| 后处理弱标签 | 合成metadata验证11条件映射、condition_label/expected_response；near-no-echo1/10的条件弱clear、空过道4/9/11未知距离UNKNOWN、杆缺几何/None尺寸UNKNOWN、needs_review UNKNOWN，均标CONDITION_WEAK_APPROXIMATE与independent_ground_truth=false |
 
-相机可用时真实MJPEG抓取、实机串口拔插/RESET和30秒物理时钟精度尚未验证；这些留待用户实际采集时观察。本次虚拟时钟与原固件时间戳只证明准备脚本流程，不能证明硬件可靠性或真实标签正确性。
+高度只问一次，Enter记录120cm和 `default_estimate`；照片可在摆好同一prompt输入，无测量表。源码检查无camera/网络客户端入口，测试不发网络请求。真实串口RESET/拔插恢复、真实探距是否对应目标和物理30秒时钟尚未验证；虚拟回放只证明准备脚本流程。固件距离为弱参考，条件弱标签不能称独立实机真值、总体误报率或检出率。
 
-## 命令与预算
+## 命令和预算
 
 ```powershell
 python -m unittest discover -s research/active/hardware-bringup/host -p test_real_labeled_capture.py -v
 ```
 
-最终 `Ran 11 tests in 2.748s / OK`，最终命令 wall 3.322s。独立核验全部读写、前次中止/修正与重复检查累计保守 **≤80 command-wall s / 分配180s**；计入主任务CPU≤1200 command-wall s。只用CPU，无设备采集和GPU进程。`git diff --check` 针对测试文件通过。
+最终 `Ran 8 tests in 4.116s / OK`，最终测试＋源码检查命令wall **4.560s**；本轮独立核验含失败、修正和留证累计保守 **≤45 command-wall s / 分配180s**，计入主任务CPU≤900 command-wall s。只用CPU，无设备/网络/GPU进程。
