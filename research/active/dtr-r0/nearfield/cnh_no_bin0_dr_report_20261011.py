@@ -111,9 +111,11 @@ def run(out=OUT, report=REPORT):
     index = index_real(real)
     interpretations = {path: summarize_real(index, path=path) for path in ('v2', 'bias_only')}
     accept = stats['acceptance']
-    passed = accept['timely_pass'] and accept['far_clear_pass'] and interpretations['v2']['bin0_pass'] and interpretations['v2']['walls_rods_pass']
+    cal_valid = seal['cuts']['no_bin0']['s_calibration']['status'] == 'SEALED'
+    passed = cal_valid and accept['timely_pass'] and accept['far_clear_pass'] and interpretations['v2']['bin0_pass'] and interpretations['v2']['walls_rods_pass']
     verdict = '建议新骨干+S替换为默认候选（待独立实机确认）' if passed else '本次不建议替换默认候选，保留旧S候选'
     failures = []
+    if not cal_valid: failures.append('主S强档已超出池化校准预算，无有效S工作点')
     if not accept['timely_pass']: failures.append('模拟及时净增保留不足80%')
     if not accept['far_clear_pass']: failures.append('far+clear有通知clip增幅超过1pp')
     if not interpretations['v2']['bin0_pass']: failures.append('bin0背景空输入仍有提醒')
@@ -131,6 +133,7 @@ def run(out=OUT, report=REPORT):
     drrows = [('有效增益','U[0.42,0.73]'),('Gaussian σ','U[70,115] mm'),('正向拖尾比例/尺度','U[0,5%] / 固定0.50 m'),('range零偏','U[−100,+100] mm'),('noise a','U[0,0.25357091365]'),('noise b','U[0.08671592722,0.09326653791]'),('noise c','U[0.58070959930,0.68960300094]'),('ambient','名义4 × U[1,2.6]')]
     text.append(table(('参数','预定范围'),drrows))
     text.append('噪声代理为Var=a·positive_signal+b·ambient+c；墙联合校准R²=0.182496，暗档单独约0.0047。系数来自decoded单位，将其桥接到模拟器能量单位是本次未经独立确认的假设。先重渲染未卷积表面能量、128原始bin脉冲积分后聚合，避免重复展宽。真实pilot不进入训练、随机化范围或切点选择；墙2背景不是完整空间真值，不插入训练。')
+    text.append('训练前公式核对发现：忽略表面与bias时，该噪声代理经过原√(16·ambient+bias)归一化，背景标准差约0.09–0.13，而原名义模拟约1。墙面有效gain提供条件均值对应，但未识别电子噪声单位；本轮不扩大已写定的系数范围。若模拟性能下降，不能把联合设计的损失全部归因于去bin0；噪声口径或名义噪声覆盖对照应另立协议，不用本轮hold调参。')
     recipe=[]
     for key in ('main','drop01'):
         m=manifests[key]
