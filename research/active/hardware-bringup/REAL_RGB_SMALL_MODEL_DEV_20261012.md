@@ -29,10 +29,24 @@
 
 收据在 `artifacts.local/models/*/weight_receipt.json`。
 
+## 手机实测（同日追加）
+
+官方 DAV2-Small 先导出成固定尺寸 ONNX（opset 17，NCHW），再用 QAIRT 2.47 `qairt-converter` 转成 FP32 DLC（2408 万参数）。在 SM-S9280（骁龙 8 Gen 3 / SM8650，HTP v75）上用 `snpe-net-run --perf_profile burst` 跑 21 次推理取平均，输入为一帧真实大厅画面（已去畸变）：
+
+| 输入（高×宽） | HTP（NPU，FP16 在线准备） | GPU（FP16） | CPU |
+|---|---|---|---|
+| 518×392 | 67 ms | 83 ms | 407 ms |
+| 686×518（融合候选） | 120 ms | 190 ms | — |
+
+HTP 首次创建需要 5.2 s / 8.3 s（之后可用离线图准备缓存）。与 PC 上 FP32 PyTorch 输出相比：HTP 相关系数 0.99999、中位相对误差 0.16–0.19%（最大 2.3–3.5%）；GPU 相关系数 0.9998–0.9999、中位相对误差 0.5–0.8%。**686×518 在 HTP 上 120 ms，能跟上 5 Hz ToF，精度无可见损失。** 计时只覆盖网络推理，不含去畸变、缩放、锚定和读出（这些在笔记本上都是毫秒级），也没有测功耗和发热。导出脚本见 [dav2s_mobile_export](host/dav2s_mobile_export_dev_20261012.py)，手机端脚本见 [dav2s_phone_bench.sh](host/dav2s_phone_bench.sh)，日志在 `artifacts.local/work/dav2s-mobile-20261012/phone/`。手机上的临时文件已删除。
+
+## 头高在线估计：不采用
+
+尝试过用 ToF 锚定帧的公制 RGB 点云估地面深度（地面像素高度直方图的众数），结果不可靠：办公室几段估成 0.83–0.89 m，把桌面这类水平面误当地面；门那段也估成 0.83 m。而真正需要地面锚定的平视大厅段，又没有 ToF 锚定帧可用。改为**开机一次性标定**：用户低头看地面几秒，用 ToF 地面拟合得到头高（本批 H0 段 ToF 拟合为 1.373 m，与默认 1.35 m 一致），标定前用 1.35 m。输出见 `rgb_small_model_online_height.json`。
+
 ## 下一步
 
-1. 把 DAV2-Small 导出成手机格式（ONNX 或 TFLite / QNN），在实际手机上计时：每帧要 ≤200 ms，才能跟上 5 Hz 的 ToF。
-2. 头高改为在线估计：ToF 看到地面时更新，替代固定的 1.35 m。
-3. 用新的独立头戴录制做冻结检验（标定、旋转、门槛、模型都已固定）。
+1. 用新的独立头戴录制做冻结检验：标定、旋转、门槛、模型、头高规则都已固定。
+2. 接入 App：DAV2-Small 走 QNN HTP（App 已集成 QNN 运行库），加上去畸变与 ToF/地面锚定读出，再加开机低头标定；需要实测端到端延迟、功耗和发热。
 
 脚本：[DAV2-S 相对＋锚定](host/real_rgb_small_model_dev_20261012.py)、[DAV2-S 公制](host/real_rgb_metric_small_dev_20261012.py)。UniDepthV2-S 用融合读出脚本换权重运行，输出在 `rgb-real-feasibility-20261012/unidepth_vits14/`。

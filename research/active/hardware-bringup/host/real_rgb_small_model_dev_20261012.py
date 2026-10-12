@@ -26,6 +26,7 @@ import real_rgb_tof_fusion_dev_20261012 as U
 import pose_envelope as PE
 
 HEIGHT = 1.35
+ONLY_ONLINE = '--online-only' in sys.argv
 
 CHECKPOINT = ROOT / 'artifacts.local/work/mz140-depthor-20260915/depthor-zju-small.pt'  # depth_anything.* identical to official DAV2-Small (Apache-2.0)
 UPSTREAM = ROOT / 'artifacts.local/work/rgb-depth-backbone-compare-dev-20261010/upstream/Depth-Anything-V2'
@@ -77,6 +78,19 @@ def fit_affine(dz, inv_z):
     return (float(a), float(b)) if a > 0 else None
 
 
+def floor_height(pts):
+    """Floor depth below the sensor from metric corridor points: mode of y for ground-like points."""
+    c = pts[(pts[:, 2] > .8) & (pts[:, 2] < 4.) & (np.abs(pts[:, 0]) < 1.5) & (pts[:, 1] > .8) & (pts[:, 1] < 2.2)]
+    if len(c) < 2000:
+        return None
+    hist, edges = np.histogram(c[:, 1], bins=np.arange(.8, 2.22, .02))
+    k = int(np.argmax(hist))
+    if hist[k] < .05 * len(c):
+        return None
+    sel = c[(c[:, 1] >= edges[max(k - 2, 0)]) & (c[:, 1] < edges[min(k + 3, len(edges) - 1)]), 1]
+    return float(np.median(sel))
+
+
 def floor_anchor(disp, dirs, Rpose, Rct, height, rng):
     """Fit disparity = a * inv_z + b on pixels whose ray meets the floor 0.8-6 m ahead (RANSAC)."""
     r = (Rpose @ (Rct.T @ dirs.T)).T
@@ -120,7 +134,9 @@ def main():
     report = dict(model='DAV2-Small relative (DEPTHOR embedded)', parameters=int(params), sizes={})
     global HEIGHT
     rng = np.random.default_rng(20261012)
-    for size, HEIGHT in [(308, 1.35), (308, 1.25), (308, 1.45), (518, 1.35)]:
+    configs = [(518, 'online')] if ONLY_ONLINE else [(308, 1.35), (308, 1.25), (308, 1.45), (518, 1.35), (518, 'online')]
+    for size, HEIGHT in configs:
+        online = HEIGHT == 'online'
         latencies = []; segs = {}
         for d in sorted(F.RAW.iterdir()):
             key = d.name[17:23]
@@ -132,7 +148,7 @@ def main():
             dist = np.where(np.isin(x['S'], (5, 6, 9, 10)), x['D'], np.nan).reshape(-1, 8, 8)[:, ::-1, ::-1].reshape(-1, 64) / 1000
             cached = np.load(U.NEW / 'joint_replay' / f'{d.name}_imu.npz')
             gated, valid_pose = PE.apply(cached['S_grade'], x['pitch'], x['roll']); ready = cached['ready'].astype(bool)
-            last = None; rows = []
+            last = None; rows = []; heights = []
             for i in range(0, len(tof_t), U.STRIDE):
                 if not ready[i]:
                     continue
@@ -148,7 +164,8 @@ def main():
                 inv_z = np.where(valid, 1 / (dist[i] * zfac), np.nan)
                 fit = fit_affine(dz, inv_z); source = 'tof' if fit else None
                 if fit is None:
-                    fit = floor_anchor(disp, dirs, F.rot(x['pitch'][i], x['roll'][i]), Rct, HEIGHT, rng); source = 'floor' if fit else None
+                    h_use = (float(np.median(heights)) if len(heights) >= 3 else 1.35) if online else HEIGHT
+                    fit = floor_anchor(disp, dirs, F.rot(x['pitch'][i], x['roll'][i]), Rct, h_use, rng); source = 'floor' if fit else None
                 fresh = fit is not None
                 fit = fit or last
                 row = dict(tof_index=i, anchored=fresh, anchor=source, pose_ok=bool(valid_pose[i]), tof_grade=[int(v) for v in gated[i]])
@@ -160,22 +177,26 @@ def main():
                 z = np.where(inv > 1e-3, 1 / np.maximum(inv, 1e-3), np.inf)
                 okpx = np.isfinite(z) & (up.reshape(-1, 3).sum(1) > 0)
                 pts = (F.rot(x['pitch'][i], x['roll'][i]) @ (Rct.T @ (dirs[okpx] * z[okpx, None]).T)).T
+                if source == 'tof':
+                    fh = floor_height(pts)
+                    if fh is not None: heights.append(fh)
                 for name, (lo, hi) in F.BOXES.items():
                     inside = (np.abs(pts[:, 0]) <= .30) & (pts[:, 1] >= lo) & (pts[:, 1] <= hi) & (pts[:, 2] >= .30) & (pts[:, 2] <= U.Z_MAX)
                     zz = np.sort(pts[inside, 2])
                     row[name] = dict(px=int(inside.sum()), z_near=float(zz[min(15, len(zz) - 1)]) if len(zz) else None,
                                      rgb=bool(inside.sum() >= U.MIN_PX and valid_pose[i]))
                 rows.append(row)
-            segs[key] = rows
+            segs[key] = dict(frames=rows, floor_height_estimates=heights)
             n = max(len(rows), 1); ref = reference[key]['frames']
+            hs = f"h~{np.median(heights):.2f}({len(heights)})" if heights else 'h=1.35(0)'
             def frac(rs, fn): return sum(fn(r) for r in rs) / max(len(rs), 1)
-            print(f"[{size} H{HEIGHT}] {key} {U.SCENES[key][:34]:34s} anchor tof/floor {frac(rows, lambda r: r['anchor'] == 'tof'):4.0%}/{frac(rows, lambda r: r['anchor'] == 'floor'):4.0%} | RGB-S H/B "
+            print(f"[{size} H{'online' if online else HEIGHT}] {key} {U.SCENES[key][:30]:30s} {hs:12s} anchor tof/floor {frac(rows, lambda r: r['anchor'] == 'tof'):4.0%}/{frac(rows, lambda r: r['anchor'] == 'floor'):4.0%} | RGB-S H/B "
                   f"{frac(rows, lambda r: r['HEAD']['rgb']):4.0%}/{frac(rows, lambda r: r['BODY']['rgb']):4.0%}  UniDepth-L H/B "
                   f"{frac(ref, lambda r: r['HEAD']['rgb']):4.0%}/{frac(ref, lambda r: r['BODY']['rgb']):4.0%} | OR-S H/B "
                   f"{frac(rows, lambda r: r['tof_grade'][0] == 2 or r['HEAD']['rgb']):4.0%}/{frac(rows, lambda r: r['tof_grade'][1] == 2 or r['BODY']['rgb']):4.0%}", flush=True)
-        report['sizes'][f'{size}_H{HEIGHT}'] = dict(latency_ms_median=float(np.median(latencies) * 1000), latency_ms_p95=float(np.percentile(latencies, 95) * 1000), segments=segs)
+        report['sizes'][f"{size}_H{'online' if online else HEIGHT}"] = dict(latency_ms_median=float(np.median(latencies) * 1000), latency_ms_p95=float(np.percentile(latencies, 95) * 1000), segments=segs)
         print(f'[{size}] DAV2-S latency median {np.median(latencies)*1000:.1f} ms, p95 {np.percentile(latencies, 95)*1000:.1f} ms (laptop GPU, incl. resize)', flush=True)
-    (OUT / 'rgb_small_model_readout.json').write_text(json.dumps(report, indent=1), encoding='utf8')
+    (OUT / ('rgb_small_model_online_height.json' if ONLY_ONLINE else 'rgb_small_model_readout.json')).write_text(json.dumps(report, indent=1), encoding='utf8')
 
 
 if __name__ == '__main__':
