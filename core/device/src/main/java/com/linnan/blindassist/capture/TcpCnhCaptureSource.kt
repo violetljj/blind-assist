@@ -3,7 +3,6 @@ package com.linnan.blindassist.capture
 import android.os.SystemClock
 import java.net.InetSocketAddress
 import java.net.Socket
-import java.net.SocketTimeoutException
 import java.net.URI
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -43,24 +42,19 @@ class TcpCnhCaptureSource(host: String, private val port: Int = 3335) : CnhCaptu
                     connection.tcpNoDelay = true
                     if (closed.get()) return@use
                     onStatus(CnhCaptureStatus(CnhConnectionState.CONNECTED, "ToF TCP 已连接"))
-                    val input = connection.getInputStream()
-                    val buffer = ByteArray(8192)
-                    while (!closed.get()) {
-                        val count = try { input.read(buffer) } catch (_: SocketTimeoutException) { continue }
-                        if (count < 0) {
-                            terminalStatus = CnhCaptureStatus(CnhConnectionState.DISCONNECTED, "ToF 连接中断")
-                            break
+                    CaptureReadAhead(connection.getInputStream(), SystemClock::elapsedRealtimeNanos,
+                        "cnh-tcp-reader").use { readAhead ->
+                        while (true) {
+                            val chunk = readAhead.next() ?: break
+                            onRawChunk?.invoke(chunk.bytes, chunk.receivedNs)
+                            decoder.feed(chunk.bytes, chunk.receivedNs).forEach(onRecord)
                         }
-                        if (count == 0) continue
-                        val receivedNs = SystemClock.elapsedRealtimeNanos()
-                        val chunk = buffer.copyOf(count)
-                        onRawChunk?.invoke(chunk, receivedNs)
-                        decoder.feed(chunk, receivedNs).forEach(onRecord)
+                        terminalStatus = CnhCaptureStatus(CnhConnectionState.DISCONNECTED, "ToF 连接中断")
                     }
                 }
             } catch (exception: Exception) {
                 if (!closed.get()) terminalStatus = CnhCaptureStatus(CnhConnectionState.ERROR,
-                    "ToF 连接失败：${exception.message ?: exception.javaClass.simpleName}")
+                    "ToF 采集失败：${exception.message ?: exception.javaClass.simpleName}")
             } finally {
                 socket = null
                 // The controller finalizes its writer on terminal status; publish the raw tail first.
@@ -82,7 +76,8 @@ class TcpCnhCaptureSource(host: String, private val port: Int = 3335) : CnhCaptu
         // Socket close cancels reads. Keep a terminal callback un-interrupted while
         // the controller drains the other streams and finalizes their journals.
         worker.shutdown()
-        if (Thread.currentThread() != workerThread) worker.awaitTermination(1500, TimeUnit.MILLISECONDS)
+        // Do not finalize the journal while accepted read-ahead chunks are still pending.
+        if (Thread.currentThread() != workerThread) worker.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS)
     }
 }
 

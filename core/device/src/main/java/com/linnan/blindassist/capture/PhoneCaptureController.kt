@@ -149,6 +149,9 @@ class PhoneCaptureController(
                     preamble.addLast(record)
                 }
                 val active = store ?: return@start
+                // Read-ahead can deliver bytes received before Start after the
+                // writer was created. Keep that backlog out of the new segment.
+                if (record.hostReceivedMonotonicNs < startedNs) return@start
                 try {
                     saveTof(active, record)
                     if (record.frame != null) recordRecovery("tof", "ToF", record.hostReceivedMonotonicNs)
@@ -215,6 +218,7 @@ class PhoneCaptureController(
                     imuPreamble.addLast(record)
                 }
                 val active = store ?: return@start
+                if (record.hostReceivedMonotonicNs < startedNs) return@start
                 try {
                     val index = saveImu(active, record)
                     if (record.frame != null) {

@@ -5,7 +5,7 @@ assistance. It combines camera perception, risk logic, and concise guidance to
 demonstrate measurable effects in clearly stated controlled conditions. It is
 not a certified mobility or safety product.
 
-App v10.16.4 opens the original home without starting perception. **Start assist**
+App v10.16.5 opens the original home without starting perception. **Start assist**
 explicitly starts the **A+LOCAL experimental mode** with
 the frozen research classifier running offline on the phone. Its nominal camera/ToF
 registration is not physical calibration; simulation results do not establish hardware

@@ -106,6 +106,20 @@ class PhoneCaptureControllerDeviceTest {
         assertEquals(stopped.message, controller.snapshot().message)
     }
 
+    @Test fun queuedPreStartTofRecordsStayOutsideNewRecording() {
+        val oldReceipt = now
+        now += 100_000_000L
+        controller.startRecording("queued input boundary")
+        tof.emit(oldReceipt)
+        camera.emit(now)
+        tof.emit(now)
+        val saved = controller.stopRecording()!!
+        assertEquals(1L, saved.tofCount)
+        val rows = File(saved.directory, "tof.index.jsonl").readLines().map(::JSONObject)
+        assertEquals(1, rows.size)
+        assertEquals(now, rows.single().getLong("received_elapsed_ns"))
+    }
+
     @Test fun stalePreviewCannotStartRecordingDuringGracePeriod() {
         now += 3_000_000_000L
         assertFalse(controller.snapshot().cameraReady)

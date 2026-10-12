@@ -383,7 +383,10 @@ class PhoneCaptureDeviceTest {
                 .put("output_mib_per_second", if (elapsedNs > 0)
                     zip.length() * 1e9 / elapsedNs / 1_048_576.0 else JSONObject.NULL)
         }
-        val legacy = measure("legacy") { legacyExportZip(session, it) }
+        // The old byte-at-a-time exporter is a slow control, not part of an
+        // integrity regression. Run it only for an explicitly requested benchmark.
+        val legacy = if (InstrumentationRegistry.getArguments().getString("phoneCaptureLegacyExport") == "true")
+            measure("legacy") { legacyExportZip(session, it) } else null
         val optimized = measure("optimized") { PhoneCaptureStore.exportZip(session, it) }
         ZipFile(File(optimized.getString("zip_path"))).use { archive ->
             assertEquals(files.size, archive.size())
@@ -398,10 +401,10 @@ class PhoneCaptureDeviceTest {
         }
         optimized.put("byte_integrity_verified", true)
         return JSONObject().put("source_bytes", sourceBytes).put("file_count", files.size)
-            .put("legacy", legacy).put("optimized", optimized)
-            .put("elapsed_speedup", if (optimized.getDouble("elapsed_ms") > 0)
+            .put("legacy", legacy ?: JSONObject.NULL).put("optimized", optimized)
+            .put("elapsed_speedup", if (legacy != null && optimized.getDouble("elapsed_ms") > 0)
                 legacy.getDouble("elapsed_ms") / optimized.getDouble("elapsed_ms") else JSONObject.NULL)
-            .put("measurement_order", "legacy_once_then_optimized_once_on_same_phone_same_source_files")
+            .put("measurement_order", if (legacy != null) "legacy_once_then_optimized_once_on_same_phone_same_source_files" else "optimized_once")
             .put("boundary", "App-private cache file output including close; excludes ZIP verification and SAF provider; filesystem cache/order may affect timings")
     }
 

@@ -3,7 +3,6 @@ package com.linnan.blindassist.capture
 import android.os.SystemClock
 import java.net.InetSocketAddress
 import java.net.Socket
-import java.net.SocketTimeoutException
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -44,24 +43,19 @@ class TcpImuCaptureSource(host: String, private val port: Int = 3336) : ImuCaptu
                     connection.tcpNoDelay = true
                     if (closed.get()) return@use
                     onStatus(CnhCaptureStatus(CnhConnectionState.CONNECTED, "Atom IMU TCP 已连接"))
-                    val input = connection.getInputStream()
-                    val buffer = ByteArray(8192)
-                    while (!closed.get()) {
-                        val count = try { input.read(buffer) } catch (_: SocketTimeoutException) { continue }
-                        if (count < 0) {
-                            terminalStatus = CnhCaptureStatus(CnhConnectionState.DISCONNECTED, "Atom IMU 连接中断")
-                            break
+                    CaptureReadAhead(connection.getInputStream(), SystemClock::elapsedRealtimeNanos,
+                        "imu-tcp-reader").use { readAhead ->
+                        while (true) {
+                            val chunk = readAhead.next() ?: break
+                            onRawChunk?.invoke(chunk.bytes, chunk.receivedNs)
+                            decoder.feed(chunk.bytes, chunk.receivedNs).forEach(onRecord)
                         }
-                        if (count == 0) continue
-                        val receivedNs = SystemClock.elapsedRealtimeNanos()
-                        val chunk = buffer.copyOf(count)
-                        onRawChunk?.invoke(chunk, receivedNs)
-                        decoder.feed(chunk, receivedNs).forEach(onRecord)
+                        terminalStatus = CnhCaptureStatus(CnhConnectionState.DISCONNECTED, "Atom IMU 连接中断")
                     }
                 }
             } catch (error: Exception) {
                 if (!closed.get()) terminalStatus = CnhCaptureStatus(CnhConnectionState.ERROR,
-                    "Atom IMU 连接失败：${error.message ?: error.javaClass.simpleName}")
+                    "Atom IMU 采集失败：${error.message ?: error.javaClass.simpleName}")
             } finally {
                 socket = null
                 // A terminal callback may finalize storage; deliver raw partial bytes first.
@@ -80,6 +74,7 @@ class TcpImuCaptureSource(host: String, private val port: Int = 3336) : ImuCaptu
         // The socket close cancels reads without interrupting a terminal callback
         // that must still drain/finalize the other capture streams.
         worker.shutdown()
-        if (Thread.currentThread() != workerThread) worker.awaitTermination(1500, TimeUnit.MILLISECONDS)
+        // Source stop must drain accepted chunks before the controller writes its manifest.
+        if (Thread.currentThread() != workerThread) worker.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS)
     }
 }

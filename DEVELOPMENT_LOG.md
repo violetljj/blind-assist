@@ -4,6 +4,16 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-12 — v10.16.5 bounded TCP read-ahead
+
+- Scope: reduce coupling between ToF/IMU network receipt and synchronous parsing/storage, preserving original byte order, receipt clocks and per-record fsync. Focused unit/device checks and same-hotspot baseline/candidate capture; no firmware flash or image-quality reduction. Evidence under `artifacts.local/evidence/phone-capture-next-20261012/`.
+- Prior1.401s ToF source gap had normal95.3ms read duration and sensor stream135→163; firmware polling hiatus is established, but synchronous TCP send vs HTTP parsing cannot be separated. Do not claim phone buffering fixes all source stalls.
+- Fresh v10.16.4 hotspot30s baseline passed:811RGB/153ToF/3012IMU, ToF source5.1034Hz/max199ms, receipt max254.065ms; recording preview25.689fps, receipt-to-Canvas P9543.856ms. Device addresses discovered10.238.31.236/218, source/load may differ from earlier LAN.
+- Added8×8192-byte FIFO per TCP input plus bounded producer/consumer buffers, preserving socket-read receipts. Full queues backpressure; normal close drains before raw tail and terminal status, abort releases a producer blocked on a full queue after consumer failure. Pre-start backlog is excluded from new ordinary records. No fsync relaxation. Stop can take longer under backlog; saved counts remain durable counts.
+- 45 focused capture JVM tests and7 Android controller/local-socket tests passed; these deliberately stall callbacks and verify exact bytes, timestamps, partial tails, close ordering and thread release. Debug/androidTest build, lint and APK identity/signature/16KB passed. Installed v10.16.5/51 SHA256 `C97B194E65279B9FFD04A11E2499493E823AB7F903E7AB3C7DEF4E478C218402`. Slow legacy export control is now explicit test opt-in; integrity checks remain default.
+
+- Final real two30s sessions PASS:811/814RGB,154/154ToF,3014/3015IMU; exported818/821files byte-identical. RGB source26.90/27.00Hz, ToF5.1034/5.1031Hz, IMU99.95Hz; no sender sequence gaps, causal saved-IMU coverage100%. Preview25.642/26.024fps, receipt-to-Canvas P9542.922/43.242ms; ToF receipt max247.784/262.113ms. These normal-load metrics are similar to baseline, not evidence of a general fps increase. Stop253/211ms; optimized export197/153ms. Ended at launcher with no capture workers; retained durable sessions/receipts, no hardware firmware changes this round.
+
 ## 2026-10-12 — v10.16.4 foreground capture disconnect tolerance
 
 - Scope: repair reported foreground disconnects with bounded Android/H3 changes and focused controller, transport and live-capture checks. Preserve raw payloads and interrupted sessions; no model/quality changes. Evidence: `artifacts.local/evidence/phone-capture-disconnect-20261012/`.
