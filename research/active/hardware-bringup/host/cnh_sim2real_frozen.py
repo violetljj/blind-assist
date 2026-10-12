@@ -62,7 +62,7 @@ class FrozenReplay:
     full8 readiness, four-exposure inference eligibility, and reset flags. Flags
     are masked by ready; raw scores preserve shorter warmup windows for audit.
     """
-    def __init__(self, device='cuda', feature_precision='float32-engineering', batch_size=32, pitch_deg=-10.):
+    def __init__(self, device='cuda', feature_precision='float32-engineering', batch_size=32, pitch_deg=-10., roll_deg=0., height_offset_m=0.):
         if feature_precision not in ('float16-frozen', 'float32-engineering'):
             raise ValueError('Explicit FP16 frozen or FP32 engineering precision required')
         if str(NEAR) not in sys.path:
@@ -116,19 +116,24 @@ class FrozenReplay:
         cuts = require(ROOT/'artifacts.local/work/cnh-graded-evidence-dev-20261010/thresholds.json')
         cuts = json.loads(cuts.read_text()); self.single = np.array([cuts[str(s)]['single'] for s in SEEDS])
         self.CVR, self.rotation = CVR, rotation
-        self.configure_geometry(pitch_deg)
+        self.configure_geometry(pitch_deg, roll_deg, height_offset_m)
 
-    def configure_geometry(self, pitch_deg):
+    def configure_geometry(self, pitch_deg, roll_deg=0., height_offset_m=0.):
         """Public stationary pitch changes maps only; frozen weights/cuts stay fixed.
 
         Default -10 preserves the original real replay. Dorm twin pitch scans
         explicitly use matched geometry and retain legacy -10 as a comparison.
+        roll_deg rotates about the optical axis (applied before pitch, as in the
+        live engine); height_offset_m places the sensor that far below the
+        head-height query origin (y down), e.g. 1.65 - measured mount height.
         """
         from cnh_cvr_projection import Projector, query_masks, SHAPE, SUB, EDGE, WIDTH
         torch, M, L, P = self.torch, self.M, self.L, self.P
-        if not np.isfinite(pitch_deg): raise ValueError('Finite public pitch required')
-        self.pitch_deg = float(pitch_deg)
-        self.transform = np.eye(4); self.transform[:3, :3] = self.rotation(pitch_deg, 'x')
+        if not all(np.isfinite(v) for v in (pitch_deg, roll_deg, height_offset_m)): raise ValueError('Finite public pose required')
+        self.pitch_deg, self.roll_deg, self.height_offset_m = float(pitch_deg), float(roll_deg), float(height_offset_m)
+        c, s = np.cos(np.deg2rad(roll_deg)), np.sin(np.deg2rad(roll_deg))
+        self.transform = np.eye(4); self.transform[:3, :3] = self.rotation(pitch_deg, 'x') @ np.array([[c, -s, 0], [s, c, 0], [0, 0, 1]])
+        self.transform[1, 3] = self.height_offset_m
         projector = Projector(device=self.device)
         # Exactly the frozen FP32 map contract (not live Engine's FP64 map).
         pts = projector.points.float(); volumes = projector.volumes.float()
