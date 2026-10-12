@@ -14,6 +14,9 @@ extern "C" {
 static bool sendCnhClient(const String& text);
 static void serviceCnhClient();
 static bool ok(const char* op, uint8_t s);
+static String cnhHttpStatus();
+static void serviceCnhHttp();
+static void prepareHttpResponse(unsigned code, const String& payload);
 void setup();
 void loop();
 
@@ -32,6 +35,9 @@ static WiFiClient cnhClient;
 static constexpr uint32_t CNH_TCP_ROW_DEADLINE_US = 5000000;
 static constexpr uint32_t CNH_TCP_STALL_DEADLINE_US = 2000000;
 static uint32_t cnhSendDisconnects = 0, cnhSendTimeouts = 0;
+static uint32_t cnhLastSuccessfulSendUs = 0, cnhMaxSuccessfulSendUs = 0;
+static uint32_t networkLoopLastUs = 0, networkLoopMaxUs = 0;
+static uint32_t sensorLastFrameUs = 0, sensorMaxIntervalUs = 0;
 static const char* cnhLastDisconnectReason = "none";
 static uint32_t cnhLastDisconnectSent = 0, cnhLastDisconnectTotal = 0;
 static uint32_t cnhLastDisconnectElapsedUs = 0;
@@ -72,6 +78,8 @@ static bool sendCnhClient(const String& text) {
     cnhClient.stop();
     return false;
   }
+  cnhLastSuccessfulSendUs = (uint32_t)(micros()-started);
+  cnhMaxSuccessfulSendUs = max(cnhMaxSuccessfulSendUs, cnhLastSuccessfulSendUs);
   return true;
 }
 
@@ -154,26 +162,116 @@ static bool ok(const char* op, uint8_t s) {
   lastOp=op; lastStatus=s;
   return s==0;
 }
+// The SDK WebServer parser busy-spins on incomplete request lines and contends
+// on the lwIP lock even from a separate task. H3 needs two read-only GET routes:
+// collect headers incrementally, then send a fixed bounded response. No polling
+// loop waits for another byte, and identity/configuration stays on this task.
+static WiFiServer cnhHttpServer(80);
+static WiFiClient cnhHttpClient;
+static constexpr size_t HTTP_REQUEST_BYTES = 2048, HTTP_RESPONSE_BYTES = 4608;
+static constexpr uint32_t HTTP_REQUEST_DEADLINE_MS = 5000;
+static char httpRequest[HTTP_REQUEST_BYTES], httpResponse[HTTP_RESPONSE_BYTES];
+static size_t httpRequestUsed = 0, httpResponseSize = 0, httpResponseSent = 0;
+static uint32_t httpRequestStarted = 0;
+
+static String cnhHttpStatus() {
+  String status = demoIdentity();
+  String identity=status; identity.remove(identity.length()-1);
+  String payload=identity+",\"transport\":\"tcp_ndjson\",\"tcp_port\":3335,\"firmware_config\":";
+  payload+=cnhOutput.configRecord.isEmpty()?"null":cnhOutput.configRecord;
+  payload+=",\"tcp_diagnostics\":{\"row_deadline_ms\":"+String(CNH_TCP_ROW_DEADLINE_US/1000)+
+    ",\"stall_deadline_ms\":"+String(CNH_TCP_STALL_DEADLINE_US/1000)+
+    ",\"send_disconnect_count\":"+String(cnhSendDisconnects)+
+    ",\"send_timeout_count\":"+String(cnhSendTimeouts)+
+    ",\"last_disconnect_reason\":\""+cnhLastDisconnectReason+
+    "\",\"last_sent_bytes\":"+String(cnhLastDisconnectSent)+
+    ",\"last_total_bytes\":"+String(cnhLastDisconnectTotal)+
+    ",\"last_elapsed_us\":"+String(cnhLastDisconnectElapsedUs)+
+    ",\"last_errno\":"+String(cnhLastDisconnectErrno)+
+      ",\"last_successful_send_us\":"+String(cnhLastSuccessfulSendUs)+
+      ",\"max_successful_send_us\":"+String(cnhMaxSuccessfulSendUs)+
+      ",\"network_loop_last_us\":"+String(networkLoopLastUs)+
+      ",\"network_loop_max_us\":"+String(networkLoopMaxUs)+
+      ",\"sensor_frame_interval_max_us\":"+String(sensorMaxIntervalUs)+"}";
+  payload+=",\"snapshot_ms\":"+String(millis())+",\"http_service\":\"bounded_poll\"}";
+  return payload;
+}
+
+static void prepareHttpResponse(unsigned code, const String& payload) {
+  const char* body = payload.c_str();
+  size_t bodySize = payload.length();
+  if (bodySize > HTTP_RESPONSE_BYTES-256) {
+    code = 503; body = "{\"error\":\"http_response_overflow\"}"; bodySize = strlen(body);
+  }
+  const char* reason = code==200 ? "OK" : code==404 ? "Not Found" :
+      code==405 ? "Method Not Allowed" : code==431 ? "Request Header Fields Too Large" :
+      code==503 ? "Service Unavailable" : "Bad Request";
+  const int headerSize = snprintf(httpResponse, sizeof(httpResponse),
+      "HTTP/1.1 %u %s\r\nContent-Type: application/json\r\nContent-Length: %u\r\n"
+      "Cache-Control: no-store\r\nConnection: close\r\n\r\n", code, reason, (unsigned)bodySize);
+  memcpy(httpResponse+headerSize, body, bodySize);
+  httpResponseSize = headerSize+bodySize;
+  httpResponseSent = 0;
+}
+
+static void serviceCnhHttp() {
+  if (WiFi.status()!=WL_CONNECTED) { cnhHttpClient.stop(); return; }
+  if (!cnhHttpClient) {
+    cnhHttpClient = cnhHttpServer.accept();
+    if (!cnhHttpClient) return;
+    cnhHttpClient.setNoDelay(true);
+    httpRequestUsed = httpResponseSize = httpResponseSent = 0;
+    httpRequestStarted = millis();
+  }
+  if ((uint32_t)(millis()-httpRequestStarted)>=HTTP_REQUEST_DEADLINE_MS) {
+    cnhHttpClient.stop(); return;
+  }
+  if (!httpResponseSize) {
+    const size_t capacity = min((size_t)1024, sizeof(httpRequest)-1-httpRequestUsed);
+    const int count = recv(cnhHttpClient.fd(), httpRequest+httpRequestUsed, capacity, MSG_DONTWAIT);
+    if (count==0) { cnhHttpClient.stop(); return; }
+    if (count<0) {
+      if (errno!=EAGAIN && errno!=EWOULDBLOCK && errno!=EINTR) cnhHttpClient.stop();
+      return;
+    }
+    httpRequestUsed += count;
+    httpRequest[httpRequestUsed] = 0;
+    if (strstr(httpRequest, "\r\n\r\n")) {
+      char* lineEnd = strstr(httpRequest, "\r\n");
+      char* path = strchr(httpRequest, ' ');
+      char* version = path ? strchr(path+1, ' ') : nullptr;
+      if (!lineEnd || !path || !version || version>=lineEnd) {
+        prepareHttpResponse(400, "{\"error\":\"bad_request\"}");
+      } else if (strncmp(httpRequest, "GET ", 4)!=0) {
+        prepareHttpResponse(405, "{\"error\":\"get_only\"}");
+      } else {
+        ++path; *version = 0;
+        char* query = strchr(path, '?'); if (query) *query = 0;
+        if (strcmp(path, "/api/status")==0) prepareHttpResponse(200, demoIdentity());
+        else if (strcmp(path, "/api/cnh")==0) prepareHttpResponse(200, cnhHttpStatus());
+        else prepareHttpResponse(404, "{\"error\":\"not_found\"}");
+      }
+    } else if (httpRequestUsed==sizeof(httpRequest)-1) {
+      prepareHttpResponse(431, "{\"error\":\"http_request_too_large\"}");
+    }
+  }
+  if (httpResponseSize) {
+    const size_t count = min((size_t)1024, httpResponseSize-httpResponseSent);
+    const int sent = send(cnhHttpClient.fd(), httpResponse+httpResponseSent, count, MSG_DONTWAIT);
+    if (sent>0) {
+      httpResponseSent += sent;
+      if (httpResponseSent==httpResponseSize) cnhHttpClient.stop();
+    } else if (sent<0 && errno!=EAGAIN && errno!=EWOULDBLOCK && errno!=EINTR) cnhHttpClient.stop();
+  }
+}
+
 void setup() {
   cnhOutput.begin(115200); delay(2000);
   beginDemoNetwork("tof","xiao-cnh-h3-wifi-v1");
   cnhServer.begin();
-  api.on("/api/cnh",HTTP_GET,[]{
-    String identity=demoIdentity(); identity.remove(identity.length()-1);
-    String payload=identity+",\"transport\":\"tcp_ndjson\",\"tcp_port\":3335,\"firmware_config\":";
-    payload+=cnhOutput.configRecord.isEmpty()?"null":cnhOutput.configRecord;
-    payload+=",\"tcp_diagnostics\":{\"row_deadline_ms\":"+String(CNH_TCP_ROW_DEADLINE_US/1000)+
-        ",\"stall_deadline_ms\":"+String(CNH_TCP_STALL_DEADLINE_US/1000)+
-        ",\"send_disconnect_count\":"+String(cnhSendDisconnects)+
-        ",\"send_timeout_count\":"+String(cnhSendTimeouts)+
-        ",\"last_disconnect_reason\":\""+cnhLastDisconnectReason+
-        "\",\"last_sent_bytes\":"+String(cnhLastDisconnectSent)+
-        ",\"last_total_bytes\":"+String(cnhLastDisconnectTotal)+
-        ",\"last_elapsed_us\":"+String(cnhLastDisconnectElapsedUs)+
-        ",\"last_errno\":"+String(cnhLastDisconnectErrno)+"}";
-    payload+="}";
-    api.sendHeader("Cache-Control","no-store");api.send(200,"application/json",payload);
-  });
+  // H3 replaces the synchronous WebServer with bounded read-only HTTP polling.
+  api.stop();
+  cnhHttpServer.begin();
   cnhOutput.printf("{\"type\":\"boot\",\"firmware\":\"xiao-cnh-h3-wifi-v1\",\"startup_kind\":\"physical_boot\",\"boot_id\":\"%s\",\"device_id\":\"%s\"}\n",bootId.c_str(),deviceId.c_str());
   Wire.begin(5,6,CNH_I2C_HZ); Wire.setTimeOut(100);
   dev.platform.address=0x52;
@@ -199,9 +297,19 @@ void setup() {
   running=true; lastFrame=millis();
 }
 void loop() {
-  demoNetworkLoop();
+  const uint32_t networkStarted = micros();
+  demoNetworkLoop(false);
+  networkLoopLastUs = (uint32_t)(micros()-networkStarted);
+  networkLoopMaxUs = max(networkLoopMaxUs, networkLoopLastUs);
+  serviceCnhHttp();
   serviceCnhClient();
-  if(!running) {cnhOutput.printf("{\"type\":\"error\",\"message\":\"init_failed\",\"op\":\"%s\",\"status\":%u,\"cnh_bytes\":%lu}\n",lastOp,lastStatus,bytes);delay(3000);return;}
+  if(!running) {
+    if (!lastNote || (uint32_t)(millis()-lastNote)>=3000) {
+      lastNote=millis();
+      cnhOutput.printf("{\"type\":\"error\",\"message\":\"init_failed\",\"op\":\"%s\",\"status\":%u,\"cnh_bytes\":%lu}\n",lastOp,lastStatus,bytes);
+    }
+    delay(2);return;
+  }
   uint8_t ready=0, s=vl53lmz_check_data_ready(&dev,&ready);
   if(s) {ok("ready",s);delay(500);return;}
   if(ready) {
@@ -226,6 +334,9 @@ void loop() {
         cnhOutput.println("{\"type\":\"error\",\"message\":\"cnh_bounds\"}"); running=false;return;
       }
     }
+    const uint32_t frameUs = micros();
+    if (seq) sensorMaxIntervalUs = max(sensorMaxIntervalUs, (uint32_t)(frameUs-sensorLastFrameUs));
+    sensorLastFrameUs = frameUs;
     lastFrame=millis(); ++seq;
     cnhOutput.printf("{\"type\":\"cnh_frame\",\"seq\":%lu,\"ms\":%lu,\"read_us\":%lu,\"stream\":%u,\"rows\":8,\"cols\":8,\"bins\":%d,\"distance_mm\":[",seq,lastFrame,readUs,dev.streamcount,NB);
     for(int i=0;i<Z;++i){if(i)cnhOutput.print(',');cnhOutput.print(result.distance_mm[i]);}

@@ -4,6 +4,16 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-12 — H3 bounded HTTP polling prevents query-induced sampling stalls
+
+- Scope: diagnose and repair ToF source stalls under slow status queries; scoped firmware compile, controlled before/after probes and one60s phone capture. Preserve CNH settings/raw format, Android v10.16.5 and original firmware backup. Evidence: `artifacts.local/evidence/h3-loop-opt-20261012/`.
+- Old firmware, three HTTP request lines each completed after2s: source gaps2023/2138/2064ms,65frames,3.5422Hz over the full span. All three replies200. Earlier ADB nc probes returned empty HTTP responses and are not causal evidence.
+- First separate-WebServer-task candidate FAILED: HTTP timeout, stream stalled19.132s and row send elapsed19.009s. Installed SDK timedRead busy-spins through FIONREAD with lwIP core locking; cross-task contention is a source-supported hypothesis, not a sampled-stack proof. Failed source/image/log retained in `artifacts.local/evidence/h3-http-task-failed-20261012/`.
+- Final H3 replaces WebServer polling with bounded incremental GET for /api/status and /api/cnh: at most1024bytes receive/send per loop,2KiB request,4.5KiB response,5s total deadline. Other sketches retain default WebServer behavior. Diagnostics add successful-send and source-interval maxima; network_loop timing covers only discovery/provisioning, not HTTP or send. Initialization failure retains3s reports without blocking diagnostic servicing.
+- Build/scoped diff/review passed. App-only flash hash verified, binary1,058,016bytes SHA256 `8692556B7AD14F5F077EDC98BAD5C1BCBA96FC5B986D2FCB4C894798E4EAB044`. Warm reset left is_alive failed; user power cycle restored sensor. This known warm-reset issue remains. No NVS/partition rewrite.
+- Same three2s slow queries after recovery: all200,94frames,5.1032Hz,max198ms,zero sender sequence gaps and8×8×16 dimensions intact. Incomplete-request timeout/recovery, oversized431 and missing-route404 passed. Raw connection close may increment send_error; send_timeout remained0.
+- Final60.034s phone integration PASS with three slow queries confirmed inside the recording by device timestamps: COMPLETED/user_stop,1480RGB/308ToF/6029IMU; no stall/disconnect events or sender gaps. ToF5.1035Hz,max source201ms/receipt217.365ms. Preview22.871fps, receipt-to-Canvas P9544.083ms; source RGB24.544Hz, not a claimed camera fps increase. Stop187ms,33,565,191 original bytes exported in368.451ms to cache,1487 ZIP entries byte-identical. Activity recreation/discovery also passed. This removes the reproduced slow-query stall, not every WiFi/power/backpressure failure; normal source sampling stays about5Hz.
+
 ## 2026-10-12 — v10.16.5 bounded TCP read-ahead
 
 - Scope: reduce coupling between ToF/IMU network receipt and synchronous parsing/storage, preserving original byte order, receipt clocks and per-record fsync. Focused unit/device checks and same-hotspot baseline/candidate capture; no firmware flash or image-quality reduction. Evidence under `artifacts.local/evidence/phone-capture-next-20261012/`.
@@ -64,66 +74,31 @@ This file records only current milestones. Full earlier history is preserved at
 
 ## 2026-09-23 — v10.15.1 restore home and explicit Start assist
 
-- Corrected the user's intended scope: MainActivity is launcher again; home stays
-  idle. Its existing Start assist action selects Wi-Fi A+LOCAL and transfers speech/
-  vibration toggles, instead of dispatching the old phone-camera algorithm.
-- End assist returns to home and lifecycle cleanup stops acquisition/feedback.
-  Hardware Activity is internal-only; frozen model and threshold bytes unchanged.
-- Updated the affected entry, idle/start/end, settings handoff and detail-toggle
-  regressions. Validation receipts live under artifacts.local/hardware-bringup/home-assist-20260923.
-- Six device tests, debug/androidTest build, lint and APK checks passed. Installed
-  v10.15.1 without clearing data, inspected the restored home, and left the session idle.
+- Corrected the user's intended scope: MainActivity is launcher again; home stays idle. Its existing Start assist action selects Wi-Fi A+LOCAL and transfers speech/ vibration toggles, instead of dispatching the old phone-camera algorithm.
+- End assist returns to home and lifecycle cleanup stops acquisition/feedback. Hardware Activity is internal-only; frozen model and threshold bytes unchanged.
+- Updated the affected entry, idle/start/end, settings handoff and detail-toggle regressions. Validation receipts live under artifacts.local/hardware-bringup/home-assist-20260923.
+- Six device tests, debug/androidTest build, lint and APK checks passed. Installed v10.15.1 without clearing data, inspected the restored home, and left the session idle.
 
 ## 2026-09-23 — v10.15.0 frozen A+LOCAL phone experiment
 
-- User requested the research combination on the hardware phone. Added the exact
-  retained-A integral/threshold and frozen LOCAL HGB classifier, with source/model
-  hashes and no fit or threshold change. Portable core tests cover 111 A oracle
-  cases and 48 LOCAL feature/probability queries, including consumed observations.
-- Hardware adaptation remains nominal: centre-cropped VGA, 100-degree camera,
-  45-degree ToF, original coarse orientation, zone-centre radial-to-axial conversion.
-  No physical calibration, motion synchrony or simulation-to-real accuracy claim.
-- Switch defaults to experiment and persists; the original ToF mode is retained.
-  LOCAL uses central queries only, runs off-main without queues, and cannot survive
-  stale RGB/ToF or dispatcher delay. Camera loss retains A; LOCAL-only alerts keep
-  UNKNOWN and no attributed distance. Saved evidence retains original verdict/status.
-- Independent integration review found a post-dispatch RGB-expiry gap, fixed with
-  a regression for both expiry and cached-verdict/new-preview cases. Seven focused
-  JVM tests passed without skips. Device/release receipts are recorded in the guide.
-- Eight S24 Ultra / Android 16 checks passed. Real-input 10 s window completed
-  101/101 inferences, processing median/P95/max 53/61/82 ms; no physical event labels.
-  Build/lint and APK identity/signature/16 KB checks passed; installed without data
-  clearing. Final asset metadata newline normalization changes no code/model bytes.
+- User requested the research combination on the hardware phone. Added the exact retained-A integral/threshold and frozen LOCAL HGB classifier, with source/model hashes and no fit or threshold change. Portable core tests cover 111 A oracle cases and 48 LOCAL feature/probability queries, including consumed observations.
+- Hardware adaptation remains nominal: centre-cropped VGA, 100-degree camera, 45-degree ToF, original coarse orientation, zone-centre radial-to-axial conversion. No physical calibration, motion synchrony or simulation-to-real accuracy claim.
+- Switch defaults to experiment and persists; the original ToF mode is retained. LOCAL uses central queries only, runs off-main without queues, and cannot survive stale RGB/ToF or dispatcher delay. Camera loss retains A; LOCAL-only alerts keep UNKNOWN and no attributed distance. Saved evidence retains original verdict/status.
+- Independent integration review found a post-dispatch RGB-expiry gap, fixed with a regression for both expiry and cached-verdict/new-preview cases. Seven focused JVM tests passed without skips. Device/release receipts are recorded in the guide.
+- Eight S24 Ultra / Android 16 checks passed. Real-input 10 s window completed 101/101 inferences, processing median/P95/max 53/61/82 ms; no physical event labels. Build/lint and APK identity/signature/16 KB checks passed; installed without data clearing. Final asset metadata newline normalization changes no code/model bytes.
 
 ## 2026-09-23 — v10.14.0 local evidence, replay, mount check and split inputs
 
-- Added a bounded foreground ring (20 s / 256 frames), immutable saved decisions,
-  optional asynchronous 2 Hz thumbnails, no-backup local records and explicit export/delete.
-  Replay owns its timeline, disables output, stops live acquisition and restores paused
-  after Activity recreation. Generation checks prevent late live/replay writes.
-- Camera and ToF validity now gate their own output. ToF-only operation is explicit;
-  stale ToF cannot keep a verdict alive. Full-pair liveUsable retains its former meaning.
-  Firmware, 10 Hz sampling, 750 ms expiry and geometric parameters remain unchanged.
-- Four guided captures check coarse center/left/right consistency against background;
-  session-only result is not calibration and never changes geometry.
-- 31 focused JVM tests and 17 S24 Ultra / Android 16 tests passed. Three 8 s real
-  windows yielded 479/479 full-live samples; recorder offer P95 scalar/thumb was
-  0.242/0.398 ms. Save/load preserved decisions; role-rejected camera and unavailable
-  ToF checks passed. No optical, accuracy or user benefit claim.
-- Visual smoke saved a 19.989 s, 234-frame, 2-event scalar clip on the phone and
-  exercised its replay; screenshots cover live/records/replay/mount panels.
-  System document export to Downloads matched the private record SHA256 byte-for-byte;
-  both scalar copies are retained for the user. Test acquisition was stopped afterward.
-- Debug + test APK builds, lint (0 errors / 19 warnings), signature/version/16 KB
-  verification passed. v10.14.0 (43) installed in place and archived.
-  Evidence: artifacts.local/hardware-bringup/app-evidence-20260923-*.
-  Physical mount placement, manual TalkBack, human output perception and long-run
-  behavior remain untested. All test-owned cache fixtures and debugger forwards released.
+- Added a bounded foreground ring (20 s / 256 frames), immutable saved decisions, optional asynchronous 2 Hz thumbnails, no-backup local records and explicit export/delete. Replay owns its timeline, disables output, stops live acquisition and restores paused after Activity recreation. Generation checks prevent late live/replay writes.
+- Camera and ToF validity now gate their own output. ToF-only operation is explicit; stale ToF cannot keep a verdict alive. Full-pair liveUsable retains its former meaning. Firmware, 10 Hz sampling, 750 ms expiry and geometric parameters remain unchanged.
+- Four guided captures check coarse center/left/right consistency against background; session-only result is not calibration and never changes geometry.
+- 31 focused JVM tests and 17 S24 Ultra / Android 16 tests passed. Three 8 s real windows yielded 479/479 full-live samples; recorder offer P95 scalar/thumb was 0.242/0.398 ms. Save/load preserved decisions; role-rejected camera and unavailable ToF checks passed. No optical, accuracy or user benefit claim.
+- Visual smoke saved a 19.989 s, 234-frame, 2-event scalar clip on the phone and exercised its replay; screenshots cover live/records/replay/mount panels. System document export to Downloads matched the private record SHA256 byte-for-byte; both scalar copies are retained for the user. Test acquisition was stopped afterward.
+- Debug + test APK builds, lint (0 errors / 19 warnings), signature/version/16 KB verification passed. v10.14.0 (43) installed in place and archived. Evidence: artifacts.local/hardware-bringup/app-evidence-20260923-*. Physical mount placement, manual TalkBack, human output perception and long-run behavior remain untested. All test-owned cache fixtures and debugger forwards released.
 
 ## 2026-09-23 — v10.13.0 hardware-first entry and event feedback
 
-- User-authorized launcher promotion: HardwareDemoActivity is the main launcher;
-  MainActivity remains available through More functions. Added direct offline retry.
+- User-authorized launcher promotion: HardwareDemoActivity is the main launcher; MainActivity remains available through More functions. Added direct offline retry.
 - Added a pure Kotlin feedback policy: immediate first alert, 12-second reminder,
   300 mm approach escalation with 1-second pacing, 1-second non-alert release,
   single loss notification and recovery. UNKNOWN never announces clear space.

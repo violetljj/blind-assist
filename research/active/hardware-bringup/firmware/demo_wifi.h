@@ -190,7 +190,9 @@ static void beginDemoNetwork(const char* role, const char* firmware) {
   api.on("/api/status",HTTP_GET,[]{api.sendHeader("Cache-Control","no-store");api.send(200,"application/json",demoIdentity());});
   api.begin();
 }
-static void demoNetworkLoop() {
+// H3 uses bounded HTTP polling so partial requests cannot stall ranging.
+// Other sketches retain the existing single-task behavior by default.
+static void demoNetworkLoop(bool serviceHttp = true) {
   // USB-only WIFI, WIFI_SLOT and WIFI2 provisioning; never echo credential fields.
   while(Serial.available()) {
     char c=Serial.read();
@@ -251,5 +253,5 @@ static void demoNetworkLoop() {
       discoveryUdp.write((const uint8_t*)response.c_str(),response.length());discoveryUdp.endPacket();
     }
   }
-  api.handleClient();
+  if(serviceHttp) api.handleClient();
 }
