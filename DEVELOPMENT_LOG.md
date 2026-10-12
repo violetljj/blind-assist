@@ -4,162 +4,193 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-12 — v10.17.2 bounded assist overhead optimization
+
+- Scope: continue assist rendering optimization; evidence `artifacts.local/evidence/assist-draw-opt-20261012/`. Retained only sample-owned ToF decision caching; original UI, polling, feedback, expiry and evidence cadence remain. No model/firmware/threshold changes.
+- Immutable ToF samples compute the original8×8 corridor decision once on their source worker before volatile publication. Every poll still checks current availability and returns UNKNOWN when stale/stopped; cache never crosses samples or reconnects.
+- Rejected UI candidates: Canvas summary442/104missed(P9519ms), separate range row438/102(14ms), Image leaf463/200(15ms), exact display-state/number-leaf dedup472/256(15ms), image-wrapper-only489/235(13ms). Each15s run; lower redraw count did not meet fluency criteria. Receipts/traces and final rejected patches retained; no rejected UI code shipped.
+- Perfetto v3 diagnostic window15.046s:74/77 range-update doFrames exceeded8.33ms, versus0/1721 other frames; owner measure/layout averaged4.02ms. Tracing overhead prevents comparison with untraced runs; this identifies a future numeric-update bottleneck, not a proven universal cause.
+- Initial Compose-rule benchmark produced0gfx frames despite fresh snapshots; retained as INVALID and replaced with real-clock UiAutomation plus positive-render-count checks. New opt-in diagnostic records runtime APK identity, CPU, source progression, freshness and cleanup; optional compiler tracing restores its prior tracer.
+- Final same-method15s untraced pair:55/10.17.1 baseline1815frames/1missed,56/10.17.2 cache1814/1; both median7/P959/P9912ms. CPU16764→16609ms is too small and inputs too variable for a gain claim. Baseline617/617 and candidate622/622 snapshots had fresh camera+H3; source sequence observations are not sensor FPS.
+- Validation:11 focused device-core JVM tests and2 final real-device entry/exit and Wi-Fi loss/recovery tests passed. Unavailable input cleared alerts, recovery reused foreground client, exit released it; original preferences equal, Wi-Fi enabled/font1.0/density560 restored. One intermediate test-fixture nullability compile failure was fixed; rejected pixel/entry suite4passed but is not final-performance evidence.
+- Final debug/androidTest build, lint, structure and APK56/10.17.2 identity/signature/16KB checks passed. Installed in place and archived SHA256 `8644018711DCB97DCC9116BF18078EDC528679A9D089B327E9D1EAFABC8DAFEF`. No FPS, battery-life or field-safety gain claimed.
+
+## 2026-10-12 — v10.17.1 high-standard app review
+
+- Scope: user-requested UI/behavior/performance review, current screenshots and focused live checks. Evidence: `artifacts.local/evidence/app-review-20261012/`. No model, firmware, acquisition or feedback-rule changes.
+- Fixed home cadence controls invoking legacy presets that silently reset speech/vibration/care/scene; now only AlertProfile changes. Added regression comparing complete persisted settings across all three choices; test fixtures restore both preference stores after Activity destruction.
+- Fixed200% font/narrow-screen capture preview crowding with stacked natural-height cards, preserved normal dual-column layout and Canvas update path. IMU checkbox now one labelled48dp row. Reconnect button uses minimum height so text can grow. Current normal/200% home, assist, settings and capture screenshots inspected; home secondary summary still ellipsizes at200%, and unchecked settings switch has a minor residual tint.
+- Rejected age-only UI publication gate: matched15s observations baseline1751frames/75janky(4.28%), median6ms/P9511ms; candidate435/307(70.57%), median11ms/P9518ms. Four gate JVM tests passed but real rendering worsened, so gate and tests removed from product and archived. Final restored path15.169s:1679/135(8.04%), median7ms/P9513ms. No FPS/jank improvement claim; repeated whole-screen updates remain a performance target.
+- Initial device suite7:5passed,2layout-test failures. Diagnostic repeat retained same2failures: TextLayoutResult paragraph container1190px vs content779px incorrectly triggered aggregate overflow. Replaced aggregate flag with actual line bounds, height, ellipsis and card overlap checks. Final6/6passed (3layout/accessibility, normal capture panels, live entry/exit, Wi-Fi loss/recovery); prior3settings tests passed. No manual TalkBack or spoken/haptic-quality validation.
+- Final real Wi-Fi interruption: stayed in same foreground Activity/client/generation, both inputs became unavailable with no retained alert; after Wi-Fi enable, observations reached fresh camera+H3 in4.016s (200ms observation cadence). Original Wi-Fi enabled state restored and exit released client. This covers phone client Wi-Fi interruption, not hardware reboot or hotspot mode. User preferences equal pre-test values; font scale restored1.0, density unchanged560.
+- Final debug/androidTest build, lint, structure and APK identity/signature/16KB checks passed. Installed55/10.17.1 in place; archived SHA256 `D80BBA0749875999E854D3D31AFB71802721263F19B34F362170FB2BB8FC86A8`. Finished at home, temporary device screenshot files removed; evidence and failed candidate retained.
+
+## 2026-10-12 — v10.17.0 integrated assist and unified frontend
+
+- Scope: restore current H3 in the main assist flow, connect home feedback settings, unify home/assist/capture/settings visuals. Evidence: `artifacts.local/evidence/assist-integration-20261012/`. No model thresholds or device firmware changes.
+- H3 TCP CNH now feeds basic ToF assistance; legacy UDP remains supported. Duplicate/regressing/bad frames do not refresh readiness; receipt expires at750ms, no valid frames for3s triggers reconnect. H3 receipt freshness is not exposure age, so A+LOCAL stays disabled for this input. Evidence/replay preserve the timing distinction. Shutdown invalidates pending callbacks and clears snapshots after draining.
+- Home language/style/vibration/care/frequency settings reach main assist; speech/vibration switches propagate back. Sustained reminder cadence20/12/6s leaves first/approach rules unchanged. Warm-white/deep-green theme, consistent cards/buttons/spacing, primary controls first, diagnostics folded. Removed preview gradient; no continuous animation added.
+- 17 device-core and10 assist-core JVM tests passed; debug/androidTest build, lint, APK identity/signature/16KB checks passed. Device suite19:17 passed,1 live-exit automation failure,1 opt-in legacy-model test skipped. Earlier Compose-idle and accessibility text-query exit failures retained; visible-node traversal fixed the test. Final live-exit plus3 changed settings tests passed4/4. Live receipt has12 fresh H3 observations, first ready4186ms and exit released client. Settings handoff in both languages passed earlier; original phone preferences restored after tests.
+- Final30.052s three-stream capture PASS:624RGB/154ToF/3019IMU, zero sender sequence gaps, stop246ms; RGB20.665Hz, ToF5.1037Hz, IMU99.9508Hz. Preview receipt-to-Canvas median/P9510.348/36.686ms.14,075,050 source bytes exported to cache in163.809ms;631 ZIP files byte-identical. This does not measure document-provider export overhead or exposure-to-display latency.
+- Four actual screen captures inspected. Assist UI sample17.073s:1861 rendered frames,135 janky (7.25%), draw median7ms/P9513ms. No matched baseline or overall FPS-gain claim; tail jank remains. Manual TalkBack, spoken/haptic quality and field obstacle accuracy were not tested.
+- Installed54/10.17.0 in place, APK SHA256 `AFDFAF718CE5550EE69A4396E14F1FC2FA0FA603CEDDB3C01D27D4A16076B956`; archived APK and failed receipts retained. Finished at home with task streams closed.
+
+## 2026-10-12 — v10.16.7 foreground recovery, IMU history and event preview
+
+- Scope: user's four follow-ups: bounded Atom IMU history, foreground reconnect without recording stitching, event-driven preview, and real H3 startup fault recovery. Evidence: `artifacts.local/evidence/capture-all-opt-20261012/`; Atom native/build evidence also in `phone-capture-all-opt-20261012/`.
+- Atom adds64 shared samples, per-client cursors and500ms selection-age cap. Partial JSON remains immutable, sampling never waits on clients; overflow/expiry count explicitly.139 native assertions passed. Two real9s clients (one paused3x250ms) received902/901 frames, no seq/sample gaps; bounded history cannot prevent loss under arbitrary stalls.
+- Atom automatic download entry failed; user entered ROM mode manually. First old-port backup failed,460800 read corrupt,115200 retry matched prior image SHA3587D565AF48CF9CB949D3CC271B8C3FEF331EFDDF02936F83213A4D4074E4F3. App-only flash passed; hard reset stayed in ROM, watchdog reset restored application. Installed1,135,360-byte image SHA C5C05B79293676A0EDB4395FE9629152B51D05E5387B9F34EA4B337FE7704E01. No NVS changes; failed receipts retained.
+- Android retries individual failed/stale inputs at1/2/4/8/10s only while foreground; interruption finalizes old segment before reconnect. Cancellation/generation guards prevent obsolete sources restoring readiness. Recording never resumes automatically. New-frame callbacks coalesce one latest-frame decoder, replacing16ms polling. Review also fixed discovery-edit busy state and premature start during route cleanup.
+- 49 focused capture JVM tests,9 controller device tests, debug/androidTest builds, lint and APK identity/signature/16KB checks passed. Final53/10.16.7 installed in place, SHA8FB66FDAE8377B53F5C8B7671E17622CDB2AD77527ABE41664F25096B1D4137A.
+- Paired30s preview observation: baseline receipt-to-Canvas median/P9520.232/43.116ms, candidate9.907/37.297ms; source RGB25.170→23.993Hz, so this is no source-FPS gain claim. Baseline/candidate ZIP bytes exact. Final two UI guard fixes do not change preview code.
+- ToF diagnostic injection v1 failed to hold SDA (preserved); v2 first confirmed live sensor, then sensor-held SDA0/SCL1 with master released, still present after Wire.begin. First production probe recovered and6 valid8x8x16 frames followed (max197ms); application retry branch was NOT triggered, likely recovery within SDK transaction. No claim all warm-reset failures are fixed. Diagnostic builds retained in `tof-recovery-injection[-v2]-20261012/`; restored production image SHA6A498EFFF62FEA05025A90DA95DCE3A61FC5B40031A535EE69179170D97CC02B, status has no injection field.
+- Actual ToF reset during recording PASS: marker-to-three-stream-ready9559ms, raw ToF segment gap10406ms and boot changed. Old INTERRUPTED segment manifest/file sizes unchanged; no automatic new recording, explicit next5s segment completed. Receipt `reconnect-live-receipt.json` records run allopt-1791805355.
+- Final production-firmware30.078s integration PASS:604RGB/154ToF/3020IMU, zero sender seq gaps, stop207ms. ToF5.1039Hz/max198ms source/213.273ms receipt, IMU99.9507Hz. Final preview median/P9510.348/36.987ms, source RGB20.002Hz; scene/network-dependent.14,729,883 bytes exported to cache in163.711ms,611 ZIP files byte-identical. Stop-time ToF partial tail retained and marked; no recording disconnect. Test closes activity and streams; durable sessions, backups and evidence retained.
+
+## 2026-10-12 — v10.16.6 camera stop drain and H3 startup recovery
+
+- Scope: foreground stability follow-up; two300s real sessions on installed v10.16.5/bounded-HTTP H3, then fix concrete camera-stop tail loss and startup recovery omission. Focused tests/build, app-only H3 flash, three warm resets and final30s capture. Evidence: `artifacts.local/evidence/phone-soak-20261012/`. No model, quality, source rate or timestamp changes.
+- Baseline two300s sessions PASS:7998/7806RGB,1533/1532ToF,30013/30013IMU; only start/normal-stop events, no sender sequence gaps. ToF5.1035Hz/max198ms both; receipt max221.720/242.391ms. Preview25.420/24.950fps, receipt-to-Canvas P9542.141/43.736ms. Stop408/394ms.171,904,259/171,299,696 original bytes exported in3409.959/3259.603ms,8005/7813 ZIP entries byte-identical. Two separate5-minute segments, not one uninterrupted10-minute segment.
+- Camera close previously abandoned its worker after1500ms, allowing controller generation/finalization to race an accepted JPEG callback delayed by storage. Now drains the worker like TCP, with self-worker bypass. Two JVM regressions parse an actual JPEG, hold callback beyond1800ms, check callback→STOPPED→close ordering and self-close without deadlock; all7 affected reader/source tests passed. Stop may take longer when storage is slow.
+- H3 first failed startup probe now runs ONE nine-clock/open-drain STOP bus release and ONE retry; first status/alive and bus levels are exposed in startup_diagnostics. No in-recording retry/reset. Compiled1,059,392byte image SHA256 `6a498efff62fea05025a90da95dce3a61fc5b40031a535ee69179170d97cc02b`; old image retained, app-only flash hash verified. Flash boot plus3 warm resets each produced6 frames/max197ms with distinct boot IDs. All first probes succeeded, so actual failed-probe recovery branch remains hardware-unverified and historical warm-reset failure is not declared eliminated.
+- Debug/androidTest build, lint, APK identity/signature/16KB checks passed; installed52/v10.16.6 without clearing data, archived APK SHA256 `022DB5DB042FFECB718908572379E29882018A14194E616B6431F29124EA5FEB`.
+- Final30.073s integration PASS:806RGB/154ToF/3017IMU, COMPLETED/user_stop, discovery/recreation,281ms stop;17,008,991 original bytes exported in278.748ms,813 ZIP entries exact. ToF5.1029Hz/source max229ms/receipt279.942ms. IMU had one sequence_gap:2 at2.33s, sample_gap_count0; current Atom latest-sample transport can skip during delayed sending, but exact scheduling cause is unproven. Preserved the gap and manual-stop truncated ToF tail; no disconnection/timeout. Atom firmware unchanged and this remaining gap is not fixed by camera drain. Ended at launcher with task consumers closed; durable captures/evidence retained.
+
+## 2026-10-12 — H3 bounded HTTP polling prevents query-induced sampling stalls
+
+- Scope: diagnose and repair ToF source stalls under slow status queries; scoped firmware compile, controlled before/after probes and one60s phone capture. Preserve CNH settings/raw format, Android v10.16.5 and original firmware backup. Evidence: `artifacts.local/evidence/h3-loop-opt-20261012/`.
+- Old firmware, three HTTP request lines each completed after2s: source gaps2023/2138/2064ms,65frames,3.5422Hz over the full span. All three replies200. Earlier ADB nc probes returned empty HTTP responses and are not causal evidence.
+- First separate-WebServer-task candidate FAILED: HTTP timeout, stream stalled19.132s and row send elapsed19.009s. Installed SDK timedRead busy-spins through FIONREAD with lwIP core locking; cross-task contention is a source-supported hypothesis, not a sampled-stack proof. Failed source/image/log retained in `artifacts.local/evidence/h3-http-task-failed-20261012/`.
+- Final H3 replaces WebServer polling with bounded incremental GET for /api/status and /api/cnh: at most1024bytes receive/send per loop,2KiB request,4.5KiB response,5s total deadline. Other sketches retain default WebServer behavior. Diagnostics add successful-send and source-interval maxima; network_loop timing covers only discovery/provisioning, not HTTP or send. Initialization failure retains3s reports without blocking diagnostic servicing.
+- Build/scoped diff/review passed. App-only flash hash verified, binary1,058,016bytes SHA256 `8692556B7AD14F5F077EDC98BAD5C1BCBA96FC5B986D2FCB4C894798E4EAB044`. Warm reset left is_alive failed; user power cycle restored sensor. This known warm-reset issue remains. No NVS/partition rewrite.
+- Same three2s slow queries after recovery: all200,94frames,5.1032Hz,max198ms,zero sender sequence gaps and8×8×16 dimensions intact. Incomplete-request timeout/recovery, oversized431 and missing-route404 passed. Raw connection close may increment send_error; send_timeout remained0.
+- Final60.034s phone integration PASS with three slow queries confirmed inside the recording by device timestamps: COMPLETED/user_stop,1480RGB/308ToF/6029IMU; no stall/disconnect events or sender gaps. ToF5.1035Hz,max source201ms/receipt217.365ms. Preview22.871fps, receipt-to-Canvas P9544.083ms; source RGB24.544Hz, not a claimed camera fps increase. Stop187ms,33,565,191 original bytes exported in368.451ms to cache,1487 ZIP entries byte-identical. Activity recreation/discovery also passed. This removes the reproduced slow-query stall, not every WiFi/power/backpressure failure; normal source sampling stays about5Hz.
+
+## 2026-10-12 — v10.16.5 bounded TCP read-ahead
+
+- Scope: reduce coupling between ToF/IMU network receipt and synchronous parsing/storage, preserving original byte order, receipt clocks and per-record fsync. Focused unit/device checks and same-hotspot baseline/candidate capture; no firmware flash or image-quality reduction. Evidence under `artifacts.local/evidence/phone-capture-next-20261012/`.
+- Prior1.401s ToF source gap had normal95.3ms read duration and sensor stream135→163; firmware polling hiatus is established, but synchronous TCP send vs HTTP parsing cannot be separated. Do not claim phone buffering fixes all source stalls.
+- Fresh v10.16.4 hotspot30s baseline passed:811RGB/153ToF/3012IMU, ToF source5.1034Hz/max199ms, receipt max254.065ms; recording preview25.689fps, receipt-to-Canvas P9543.856ms. Device addresses discovered10.238.31.236/218, source/load may differ from earlier LAN.
+- Added8×8192-byte FIFO per TCP input plus bounded producer/consumer buffers, preserving socket-read receipts. Full queues backpressure; normal close drains before raw tail and terminal status, abort releases a producer blocked on a full queue after consumer failure. Pre-start backlog is excluded from new ordinary records. No fsync relaxation. Stop can take longer under backlog; saved counts remain durable counts.
+- 45 focused capture JVM tests and7 Android controller/local-socket tests passed; these deliberately stall callbacks and verify exact bytes, timestamps, partial tails, close ordering and thread release. Debug/androidTest build, lint and APK identity/signature/16KB passed. Installed v10.16.5/51 SHA256 `C97B194E65279B9FFD04A11E2499493E823AB7F903E7AB3C7DEF4E478C218402`. Slow legacy export control is now explicit test opt-in; integrity checks remain default.
+
+- Final real two30s sessions PASS:811/814RGB,154/154ToF,3014/3015IMU; exported818/821files byte-identical. RGB source26.90/27.00Hz, ToF5.1034/5.1031Hz, IMU99.95Hz; no sender sequence gaps, causal saved-IMU coverage100%. Preview25.642/26.024fps, receipt-to-Canvas P9542.922/43.242ms; ToF receipt max247.784/262.113ms. These normal-load metrics are similar to baseline, not evidence of a general fps increase. Stop253/211ms; optimized export197/153ms. Ended at launcher with no capture workers; retained durable sessions/receipts, no hardware firmware changes this round.
+
+## 2026-10-12 — v10.16.4 foreground capture disconnect tolerance
+
+- Scope: repair reported foreground disconnects with bounded Android/H3 changes and focused controller, transport and live-capture checks. Preserve raw payloads and interrupted sessions; no model/quality changes. Evidence: `artifacts.local/evidence/phone-capture-disconnect-20261012/`.
+- Historical phone session `capture-20261012T023621339Z-8776f21b` ended with truncated ToF line then EOF; camera/IMU stopped as a consequence. This identifies the first failed stream, not a definitive WiFi/power cause.
+- Separate 2s preview freshness from 8s recording liveness, persist per-stream stall/recovery events and retain the first failure through teardown. Camera read deadline10s. H3 send stall2s/row5s replaces200/400ms and exposes failure diagnostics on `/api/cnh`.
+- H3 COM5 identity98:a3:16:f7:88:1c verified; backed up app region1,572,864bytes then wrote app0 only with hash verification. Binary SHA256 `75c0150946ea287f043b8326d5e4a55b270353ef8f05a95c0c929bf9ea811c51`. Warm reset left sensor uninitialized; user power cycle restored config/frames, preserved in status receipts. No NVS/partition-table rewrite.
+- Controlled host receiver:1s read pause survived;10s pause caused EOF with stall_timeout at2.053265s,7280/14628bytes sent; reconnect received frames. This checks bounded backpressure behavior, not proof of the historical disconnection cause or guaranteed field reliability.
+- Android40 focused JVM tests,4 injected-clock controller device tests, final debug/androidTest build and lint, APK identity/signature/16KB checks passed. Installed v10.16.4/50, SHA256 `358DFC1B03FBE51AAC3306E47369AFE688317C1AB188AB30E0D9454DEE17A2BE`.
+- Real120s capture `capture-20261012T062001614Z-4f00ab7c` saved COMPLETED/user_stop:3324RGB,607ToF,12020IMU. No stalled/timeout/disconnected events; a partial ToF tail during manual stop is preserved. USB debugging disconnected during subsequent ZIP benchmark/verification, so the instrumentation run has no final PASS receipt yet; capture completion is independently evidenced by the pulled manifest/events.
+- Follow-up after user reconnected USB: recovered completed device receipt, including3331-file byte-for-byte ZIP verification. Independently pulled33,778,695-byte ZIP, checked all CRCs, entry count,54,610,202 total original bytes and manifest counts; PASS, SHA256 `0ed795896b38838f5adfa3a86d425fef43ac23d862311cac251fd300f7c810f5`. Export took1.008s vs legacy90.999s (cache-file benchmark, not SAF). No re-recording needed. Original runner terminal output remains unavailable, but all capture/export assertions preceding receipt creation completed. ToF maximum receipt gap1.628s/source interval1.401s remains visible; successful connection continuity does not imply perfectly uniform sampling. User confirmed USB had been manually unplugged.
+
+## 2026-10-12 — v10.16.3 capture preview, transport and export
+
+- Goal/scope: improve foreground phone collector stability, smoothness, frame handling and export speed; scoped code/build/device checks, no model or firmware work. Preserve original payloads, independent timestamps and per-record fsync. All evidence stays under `artifacts.local/evidence/phone-capture-opt-20261012/`.
+- Read new preview frames in Canvas draw, with composition only observing availability. Fixed-rate latest-frame checks now run every16ms; duplicate receipts are not decoded. Batch CNH/IMU byte assembly, cache raw offsets, and disconnect HTTP before closing its buffered reader.
+- Removed ZIP FilterOutputStream byte-at-a-time forwarding; use256KiB buffering, JPEG level0 and text BEST_SPEED. Progress/elapsed time and picker session-ID restoration added. Two same-phone30s captures,15.78/15.46MB original input: legacy29.091/36.513s vs optimized0.165/0.466s,176.5/78.4x; ZIP8.984→10.621MB and8.674→10.365MB. Cache-file benchmark, not a SAF/cloud speed guarantee. Actual system-picker local Downloads export of final5.05MB input completed in0.3s,3.392MB ZIP SHA equals cache export.
+- Preserved first offline Atom failure and the two30s run's cleanup-only Compose hierarchy failure; both completed receipts/ZIP checks existed before cleanup. Replaced cleanup UI lookup with Activity close; corrected receipt-rate denominator to include samples sharing one TCP-chunk timestamp. Focused3-test rerun passed with two5s sessions; final16ms live10s test passed.40 capture JVM tests, final debug/androidTest/lint, APK identity/signature/16KB all passed.
+- Two30s sessions saved794/708 RGB,155/155 CNH,3036/3024 IMU; stop completion329/88ms; independent host JPEG SHA and raw index/sequence checks passed. Final10s saved165/52/1014, stop185ms, preview156 unique images/10.021s, median19.874ms/P9539.254ms Android receipt→Canvas, compared to old5s median40.485/P9571.746ms. Frame rate is not claimed as an equal-source hardware gain: source RGB changed27.563→26.148→23.452→16.146Hz with larger JPEGs, while ToF~5.103Hz and IMU~100Hz. Atom synchronously sends JPEG before returning its framebuffer; sender sequence continuity does not prove no sensor-frame overwrites. Network vs receiver backpressure remains unresolved.
+- Final version49/v10.16.3 APK260301878 bytes, SHA256 CF421F1CD82D9AA97ACBEBCB9336AA12078F80CB4D65F3F1A5E3600AAAF68D12; installed over existing data and archived. Earlier49 candidate and failed receipts retained. Actual raw/ZIP integrity does not establish clock synchronization or detector performance.
+- Framework-free idle gfxinfo: old248/721 janky frames(34.40%), median7/P9536ms; final349/1241(28.12%), median5/P9532ms. Different24/38s windows and changing source JPEG load, descriptive only; tail jank remains. Ended on home with capture workers/connections released; final system-picker ZIP remains in Downloads.
+
+## 2026-10-12 — v10.16.2 capture performance and lifecycle
+
+- User requested speed/smoothness/stability of the three-stream page; scoped to this foreground collector, preserving all received raw records and per-record fsync.
+- Isolated latest-only JPEG decode/Canvas transform and background HUD; moved controls to a serial worker with lifecycle generations. Reused append streams and SHA256; finalized counts use manifest with damaged/legacy fallback.
+- Fixed old-now freshness race after waiting for storage and refused source registration during finalization; close/join stays outside the data lock. Preview grid/native-axis labels remain visible.
+- 35 focused core tests passed, debug/androidTest/lint passed; final version48 APK260300372 bytes, SHA256 1B7AD5E47EC8527596A2442D1B2A086240CA72FCC59A144DDDC981FEB26334D3, identity/signature/16KB verified. Installed with existing records retained; first48 APK92DFD3B1... archived separately.
+- First added draw-performance assertion failed with a sleep-only sample window; retained failed020734 receipt and advanced the Compose test clock during sampling. Independent screenshot then exposed clipped IMU footer, repaired explicit line heights and checked un-clipped measured bounds. Final system gfxinfo and live receipt results are in the [report](research/active/hardware-bringup/ATOM_IMU_PITCH_20261012.md).
+- Actual5s saved138AtomRGB/26CNH/507IMU,26/26 causal,P9513.600ms,145 ZIP entries exact. External12s UI render10.145→29.728fps,jank94.31→32.60%,median27.990→6.354ms;tailP9538.203→39.078ms unimproved. Phone left ready preview without recording; return home releases its sensor connections.
+
+## 2026-10-12 — v10.16.1 Atom RGB + CNH + IMU preview and capture
+
+- Replaced this page's phone CameraX source with Atom original MJPEG JPEG/headers/device timestamps and independent Android receipt time; historical sessions remain exportable.
+- Added simultaneous Atom picture, valid 8x8 ToF grid and native BMI270 attitude/six-axis previews with established orientation. Actual capture:138 RGB/26 CNH/508 IMU, 26/26 causal matches, P95 age12.339ms;145-entry ZIP exact, Activity recreation/reconnect passed.
+- 33 focused JVM tests, debug/androidTest builds, lint and APK identity/signature/16KB verification passed. Version47 APK:260093247 bytes, SHA256 EB1E814630F1DF50D61FBEFD5B994B9614DCDF0043719F1C4D14CADFAC253670.
+
+## 2026-10-12 — v10.16.0 phone RGB + CNH + Atom IMU capture
+
+- Goal/scope: foreground phone RGB + H3 CNH + Atom IMU capture, durable raw records, independent clocks, interruptions and ZIP export. No experiment/training budget; scoped build/tests and live acquisition/export acceptance, fixing observed failures.
+- Added home entry, nominal VGA10Hz CameraX, full raw64x16 CNH, notes/session list, raw issue/tail retention, atomic manifests and recovery. No clock/geometry or model promotion.
+- Added UDP discovery and dual USB-provisioned Wi-Fi profiles, preserving legacy NVS and switching on loss.
+- Preserved initial H3 first-line EOF; repaired whole-row30ms budget to400ms/200ms no-progress. Post-flash is_alive failed, user cold power-cycle restored CNH. Actual24-frame decoder,50RGB/27CNH and system-picker exact ZIP passed.
+- Atom full8MB flash backed up first:SHA256 a46ed2a0b5ed73fec719523d9c493dadcdc20ac23e4f0020e0bf7468658cd68e. IMU phase only flashed Atom; failed I2C1 collision retained, BMI moved toI2C0 after camera init, MJPEG/STA identity restored.
+- Added TCP3336 raw6axis/gravity/native pose, QPC nearest receipt alignment, per-frame pose and phone raw/index persistence. Desktop60s:6002IMU99.992Hz/306CNH5.10298Hz,no gaps;pitch SD.059765deg/drift-.188655deg. Old15.625ms clock retained;QPC102/102,absP958.7625ms.
+- Historical phone-camera LAN/hotspot/restoredLAN counts50/25/507,51/27/509,50/25/506; causal25/25,26/27,25/25,P9510.438/10.465/11.196ms; ZIP57/58/57 entries exact. First hotspot CNH correctly unavailable; hotspot off restored Atom4.250s/ToF6.469s in same boots, then homepage/clients released.
+- Operator reference return +3.856718deg, no optical accuracy claim/retuning; companion mounting record saved. Real12-frame CPU frozen replay:7warm/5READY,no extra reset/nonfinite,hashes/thresholds unchanged.
+- 27 Android focused tests/build/lint/APK/recreation passed; version46 SHA256 C14E12186E2F42D991F462A3F74C5D03E243E8BA089D393A7708BF89C9A90714. Firmware14/host11 tests passed. Complete failures, receipts, rollback and limits: [Atom IMU report](research/active/hardware-bringup/ATOM_IMU_PITCH_20261012.md), ignored phone-capture-v1/phone-capture-imu-v1/atom-imu-v1 payloads.
+
 ## 2026-09-23 — v10.15.1 restore home and explicit Start assist
 
-- Corrected the user's intended scope: MainActivity is launcher again; home stays
-  idle. Its existing Start assist action selects Wi-Fi A+LOCAL and transfers speech/
-  vibration toggles, instead of dispatching the old phone-camera algorithm.
-- End assist returns to home and lifecycle cleanup stops acquisition/feedback.
-  Hardware Activity is internal-only; frozen model and threshold bytes unchanged.
-- Updated the affected entry, idle/start/end, settings handoff and detail-toggle
-  regressions. Validation receipts live under artifacts.local/hardware-bringup/home-assist-20260923.
-- Six device tests, debug/androidTest build, lint and APK checks passed. Installed
-  v10.15.1 without clearing data, inspected the restored home, and left the session idle.
+- Corrected the user's intended scope: MainActivity is launcher again; home stays idle. Its existing Start assist action selects Wi-Fi A+LOCAL and transfers speech/ vibration toggles, instead of dispatching the old phone-camera algorithm.
+- End assist returns to home and lifecycle cleanup stops acquisition/feedback. Hardware Activity is internal-only; frozen model and threshold bytes unchanged.
+- Updated the affected entry, idle/start/end, settings handoff and detail-toggle regressions. Validation receipts live under artifacts.local/hardware-bringup/home-assist-20260923.
+- Six device tests, debug/androidTest build, lint and APK checks passed. Installed v10.15.1 without clearing data, inspected the restored home, and left the session idle.
 
 ## 2026-09-23 — v10.15.0 frozen A+LOCAL phone experiment
 
-- User requested the research combination on the hardware phone. Added the exact
-  retained-A integral/threshold and frozen LOCAL HGB classifier, with source/model
-  hashes and no fit or threshold change. Portable core tests cover 111 A oracle
-  cases and 48 LOCAL feature/probability queries, including consumed observations.
-- Hardware adaptation remains nominal: centre-cropped VGA, 100-degree camera,
-  45-degree ToF, original coarse orientation, zone-centre radial-to-axial conversion.
-  No physical calibration, motion synchrony or simulation-to-real accuracy claim.
-- Switch defaults to experiment and persists; the original ToF mode is retained.
-  LOCAL uses central queries only, runs off-main without queues, and cannot survive
-  stale RGB/ToF or dispatcher delay. Camera loss retains A; LOCAL-only alerts keep
-  UNKNOWN and no attributed distance. Saved evidence retains original verdict/status.
-- Independent integration review found a post-dispatch RGB-expiry gap, fixed with
-  a regression for both expiry and cached-verdict/new-preview cases. Seven focused
-  JVM tests passed without skips. Device/release receipts are recorded in the guide.
-- Eight S24 Ultra / Android 16 checks passed. Real-input 10 s window completed
-  101/101 inferences, processing median/P95/max 53/61/82 ms; no physical event labels.
-  Build/lint and APK identity/signature/16 KB checks passed; installed without data
-  clearing. Final asset metadata newline normalization changes no code/model bytes.
+- User requested the research combination on the hardware phone. Added the exact retained-A integral/threshold and frozen LOCAL HGB classifier, with source/model hashes and no fit or threshold change. Portable core tests cover 111 A oracle cases and 48 LOCAL feature/probability queries, including consumed observations.
+- Hardware adaptation remains nominal: centre-cropped VGA, 100-degree camera, 45-degree ToF, original coarse orientation, zone-centre radial-to-axial conversion. No physical calibration, motion synchrony or simulation-to-real accuracy claim.
+- Switch defaults to experiment and persists; the original ToF mode is retained. LOCAL uses central queries only, runs off-main without queues, and cannot survive stale RGB/ToF or dispatcher delay. Camera loss retains A; LOCAL-only alerts keep UNKNOWN and no attributed distance. Saved evidence retains original verdict/status.
+- Independent integration review found a post-dispatch RGB-expiry gap, fixed with a regression for both expiry and cached-verdict/new-preview cases. Seven focused JVM tests passed without skips. Device/release receipts are recorded in the guide.
+- Eight S24 Ultra / Android 16 checks passed. Real-input 10 s window completed 101/101 inferences, processing median/P95/max 53/61/82 ms; no physical event labels. Build/lint and APK identity/signature/16 KB checks passed; installed without data clearing. Final asset metadata newline normalization changes no code/model bytes.
 
 ## 2026-09-23 — v10.14.0 local evidence, replay, mount check and split inputs
 
-- Added a bounded foreground ring (20 s / 256 frames), immutable saved decisions,
-  optional asynchronous 2 Hz thumbnails, no-backup local records and explicit export/delete.
-  Replay owns its timeline, disables output, stops live acquisition and restores paused
-  after Activity recreation. Generation checks prevent late live/replay writes.
-- Camera and ToF validity now gate their own output. ToF-only operation is explicit;
-  stale ToF cannot keep a verdict alive. Full-pair liveUsable retains its former meaning.
-  Firmware, 10 Hz sampling, 750 ms expiry and geometric parameters remain unchanged.
-- Four guided captures check coarse center/left/right consistency against background;
-  session-only result is not calibration and never changes geometry.
-- 31 focused JVM tests and 17 S24 Ultra / Android 16 tests passed. Three 8 s real
-  windows yielded 479/479 full-live samples; recorder offer P95 scalar/thumb was
-  0.242/0.398 ms. Save/load preserved decisions; role-rejected camera and unavailable
-  ToF checks passed. No optical, accuracy or user benefit claim.
-- Visual smoke saved a 19.989 s, 234-frame, 2-event scalar clip on the phone and
-  exercised its replay; screenshots cover live/records/replay/mount panels.
-  System document export to Downloads matched the private record SHA256 byte-for-byte;
-  both scalar copies are retained for the user. Test acquisition was stopped afterward.
-- Debug + test APK builds, lint (0 errors / 19 warnings), signature/version/16 KB
-  verification passed. v10.14.0 (43) installed in place and archived.
-  Evidence: artifacts.local/hardware-bringup/app-evidence-20260923-*.
-  Physical mount placement, manual TalkBack, human output perception and long-run
-  behavior remain untested. All test-owned cache fixtures and debugger forwards released.
+- Added a bounded foreground ring (20 s / 256 frames), immutable saved decisions, optional asynchronous 2 Hz thumbnails, no-backup local records and explicit export/delete. Replay owns its timeline, disables output, stops live acquisition and restores paused after Activity recreation. Generation checks prevent late live/replay writes.
+- Camera and ToF validity now gate their own output. ToF-only operation is explicit; stale ToF cannot keep a verdict alive. Full-pair liveUsable retains its former meaning. Firmware, 10 Hz sampling, 750 ms expiry and geometric parameters remain unchanged.
+- Four guided captures check coarse center/left/right consistency against background; session-only result is not calibration and never changes geometry.
+- 31 focused JVM tests and 17 S24 Ultra / Android 16 tests passed. Three 8 s real windows yielded 479/479 full-live samples; recorder offer P95 scalar/thumb was 0.242/0.398 ms. Save/load preserved decisions; role-rejected camera and unavailable ToF checks passed. No optical, accuracy or user benefit claim.
+- Visual smoke saved a 19.989 s, 234-frame, 2-event scalar clip on the phone and exercised its replay; screenshots cover live/records/replay/mount panels. System document export to Downloads matched the private record SHA256 byte-for-byte; both scalar copies are retained for the user. Test acquisition was stopped afterward.
+- Debug + test APK builds, lint (0 errors / 19 warnings), signature/version/16 KB verification passed. v10.14.0 (43) installed in place and archived. Evidence: artifacts.local/hardware-bringup/app-evidence-20260923-*. Physical mount placement, manual TalkBack, human output perception and long-run behavior remain untested. All test-owned cache fixtures and debugger forwards released.
 
 ## 2026-09-23 — v10.13.0 hardware-first entry and event feedback
 
-- User-authorized launcher promotion: HardwareDemoActivity is the main launcher;
-  MainActivity remains available through More functions. Added direct offline retry.
-- Added a pure Kotlin feedback policy: immediate first alert, 12-second reminder,
-  300 mm approach escalation with 1-second pacing, 1-second non-alert release,
-  single loss notification and recovery. UNKNOWN never announces clear space.
-- Speech and vibration have independent persisted switches and accessibility labels.
-  Replay is silent; leaving the page releases acquisition and stops feedback.
-- 15 focused JVM tests and 7 on-device tests passed on S24 Ultra / Android 16;
-  final accessibility-label revision reran its 2 affected Compose tests successfully.
-  10-second wireless receipt: 287/287 usable snapshots, 203 camera / 100 ToF frames.
-- Final debug APK 42 / 10.13.0 installed in place and archived; signature/version/
-  16 KB static checks passed. No firmware, sampling, geometry or freshness change.
-  Human speech/haptic experience, manual TalkBack and long-run behavior untested.
-  Evidence: artifacts.local/hardware-bringup/app-entry-20260923-*.
+- User-authorized launcher promotion: HardwareDemoActivity is the main launcher; MainActivity remains available through More functions. Added direct offline retry.
+- Added a pure Kotlin feedback policy: immediate first alert, 12-second reminder, 300 mm approach escalation with 1-second pacing, 1-second non-alert release, single loss notification and recovery. UNKNOWN never announces clear space.
+- Speech and vibration have independent persisted switches and accessibility labels. Replay is silent; leaving the page releases acquisition and stops feedback.
+- 15 focused JVM tests and 7 on-device tests passed on S24 Ultra / Android 16; final accessibility-label revision reran its 2 affected Compose tests successfully. 10-second wireless receipt: 287/287 usable snapshots, 203 camera / 100 ToF frames.
+- Final debug APK 42 / 10.13.0 installed in place and archived; signature/version/ 16 KB static checks passed. No firmware, sampling, geometry or freshness change. Human speech/haptic experience, manual TalkBack and long-run behavior untested. Evidence: artifacts.local/hardware-bringup/app-entry-20260923-*.
 
 ## 2026-09-23 — bounded camera coalescing A/B/A, original retained
 
-- Tested one camera-only mechanism: copy JPEG to a bounded PSRAM buffer, return
-  camera framebuffer before TCP send, combine multipart header/JPEG into one chunk.
-  VGA/Q12 and ToF 10 Hz were fixed; original timestamp semantics preserved.
-- Three 45-second runs gave camera age-bound P95 200 / 161 / 175 ms (A/B/A), with
-  all snapshots usable. First apparent 19.5% gain narrowed to 8% against restored
-  baseline; a stable substantial improvement was not established. Original firmware
-  and source restored, transport rechecked. No app version bump or new mechanism.
-- See [trial receipt](research/active/hardware-bringup/CAMERA_LATENCY_TRIAL_20260923.md).
-  Physical scene-to-screen optical latency remains unmeasured.
+- Tested one camera-only mechanism: copy JPEG to a bounded PSRAM buffer, return camera framebuffer before TCP send, combine multipart header/JPEG into one chunk. VGA/Q12 and ToF 10 Hz were fixed; original timestamp semantics preserved.
+- Three 45-second runs gave camera age-bound P95 200 / 161 / 175 ms (A/B/A), with all snapshots usable. First apparent 19.5% gain narrowed to 8% against restored baseline; a stable substantial improvement was not established. Original firmware and source restored, transport rechecked. No app version bump or new mechanism.
+- See [trial receipt](research/active/hardware-bringup/CAMERA_LATENCY_TRIAL_20260923.md). Physical scene-to-screen optical latency remains unmeasured.
 
 ## 2026-09-23 — v10.12.1 latency reduction, fixed 10 Hz
 
-- Initial 15 Hz / 5 ms HTTP poll pilot reduced ToF snapshot age bound from 177
-  to 99 ms median, but had 17/1303 invalid snapshots in one transient burst.
-  Preserved that receipt; user then explicitly fixed ToF at 10 Hz.
-- Final firmware v3 sends new samples via leased UDP3335 (1 s renewal, 5 s lease).
-  Phone rejects foreign, duplicate, regressing and expired packets with per-boot
-  UDP3333 clock mapping. HTTP remains diagnostics-only. No stale sample refresh.
-- Removed Activity's 33 ms plus IO-dispatch poll delay for wireless snapshots;
-  lifecycle-owned Choreographer callback consumes latest state at display refresh.
-- Final direct-hotspot 45 s transport test: 1300/1300 usable, 996 distinct camera
-  frames, 445 ToF frames; ToF sequence advanced 455. Snapshot age upper bounds
-  camera median/P95 86/162 ms, ToF 71/132 ms. ToF arrival bound median/P95 14/44 ms.
-- Camera acquisition/JPEG-ready median 36.6 ms, transfer bound 14.9 ms, decode
-  5.4 ms, copy 2.3 ms. Preserved VGA and safe bitmap ownership. Independent
-  distributions must not be added as a single frame's end-to-end latency.
-- Old HTTP ToF bound included full request RTT; UDP uses clock mapping instead.
-  The smaller bound is partly tighter estimation, not a controlled claim of 60%
-  physical response improvement. Readout excludes preceding sensing and I2C time;
-  neither screen latency nor increased-frequency ranging accuracy is established.
-- Evidence: ignored hardware-bringup/wifi-latency-20260923. First packaging
-  attempt failed without a diagnostic cause; stacktrace retry succeeded.
-- Final build/lint, six contract tests and APK verification passed; final
-  Choreographer UI displayed live on-device and ToF disconnect/reboot recovery
-  was checked by screenshots. Final APK SHA256
-  437A26013D1E30CE2020976631196C02F05D86CB78EE4F6CC375726288D8DA64.
+- Initial 15 Hz / 5 ms HTTP poll pilot reduced ToF snapshot age bound from 177 to 99 ms median, but had 17/1303 invalid snapshots in one transient burst. Preserved that receipt; user then explicitly fixed ToF at 10 Hz.
+- Final firmware v3 sends new samples via leased UDP3335 (1 s renewal, 5 s lease). Phone rejects foreign, duplicate, regressing and expired packets with per-boot UDP3333 clock mapping. HTTP remains diagnostics-only. No stale sample refresh.
+- Removed Activity's 33 ms plus IO-dispatch poll delay for wireless snapshots; lifecycle-owned Choreographer callback consumes latest state at display refresh.
+- Final direct-hotspot 45 s transport test: 1300/1300 usable, 996 distinct camera frames, 445 ToF frames; ToF sequence advanced 455. Snapshot age upper bounds camera median/P95 86/162 ms, ToF 71/132 ms. ToF arrival bound median/P95 14/44 ms.
+- Camera acquisition/JPEG-ready median 36.6 ms, transfer bound 14.9 ms, decode 5.4 ms, copy 2.3 ms. Preserved VGA and safe bitmap ownership. Independent distributions must not be added as a single frame's end-to-end latency.
+- Old HTTP ToF bound included full request RTT; UDP uses clock mapping instead. The smaller bound is partly tighter estimation, not a controlled claim of 60% physical response improvement. Readout excludes preceding sensing and I2C time; neither screen latency nor increased-frequency ranging accuracy is established.
+- Evidence: ignored hardware-bringup/wifi-latency-20260923. First packaging attempt failed without a diagnostic cause; stacktrace retry succeeded.
+- Final build/lint, six contract tests and APK verification passed; final Choreographer UI displayed live on-device and ToF disconnect/reboot recovery was checked by screenshots. Final APK SHA256 437A26013D1E30CE2020976631196C02F05D86CB78EE4F6CC375726288D8DA64.
 
 ## 2026-09-23 — v10.12.0 phone hotspot and presentation
 
-- Camera and 8x8 ToF join the phone hotspot; UDP discovery, latest MJPEG, bounded
-  ToF reads and conservative freshness run directly in core:device. No PC relay.
-- Reworked the initially rejected dashboard into a graphite camera-first page;
-  raw grid and connection controls are collapsed. Risk algorithm is unchanged.
-- Both original 8 MB flashes backed up and verified; only app0 flashed. Fixed
-  an observed ToF warm-reset I2C failure with bus release and init retry.
-- Six wireless contract tests and four USB client device tests passed. App/test
-  APK and lint passed (0 errors, 19 warnings, including intentional local cleartext).
-  Package/version/signature/16 KB checks passed; installed upgrade preserves data.
-- S24 Ultra hotspot, 45 seconds after warmup: 1295/1295 usable snapshots,
-  919 distinct camera frames, 230 ToF frames. Camera age upper bound median/P95
-  95/203 ms; ToF readout age bound 177/310 ms. Clock error bound 5 ms.
-  These are client observation ages, not screen, speech or exposure-sync measurements.
-- First next-day test failed because hotspot was off; preserved that result.
-  After enabling it, discovery and direct transport passed. ToF reset clears old
-  output and recovery after the firmware fix was observed on the phone.
-- Evidence, private config, original firmware backups and archived APK remain in
-  ignored hardware-bringup artifacts; no credentials committed. TalkBack and
-  real-world accuracy not tested. User dashboard retained, no ADB reverse used.
+- Camera and 8x8 ToF join the phone hotspot; UDP discovery, latest MJPEG, bounded ToF reads and conservative freshness run directly in core:device. No PC relay.
+- Reworked the initially rejected dashboard into a graphite camera-first page; raw grid and connection controls are collapsed. Risk algorithm is unchanged.
+- Both original 8 MB flashes backed up and verified; only app0 flashed. Fixed an observed ToF warm-reset I2C failure with bus release and init retry.
+- Six wireless contract tests and four USB client device tests passed. App/test APK and lint passed (0 errors, 19 warnings, including intentional local cleartext). Package/version/signature/16 KB checks passed; installed upgrade preserves data.
+- S24 Ultra hotspot, 45 seconds after warmup: 1295/1295 usable snapshots, 919 distinct camera frames, 230 ToF frames. Camera age upper bound median/P95 95/203 ms; ToF readout age bound 177/310 ms. Clock error bound 5 ms. These are client observation ages, not screen, speech or exposure-sync measurements.
+- First next-day test failed because hotspot was off; preserved that result. After enabling it, discovery and direct transport passed. ToF reset clears old output and recovery after the firmware fix was observed on the phone.
+- Evidence, private config, original firmware backups and archived APK remain in ignored hardware-bringup artifacts; no credentials committed. TalkBack and real-world accuracy not tested. User dashboard retained, no ADB reverse used.
 
 ## 2026-09-22 — v10.11.0 hardware obstacle showcase
 
-- Added an opt-in page in the latest default App with a read-only localhost USB
-  bridge, native RGB/8x8 ToF display, full-zone corridor baseline and throttled TTS.
-  Geometry lives in core:assist, transport in core:device, App owns presentation.
-- Chose the basic support-intersection readout rather than the stronger calibrated
-  or learned research arms. Hardware FOV, uncertainty and coarse alignment remain
-  engineering assumptions, with invalid/stale input and nonalerts kept UNKNOWN.
-- User authorized switching XIAO back to 8x8; backed up the complete old 8 MB
-  Flash, changed only app0, and verified 80 continuous 64-zone frames. Atom unchanged.
-- Eight JVM tests and four on-device client tests passed. Debug and test APK builds
-  plus lint passed (0 errors / 18 existing-surface warnings). Package/version/signature
-  and 16 KB alignment verified; Samsung SM-S9280 upgraded in place to 39/10.11.0.
-- Bounded live collection saved 4242 JPEG / 919 ToF with no transport gaps/errors.
-  Screenshots verified advancing live data, disconnect UNKNOWN, reconnection and
-  explicit silent replay. TTS engine ready; audibility and alert accuracy not tested.
-  Dynamic accessibility dump failed twice; screenshot evidence remains diagnostic.
-- Archived APK SHA256: `79DE5B2869D95FB9C0E8B08286F799A97DF1AA215B394CC8A05F729676C2C0E2`.
-  [Usage and evidence](docs/HARDWARE_OBSTACLE_DEMO.md). Owned capture/forwarding and
-  foreground App session released; existing dashboard retained for replay.
+- Added an opt-in page in the latest default App with a read-only localhost USB bridge, native RGB/8x8 ToF display, full-zone corridor baseline and throttled TTS. Geometry lives in core:assist, transport in core:device, App owns presentation.
+- Chose the basic support-intersection readout rather than the stronger calibrated or learned research arms. Hardware FOV, uncertainty and coarse alignment remain engineering assumptions, with invalid/stale input and nonalerts kept UNKNOWN.
+- User authorized switching XIAO back to 8x8; backed up the complete old 8 MB Flash, changed only app0, and verified 80 continuous 64-zone frames. Atom unchanged.
+- Eight JVM tests and four on-device client tests passed. Debug and test APK builds plus lint passed (0 errors / 18 existing-surface warnings). Package/version/signature and 16 KB alignment verified; Samsung SM-S9280 upgraded in place to 39/10.11.0.
+- Bounded live collection saved 4242 JPEG / 919 ToF with no transport gaps/errors. Screenshots verified advancing live data, disconnect UNKNOWN, reconnection and explicit silent replay. TTS engine ready; audibility and alert accuracy not tested. Dynamic accessibility dump failed twice; screenshot evidence remains diagnostic.
+- Archived APK SHA256: `79DE5B2869D95FB9C0E8B08286F799A97DF1AA215B394CC8A05F729676C2C0E2`. [Usage and evidence](docs/HARDWARE_OBSTACLE_DEMO.md). Owned capture/forwarding and foreground App session released; existing dashboard retained for replay.
 
 ## Earlier milestones
 

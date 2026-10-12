@@ -11,6 +11,8 @@ This checklist records the bounded implementation for issue [#9](https://github.
 - Redundant selector-container announcements were removed; each actionable option remains an individually labelled radio control.
 - Home mode options now expose an explicit selected/unselected state description.
 
+The conflict repair against master `d40634e3` preserves the current reminder-cadence and measured-warning wording. Both added tests use the current Daily/Frequent option descriptions; the default-flow test still selects Daily before checking Frequent, then restores all five saved preferences in `finally`.
+
 ## Automated evidence
 
 The focused Android Compose coverage is:
@@ -21,7 +23,7 @@ The focused Android Compose coverage is:
   - verifies the settings profile option is clickable, a radio button, and at least 48dp high.
 - `FeatureScreenAccessibilityTest.defaultFlowReflowsHomeControlsForLargeFont`
   - renders the default flow at `fontScale = 1.9` in a 360dp-wide window;
-  - verifies the primary assist action and Sensitive mode remain displayed, clickable, and at least 48dp high.
+  - verifies the primary assist action and Frequent reminder cadence remain displayed, clickable, and at least 48dp high.
 
 Run the focused surface with:
 

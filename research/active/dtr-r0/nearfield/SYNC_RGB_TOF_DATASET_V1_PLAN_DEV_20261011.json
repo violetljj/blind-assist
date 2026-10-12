@@ -1,0 +1,142 @@
+{
+  "task": "SYNC_RGB_TOF_DATASET_V1_DEV_20261011",
+  "lane": "EXPLORE_DATASET_CONSTRUCTION_NO_FUSION_TRAINING",
+  "parent_commit": "8c0d1227",
+  "created_utc": "2026-10-10T16:07:58.962435+00:00",
+  "budgets": {
+    "CPU_command_wall_s": 2400,
+    "GPU_wall_s": 600,
+    "download_bytes": 3000000000
+  },
+  "allocation": {
+    "source_CPU_s": 1000,
+    "synthesis_CPU_s": 600,
+    "inference_setup_CPU_s": 250,
+    "independent_audit_CPU_s": 200,
+    "primary_integration_CPU_s": 350,
+    "GPU_inference_s": 550,
+    "GPU_reserved_s": 50
+  },
+  "source": {
+    "order": "Official raw metadata CSV physical row order, is_in_upsampling True, first previously unconsumed visit; all historical consumed capture IDs propagated through metadata to visits; first time-complete capture per visit, no alternative capture after label gate failure",
+    "target_visits": 12,
+    "split_by_accepted_ordinal": [
+      "train",
+      "train",
+      "train",
+      "train",
+      "train",
+      "train",
+      "cal",
+      "cal",
+      "eval",
+      "eval",
+      "eval",
+      "eval"
+    ],
+    "old6": "permanently development; exclude all their visits",
+    "windows": "First two chronological non-overlapping16-grid-point windows meeting native RGB/depth/K time completeness; choose and seal window times before any labels. No alternative windows after label gate fail.",
+    "grid_dt_s": 0.2,
+    "grid_origin": "First common native RGB/depth/K timestamp of capture",
+    "nearest_RGB_max_delta_s": 0.1,
+    "nearest_FARO_max_delta_s": 0.1,
+    "missing_FARO": "Preserve grid frame with ToF UNKNOWN; never delete, duplicate or impute",
+    "eligibility": "Temporal completeness only; FARO validity or coverage does not select windows",
+    "gates": {
+      "near_POS_min": 16,
+      "midfar_strict_FREE_min": 32
+    },
+    "gate_scope": "Combined two windows per visit, reference-only; preserve rejected candidates and never relax thresholds",
+    "assets": "HEAD every relevant archive/trajectory before its download; log full compressed asset bytes plus planned Range bytes. Existing RangeZIP select required members; enforce global actual transferred byte cap incl retries. If budget cannot support next whole candidate, stop/reduce count without split reassignment."
+  },
+  "geometry": {
+    "coincident": true,
+    "same_axis": true,
+    "FOV_deg": 45,
+    "zones": [
+      8,
+      8
+    ],
+    "bins": 16,
+    "bin_width_m": 0.3002784,
+    "subray_per_zone": [
+      16,
+      16
+    ],
+    "input": "FARO registered2.5D first-visible depth, no native hole filling",
+    "time": "FARO/source pose -> world -> grid pose; readout peak3D grid -> RGB pose -> native27query; retain RGB,FARO,trajectory residuals",
+    "limitations": "FARO independent capture but official native agreement selection bias; constant reflectance/plane-normal proxy; no intensity"
+  },
+  "arms": [
+    {
+      "name": "faro_rho030_ambient1",
+      "rho": 0.3,
+      "ambient_scale": 1
+    },
+    {
+      "name": "faro_rho015_ambient1",
+      "rho": 0.15,
+      "ambient_scale": 1
+    },
+    {
+      "name": "faro_rho060_ambient1",
+      "rho": 0.6,
+      "ambient_scale": 1
+    },
+    {
+      "name": "faro_rho030_ambient3",
+      "rho": 0.3,
+      "ambient_scale": 3
+    },
+    {
+      "name": "native_circular_upper",
+      "rho": 0.3,
+      "ambient_scale": 1,
+      "scope": "circular optimistic diagnostic, not actual ToF capability"
+    }
+  ],
+  "noise": {
+    "K": 2,
+    "seed_rule": "SeedSequence([20261011, accepted_visit_ordinal, window_index, frame_index, noise_index]); same seed across arms, new sample distribution per expectation; no replicate treated as independent scene"
+  },
+  "readout": {
+    "frozen_seal_sha256": "8f39b21ef12f1daf0e89c39990c094d716718c49aafc910ac558f04fd1702f47",
+    "tof": "Exact frozen seal thresholds SNR>=3,coverage>=.75,16 pixels; observable signed peak and sampled background",
+    "DAV_cut": 0.24403834342956543,
+    "Uni_cut": 0.09616100788116455,
+    "RGB": "DAVrawR0>=.8m; UnirawR0near; all accepted frames raw inference, no fit; public registered grid, invalid model pixels never remove denominators",
+    "fusion": "fixed pixel-levelOR/AND(ToF, bandedRGB) then16pixel; same native POS witness restriction"
+  },
+  "eval": {
+    "allowed": [
+      "source gate reference denominators",
+      "frames/queries/timing",
+      "hashes and isolation",
+      "input CNH synthesis",
+      "RGB raw inference sealed separately",
+      "M3/S raw inference sealed only if no method aggregation"
+    ],
+    "forbidden": [
+      "W/POS",
+      "F/FREE",
+      "UNKNOWN method support",
+      "peak-vs-native method error",
+      "HEAD/BODY alarm rates",
+      "any method summary or cutoff tuning"
+    ],
+    "output": "Separate sealed eval directories; metrics CLI refuses eval. Do not load eval raw prediction payloads for analysis; hashes only."
+  },
+  "M3_S": "Frozen weights/features/thresholds, original HEAD/BODY only; train/cal alarm rates descriptive per window/arm/K, no contact accuracy. Eval raw output only without summary if budget, else NOT_RUN. Batch model loads to respect GPU budget.",
+  "decision_check": "At least32midfarFREE per accepted visit; minima are query counts, not statistical validation.16nearPOS and32FREE may fail early fixed windows: record deficits, no gate relaxation. No method selection occurs.",
+  "stop": "Complete scoped delivery or cumulative budget; preserve partial outputs and failures, report gaps. No protected480/test; no model training; release GPU.",
+  "deliverables": [
+    "dataset_manifest.json",
+    "visit_split.csv",
+    "candidate_gate_records",
+    "PLAN and original license receipts",
+    "train_cal_description",
+    "eval_integrity_receipt without methods",
+    "independent_audit",
+    "report/CURRENT/RUNS and normal push master"
+  ]
+}

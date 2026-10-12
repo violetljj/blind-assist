@@ -29,11 +29,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SwitchDefaults
@@ -47,7 +51,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.draw.clip
@@ -71,6 +74,12 @@ import com.linnan.blindassist.device.glasses.HardwareEvidenceSummary
 import com.linnan.blindassist.device.glasses.HardwareEvidenceClip
 import com.linnan.blindassist.device.glasses.HardwareEvidenceEvent
 import com.linnan.blindassist.device.glasses.HardwareWifiDemoClient
+import com.linnan.blindassist.preferences.UserPreferences
+import com.linnan.blindassist.alert.AlertProfile
+import com.linnan.blindassist.localization.AppLanguage
+import com.linnan.blindassist.feedback.HardwareFeedbackSettings
+import com.linnan.blindassist.feedback.SpeechStyle
+import com.linnan.blindassist.feedback.VibrationStrength
 import com.linnan.blindassist.feedback.HardwareDemoFeedbackPolicy
 import com.linnan.blindassist.feedback.HardwareDemoFeedbackEvent
 import com.linnan.blindassist.device.glasses.HardwareWifiDiscovery
@@ -108,7 +117,8 @@ class HardwareDemoActivity : ComponentActivity() {
     private var lastResultAt = 0L
     private var vibrationEnabled by mutableStateOf(true)
     private val vibrator by lazy { getSystemService(Vibrator::class.java) }
-    private val feedbackPolicy = HardwareDemoFeedbackPolicy()
+    private var feedbackSettings = HardwareFeedbackSettings()
+    private var feedbackPolicy = HardwareDemoFeedbackPolicy()
     private var obstacleSpeech = false
     private var previousCameraUsable: Boolean? = null
     private val recorder by lazy { HardwareEvidenceRecorder(BuildConfig.VERSION_NAME) }
@@ -151,20 +161,31 @@ class HardwareDemoActivity : ComponentActivity() {
         speechEnabled = preferences.getBoolean("speech", true)
         localEnabled = preferences.getBoolean("a_local", true)
         vibrationEnabled = preferences.getBoolean("vibration", true)
+        feedbackSettings = HardwareFeedbackSettings(
+            AlertProfile.fromStorageValue(preferences.getString("alert_profile", null)),
+            SpeechStyle.fromStorageValue(preferences.getString("speech_style", null)),
+            VibrationStrength.fromStorageValue(preferences.getString("vibration_strength", null)),
+            AppLanguage.fromStorageValue(preferences.getString("language", null)),
+            preferences.getBoolean("care", false),
+        )
+        feedbackPolicy = HardwareDemoFeedbackPolicy(feedbackSettings.reminderIntervalMs)
         pendingExport = savedInstanceState?.getString("hardware_export_id")
         refreshRecordings()
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                val result = tts?.setLanguage(Locale.SIMPLIFIED_CHINESE)
+                val result = tts?.setLanguage(if (feedbackSettings.language == AppLanguage.EN) Locale.ENGLISH else Locale.SIMPLIFIED_CHINESE)
                 ttsReady = result != null && result >= TextToSpeech.LANG_AVAILABLE
                 if (ttsReady) feedbackPolicy.reset()
             }
-            speechStatus = if (ttsReady) "中文语音可用" else "中文语音不可用，请查看屏幕"
+            speechStatus = if (feedbackSettings.language == AppLanguage.EN) {
+                if (ttsReady) "English speech ready" else "English speech unavailable; check screen or vibration"
+            } else if (ttsReady) "中文语音可用" else "中文语音不可用，请查看屏幕或震动"
         }
         setContent {
             BlindAssistTheme {
                 HardwareDemoScreen(
                     snapshot = snapshot,
+                    feedbackSettings = feedbackSettings,
                     connectionStatus = connectionStatus,
                     speechEnabled = speechEnabled,
                     localEnabled = localEnabled,
@@ -209,12 +230,14 @@ class HardwareDemoActivity : ComponentActivity() {
                     onSpeechChanged = {
                         speechEnabled = it
                         preferences.edit().putBoolean("speech", it).apply()
+                        UserPreferences(this).setSpeechEnabled(it)
                         feedbackPolicy.reset()
                         if (!it) tts?.stop()
                     },
                     onVibrationChanged = {
                         vibrationEnabled = it
                         preferences.edit().putBoolean("vibration", it).apply()
+                        UserPreferences(this).setVibrationEnabled(it)
                         feedbackPolicy.reset()
                         if (!it) vibrator?.cancel()
                     },
@@ -343,7 +366,7 @@ class HardwareDemoActivity : ComponentActivity() {
             else -> null
         } else null
         if (result.mode == "live" && result.tofUsable) previousCameraUsable = result.cameraUsable
-        if (event != null) emitFeedback(event, cameraEvent?.spokenText?.plus("，") ?: "")
+        if (event != null) emitFeedback(event, cameraEvent?.let { feedbackSettings.text(it) }?.plus(". ") ?: "")
         else cameraEvent?.let { emitFeedback(it) }
     }
 
@@ -352,22 +375,18 @@ class HardwareDemoActivity : ComponentActivity() {
         obstacleSpeech = event !in setOf(HardwareDemoFeedbackEvent.CONNECTION_LOST,
             HardwareDemoFeedbackEvent.RECOVERED, HardwareDemoFeedbackEvent.CAMERA_ONLY,
             HardwareDemoFeedbackEvent.CAMERA_RECOVERED)
-        val text = prefix + event.spokenText
+        val text = prefix + feedbackSettings.text(event)
         var speechQueued = false
         var vibrationRequested = false
         if (speechEnabled && ttsReady) {
             val result = tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "hardware-${event.name}")
             speechQueued = result == TextToSpeech.SUCCESS
-            if (result != TextToSpeech.SUCCESS) speechStatus = "语音播放失败，请查看屏幕或震动"
+            if (result != TextToSpeech.SUCCESS) speechStatus = if (feedbackSettings.language == AppLanguage.EN) "Speech failed; check screen or vibration" else "语音播放失败，请查看屏幕或震动"
         }
         if (vibrationEnabled && vibrator?.hasVibrator() == true) {
-            val pattern = when (event) {
-                HardwareDemoFeedbackEvent.CONNECTION_LOST -> longArrayOf(0, 250, 120, 250)
-                HardwareDemoFeedbackEvent.CLOSER -> longArrayOf(0, 120, 80, 120)
-                HardwareDemoFeedbackEvent.RECOVERED -> longArrayOf(0, 80)
-                else -> longArrayOf(0, 180)
-            }
-            vibrator?.vibrate(VibrationEffect.createWaveform(pattern, -1))
+            val pattern = feedbackSettings.vibrationPattern(event)
+            vibrator?.vibrate(VibrationEffect.createWaveform(pattern,
+                feedbackSettings.vibrationAmplitudes(pattern), -1))
             vibrationRequested = true
         }
         recorder.recordEvent(HardwareEvidenceEvent(SystemClock.elapsedRealtime(), event.name, text, speechQueued, vibrationRequested))
@@ -556,16 +575,20 @@ class HardwareDemoActivity : ComponentActivity() {
     }
 }
 
-private val DemoBackground = Color(0xFF101112)
-private val DemoPanel = Color(0xFF1A1C1D)
-private val DemoInk = Color(0xFFF2F1ED)
-private val DemoMuted = Color(0xFF9B9E9E)
-private val DemoTeal = Color(0xFFB6C9BE)
-private val DemoAmber = Color(0xFFE9BD87)
+// Reuse the same theme as home, settings and collection.
+private val DemoBackground: Color @Composable get() = MaterialTheme.colorScheme.background
+private val DemoPanel: Color @Composable get() = MaterialTheme.colorScheme.surface
+private val DemoInk: Color @Composable get() = MaterialTheme.colorScheme.onSurface
+private val DemoMuted: Color @Composable get() = MaterialTheme.colorScheme.onSurfaceVariant
+private val DemoTeal: Color @Composable get() = MaterialTheme.colorScheme.primary
+private val DemoAmber: Color @Composable get() = MaterialTheme.colorScheme.tertiary
+private val DemoHairline: Color @Composable get() = MaterialTheme.colorScheme.outline
+private val DemoAlertSurface: Color @Composable get() = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.1f)
 
 @Composable
 private fun HardwareDemoScreen(
     snapshot: HardwareDemoSnapshot?, connectionStatus: String,
+    feedbackSettings: HardwareFeedbackSettings,
     localEnabled: Boolean, onLocalChanged: (Boolean) -> Unit,
     speechEnabled: Boolean, speechStatus: String, vibrationEnabled: Boolean, wireless: Boolean,
     cameraEndpoint: String, tofEndpoint: String,
@@ -575,122 +598,131 @@ private fun HardwareDemoScreen(
     onHotspotSettings: () -> Unit, onSpeechChanged: (Boolean) -> Unit,
     onVibrationChanged: (Boolean) -> Unit, onMore: () -> Unit
 ) {
+    val english = feedbackSettings.language == AppLanguage.EN
+    fun label(zh: String, en: String) = if (english) en else zh
     val replay = snapshot?.mode == "replay"
     val usable = snapshot?.tofUsable == true
     val cameraUsable = snapshot?.cameraUsable == true
     val alert = usable && snapshot?.decision?.alert == true
+    val receiptTiming = snapshot?.tofTimingBasis == "host_receipt_only"
     val accent = if (alert) DemoAmber else DemoTeal
+    val nearestMm = snapshot?.decision?.nearestMm
+    val rangeLabel = remember(usable, nearestMm) {
+        if (usable && nearestMm != null) String.format(Locale.US, "%.2f m", nearestMm / 1000.0) else "—"
+    }
     var detailsExpanded by remember { mutableStateOf(false) }
     var connectionExpanded by remember { mutableStateOf(false) }
     var mountExpanded by remember { mutableStateOf(false) }
     Surface(Modifier.fillMaxSize(), color = DemoBackground, contentColor = DemoInk) {
         Column(Modifier.safeDrawingPadding().verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(22.dp)) {
+            .padding(horizontal = 20.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("BLINDASSIST", color = DemoMuted, fontSize = 10.sp, letterSpacing = 2.sp)
-                    Text("前视感知", fontSize = 27.sp, lineHeight = 38.sp, fontWeight = FontWeight.Medium)
+                    Text(label("前视辅助", "Visual assistance"), fontSize = 27.sp, lineHeight = 38.sp, fontWeight = FontWeight.Medium)
                 }
                 TextButton(onClick = onMore, modifier = Modifier.testTag("hardware_demo_more")) {
-                    Text("结束辅助", color = DemoMuted, fontSize = 12.sp)
+                    Text(label("结束辅助", "End assistance"), color = DemoMuted, fontSize = 12.sp)
                 }
             }
-            Box(Modifier.fillMaxWidth().aspectRatio(0.94f).clip(RoundedCornerShape(5.dp))
-                .background(DemoPanel)) {
-                val bitmap = snapshot?.image?.takeIf { cameraUsable }
-                if (bitmap != null) {
-                    // Fit preserves the camera's full field of view; no decorative crop or fake detections.
-                    Image(bitmap.asImageBitmap(), "实物相机视野", Modifier.fillMaxWidth()
-                        .aspectRatio(4f / 3f).align(Alignment.Center), contentScale = ContentScale.Fit)
-                } else {
-                    Column(Modifier.align(Alignment.Center).testTag("hardware_demo_empty_image"),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(if (replay) "此时未记录画面" else if (usable) "仅测距模式" else "等待实时画面", fontSize = 18.sp, color = DemoInk)
-                        Text(if (replay) "历史测距可在下方查看" else if (usable) "相机不可用 · ToF 仍在工作" else "请连接相机与 ToF", fontSize = 12.sp, color = DemoMuted)
-                    }
-                }
-                Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(
-                    Color.Black.copy(alpha = 0.45f), Color.Transparent, Color.Black.copy(alpha = 0.8f)))))
-                Row(Modifier.align(Alignment.TopStart).fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically) {
-                    Box(Modifier.size(5.dp).background(if (usable) accent else DemoMuted, RoundedCornerShape(3.dp)))
-                    Text(when { replay -> "  REPLAY / 静音"; usable && cameraUsable -> "  LIVE VIEW";
-                        usable -> "  TOF ONLY / 仅测距"; cameraUsable -> "  CAMERA ONLY / 仅画面"; else -> "  OFFLINE" },
-                        color = DemoInk, fontSize = 10.sp, letterSpacing = 1.sp,
-                        modifier = Modifier.weight(1f).testTag("hardware_demo_mode"))
-                    Text(if (wireless) "Wi-Fi" else "USB", color = DemoInk, fontSize = 10.sp)
-                }
-                Row(Modifier.align(Alignment.BottomStart).fillMaxWidth().padding(18.dp),
-                    verticalAlignment = Alignment.Bottom) {
-                    Column(Modifier.weight(1f)) {
-                        Text("最近触发测距", fontSize = 10.sp, color = DemoMuted, letterSpacing = 1.sp)
-                        Row(verticalAlignment = Alignment.Bottom) {
-                            Text(if (usable) snapshot?.decision?.nearestMm?.let {
-                                String.format(Locale.US, "%.2f", it / 1000.0) } ?: "—" else "—",
-                                fontSize = 46.sp, lineHeight = 54.sp, fontWeight = FontWeight.Light)
-                            Text(" m", fontSize = 18.sp, color = DemoMuted, modifier = Modifier.padding(bottom = 7.dp))
-                        }
-                    }
-                    Column(horizontalAlignment = Alignment.End, modifier = Modifier.padding(bottom = 5.dp)) {
-                        Text(if (usable) "${snapshot!!.decision.validZones} / 64" else "— / 64",
-                            fontSize = 17.sp, fontWeight = FontWeight.Medium)
-                        Text("有效测距区域", fontSize = 10.sp, color = DemoMuted)
-                    }
-                }
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp))
+                .background(if (alert) DemoAlertSurface else DemoPanel).padding(18.dp),
+                horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.size(3.dp, 44.dp).background(if (alert) DemoAmber else DemoMuted))
                 Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
                     Text(when {
-                        !usable -> "等待有效感知"
-                        alert && replay -> "回放 · 前方可能有障碍"
-                        alert -> "前方可能有障碍"
-                        else -> "当前未触发提示"
-                    }, fontSize = 20.sp, lineHeight = 27.sp, fontWeight = FontWeight.Medium,
+                        !usable -> label("暂时无法判断", "Assessment unavailable")
+                        alert && replay -> label("回放 · 前方可能有障碍", "Replay · Possible obstacle ahead")
+                        alert -> label("前方可能有障碍", "Possible obstacle ahead")
+                        else -> label("当前未触发提示", "No alert currently")
+                    }, fontSize = if (feedbackSettings.care) 28.sp else 20.sp,
+                        lineHeight = if (feedbackSettings.care) 36.sp else 27.sp, fontWeight = FontWeight.Medium,
                         modifier = Modifier.testTag("hardware_demo_decision"))
-                    Text(if (!usable || !cameraUsable) connectionStatus else "未提示不代表可通行 · 请以实际环境为准",
-                        color = DemoMuted, fontSize = 11.sp, lineHeight = 16.sp)
+                    Text(when {
+                        replay && !usable -> label("此时未保存有效测距", "No valid range data saved at this point")
+                        !usable -> label("请检查 ToF 供电与网络，点击下方重新连接", "Check ToF power and network, then reconnect below")
+                        !cameraUsable -> label("相机暂不可用，当前仅提供测距提醒", "Camera unavailable; range reminders remain active")
+                        else -> label("未提示不代表可通行 · 请以实际环境为准", "No alert does not mean the path is clear")
+                    },
+                        color = DemoMuted, fontSize = 13.sp, lineHeight = 20.sp)
                 }
             }
-            Box(Modifier.fillMaxWidth().height(1.dp).background(Color(0xFF303233)))
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text("A+LOCAL 实验模式", fontSize = 14.sp)
-                    Text(if (replay) "回放使用保存的判决" else if (localEnabled) "未完成实物标定 · 模拟效果不代表实机效果" else "当前使用基础 ToF",
-                        color = DemoMuted, fontSize = 10.sp)
-                }
-                Switch(localEnabled, onLocalChanged, enabled = !replay,
-                    modifier = Modifier.testTag("hardware_demo_local").semantics { contentDescription = "A+LOCAL 实验模式" },
-                    colors = SwitchDefaults.colors(checkedThumbColor = DemoBackground,
-                        checkedTrackColor = DemoTeal, uncheckedTrackColor = DemoPanel))
-            }
-            if (localEnabled || replay) Text(snapshot?.status ?: connectionStatus,
-                color = DemoMuted, fontSize = 10.sp,
-                modifier = Modifier.testTag("hardware_demo_algorithm_status"))
+            Text(label("持续提醒间隔 ${feedbackSettings.reminderIntervalMs / 1000} 秒 · ${feedbackSettings.style.displayName}语音 · ${feedbackSettings.strength.displayName}震动",
+                "Repeat every ${feedbackSettings.reminderIntervalMs / 1000}s · ${feedbackSettings.style.displayName(AppLanguage.EN)} speech · ${feedbackSettings.strength.displayName(AppLanguage.EN)} vibration"),
+                color = DemoMuted, fontSize = 12.sp, modifier = Modifier.testTag("hardware_demo_feedback_settings"))
             if ((!usable || !cameraUsable) && !replay) {
-                TextButton(onClick = onDiscover, modifier = Modifier.testTag("hardware_demo_reconnect")) {
-                    Text(if (wireless) "重新发现并连接" else "重新连接 USB 中转", color = DemoTeal)
+                Button(onClick = onDiscover, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("hardware_demo_reconnect"),
+                    shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = DemoTeal)) {
+                    Text(if (wireless) label("重新发现并连接", "Find devices and reconnect") else label("重新连接 USB 中转", "Reconnect USB relay"), color = MaterialTheme.colorScheme.onPrimary)
+                }
+            }
+            Surface(shape = RoundedCornerShape(24.dp), color = DemoPanel,
+                border = BorderStroke(1.dp, DemoHairline)) {
+                Column {
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Box(Modifier.size(7.dp).background(if (usable) accent else DemoMuted, RoundedCornerShape(4.dp)))
+                        Text(when { replay -> label("  回放 · 静音", "  Replay · Muted")
+                            usable && cameraUsable -> label("  设备已连接", "  Devices connected")
+                            usable -> label("  仅测距模式", "  Range only")
+                            cameraUsable -> label("  仅画面 · 测距不可用", "  Camera only · Range unavailable")
+                            else -> label("  等待设备连接", "  Waiting for devices") },
+                            color = DemoInk, fontSize = 13.sp,
+                            modifier = Modifier.weight(1f).testTag("hardware_demo_mode"))
+                        Text(if (wireless) "Wi-Fi" else "USB", color = DemoMuted, fontSize = 12.sp)
+                    }
+                    Box(Modifier.fillMaxWidth().aspectRatio(4f / 3f).background(MaterialTheme.colorScheme.surfaceVariant)) {
+                        val bitmap = snapshot?.image?.takeIf { cameraUsable }
+                        if (bitmap != null) {
+                            // Full field of view, without overlays or per-frame decorative gradients.
+                            Image(bitmap.asImageBitmap(), label("实物相机视野", "Live camera view"),
+                                Modifier.fillMaxSize(), contentScale = ContentScale.Fit)
+                        } else {
+                            Column(Modifier.align(Alignment.Center).padding(20.dp).testTag("hardware_demo_empty_image"),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Text(if (replay) label("此时未记录画面", "No image saved") else if (usable)
+                                    label("仅测距模式", "Range only") else label("等待实时画面", "Waiting for live view"),
+                                    fontSize = 18.sp, color = DemoInk)
+                                Text(if (replay) label("历史测距可在下方查看", "Saved ranges are available below") else if (usable)
+                                    label("相机不可用 · ToF 仍在工作", "Camera unavailable · ToF is active") else
+                                    label("请连接相机与 ToF", "Connect the camera and ToF"), fontSize = 12.sp, color = DemoMuted)
+                            }
+                        }
+                    }
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(label("最近触发测距", "Nearest triggered range"), fontSize = 12.sp, color = DemoMuted)
+                            Text(rangeLabel,
+                                fontSize = 28.sp, lineHeight = 36.sp, fontWeight = FontWeight.Medium)
+                        }
+                        Column(horizontalAlignment = Alignment.End) {
+                            Text(if (usable) "${snapshot!!.decision.validZones} / 64" else "— / 64",
+                                fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                            Text(label("有效测距区域", "Valid range zones"), fontSize = 12.sp, color = DemoMuted)
+                        }
+                    }
                 }
             }
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("语音提示", fontSize = 14.sp)
-                    Text(if (replay) "回放静音" else if (!speechEnabled) "已关闭" else speechStatus,
-                        color = DemoMuted, fontSize = 10.sp)
+                    Text(label("语音提示", "Speech"), fontSize = 14.sp)
+                    Text(if (replay) label("回放静音", "Replay is muted") else if (!speechEnabled) label("已关闭", "Off") else speechStatus,
+                        color = DemoMuted, fontSize = 12.sp)
                 }
                 Switch(speechEnabled && !replay, onSpeechChanged, enabled = !replay,
-                    modifier = Modifier.testTag("hardware_demo_speech").semantics { contentDescription = "语音提示" },
+                    modifier = Modifier.testTag("hardware_demo_speech").semantics { contentDescription = label("语音提示", "Speech") },
                     colors = SwitchDefaults.colors(checkedThumbColor = DemoBackground,
                         checkedTrackColor = DemoTeal, uncheckedTrackColor = DemoPanel))
             }
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("震动提示", fontSize = 14.sp)
-                    Text(if (replay) "回放不震动" else "障碍事件与连接中断提醒", color = DemoMuted, fontSize = 10.sp)
+                    Text(label("震动提示", "Vibration"), fontSize = 14.sp)
+                    Text(if (replay) label("回放不震动", "No vibration during replay") else label("障碍事件与连接中断提醒", "Obstacle and connection alerts"), color = DemoMuted, fontSize = 12.sp)
                 }
                 Switch(vibrationEnabled && !replay, onVibrationChanged, enabled = !replay,
-                    modifier = Modifier.testTag("hardware_demo_vibration").semantics { contentDescription = "震动提示" },
+                    modifier = Modifier.testTag("hardware_demo_vibration").semantics { contentDescription = label("震动提示", "Vibration") },
                     colors = SwitchDefaults.colors(checkedThumbColor = DemoBackground,
                         checkedTrackColor = DemoTeal, uncheckedTrackColor = DemoPanel))
             }
@@ -729,6 +761,20 @@ private fun HardwareDemoScreen(
                 }
             }
             if (detailsExpanded) {
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("A+LOCAL 实验模式", fontSize = 14.sp)
+                        Text(if (receiptTiming) "H3 当前使用基础测距；未启用跨设备时序融合" else if (replay) "回放使用保存的判决" else if (localEnabled) "未完成实物标定 · 模拟效果不代表实机效果" else "当前使用基础 ToF",
+                            color = DemoMuted, fontSize = 10.sp)
+                    }
+                    Switch(localEnabled && !receiptTiming, onLocalChanged, enabled = !replay && !receiptTiming,
+                        modifier = Modifier.testTag("hardware_demo_local").semantics { contentDescription = "A+LOCAL 实验模式" },
+                        colors = SwitchDefaults.colors(checkedThumbColor = DemoBackground,
+                            checkedTrackColor = DemoTeal, uncheckedTrackColor = DemoPanel))
+                }
+                if (localEnabled || replay) Text(snapshot?.status ?: connectionStatus,
+                    color = DemoMuted, fontSize = 10.sp,
+                    modifier = Modifier.testTag("hardware_demo_algorithm_status"))
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text("ToF / 8 × 8", fontSize = 14.sp, letterSpacing = 1.sp)
                     if (usable && snapshot != null) TofGrid(snapshot)
@@ -770,7 +816,7 @@ private fun TofGrid(snapshot: HardwareDemoSnapshot) {
                         (1.0 - cell!!.rangeMm / 4000.0).coerceIn(0.0, 1.0).toFloat() else 0f
                     val fill = when {
                         support -> DemoAmber
-                        hasRawRange -> lerp(Color(0xFF112838), Color(0xFF256E6B), intensity)
+                        hasRawRange -> lerp(Color(0xFFE9F1ED), Color(0xFFBDD7CA), intensity)
                         else -> DemoBackground
                     }
                     Box(modifier = Modifier.weight(1f).height(if (rows == 8) 17.dp else 36.dp)
@@ -779,7 +825,7 @@ private fun TofGrid(snapshot: HardwareDemoSnapshot) {
                         // remain in the expandable trigger list instead of crowding each cell.
                         Text(if (hasRawRange) cell!!.rangeMm.toInt().toString() else "—",
                             fontSize = if (cols == 8) 9.sp else 12.sp, lineHeight = 14.sp,
-                            color = if (support) DemoBackground else DemoTeal.copy(alpha = 0.65f + intensity * 0.35f),
+                            color = if (support) DemoBackground else DemoInk,
                             fontWeight = FontWeight.Medium)
                     }
                 }

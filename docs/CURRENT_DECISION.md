@@ -1,37 +1,40 @@
 # 当前研究决定
 
-更新：2026-10-02。主线：盲杖互补的前视障碍感知。冻结v5与回放已完成；用户新授权持续推进ToF相关突破，开展Development机制探索。
+更新：2026-10-11。主线为盲杖互补前视感知，M3和A+LOCAL保留；原5格局部融合与L2保留。
 
-Status: `L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`（历史保留）；ToF 阶段：`V5_FROZEN_COMPLETE / HARDWARE_DEFERRED`。
+RGB [分带混合评价](../research/active/dtr-r0/nearfield/RGB_BAND_HYBRID_DEV_20261010.md)完成六新Validation visit各16帧：Uni近带全局ARKcal仅用已消费240帧/2019严格FREE、全带5%封存cut0.0385859m，DAV中远沿用pooled304 cut0.2440383m。混合近W1→48/159、6/6capture改善，但FREE1→29/694（4.18%）超过预声明绝对2%（最多13），未采用混合，维持DAV2 Indoor Large raw R0、RGB≥0.8m/近带ToF。Uni pooled304漂移对照cut0.0961610为W27/159、FREE11/694（1.59%）；ARKcal放宽带来+21W/+18FREE，不据eval换主切点。中/远W208/634、401/606，FREE0/208、0/36，两个混合与DAV逐query全字段一致（3456次），属结构保留。双模型驻留689.15M参数，热态合计中位0.271s/P950.335s；仅部署参考，GPU已释放。独立native/校准/逐query复算PASS；新近带描述曲线也有交叉，仅Development与近POS覆盖富集，非实机/安全确认。旧[同FREE排序描述](../research/active/dtr-r0/nearfield/RGB_MATCHED_FREE_ARKIT_CAL_DEV_20261010.md)阶段2stop及所有旧失败/冻结对照保留。
 
-## 当前决定
+[融合确认v4](../research/active/dtr-r0/nearfield/SYNC_FUSION_CONFIRM_V4_DEV_20261011.md)完成预注册，协议`270abc0a`在新数据与交叉拟合前提交并推送；判据明确取自v3同FREE事后分析`7dc9bbba`，原v3 FAIL及数字保留。冻结v3 D′三权重，旧30visit五折15临时模型只生成cal折外分数，加新cal4；六臂混合池15切点/209957ties先封存，新eval16一次OPEN。**主中带低误报排序PASS**：归一化pAUC D′0.76941、RGB0.45021、OR0.56983，D′−RGB+31.920pp CI[16.996,44.803]、D′−OR+19.958pp [5.494,38.464]，两项2000/2000 visit重抽样有效。部署中W/F：D′2538/48、RGB1810/38、OR2178/26（POS2873/FREE866），对RGB/OR未双向占优；半循环cal→eval F率D′4.458→5.543%、RGB5→4.388%，同v4eval上原RGB切点10.970%。OOF中带有限FREE分数比冻结训练内均值高0.04237，不做映射。近带区间跨0，远带及ambient×10中带仅描述；FARO仅92过门帧，中/远FREE14/1。协议/OOF/cal/数据/2000曲线bootstrap/部署漂移三阶段独立核验PASS。CPU保守2034.948/2400command-wall、GPU263.192/600s、下载3488869655B/4GB；特征机械续跑失败和一致性核验保留，总额度不扩展。结论限真实RGB＋半合成ToF新visit Development；不做仲裁器，不接入App/M3/5格，不读保护480/test。
 
-多帧留出观测检验判为`NOT_SUPPORTED`。该固定signed共享场代理未通过留帧预测机制检验，不转入报警训练，不追加本配方调参；264次求解均达50步上限而未达设定容差，结论限于固定预算；下一机制需处理表面可见性和距离响应。6个既有训练单位、132场景、40388个共同留出测量格；七帧拟合、末帧预测。六单位等权MSE：一次反投影2.5901、共享场ridge 3.6249、错配姿态ridge 4.3617。正确ridge减反投影1.0348 [0.8899, 1.1469]，减错配-0.7368 [-1.3114, -0.3345]（95%配对单位区间）。[本轮结果](../research/active/dtr-r0/nearfield/CNH_MULTIFRAME_OBSERVATION_PROBE_20261002.md)；原逐帧分支[失败结果](../research/active/dtr-r0/nearfield/CNH_FRAME_HISTORY_RESULTS_20261002.md)保留。
+[融合确认v3](../research/active/dtr-r0/nearfield/SYNC_FUSION_CONFIRM_V3_DEV_20261011.md)完成预注册：协议`ec252d68`在建新数据前提交并推送，实现`95f451e6`在OPEN前提交；旧30visit一次训练、新cal6/eval12共576帧，D′六臂等权HGB/B′混合LR/(b)半循环LR均去显式query位置与带别特征，加最低传感器证据OR门控。21阈值/全部ties封存并独立复算后eval一次OPEN。**主中带确认未通过**。半循环中D′ W1696/2077，vs最佳单源rgb净+87，救213/损126，12visit聚类95%CI-0.308–9.155pp，FREE4/689=0.581%；主FAIL。同口径：D_prime净+87、CI-0.308–9.155pp、FREE4/689=0.581%（FAIL）；B_prime净+86、CI-0.519–9.557pp、FREE8/689=1.161%（FAIL）；audit_b净-91、CI-11.354–2.535pp、FREE0/689=0.000%（FAIL）。次判据：faro_rho030_ambient1近带vsRGB净-2、FREE15/105=14.286%，FAIL；faro_rho030_ambient10近带vsRGB净-58、FREE121/1702=7.109%，FAIL。主中带收益按最低证据拆为both净-16、tof_only净+209、rgb_only净-26、neither净-80；全6臂/3带/3模型无证据支持0，属条件分解非因果。FARO仅eval43过门帧，完整贡献visit见报告，远带只报告、不作主张。9权重/hash、六臂manifest、逐query/四类拆分/2000次bootstrap、四阶段独立核验PASS。下载3,889,213,192B/4GB、GPU211.577/600s、CPU保守2209.665/2400 command-wall s，任务进程释放；18新visit已消费，eval后未改模型或阈值，不读保护480/test。仅真实RGB＋半合成ToF Development，不升级App/M3/5格或作实机/安全结论。
 
-- **M3优先保留；全物体三级真值审计后浅擦碰优势与条件关系不变。** 固定分数/阈值，不重校准：source评估clear NEAR543/4741=11.45%→M3 519/4741=10.95%，context260/3920=6.63%→254/3920=6.48%。原立杆M3的95次clear报警有30次实际属于背景0–10cm擦身，修正65/560=11.61% [8.83,14.34]；不可当负例盲目抑制。原浅/深检出完全不变，M8 context新clear增2.30pp仍超限。仅描述性旧条件复核，旧判读保留；18432查询几何与144旧指标核对通过。横梁原深净少4实际为丢5补1；末帧差异不能直接当漏停，新的实际轨迹序列结果见上。旧序列结果按原定义保留。[审计](../research/active/dtr-r0/nearfield/CNH_ALL_OBJECT_TRUTH_AUDIT_20261002.md)
+[v3同FREE事后分析](../research/active/dtr-r0/nearfield/SYNC_FUSION_V3_MATCHED_FREE_POSTHOC_DEV_20261011.md)满足预写继续规则：半循环中带1%/2%/5% D′见证均≥RGB/OR、2%/5%逐visit为9/12与8/12，建议进入条件仲裁器设计与新visit确认；eval标签oracle仅作排序描述，5%对OR区间跨0，原v3预注册FAIL及数字不改。
 
-- **原目标操作标签、合并清晰预算下，M3新模拟单位比较通过。** 用户授权冻结模型、48校准+96评估新单位，仅把名义伸入扩为−20…+15cm；`b6174d1b`跑前固定主判据。M3浅擦碰145/168对NEAR122/168，差+13.69pp、95%区间[8.28,20.51]；>5cm差+0.12pp、全距离合并清晰误报差−0.52pp，判为`M3_CONFIRMED`。M8单列同规则也通过；M3可接受擦身报警增加，同高度外侧误报略增，整体下降来自另一高度带。新单位仍属已消费Development配方，非保护确认或实机证据。条件序列描述、分母区间及RGB分数见[本轮报告](../research/active/dtr-r0/nearfield/CNH_MARGIN_CONFIRM_RESULTS_20261002.md)。三级真值为伸入必须报、身体外0–10cm只报告、更远或另一高度才计清晰；原外扩guard失败、旧NEAR序列结果和方向扫描`NOT_PATH_LIMITED_AT_<=1DEG`均保留。mask扩展37条0补回/8丢失（`NOT_SUPPORTED`），停止同批15/52条H3单帧归属小试。详见[当前页](../research/active/dtr-r0/CURRENT.md)及[日志](../research/active/dtr-r0/RUNS.md)。
-- **本轮用户授权的 v5 冻结复现通过，保留 NN 加固定五分数平滑 A2。** HEAD/BODY AP 0.8444/0.7914；相对 S2 配对95%区间均高于零，两组均64/64单位胜出。A3补回6个强信号漏检，但guard实际误报未通过预设要求，不采用。见[v5结果](../research/active/dtr-r0/nearfield/CNH_V5_RESULTS_20260928.md)。不扩大记忆网络、不追加调参；用户设备暂不方便，交付历史真实输入回放，现场演示延后。02段整段有物体、无负帧，不能判定误报或选择性；主失败对照改为04恢复背景中HEAD左/中均128/128触发。这里“空”仅指无新增物体，64cm柜面仍在名义查询范围内，不能当真实应用假警率；输入定义与查询语义尚未分离，迁移未成立。
-- **接受 v4 执行偏差并披露。** 六个主检验及 A1/A2 保留为“正式结果，带已披露偏差”；不写成完全符合冻结流程，不事后修改协议。接受理由及恢复时点见[v4结果追加决定](../research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V4_RESULTS_20260926.md)。
-- v1/v2 原失败保留；修复 v2、位置/质量/软先验诊断均为已消费 Development，不追认为正式证据。相机必要性、ToF物理上限与真实效果均未建立。
-- 手机保留 A 基线及原首页→手动开始 A+LOCAL→结束返回首页；UNKNOWN 不等于无障碍。City、保护test、新UE采集和硬件第二阶段仍暂停；已有RGB/深度Development缓存可用于已授权的ToF归属探索。
+历史v2/事后审计/稳健性CV（均已消费）保留：[v2中带净385](../research/active/dtr-r0/nearfield/SYNC_FUSION_CONFIRM_V2_DEV_20261011.md)、[去位置＋门控(b)事后净282](../research/active/dtr-r0/nearfield/SYNC_FUSION_EVIDENCE_AUDIT_DEV_20261011.md)、[含位置六臂HGB探索](../research/active/dtr-r0/nearfield/SYNC_FUSION_ROBUST_DEV_20261011.md)。原结果及失败未回溯改写；本次v3按新visit预注册评价上述组合。
 
-## 保留证据
+历史v1（已消费）：用户2026-10-11决定进入query级同步融合器阶段，主ToF使用扰动native（**半循环**），固定过门FARO作独立几何检验。[同步融合v1](../research/active/dtr-r0/nearfield/SYNC_FUSION_V1_DEV_20261011.md)已完成train6/cal2/eval4隔离、20维HGB主模型与logistic对照、cal近2%/中5%/远10%选点、封存后一次eval。**仅半循环来源支持，独立几何未复现**：native HGB近/中W278/371、497/542，F7/690、9/286，胜最佳单源净20/104；远W511/616但F7/30超标。FARO近W145/163、F8/151，不及RGB146/163、2/151；中远cal FREE=0不可校准。logistic同判读，不替换主模型；HGB近中净收益visit区间跨0。eval已消费，不据此改模型/阈值；下一先补独立几何cal与新visit来源，未升级默认候选。W为query POS命中，与旧像素交集W不可纵比。
 
-|证据|关键数字|边界|
-|---|---|---|
-|v3 / v4 主检验|63 / 64 audit单位，六项均成立；S2−B1-R HEAD/BODY：+0.099/+0.079、+0.092/+0.078|受控仿真相对增益|
-|v4 A1/A2|BODY近事件1990；没报减少5.1–5.4pp。HEAD/BODY近事件1936/1990；单帧及时优势7.4–9.2 / 4.8–7.4pp|相同calib预算，audit实际假警不等|
-|候选与软先验|修复v2：32calib/63audit；中等组合AUC .9保留HEAD/BODY增益37.1%/17.0%|消费Development；非通用候选规格|
+[同步源v1.1](../research/active/dtr-r0/nearfield/SYNC_RGB_TOF_DATASET_V1_1_DEV_20261011.md)的80/80失败（103/384）及几何长尾保留；用户允许半循环小模型探索，不等于合格连续ToF源。FARO train/cal/eval仅57/7/39过门帧，native192/64/128；12权重/36切点封存、4509 eval query/22842判定/四visit bootstrap独立复算PASS。GPU0、无下载，预算及hash见报告。真实RGB+半合成ToF query证据，不是实机/接触/安全效果。
 
-完整主张、分母、来源提交与禁用措辞见[论文主张台账](../research/active/dtr-r0/THESIS_CLAIMS_20260927.md)。
+[远带FREE原因诊断](../research/active/dtr-r0/nearfield/FAR_BAND_FREE_DIAGNOSIS_DEV_20261011.md)完成EXPLORE：v2已消费eval与v1.1全部split，a/b/c各176query；a标签可疑116/176（65.9%），b130/176（73.9%），不支持错标共同主因。a几何风险111/176、双源空参考下DAV侵入33/176；v2 a中71/111由logit支持而DAV区间内不足16点，优先查融合支持语义，再查RGB远带深度。confidence239/239补齐、176抽查图、528query独立复算PASS；GPU0、CPU保守400/1500command-wall。未来参考质量合同仅草案，不改旧标签/阈值/模型或远带失败结论，不读保护480/test。
 
-## 未决与入口
+## ToF当前决定
 
-RGB逼近选择性首轮失败保留；后续局部边缘小试发现理想正确距离可改善净距，但实际粗格对象/表面归属未解决。产品报警工作点仍未决定；短模拟序列及“序列×查询盒”假警不能换算真实提醒负担。真实计数/串扰/安装标定待硬件。确认畅通距离仅作≥10cm、ρ≥0.5、最坏摆放的附录辅助地图。
+2026-10-12 实机：此前所有真实回放的zone顺序与模型上下颠倒，已修复；模型侧加近距串扰/直流干扰随机化后，宿舍pilot首次呈现合理报警（[实机路径候选](../research/active/hardware-bringup/REAL_NUISANCE_DR_M3_DEV_20261011.md)，仅已消费数据，模拟默认不变，待楼道独立录制）。
 
-[公开数据检索](../artifacts.local/work/tof-real-histogram-search-20260927/REPORT.md)：已核实LCSPCData（TMF8820）真实直方图与部分真值的文件目录；THDR3K（L8CH）入口仍未核验。未下载数据；后续文件审计/验证另行决定，不直接迁移为L8CH标定。
+2026-10-11 [signed bias／LOCAL v4合同修复](../research/active/hardware-bringup/LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)预写门槛与独立核验通过，**模拟Development默认候选更新为去bin0＋仪器DR＋新S＋v4合同**；[默认指针](../research/active/dtr-r0/nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)绑定193e4a21既有权重／切点与新合同，不接入App，真实效果待独立录制。主八种确定性控制全链HEAD/BODY各0强0轻/9；相同已消费模拟留出及时净185/1024 vs旧170，far+clear152/1536=9.896% vs168/1536=10.938%，成本291.75 vs344.75，v4成绩不变。实录幕布边界段仍大量报警，不能作误报率或闭合证据；下一尽头>4.5m楼道clear及墙／细杆。以下为旧默认及其原始历史结果，不回溯改193e4a21失败或既有冻结基线。
 
-[路线当前页](../research/active/dtr-r0/CURRENT.md) · [v3结果](../research/active/dtr-r0/nearfield/CNH_TRACK_A_SCALE_V3_RESULTS_20260926.md) · [软先验诊断](../research/active/dtr-r0/nearfield/CNH_SOFT_PRIOR_DEV_20260927.md) · [项目入口](PROJECT_STATE.md)
+用户2026-10-10决定：接受S集成的接触收益与轻提醒取舍，**S955/956/957任务成本HGB均值升为ToF模拟默认候选，未接入App**。冻结6e441f9a的6权重/47维，原5格强档逐slot不变，新增slot仅轻档。旧[确认](../research/active/dtr-r0/nearfield/CNH_S_ENSEMBLE_CONFIRM_DEV_20261010.md)净151/1024、a/d通过而b/c失败保留；用户改用取舍曲线与环境波动，不再按成本≤k×原5格二元判定。旧约2.7pp是通知次数归一，实际far+clear有通知clip增量2.214pp。
 
-[封口前全文](operations/snapshots/CURRENT_DECISION_20260927_PRE_TOF_CLOSE.md)逐字节保存；旧快照中的待决状态不覆盖本页。[v5更新前全文](operations/snapshots/CURRENT_DECISION_20260928_PRE_V5.md)保留；后续当前页变更由Git历史保存。
+[池化取舍](../research/active/dtr-r0/nearfield/CNH_S_ENSEMBLE_TRADEOFF_DEV_20261010.md)完成：六组已消费pass/clear负例、14family、7168clip（far+clear5376），全部ties最低阈值tau1.917951703；同池原5格445→606有通知clip，增2.995pp≤3pp，contact不选点。封存后生成1536scene×K2/4新family，与30库存19252键及背景/目标参数无交集。
+
+新hold原5格HEAD372/BODY308各/512；S救86/99、损0，净185/1024=18.07pp，v2加权成本211→325.75。far+clear有通知112→155/1536（7.292%→10.091%，+2.799pp）；family增量1.823–3.646pp。绝对漂移0.195pp，比旧2-family cal的1.042pp缩小；“两family造成漂移”记为用户解释，family数/选点口径/数据同时变动，未隔离因果。描述曲线1–3pp预算S收益高于E/both，零增量E优于S，无全域支配。
+
+near-pass间隙≤10cm轻.25/强1，far/clear任何通知1；gap1逐query、同帧最高档联合计数，contact f3–13及时/f14–15晚。逐档计数、scene/family bootstrap及冻结候选manifest见报告；独立核验697900池ties、77322曲线、49152事件/13600通知PASS。GPU保守100/1200s、评价审计整合500/1200command-wall，权重/特征/保护源不动。
+
+## 继承与边界
+
+原M3/5格保留为对照和强档来源；旧E2E、重训/确认失败与各run停止规则保留。池化已消费负例按本任务授权复用，hold曲线仅描述不选点。有限AABB模拟Development、4family区间仅描述，非实机/安全证明；共向几何不替代外参/时钟核验，方向/PDR、硬件阶段未启动，融合v4当前判读以本页新visit低误报排序预注册结果为准；v3原失败保留，近/远带与稀疏FARO/压力臂仅描述，未构成全面独立实机确认。后续台架/App由候选manifest提供接口，本任务未接入。
+
+本次v3整合前全文见Git `95f451e6`及 sync-fusion-confirm-v3-dev-20261011/ 的 `CURRENT*_integration_before.md`；历史见RUNS/报告。
+ALGORITHM_EXPLORATION / M3_RETAINED / HARDWARE_DEFERRED

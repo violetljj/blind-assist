@@ -57,6 +57,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.RuleChain
+import org.junit.rules.ExternalResource
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import java.io.FileInputStream
@@ -66,9 +67,37 @@ class BlindAssistComposeTest {
     private var feedbackBefore: com.linnan.blindassist.preferences.UserPreferenceState? = null
     private val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA)
     private val composeRule = createAndroidComposeRule<MainActivity>()
+    // Capture before Activity launch and restore after it is destroyed, including keys
+    // that were absent. UI tests must not leave their language/preset choices on a phone.
+    private val preservePreferences = object : ExternalResource() {
+        private var saved = emptyMap<String, Map<String, *>>()
+        private val context get() = InstrumentationRegistry.getInstrumentation().targetContext
+        override fun before() {
+            saved = listOf("blindassist_user_preferences", "hardware_demo").associateWith {
+                context.getSharedPreferences(it, 0).all.toMap()
+            }
+        }
+        override fun after() {
+            saved.forEach { (name, values) ->
+                context.getSharedPreferences(name, 0).edit().apply {
+                    clear()
+                    values.forEach { (key, value) ->
+                        when (value) {
+                            is Boolean -> putBoolean(key, value)
+                            is String -> putString(key, value)
+                            is Int -> putInt(key, value)
+                            is Long -> putLong(key, value)
+                            is Float -> putFloat(key, value)
+                            is Set<*> -> putStringSet(key, value.filterIsInstance<String>().toSet())
+                        }
+                    }
+                }.commit()
+            }
+        }
+    }
 
     @get:Rule
-    val ruleChain: TestRule = RuleChain.outerRule(permissionRule).around(composeRule)
+    val ruleChain: TestRule = RuleChain.outerRule(preservePreferences).around(permissionRule).around(composeRule)
 
     @Before
     fun dismissDeviceCompatibilityDialog() {
@@ -113,7 +142,7 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithText("设置").performClick()
         composeRule.onNodeWithText("语音提醒").assertExists()
         composeRule.onNodeWithText("辅助").performClick()
-        composeRule.onNodeWithText("选择辅助模式").assertExists()
+        composeRule.onNodeWithText("选择提醒频率").assertExists()
     }
 
     @Test
@@ -146,24 +175,27 @@ class BlindAssistComposeTest {
     }
 
     @Test
-    fun homeModeSelectorAppliesSensitiveShortcutToSettings() {
+    fun homeCadenceSelectorPreservesPersonalFeedbackSettings() {
         prepareMainShell()
-        openFeaturesTab()
-
-        composeRule.onNodeWithContentDescription("选择灵敏辅助模式")
-            .performScrollTo()
-            .performClick()
         composeRule.onNodeWithText("设置").performClick()
-
-        composeRule.onNodeWithContentDescription("选择敏感提醒档位")
-            .performScrollTo()
-            .assertExists()
-        composeRule.onNodeWithContentDescription("选择标准语音风格，使用当前短句提醒")
-            .performScrollTo()
-            .assertExists()
-        composeRule.onNodeWithContentDescription("选择强震动强度，增强近处和迫近提醒")
-            .performScrollTo()
-            .assertExists()
+        composeRule.onNodeWithContentDescription("选择详细语音风格").performScrollTo().performClick()
+        composeRule.onNodeWithContentDescription("选择轻柔震动强度，降低震动时长和强度").performScrollTo().performClick()
+        setSettingsSwitch("settings_care_mode_toggle", enabled = true)
+        composeRule.onNodeWithContentDescription("选择走廊通行使用场景，更早关注正前方持续风险")
+            .performScrollTo().performClick()
+        val preferences = com.linnan.blindassist.preferences.UserPreferences(composeRule.activity)
+        val personal = preferences.load()
+        org.junit.Assert.assertEquals(SpeechStyle.DETAILED, personal.speechStyle)
+        org.junit.Assert.assertEquals(VibrationStrength.SOFT, personal.vibrationStrength)
+        org.junit.Assert.assertTrue(personal.careModeEnabled)
+        composeRule.onNodeWithText("辅助").performClick()
+        listOf("更频繁" to AlertProfile.SENSITIVE, "安静" to AlertProfile.QUIET,
+            "日常" to AlertProfile.STANDARD).forEach { (label, profile) ->
+            composeRule.onNodeWithContentDescription("选择${label}提醒频率").performScrollTo().performClick()
+            composeRule.runOnIdle {
+                org.junit.Assert.assertEquals(personal.copy(alertProfile = profile), preferences.load())
+            }
+        }
     }
 
     @Test
@@ -173,17 +205,17 @@ class BlindAssistComposeTest {
         val preferences = UserPreferences(composeRule.activity)
         val saved = preferences.load()
         try {
-            composeRule.onNodeWithContentDescription("选择日常辅助模式")
+            composeRule.onNodeWithContentDescription("选择日常提醒频率")
                 .performScrollTo()
                 .performClick()
-            composeRule.onNodeWithContentDescription("选择灵敏辅助模式")
+            composeRule.onNodeWithContentDescription("选择更频繁提醒频率")
                 .performScrollTo()
                 .assertHasClickAction()
                 .assertRole(Role.RadioButton)
                 .assertStateDescription("未选择")
                 .assertHeightIsAtLeast(48.dp)
                 .performClick()
-            composeRule.onNodeWithContentDescription("选择灵敏辅助模式")
+            composeRule.onNodeWithContentDescription("选择更频繁提醒频率")
                 .assertStateDescription("当前辅助模式")
 
             composeRule.onNodeWithText("设置").performClick()
@@ -191,7 +223,7 @@ class BlindAssistComposeTest {
                 .performScrollTo()
                 .assert(SemanticsMatcher.keyNotDefined(SemanticsProperties.ContentDescription))
 
-            composeRule.onNodeWithContentDescription("选择敏感提醒档位")
+            composeRule.onNodeWithContentDescription("选择更频繁提醒频率")
                 .performScrollTo()
                 .assertHasClickAction()
                 .assertRole(Role.RadioButton)
@@ -211,13 +243,13 @@ class BlindAssistComposeTest {
 
         composeRule.onNodeWithText("设置").performClick()
         composeRule.onNodeWithText("语音风格").assertExists()
-        composeRule.onNodeWithContentDescription("选择详细语音风格，补充目标类别和避让建议")
+        composeRule.onNodeWithContentDescription("选择详细语音风格")
             .performScrollTo()
             .performClick()
         composeRule.onNodeWithContentDescription("选择强震动强度，增强近处和迫近提醒")
             .performScrollTo()
             .performClick()
-        composeRule.onNodeWithContentDescription("选择敏感提醒档位")
+        composeRule.onNodeWithContentDescription("选择更频繁提醒频率")
             .performScrollTo()
             .performClick()
         composeRule.onNodeWithTag("scenario_selector").performScrollTo().assertExists()
@@ -236,17 +268,17 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithText("Speech reminders").assertExists()
         composeRule.onNodeWithText("Assist").performClick()
         composeRule.onNodeWithTag("daily_usage_mode_selector").performScrollTo().assertExists()
-        composeRule.onNodeWithContentDescription("Choose Sensitive assist mode")
+        composeRule.onNodeWithContentDescription("Choose Frequent reminder cadence")
             .performScrollTo()
             .performClick()
         composeRule.onNodeWithText("Settings").performClick()
-        composeRule.onNodeWithContentDescription("Choose Detailed speech style, Adds object type and avoidance guidance")
+        composeRule.onNodeWithContentDescription("Choose Detailed speech style")
             .performScrollTo()
             .assertExists()
         composeRule.onNodeWithContentDescription("Choose Strong vibration strength, Strengthen near and critical reminders")
             .performScrollTo()
             .assertExists()
-        composeRule.onNodeWithContentDescription("Choose Sensitive reminder profile")
+        composeRule.onNodeWithContentDescription("Choose Frequent reminder cadence")
             .performScrollTo()
             .assertExists()
     }
@@ -265,7 +297,7 @@ class BlindAssistComposeTest {
         composeRule.waitUntil(timeoutMillis = 5000) {
             composeRule.onAllNodesWithTag("hardware_demo_mode").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithTag("hardware_demo_algorithm_status").performScrollTo().assertExists()
+        composeRule.onNodeWithTag("hardware_demo_feedback_settings").performScrollTo().assertExists()
         val prefs = composeRule.activity.getSharedPreferences("hardware_demo", 0)
         org.junit.Assert.assertFalse(prefs.getBoolean("speech", true))
         org.junit.Assert.assertFalse(prefs.getBoolean("vibration", true))
@@ -350,7 +382,7 @@ class BlindAssistComposeTest {
     }
 
     private fun openFeaturesTab() {
-        if (!hasText("选择辅助模式") && !hasText("Choose assist mode")) {
+        if (!hasText("选择提醒频率") && !hasText("Choose reminder cadence")) {
             if (hasText("Assist")) {
                 composeRule.onNodeWithText("Assist").performClick()
             } else {
@@ -465,7 +497,7 @@ class FeatureScreenAccessibilityTest {
             .assertIsDisplayed()
             .assertHasClickAction()
             .assertHeightIsAtLeast(48.dp)
-        composeRule.onNodeWithContentDescription("Choose Sensitive assist mode")
+        composeRule.onNodeWithContentDescription("Choose Frequent reminder cadence")
             .performScrollTo()
             .assertIsDisplayed()
             .assertHasClickAction()
@@ -681,7 +713,7 @@ class CameraControlPanelStandaloneTest {
             }
         }
 
-        composeRule.onNodeWithText("Choose assist mode").assertIsDisplayed()
+        composeRule.onNodeWithText("Choose reminder cadence").assertIsDisplayed()
         composeRule.onAllNodesWithText("本地视觉辅助引擎启动中").assertCountEquals(0)
     }
 

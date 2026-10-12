@@ -129,7 +129,7 @@ private fun FeaturePreview() {
             appVersion = "8.2.0",
             onOpenCamera = {},
             onShowGlassesCenter = {},
-            onDailyUsageModeChange = {}
+            onProfileChange = {}
         )
     }
 }

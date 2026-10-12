@@ -15,7 +15,7 @@ enum class HardwareDemoFeedbackEvent(val spokenText: String) {
  * Call with a monotonic clock and fresh transport usability (not the risk verdict).
  * A non-alert verdict, including UNKNOWN, never generates a clear-space message.
  */
-class HardwareDemoFeedbackPolicy {
+class HardwareDemoFeedbackPolicy(private val reminderIntervalMs: Long = 12_000L) {
     private var wasUsable = false
     private var lost = false
     private var obstacleActive = false
@@ -76,7 +76,7 @@ class HardwareDemoFeedbackPolicy {
             !obstacleActive -> HardwareDemoFeedbackEvent.OBSTACLE
             nowMs - announcedAt >= 1_000L && distance != null &&
                 announcedMm?.let { it - distance >= 300 } == true -> HardwareDemoFeedbackEvent.CLOSER
-            nowMs - announcedAt >= 12_000L -> HardwareDemoFeedbackEvent.REMINDER
+            nowMs - announcedAt >= reminderIntervalMs -> HardwareDemoFeedbackEvent.REMINDER
             else -> null
         }
         if (event != null) {

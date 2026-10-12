@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.os.SystemClock
 import com.linnan.blindassist.camera.AtomS3rClockSynchronizer
 import com.linnan.blindassist.camera.AtomS3rMjpegFrameSource
+import com.linnan.blindassist.capture.CnhConnectionState
+import com.linnan.blindassist.capture.TcpCnhCaptureSource
 import com.linnan.blindassist.risk.DemoTofCell
 import com.linnan.blindassist.risk.TofCorridorDemo
 import com.linnan.blindassist.vision.NativeImageVisionFrame
@@ -15,6 +17,7 @@ import java.net.SocketTimeoutException
 import java.net.URI
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.Collections
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -33,9 +36,11 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
     private val cameraGeneration = AtomicLong()
     private val connections = mutableSetOf<HttpURLConnection>()
     @Volatile private var tofSocket: DatagramSocket? = null
+    @Volatile private var cnhSource: TcpCnhCaptureSource? = null
     @Volatile private var source: AtomS3rMjpegFrameSource? = null
     @Volatile private var camera: CameraSample? = null
     @Volatile private var tof: TofSample? = null
+    private val unavailableTofDecision = TofCorridorDemo.evaluate(8, 8, emptyList(), false)
     @Volatile private var cameraProblem = "等待相机握手"
     @Volatile private var tofProblem = "等待 8×8 ToF"
     @Volatile private var restartCamera = false
@@ -48,9 +53,10 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
             val t = tof
             return HardwareWifiDiagnostics(
                 c?.let { it.ageAtReceiveMs + now - it.receivedMs },
-                t?.let { it.ageAtReceiveMs + now - it.receivedMs },
+                t?.takeUnless { it.receiptOnly }?.let { it.ageAtReceiveMs + now - it.receivedMs },
                 c?.clockErrorMs, c?.sequence, t?.sequence,
-                c?.acquisitionMs, c?.transferUpperMs, c?.decodeMs, c?.copyMs, t?.ageAtReceiveMs
+                c?.acquisitionMs, c?.transferUpperMs, c?.decodeMs, c?.copyMs,
+                t?.takeUnless { it.receiptOnly }?.ageAtReceiveMs
             )
         }
 
@@ -70,10 +76,15 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
             running.get() && !closed.get(), cameraStatusValid, now,
             c?.receivedMs, c?.ageAtReceiveMs, t?.receivedMs, t?.ageAtReceiveMs)
         val cells = if (available.tofUsable) t!!.cells else emptyList()
-        val decision = TofCorridorDemo.evaluate(8, 8, cells, available.tofUsable)
+        // Freshness is checked on every poll; only the immutable sample's geometry is reused.
+        val decision = if (available.tofUsable) t!!.decision else unavailableTofDecision
         val cameraAge = c?.let { it.ageAtReceiveMs + now - it.receivedMs }
-        val tofAge = t?.let { it.ageAtReceiveMs + now - it.receivedMs }
+        val tofAge = t?.takeUnless { it.receiptOnly }?.let { it.ageAtReceiveMs + now - it.receivedMs }
+        val receiptAge = t?.takeIf { it.receiptOnly }?.let { now - it.receivedMs }
         val status = when {
+            available.tofUsable && t?.receiptOnly == true ->
+                "H3 基础测距 · 最近接收 ${receiptAge} ms · 曝光时龄未知" +
+                    if (available.cameraUsable) " · 相机已连接" else " · ${cameraProblem.ifBlank { "相机不可用" }}"
             available.liveUsable -> "无线直连 · 相机 ≤$cameraAge ms · ToF ≤$tofAge ms · 独立采样"
             available.tofUsable -> "仅测距模式 · ToF ≤$tofAge ms · ${cameraProblem.ifBlank { "相机不可用" }}"
             available.cameraUsable -> "仅画面 · UNKNOWN · ${tofProblem.ifBlank { "ToF 不可用" }}"
@@ -83,7 +94,8 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
         return HardwareDemoSnapshot("live", "wifi:${c?.boot ?: "?"}:${t?.boot ?: "?"}",
             c?.sequence, t?.sequence, if (available.cameraUsable) c?.bitmap else null, cells, 8, 8,
             decision, available.liveUsable, status,
-            available.cameraUsable, available.tofUsable, cameraAge, tofAge)
+            available.cameraUsable, available.tofUsable, cameraAge, tofAge,
+            if (t?.receiptOnly == true) "host_receipt_only" else "mapped_device_age_upper_bound", receiptAge)
     }
 
     private fun cameraSupervisor() {
@@ -177,6 +189,65 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
     }
 
     private fun tofLoop() {
+        while (running.get()) {
+            try {
+                val identity = readJson(tofEndpoint, "/api/status")
+                require(identity.getString("role") == "tof")
+                if (identity.optString("firmware") == "xiao-cnh-h3-wifi-v1") {
+                    val config = readJson(tofEndpoint, "/api/cnh")
+                    require(config.getString("transport") == "tcp_ndjson" && config.getInt("tcp_port") == 3335)
+                    tofCnhSession()
+                } else {
+                    tofUdpLoop()
+                }
+            } catch (_: Exception) {
+                tof = null
+                tofProblem = "ToF 未连接 · 正在重连，请检查热点与电源"
+            }
+            if (!pause(1_000)) break
+        }
+    }
+
+    private fun tofCnhSession() {
+        val adapter = H3RangeAdapter()
+        val terminal = AtomicBoolean(false)
+        val lastFrameMs = AtomicLong(SystemClock.elapsedRealtime())
+        val next = TcpCnhCaptureSource(tofEndpoint)
+        cnhSource = next
+        try {
+            if (!running.get()) return
+            tofProblem = "H3 已连接 · 等待测距"
+            next.start(onRecord = { record ->
+                if (running.get() && cnhSource === next) {
+                    val sample = adapter.accept(record, SystemClock.elapsedRealtimeNanos())
+                    if (sample != null) {
+                        lastFrameMs.set(sample.receivedMs)
+                        tof = TofSample(sample.boot, sample.sequence, sample.cells, sample.receivedMs, 0, true)
+                        tofProblem = "H3 测距暂时中断 · 正在等待新数据"
+                    }
+                }
+            }, onStatus = { status ->
+                if (status.state in listOf(CnhConnectionState.ERROR, CnhConnectionState.DISCONNECTED,
+                        CnhConnectionState.STOPPED)) terminal.set(true)
+            })
+            while (running.get() && !terminal.get()) {
+                if (SystemClock.elapsedRealtime() - lastFrameMs.get() > 3_000) break
+                if (!pause(100)) break
+            }
+        } finally {
+            // Invalidate before drain so buffered records cannot revive a closed connection.
+            cnhSource = null
+            tof = null
+            try { next.close() } finally {
+                // A callback already inside its generation check may finish during drain.
+                // Clear again after it completes so reconnect cannot show that old session.
+                tof = null
+            }
+            tofProblem = "H3 测距已断开 · 正在重连"
+        }
+    }
+
+    private fun tofUdpLoop() {
         val progression = HardwareWifiProgress()
         val address = InetAddress.getByName(URI(tofEndpoint).host)
         val request = "BADEMO_TOF_V1".toByteArray(Charsets.US_ASCII)
@@ -299,6 +370,7 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
         Thread({
             val active = synchronized(connections) { connections.toList() }
             active.forEach(HttpURLConnection::disconnect)
+            cnhSource?.close()
             source?.stop()
             try { workers.awaitTermination(2, TimeUnit.SECONDS) }
             catch (_: InterruptedException) { Thread.currentThread().interrupt() }
@@ -316,8 +388,15 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
     private data class CameraSample(val boot: String, val sequence: Long, val bitmap: Bitmap,
         val receivedMs: Long, val ageAtReceiveMs: Long, val clockErrorMs: Long,
         val acquisitionMs: Double, val transferUpperMs: Double?, val decodeMs: Double, val copyMs: Double)
-    private data class TofSample(val boot: String, val sequence: Long, val cells: List<DemoTofCell>,
-        val receivedMs: Long, val ageAtReceiveMs: Long)
+    private class TofSample(val boot: String, val sequence: Long, cells: List<DemoTofCell>,
+        val receivedMs: Long, val ageAtReceiveMs: Long, val receiptOnly: Boolean = false) {
+        // Constructed on the source callback/UDP worker before volatile publication to the UI.
+        // Own the cells so the cached decision cannot diverge from later snapshot consumers.
+        val cells: List<DemoTofCell> = Collections.unmodifiableList(cells.toList())
+        val decision = TofCorridorDemo.evaluate(8, 8, this.cells, true).let {
+            it.copy(triggeringZones = Collections.unmodifiableList(it.triggeringZones.toList()))
+        }
+    }
 }
 
 /** Transport freshness only: per-zone validity remains the ToF evaluator's responsibility. */

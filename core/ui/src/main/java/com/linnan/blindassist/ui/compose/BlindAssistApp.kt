@@ -187,6 +187,7 @@ fun BlindAssistApp(
                         glassesState = state.glassesSimulator,
                         onOpenCamera = actions.runtime.onOpenCamera,
                         onShowGlassesCenter = actions.navigation.onShowGlassesCenter,
+                        onOpenDataCapture = actions.navigation.onOpenDataCapture,
                         onSpeechChange = actions.runtime.onSpeechChange,
                         onVibrationChange = actions.runtime.onVibrationChange,
                         onCareModeChange = actions.runtime.onCareModeChange,
@@ -245,6 +246,7 @@ private fun MainShell(
     glassesState: GlassesSimulatorUiState,
     onOpenCamera: () -> Unit,
     onShowGlassesCenter: () -> Unit,
+    onOpenDataCapture: () -> Unit,
     onSpeechChange: (Boolean) -> Unit,
     onVibrationChange: (Boolean) -> Unit,
     onCareModeChange: (Boolean) -> Unit,
@@ -344,10 +346,9 @@ private fun MainShell(
                     appVersion = appVersion,
                     onOpenCamera = onOpenCamera,
                     onShowGlassesCenter = onShowGlassesCenter,
-                    onDailyUsageModeChange = onDailyUsageModeChange,
-                    glassesConnectionState = glassesState.connectionState,
-                    onQuietShortcut = onQuietShortcut,
-                    onSensitiveShortcut = onSensitiveShortcut
+                    onOpenDataCapture = onOpenDataCapture,
+                    onProfileChange = onProfileChange,
+                    glassesConnectionState = glassesState.connectionState
                 )
                 BottomTab.Settings -> SettingsScreen(
                     controls = controls,

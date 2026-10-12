@@ -1,0 +1,4200 @@
+{
+  "task": "SYNC_FUSION_V1_DEV_20261011",
+  "parent": "5902640c",
+  "result": "ONLY_SEMICIRCULAR_SOURCE_SUPPORT",
+  "payload_root": "artifacts.local/work/sync-fusion-v1-dev-20261011",
+  "budget": {
+    "unit": "CPU command-wall seconds; conservative allowances include tool/setup/delivery",
+    "limit_CPU": 1800,
+    "limit_GPU": 300,
+    "features": 70,
+    "train_cal": 27,
+    "eval": 30,
+    "independent_audit": 20,
+    "primary_integration_delivery": 150,
+    "CPU_conservative_total": 297,
+    "GPU": 0,
+    "download_bytes": 0,
+    "task_owned_retained_processes": 0
+  },
+  "receipts": {
+    "PLAN.json": {
+      "sha256": "6f5a790934ca2647d1a46f3b0d1ebe8db968823d1d3c2351102338b28b9c0593",
+      "content": {
+        "task": "SYNC_FUSION_V1_DEV_20261011",
+        "parent": "5902640c",
+        "created_utc": "2026-10-10T17:03:26.784702+00:00",
+        "lane": "EXPLORE_SMALL_FUSION_TRAINING",
+        "user_decision": "2026-10-11 user authorizes fusion stage despite v1.1 coverage gate failure; native_perturbed is semi-circular primary; gated fused FARO is independent-geometry cross-check; no actual-ToF claim",
+        "budget": {
+          "CPU_command_wall_s": 1800,
+          "GPU_s": 300,
+          "allocation_CPU": {
+            "features": 450,
+            "train_cal": 350,
+            "eval_bootstrap": 350,
+            "independent_audit": 300,
+            "primary": 350
+          }
+        },
+        "inputs": {
+          "v1_1_manifest": "artifacts.local/work/sync-rgb-tof-dataset-v1-1-dev-20261011/dataset_manifest_v1_1.json",
+          "manifest_sha256": "f1d60791b643ba614bd36b2f99a056e813d5c7f8b91efbaa766b4e2a93a04bd0",
+          "visits": "exact unchanged train6/cal2/eval4; no protected480/test",
+          "sources": [
+            "native_perturbed",
+            "faro_rho030_ambient1"
+          ],
+          "native_domain": "all grid frames, including missing ToF; semi-circular, not independent geometry",
+          "FARO_domain": "all roles admitted iff v1.1 K0 joint_pass_zones>=52; fixed input gate only; no K1/outcome selection",
+          "K": "average K0/K1 observation features to one row per frame/query, not duplicated independent samples"
+        },
+        "features": {
+          "names": [
+            "tof_margin16_m",
+            "tof_margin16_missing",
+            "tof_support_pixels",
+            "tof_unknown_fraction",
+            "tof_before_fraction",
+            "tof_inside_fraction",
+            "tof_after_fraction",
+            "tof_median_entry_offset_m",
+            "tof_median_exit_offset_m",
+            "tof_valid_K_count",
+            "dav_margin16_m",
+            "dav_margin16_missing",
+            "dav_finite_fraction",
+            "uni_margin16_m",
+            "uni_margin16_missing",
+            "uni_finite_fraction",
+            "band_index",
+            "query_x_index",
+            "query_y_index",
+            "query_z_index"
+          ],
+          "readout": "unchanged v1 peak_readout SNR>=3 coverage>=.75 and projection; no source native/reference/labels/categories/groundtruth depths used as features",
+          "margin": "16th largest min(z-entry,exit-z) over query-domain finite positive predicted rays; less16 finite rays -> -inf",
+          "ToF_K": "ordinary features arithmetic mean; either missing margin -> baseline -inf and model margin -10 with missingflag1; valid_K_count0/1/2",
+          "model_missing_floor_m": -10,
+          "model_metre_features_clip": [
+            -10,
+            10
+          ],
+          "baseline_scores_not_clipped": true,
+          "ToF_relationship": "before z<entry, inside entry<=z<=exit, after z>exit; fractions divided by query-domain rays; median offsets to entry/exit over finite positive rays, absent=-10",
+          "support": "projected pixel-ray count with predicted depth inside query, not independent subrays",
+          "RGB": "DAV2 and UniDepth own raw margin16, missing indicator, finite-domain fraction",
+          "query_indices": "x/y/z centre sorted0/1/2; band_index=zindex; identity/source/visit/frame IDs not model features"
+        },
+        "models": {
+          "per_source": true,
+          "seeds": [
+            955,
+            956,
+            957
+          ],
+          "ensemble": "arithmetic mean positive-class probabilities",
+          "HGB": {
+            "max_iter": 100,
+            "learning_rate": 0.1,
+            "max_leaf_nodes": 7,
+            "max_depth": 3,
+            "min_samples_leaf": 50,
+            "l2_regularization": 1,
+            "early_stopping": false,
+            "class_weight": null
+          },
+          "Logistic": {
+            "preprocess": "StandardScaler fitted on source train POS/FREE only",
+            "C": 1,
+            "penalty": "l2",
+            "solver": "lbfgs",
+            "max_iter": 1000,
+            "class_weight": null
+          },
+          "train_labels": "POSITIVE=1, FREE_ON_SAMPLED_RAYS=0; UNKNOWN excluded; only train visits",
+          "no_model_selection": "HGB primary, logistic named control; no hyperparameter search; deterministic seeds may coincide"
+        },
+        "scores": {
+          "ToF": "K2 mean rawmargin, missing propagation",
+          "RGB": "Uni rawmargin for near, DAV rawmargin for mid/far",
+          "OR": "max(ToF,RGB)",
+          "AND": "min(ToF,RGB)",
+          "methods": [
+            "HGB",
+            "logistic",
+            "ToF",
+            "RGB",
+            "OR",
+            "AND"
+          ]
+        },
+        "calibration": {
+          "roles": [
+            "cal"
+          ],
+          "by": [
+            "source",
+            "method",
+            "band"
+          ],
+          "band_targets": {
+            "0.3-0.8m": 0.02,
+            "0.8-1.5m": 0.05,
+            "1.5-3m": 0.1
+          },
+          "threshold_rule": "score>=threshold; all finite unique score ties plus +inf all-reject; -inf is never candidate",
+          "objective": "among F<=floor(target*FREE), maximize query W on POS, then minimize F, then choose highest threshold; no tie splitting",
+          "zero_FREE": "threshold+inf, status NOT_CALIBRATABLE; never count as success",
+          "zero_POS": "threshold+inf, status NO_CAL_POS; never count as success",
+          "seal": "all feature names/source hashes/train-cal feature hashes/model joblib hashes/full cal tie table/cutpoints/code snapshots sealed before eval open"
+        },
+        "metric_contract": {
+          "W": "query-level predicted positive AND POS reference; not old pixel-intersection witness; all methods same",
+          "F": "predicted positive AND strict FREE",
+          "U": "predicted positive AND UNKNOWN; UNKNOWN excluded from fitting, included in eval support report",
+          "no_pixel_claim": "learner emits query probability only; legacy pixel-witness numbers not directly comparable"
+        },
+        "eval": {
+          "single_open": "exclusive append-only eval_open receipt after verified cal seal; produce immutable query score/label/prediction cache once; no weights or cutpoint changes afterward; later audit/bootstrap reads frozen query table only",
+          "best_single": "at frozen cal points select higher eval W of ToF/RGB within source/band; ties fewer F then RGB. Equivalent improvement criterion beats both fixed single sensors; no model or threshold selection",
+          "paired": "on same POS queries, rescue=model_yes comparator_no; loss=model_no comparator_yes; also FREE added/removed and UNKNOWN added/removed; compare best_single and OR",
+          "bootstrap": {
+            "replicates": 2000,
+            "seed": 20261011,
+            "cluster": "resample four original eval visits with replacement; FARO absent visits remain zero-count clusters; all paired queries stay together; comparator identity fixed to full eval choice",
+            "interval": "percentile2.5/97.5 for W/POS F/FREE and paired deltaW/POS; zero denominator replicates omitted with valid count reported"
+          },
+          "no_denominator": "eval zeroPOS or zeroFREE band NOT_EVALUABLE, not success"
+        },
+        "decision": {
+          "primary": "HGB only; logistic same rule separately as control, do not choose better method posteval",
+          "source_band_success": "cal status calibrated, eval POS>0, FREE>0, Wfusion>max(WToF,WRGB), and Ffusion/FREE<=band target",
+          "two_sources": "same at least2 bands in intersection of successful source bands -> query-level fusion benefit (real RGB + semi-synthetic ToF)",
+          "only_primary_source": "native successful in at least2bands but two-source condition fails -> only semi-circular source supports, independent geometry not reproduced; distinguish uncalibratable from empirical failure",
+          "otherwise": "no observed fusion benefit"
+        },
+        "preflight_denominators": {
+          "native_cal": {
+            "POS": [
+              145,
+              313,
+              354
+            ],
+            "FREE": [
+              380,
+              206,
+              58
+            ]
+          },
+          "gated_FARO_cal": {
+            "frames": 7,
+            "POS": [
+              38,
+              51,
+              12
+            ],
+            "FREE": [
+              16,
+              0,
+              0
+            ]
+          },
+          "implication": "independent FARO mid/far cannot calibrate within unchanged data; retain NOT_CALIBRATABLE, no new visits/gate relaxation/eval borrowing"
+        }
+      }
+    },
+    "feature_manifest.json": {
+      "sha256": "d5a1ea13965b597cc13c2b396f718167e0ce075acbbfb7fdf67e32476a019db9",
+      "content": {
+        "status": "COMPLETE",
+        "outputs": [
+          {
+            "source": "native_perturbed",
+            "role": "train",
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\features\\native_perturbed\\train.npz",
+            "sha256": "045dca7fd24625edf2fd4ca0973c15e616ba19d2001f1d81321a809ab81e4301",
+            "rows": 5184,
+            "frames": 192,
+            "visits": [
+              "381650",
+              "381652",
+              "421065",
+              "421252",
+              "421254",
+              "421259"
+            ]
+          },
+          {
+            "source": "native_perturbed",
+            "role": "cal",
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\features\\native_perturbed\\cal.npz",
+            "sha256": "06b2b6bdbff0ad8fc1d380b835db4ec1741f3e2d77350eb22254b4f850e3199a",
+            "rows": 1728,
+            "frames": 64,
+            "visits": [
+              "421006",
+              "421009"
+            ]
+          },
+          {
+            "source": "native_perturbed",
+            "role": "eval",
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\features\\native_perturbed\\eval.npz",
+            "sha256": "b1868c5b205bdca1ac47c8eacbb99ae7787d103cbf62cce0c908a4c1dedb6d84",
+            "rows": 3456,
+            "frames": 128,
+            "visits": [
+              "421002",
+              "421260",
+              "421393",
+              "421397"
+            ]
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "role": "train",
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\features\\faro_rho030_ambient1\\train.npz",
+            "sha256": "7ee96f3f9ac039ed9bf14e61d2e1daa170180b74d769388f4eb4c69a7eb4ddbd",
+            "rows": 1539,
+            "frames": 57,
+            "visits": [
+              "381652",
+              "421065",
+              "421252",
+              "421254",
+              "421259"
+            ]
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "role": "cal",
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\features\\faro_rho030_ambient1\\cal.npz",
+            "sha256": "94ed4093be79cb940bc57273aa3980e3c53fa549a16a67948e4f64f101cfbf3a",
+            "rows": 189,
+            "frames": 7,
+            "visits": [
+              "421006"
+            ]
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "role": "eval",
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\features\\faro_rho030_ambient1\\eval.npz",
+            "sha256": "1140fa0056833c9b79f86f411b9b015fd01311aca65b045914522e44e03b87e2",
+            "rows": 1053,
+            "frames": 39,
+            "visits": [
+              "421002",
+              "421260",
+              "421393",
+              "421397"
+            ]
+          }
+        ],
+        "feature_names": [
+          "tof_margin16_m",
+          "tof_margin16_missing",
+          "tof_support_pixels",
+          "tof_unknown_fraction",
+          "tof_before_fraction",
+          "tof_inside_fraction",
+          "tof_after_fraction",
+          "tof_median_entry_offset_m",
+          "tof_median_exit_offset_m",
+          "tof_valid_K_count",
+          "dav_margin16_m",
+          "dav_margin16_missing",
+          "dav_finite_fraction",
+          "uni_margin16_m",
+          "uni_margin16_missing",
+          "uni_finite_fraction",
+          "band_index",
+          "query_x_index",
+          "query_y_index",
+          "query_z_index"
+        ],
+        "dimension": 20,
+        "labels_read": false,
+        "reference_paths_read": false,
+        "K2_rows_independent": false,
+        "observation_only": true,
+        "offset_K_average": "Arithmetic K0/K1 mean including fixed -10 absent-offset placeholders; valid_K_count means >=16 finite query rays, not median existence",
+        "seconds": 36.7559326000046
+      }
+    },
+    "feature_structural_check.json": {
+      "sha256": "3130fc2ab664c2a45ef3420459f5c4043f4ef38468931ef1fd2aa9aff0d29106",
+      "content": {
+        "status": "PASS",
+        "labels_read": false,
+        "checks": [
+          {
+            "source": "native_perturbed",
+            "role": "train",
+            "rows": 5184,
+            "status": "PASS"
+          },
+          {
+            "source": "native_perturbed",
+            "role": "cal",
+            "rows": 1728,
+            "status": "PASS"
+          },
+          {
+            "source": "native_perturbed",
+            "role": "eval",
+            "rows": 3456,
+            "status": "PASS"
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "role": "train",
+            "rows": 1539,
+            "status": "PASS"
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "role": "cal",
+            "rows": 189,
+            "status": "PASS"
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "role": "eval",
+            "rows": 1053,
+            "status": "PASS"
+          }
+        ]
+      }
+    },
+    "feature_execution_source_receipt.json": {
+      "sha256": "b8aae85fc4e58a57273ee303046d4655ff4b9fe16fd2d7de2f0b271f547246df",
+      "content": {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\feature_execution_source.py",
+        "sha256": "47a59d81c800452f74541e851fa05e845e9a1b73bfbc35ff4f0d930c2a27502c",
+        "execution": "saved before import; exact copied source executed",
+        "PLAN_sha256": "6f5a790934ca2647d1a46f3b0d1ebe8db968823d1d3c2351102338b28b9c0593"
+      }
+    },
+    "train_cal_execution_receipt.json": {
+      "sha256": "a5672bc2e9cdf68b674c7e8f9f0166b50a0c288a55e084f6e1aa0a1aea7b36cf",
+      "content": {
+        "source_path": "research\\active\\dtr-r0\\nearfield\\sync_fusion_v1_train_cal.py",
+        "sha256": "94e163c0f1f0c4a942ee9c4e99a3fa99c8cf1522bbcab433904e6b12394646dc",
+        "plan_sha256": "6f5a790934ca2647d1a46f3b0d1ebe8db968823d1d3c2351102338b28b9c0593",
+        "features_manifest_sha256": "0687a36080e4658a1f3338ba781c0abab9f7c38769bf9be1b3aad6150b6e6267",
+        "eval_payload_reads": 0,
+        "scope": "train/cal fitting and seal only"
+      }
+    },
+    "eval_code_seal.json": {
+      "sha256": "e45885dc1111059bbc7032f847b1521ae1bc1d13b25ae59be9b34b4e3269da1b",
+      "content": {
+        "source": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\sync_fusion_v1_eval.py",
+        "snapshot": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\eval_code_snapshot.py",
+        "sha256": "cb8c4a3445e87c396bb16ec614f58f73efec0b8ea9c45cfb1f97d8d9319823f7",
+        "plan_sha256": "6f5a790934ca2647d1a46f3b0d1ebe8db968823d1d3c2351102338b28b9c0593",
+        "status": "PREOPEN_CODE_FROZEN_EVAL_NOT_OPENED",
+        "best_single": "full-eval frozen working point maxW, tie fewerF, tieRGB; comparator identity fixed in all bootstrap replicates",
+        "eval_inputs_read": false
+      }
+    },
+    "calibration/cal_seal.json": {
+      "sha256": "290a100338d7414bea7a67f4bb28a11d3a912fe37f25d450777a672ccbb31c93",
+      "content": {
+        "status": "CAL_SEALED_EVAL_NOT_OPENED",
+        "feature_contracts": {
+          "native_perturbed": [
+            "tof_margin16_m",
+            "tof_margin16_missing",
+            "tof_support_pixels",
+            "tof_unknown_fraction",
+            "tof_before_fraction",
+            "tof_inside_fraction",
+            "tof_after_fraction",
+            "tof_median_entry_offset_m",
+            "tof_median_exit_offset_m",
+            "tof_valid_K_count",
+            "dav_margin16_m",
+            "dav_margin16_missing",
+            "dav_finite_fraction",
+            "uni_margin16_m",
+            "uni_margin16_missing",
+            "uni_finite_fraction",
+            "band_index",
+            "query_x_index",
+            "query_y_index",
+            "query_z_index"
+          ],
+          "faro_rho030_ambient1": [
+            "tof_margin16_m",
+            "tof_margin16_missing",
+            "tof_support_pixels",
+            "tof_unknown_fraction",
+            "tof_before_fraction",
+            "tof_inside_fraction",
+            "tof_after_fraction",
+            "tof_median_entry_offset_m",
+            "tof_median_exit_offset_m",
+            "tof_valid_K_count",
+            "dav_margin16_m",
+            "dav_margin16_missing",
+            "dav_finite_fraction",
+            "uni_margin16_m",
+            "uni_margin16_missing",
+            "uni_finite_fraction",
+            "band_index",
+            "query_x_index",
+            "query_y_index",
+            "query_z_index"
+          ]
+        },
+        "feature_names": {
+          "native_perturbed": [
+            "tof_margin16_m",
+            "tof_margin16_missing",
+            "tof_support_pixels",
+            "tof_unknown_fraction",
+            "tof_before_fraction",
+            "tof_inside_fraction",
+            "tof_after_fraction",
+            "tof_median_entry_offset_m",
+            "tof_median_exit_offset_m",
+            "tof_valid_K_count",
+            "dav_margin16_m",
+            "dav_margin16_missing",
+            "dav_finite_fraction",
+            "uni_margin16_m",
+            "uni_margin16_missing",
+            "uni_finite_fraction",
+            "band_index",
+            "query_x_index",
+            "query_y_index",
+            "query_z_index"
+          ],
+          "faro_rho030_ambient1": [
+            "tof_margin16_m",
+            "tof_margin16_missing",
+            "tof_support_pixels",
+            "tof_unknown_fraction",
+            "tof_before_fraction",
+            "tof_inside_fraction",
+            "tof_after_fraction",
+            "tof_median_entry_offset_m",
+            "tof_median_exit_offset_m",
+            "tof_valid_K_count",
+            "dav_margin16_m",
+            "dav_margin16_missing",
+            "dav_finite_fraction",
+            "uni_margin16_m",
+            "uni_margin16_missing",
+            "uni_finite_fraction",
+            "band_index",
+            "query_x_index",
+            "query_y_index",
+            "query_z_index"
+          ]
+        },
+        "plan_sha256": "6f5a790934ca2647d1a46f3b0d1ebe8db968823d1d3c2351102338b28b9c0593",
+        "model_entries": [
+          {
+            "source": "native_perturbed",
+            "method": "hgb",
+            "seed": 955,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\native_perturbed\\hgb_955.joblib",
+            "sha256": "cb0b9f32186c174c36ac10fb22036ddc94b8b5925db2a92971ef3439e1aa9cdf",
+            "warnings": [],
+            "train_known_rows": 3984
+          },
+          {
+            "source": "native_perturbed",
+            "method": "hgb",
+            "seed": 956,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\native_perturbed\\hgb_956.joblib",
+            "sha256": "459da32428f8b35d3d076a2ed5d0fc2e4908d6bc4808c256f1a48bb23f670ed8",
+            "warnings": [],
+            "train_known_rows": 3984
+          },
+          {
+            "source": "native_perturbed",
+            "method": "hgb",
+            "seed": 957,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\native_perturbed\\hgb_957.joblib",
+            "sha256": "56cf9e7a45b4691bf4b2c030ae40d29f86be2ed082731dd67befd569c0819506",
+            "warnings": [],
+            "train_known_rows": 3984
+          },
+          {
+            "source": "native_perturbed",
+            "method": "logit",
+            "seed": 955,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\native_perturbed\\logit_955.joblib",
+            "sha256": "f5ca0d82f1c2c0517f2e96d7e398aa6dd5a00118a90a7272674167715b4e8360",
+            "warnings": [
+              "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+            ],
+            "train_known_rows": 3984
+          },
+          {
+            "source": "native_perturbed",
+            "method": "logit",
+            "seed": 956,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\native_perturbed\\logit_956.joblib",
+            "sha256": "29dcafe60a5bd8a1e86e1114e2035e50d1a7c9571a421cbb86716af8996e4660",
+            "warnings": [
+              "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+            ],
+            "train_known_rows": 3984
+          },
+          {
+            "source": "native_perturbed",
+            "method": "logit",
+            "seed": 957,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\native_perturbed\\logit_957.joblib",
+            "sha256": "7f826aab86e24ba5812fe42f69668467ef15c2de3fa889de9143dfe0d1d06a08",
+            "warnings": [
+              "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+            ],
+            "train_known_rows": 3984
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "method": "hgb",
+            "seed": 955,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\faro_rho030_ambient1\\hgb_955.joblib",
+            "sha256": "59418876a42a65d649e8088a9ec1f1040cc827ccc84509412da1e8004b92130e",
+            "warnings": [],
+            "train_known_rows": 862
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "method": "hgb",
+            "seed": 956,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\faro_rho030_ambient1\\hgb_956.joblib",
+            "sha256": "cc42d033bfb6918ae193d6f360eefd77ea82f27d76d0fd19687b2b404d9a270d",
+            "warnings": [],
+            "train_known_rows": 862
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "method": "hgb",
+            "seed": 957,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\faro_rho030_ambient1\\hgb_957.joblib",
+            "sha256": "ba5b0ab17ab3c5bb9fcaa29b830deb69ee02ccbc2efd754d440569d3c18c7c5d",
+            "warnings": [],
+            "train_known_rows": 862
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "method": "logit",
+            "seed": 955,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\faro_rho030_ambient1\\logit_955.joblib",
+            "sha256": "62141f8dc5a9fb3b1ab68f34f6711b338dad3b9646a6a376ca23b8d5a87e2762",
+            "warnings": [
+              "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+            ],
+            "train_known_rows": 862
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "method": "logit",
+            "seed": 956,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\faro_rho030_ambient1\\logit_956.joblib",
+            "sha256": "636ac5c14a66d0638c599c5ab165138879f0c94f9a3c1c46aad3034907cbbf91",
+            "warnings": [
+              "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+            ],
+            "train_known_rows": 862
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "method": "logit",
+            "seed": 957,
+            "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\models\\faro_rho030_ambient1\\logit_957.joblib",
+            "sha256": "aeb5c661ba6d6536e4d7ef3e189306ffe32be7d232b09146b789dcb5fae2cd72",
+            "warnings": [
+              "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+            ],
+            "train_known_rows": 862
+          }
+        ],
+        "cells": [
+          {
+            "cell_id": "native_perturbed/hgb/0.3-0.8m/0.02",
+            "source": "native_perturbed",
+            "method": "hgb",
+            "band": "0.3-0.8m",
+            "tie_index": 100,
+            "threshold": 0.6686510336287604,
+            "threshold_kind": "finite",
+            "W": 108,
+            "F": 6,
+            "U": 28,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 145,
+            "FREE_denominator": 380,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": 0.015789473684210527,
+            "W_fraction": 0.7448275862068966,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__hgb__0.3-0.8m.json",
+            "all_ties_sha256": "2a1e9ab6fd58c9deb3581f91226210c298a5f4f8dfc852f2c9de7f605a914d8d"
+          },
+          {
+            "cell_id": "native_perturbed/logit/0.3-0.8m/0.02",
+            "source": "native_perturbed",
+            "method": "logit",
+            "band": "0.3-0.8m",
+            "tie_index": 141,
+            "threshold": 0.6795376439419151,
+            "threshold_kind": "finite",
+            "W": 110,
+            "F": 6,
+            "U": 25,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 145,
+            "FREE_denominator": 380,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": 0.015789473684210527,
+            "W_fraction": 0.7586206896551724,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__logit__0.3-0.8m.json",
+            "all_ties_sha256": "1376b4d843e2837775cdd808af4d466e39b7a415026a852ee57de4d8bba74999"
+          },
+          {
+            "cell_id": "native_perturbed/tof/0.3-0.8m/0.02",
+            "source": "native_perturbed",
+            "method": "tof",
+            "band": "0.3-0.8m",
+            "tie_index": 100,
+            "threshold": -0.11449318896104788,
+            "threshold_kind": "finite",
+            "W": 85,
+            "F": 6,
+            "U": 9,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 145,
+            "FREE_denominator": 380,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": 0.015789473684210527,
+            "W_fraction": 0.5862068965517241,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__tof__0.3-0.8m.json",
+            "all_ties_sha256": "9d908000e9a422190a79083aa590053596393912349f8b05be24ba3fb36a4c0c"
+          },
+          {
+            "cell_id": "native_perturbed/rgb/0.3-0.8m/0.02",
+            "source": "native_perturbed",
+            "method": "rgb",
+            "band": "0.3-0.8m",
+            "tie_index": 156,
+            "threshold": -0.0843518495559692,
+            "threshold_kind": "finite",
+            "W": 124,
+            "F": 7,
+            "U": 25,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 145,
+            "FREE_denominator": 380,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": 0.018421052631578946,
+            "W_fraction": 0.8551724137931035,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__rgb__0.3-0.8m.json",
+            "all_ties_sha256": "e649b53a47ac93b88b29b42ced1fad4565e15c2628de20a3f49f68ec4dd8b343"
+          },
+          {
+            "cell_id": "native_perturbed/or/0.3-0.8m/0.02",
+            "source": "native_perturbed",
+            "method": "or",
+            "band": "0.3-0.8m",
+            "tie_index": 158,
+            "threshold": -0.06486876010894771,
+            "threshold_kind": "finite",
+            "W": 128,
+            "F": 7,
+            "U": 23,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 145,
+            "FREE_denominator": 380,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": 0.018421052631578946,
+            "W_fraction": 0.8827586206896552,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__or__0.3-0.8m.json",
+            "all_ties_sha256": "33b6e757bda4d1bac5e30b27dc741a7280854fbd39c8553f2b3027dd95a0ec8d"
+          },
+          {
+            "cell_id": "native_perturbed/and/0.3-0.8m/0.02",
+            "source": "native_perturbed",
+            "method": "and",
+            "band": "0.3-0.8m",
+            "tie_index": 111,
+            "threshold": -0.16414810419082637,
+            "threshold_kind": "finite",
+            "W": 96,
+            "F": 6,
+            "U": 9,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 145,
+            "FREE_denominator": 380,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": 0.015789473684210527,
+            "W_fraction": 0.6620689655172414,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__and__0.3-0.8m.json",
+            "all_ties_sha256": "82378b421a2afe9817ce7fdf76d86b8ea7ca3054f0de12ed54f5c6165a60c17f"
+          },
+          {
+            "cell_id": "native_perturbed/hgb/0.8-1.5m/0.05",
+            "source": "native_perturbed",
+            "method": "hgb",
+            "band": "0.8-1.5m",
+            "tie_index": 284,
+            "threshold": 0.6461185730943816,
+            "threshold_kind": "finite",
+            "W": 291,
+            "F": 7,
+            "U": 28,
+            "target": 0.05,
+            "status": "ADOPTED",
+            "POS_denominator": 313,
+            "FREE_denominator": 206,
+            "UNKNOWN_denominator": 57,
+            "F_fraction": 0.03398058252427184,
+            "W_fraction": 0.9297124600638977,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__hgb__0.8-1.5m.json",
+            "all_ties_sha256": "7d5afa62285dc15de055bf1d344e2e7030148dd63c448ddfd59a841cc4015ed9"
+          },
+          {
+            "cell_id": "native_perturbed/logit/0.8-1.5m/0.05",
+            "source": "native_perturbed",
+            "method": "logit",
+            "band": "0.8-1.5m",
+            "tie_index": 339,
+            "threshold": 0.5155544783751843,
+            "threshold_kind": "finite",
+            "W": 299,
+            "F": 9,
+            "U": 31,
+            "target": 0.05,
+            "status": "ADOPTED",
+            "POS_denominator": 313,
+            "FREE_denominator": 206,
+            "UNKNOWN_denominator": 57,
+            "F_fraction": 0.043689320388349516,
+            "W_fraction": 0.9552715654952076,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__logit__0.8-1.5m.json",
+            "all_ties_sha256": "bab3429f42ea5be8067bed0a51a9e4440cfdf9bf52e98068c9a141e4ffe1dd8a"
+          },
+          {
+            "cell_id": "native_perturbed/tof/0.8-1.5m/0.05",
+            "source": "native_perturbed",
+            "method": "tof",
+            "band": "0.8-1.5m",
+            "tie_index": 248,
+            "threshold": -0.11298683905320672,
+            "threshold_kind": "finite",
+            "W": 230,
+            "F": 10,
+            "U": 8,
+            "target": 0.05,
+            "status": "ADOPTED",
+            "POS_denominator": 313,
+            "FREE_denominator": 206,
+            "UNKNOWN_denominator": 57,
+            "F_fraction": 0.04854368932038835,
+            "W_fraction": 0.7348242811501597,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__tof__0.8-1.5m.json",
+            "all_ties_sha256": "564402dd3a811d95fcaf2968fbad1ef55fca0b78741f490cd55a0ff276c88860"
+          },
+          {
+            "cell_id": "native_perturbed/rgb/0.8-1.5m/0.05",
+            "source": "native_perturbed",
+            "method": "rgb",
+            "band": "0.8-1.5m",
+            "tie_index": 318,
+            "threshold": -0.201171875,
+            "threshold_kind": "finite",
+            "W": 287,
+            "F": 10,
+            "U": 54,
+            "target": 0.05,
+            "status": "ADOPTED",
+            "POS_denominator": 313,
+            "FREE_denominator": 206,
+            "UNKNOWN_denominator": 57,
+            "F_fraction": 0.04854368932038835,
+            "W_fraction": 0.9169329073482428,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__rgb__0.8-1.5m.json",
+            "all_ties_sha256": "62b8927d52d54ca7b0cbd8126dd27605b0837097a5d63151bcd788b7cd563a22"
+          },
+          {
+            "cell_id": "native_perturbed/or/0.8-1.5m/0.05",
+            "source": "native_perturbed",
+            "method": "or",
+            "band": "0.8-1.5m",
+            "tie_index": 332,
+            "threshold": -0.089376537053239,
+            "threshold_kind": "finite",
+            "W": 297,
+            "F": 8,
+            "U": 54,
+            "target": 0.05,
+            "status": "ADOPTED",
+            "POS_denominator": 313,
+            "FREE_denominator": 206,
+            "UNKNOWN_denominator": 57,
+            "F_fraction": 0.038834951456310676,
+            "W_fraction": 0.9488817891373802,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__or__0.8-1.5m.json",
+            "all_ties_sha256": "2bf710d12b0593e1af9febcad16a324ec93a6bcbf5939c73fe717cd175cd5d47"
+          },
+          {
+            "cell_id": "native_perturbed/and/0.8-1.5m/0.05",
+            "source": "native_perturbed",
+            "method": "and",
+            "band": "0.8-1.5m",
+            "tie_index": 278,
+            "threshold": -0.4825156502053798,
+            "threshold_kind": "finite",
+            "W": 252,
+            "F": 9,
+            "U": 21,
+            "target": 0.05,
+            "status": "ADOPTED",
+            "POS_denominator": 313,
+            "FREE_denominator": 206,
+            "UNKNOWN_denominator": 57,
+            "F_fraction": 0.043689320388349516,
+            "W_fraction": 0.805111821086262,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__and__0.8-1.5m.json",
+            "all_ties_sha256": "32a6adeddbd42d15c0a0b7498ca8dafc837d4aa7a8c7685fb5544ce27ebf2fbb"
+          },
+          {
+            "cell_id": "native_perturbed/hgb/1.5-3m/0.10",
+            "source": "native_perturbed",
+            "method": "hgb",
+            "band": "1.5-3m",
+            "tie_index": 375,
+            "threshold": 0.6703441991227989,
+            "threshold_kind": "finite",
+            "W": 339,
+            "F": 5,
+            "U": 81,
+            "target": 0.1,
+            "status": "ADOPTED",
+            "POS_denominator": 354,
+            "FREE_denominator": 58,
+            "UNKNOWN_denominator": 164,
+            "F_fraction": 0.08620689655172414,
+            "W_fraction": 0.9576271186440678,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__hgb__1.5-3m.json",
+            "all_ties_sha256": "e1dd5fa0b05a262720a2ed857914b81fba6ca3a4d4147c2de9aacc22814d9810"
+          },
+          {
+            "cell_id": "native_perturbed/logit/1.5-3m/0.10",
+            "source": "native_perturbed",
+            "method": "logit",
+            "band": "1.5-3m",
+            "tie_index": 444,
+            "threshold": 0.4053749160311797,
+            "threshold_kind": "finite",
+            "W": 348,
+            "F": 4,
+            "U": 92,
+            "target": 0.1,
+            "status": "ADOPTED",
+            "POS_denominator": 354,
+            "FREE_denominator": 58,
+            "UNKNOWN_denominator": 164,
+            "F_fraction": 0.06896551724137931,
+            "W_fraction": 0.9830508474576272,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__logit__1.5-3m.json",
+            "all_ties_sha256": "3dd867665ddb91467fd997f5780fbd702495621023f799318f227812e59ec185"
+          },
+          {
+            "cell_id": "native_perturbed/tof/1.5-3m/0.10",
+            "source": "native_perturbed",
+            "method": "tof",
+            "band": "1.5-3m",
+            "tie_index": 378,
+            "threshold": -1.332122600902642,
+            "threshold_kind": "finite",
+            "W": 288,
+            "F": 1,
+            "U": 89,
+            "target": 0.1,
+            "status": "ADOPTED",
+            "POS_denominator": 354,
+            "FREE_denominator": 58,
+            "UNKNOWN_denominator": 164,
+            "F_fraction": 0.017241379310344827,
+            "W_fraction": 0.8135593220338984,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__tof__1.5-3m.json",
+            "all_ties_sha256": "c0de833160aba05e89f531e1ec007c3909cd97b8fca605ad85a83509966d65cd"
+          },
+          {
+            "cell_id": "native_perturbed/rgb/1.5-3m/0.10",
+            "source": "native_perturbed",
+            "method": "rgb",
+            "band": "1.5-3m",
+            "tie_index": 469,
+            "threshold": -0.5860885749710567,
+            "threshold_kind": "finite",
+            "W": 347,
+            "F": 4,
+            "U": 127,
+            "target": 0.1,
+            "status": "ADOPTED",
+            "POS_denominator": 354,
+            "FREE_denominator": 58,
+            "UNKNOWN_denominator": 164,
+            "F_fraction": 0.06896551724137931,
+            "W_fraction": 0.980225988700565,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__rgb__1.5-3m.json",
+            "all_ties_sha256": "3ad57e60897e3090518c1d80e2cf489ecb1d927ff24e085755cb105a871a1919"
+          },
+          {
+            "cell_id": "native_perturbed/or/1.5-3m/0.10",
+            "source": "native_perturbed",
+            "method": "or",
+            "band": "1.5-3m",
+            "tie_index": 474,
+            "threshold": -0.5830690808029735,
+            "threshold_kind": "finite",
+            "W": 349,
+            "F": 5,
+            "U": 127,
+            "target": 0.1,
+            "status": "ADOPTED",
+            "POS_denominator": 354,
+            "FREE_denominator": 58,
+            "UNKNOWN_denominator": 164,
+            "F_fraction": 0.08620689655172414,
+            "W_fraction": 0.9858757062146892,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__or__1.5-3m.json",
+            "all_ties_sha256": "26b4bd73473320e4eedbb17972685aff8fba08d8423156fcbae1d5f68a058417"
+          },
+          {
+            "cell_id": "native_perturbed/and/1.5-3m/0.10",
+            "source": "native_perturbed",
+            "method": "and",
+            "band": "1.5-3m",
+            "tie_index": 378,
+            "threshold": -1.332122600902642,
+            "threshold_kind": "finite",
+            "W": 288,
+            "F": 1,
+            "U": 89,
+            "target": 0.1,
+            "status": "ADOPTED",
+            "POS_denominator": 354,
+            "FREE_denominator": 58,
+            "UNKNOWN_denominator": 164,
+            "F_fraction": 0.017241379310344827,
+            "W_fraction": 0.8135593220338984,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\native_perturbed__and__1.5-3m.json",
+            "all_ties_sha256": "1bc51391cfb90ad4b0536f7165a90c4845885a1ea947afde6adcda5184a85477"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/hgb/0.3-0.8m/0.02",
+            "source": "faro_rho030_ambient1",
+            "method": "hgb",
+            "band": "0.3-0.8m",
+            "tie_index": 38,
+            "threshold": 0.8175369322690281,
+            "threshold_kind": "finite",
+            "W": 37,
+            "F": 0,
+            "U": 5,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 38,
+            "FREE_denominator": 16,
+            "UNKNOWN_denominator": 9,
+            "F_fraction": 0.0,
+            "W_fraction": 0.9736842105263158,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__hgb__0.3-0.8m.json",
+            "all_ties_sha256": "913375f615dd563edb26505c2dcafef4a083312ffaa4cd529ebe0adbf649669b"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/logit/0.3-0.8m/0.02",
+            "source": "faro_rho030_ambient1",
+            "method": "logit",
+            "band": "0.3-0.8m",
+            "tie_index": 42,
+            "threshold": 0.7579329350906341,
+            "threshold_kind": "finite",
+            "W": 35,
+            "F": 0,
+            "U": 7,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 38,
+            "FREE_denominator": 16,
+            "UNKNOWN_denominator": 9,
+            "F_fraction": 0.0,
+            "W_fraction": 0.9210526315789473,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__logit__0.3-0.8m.json",
+            "all_ties_sha256": "db60d78ca88f4c38c38c9a6ab19e589b3c263c2c5a72759e3cdd98e20c3091c6"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/tof/0.3-0.8m/0.02",
+            "source": "faro_rho030_ambient1",
+            "method": "tof",
+            "band": "0.3-0.8m",
+            "tie_index": 27,
+            "threshold": -0.05097152488772705,
+            "threshold_kind": "finite",
+            "W": 27,
+            "F": 0,
+            "U": 0,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 38,
+            "FREE_denominator": 16,
+            "UNKNOWN_denominator": 9,
+            "F_fraction": 0.0,
+            "W_fraction": 0.7105263157894737,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__tof__0.3-0.8m.json",
+            "all_ties_sha256": "ab50a7f3ce2fbf5fcc37e28ce7f1fd4ebec481b275e3f94c608e80c704d37560"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/rgb/0.3-0.8m/0.02",
+            "source": "faro_rho030_ambient1",
+            "method": "rgb",
+            "band": "0.3-0.8m",
+            "tie_index": 41,
+            "threshold": -0.058664691448211626,
+            "threshold_kind": "finite",
+            "W": 34,
+            "F": 0,
+            "U": 7,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 38,
+            "FREE_denominator": 16,
+            "UNKNOWN_denominator": 9,
+            "F_fraction": 0.0,
+            "W_fraction": 0.8947368421052632,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__rgb__0.3-0.8m.json",
+            "all_ties_sha256": "97735a2a034b9020f92122a97050193da40b4a49e247cce69c4b275403bf32ac"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/or/0.3-0.8m/0.02",
+            "source": "faro_rho030_ambient1",
+            "method": "or",
+            "band": "0.3-0.8m",
+            "tie_index": 41,
+            "threshold": -0.05097152488772705,
+            "threshold_kind": "finite",
+            "W": 35,
+            "F": 0,
+            "U": 6,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 38,
+            "FREE_denominator": 16,
+            "UNKNOWN_denominator": 9,
+            "F_fraction": 0.0,
+            "W_fraction": 0.9210526315789473,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__or__0.3-0.8m.json",
+            "all_ties_sha256": "f9821244b8ee48e9003bbd102109fae77b8cf7ab57b2a73afbcc631dcd229c94"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/and/0.3-0.8m/0.02",
+            "source": "faro_rho030_ambient1",
+            "method": "and",
+            "band": "0.3-0.8m",
+            "tie_index": 36,
+            "threshold": -0.17443911286465516,
+            "threshold_kind": "finite",
+            "W": 34,
+            "F": 0,
+            "U": 2,
+            "target": 0.02,
+            "status": "ADOPTED",
+            "POS_denominator": 38,
+            "FREE_denominator": 16,
+            "UNKNOWN_denominator": 9,
+            "F_fraction": 0.0,
+            "W_fraction": 0.8947368421052632,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__and__0.3-0.8m.json",
+            "all_ties_sha256": "20e3ab92c4f4740aa1a519d89ed4ccb143e98d24ab3f7aad7e621479b62a7723"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/hgb/0.8-1.5m/0.05",
+            "source": "faro_rho030_ambient1",
+            "method": "hgb",
+            "band": "0.8-1.5m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.05,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 51,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 12,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__hgb__0.8-1.5m.json",
+            "all_ties_sha256": "3ecfb5756cea6479b850ec73dd5bb60c8bb4c6e90370780906f92742f5666a9b"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/logit/0.8-1.5m/0.05",
+            "source": "faro_rho030_ambient1",
+            "method": "logit",
+            "band": "0.8-1.5m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.05,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 51,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 12,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__logit__0.8-1.5m.json",
+            "all_ties_sha256": "ec52caadd5af19bb74f5828b778f44f443f061cbc6e6236dcbc0a7195afc8348"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/tof/0.8-1.5m/0.05",
+            "source": "faro_rho030_ambient1",
+            "method": "tof",
+            "band": "0.8-1.5m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.05,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 51,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 12,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__tof__0.8-1.5m.json",
+            "all_ties_sha256": "72dc161e46f4f1a72f86158d7198edeef61ae31c9254afd35d126357e3d87365"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/rgb/0.8-1.5m/0.05",
+            "source": "faro_rho030_ambient1",
+            "method": "rgb",
+            "band": "0.8-1.5m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.05,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 51,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 12,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__rgb__0.8-1.5m.json",
+            "all_ties_sha256": "74a1647d1412c75f7115b8c389685fe60ab35375b69c156ebc5640d4142d3992"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/or/0.8-1.5m/0.05",
+            "source": "faro_rho030_ambient1",
+            "method": "or",
+            "band": "0.8-1.5m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.05,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 51,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 12,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__or__0.8-1.5m.json",
+            "all_ties_sha256": "874a45557552e75e53e99836a370440dcedfcbea453fa955c64233a7a58c91cd"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/and/0.8-1.5m/0.05",
+            "source": "faro_rho030_ambient1",
+            "method": "and",
+            "band": "0.8-1.5m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.05,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 51,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 12,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__and__0.8-1.5m.json",
+            "all_ties_sha256": "0523ea1a40ac28bd336a170e724ac69f6b9295ec208cf1bb3ae1857f876c0f72"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/hgb/1.5-3m/0.10",
+            "source": "faro_rho030_ambient1",
+            "method": "hgb",
+            "band": "1.5-3m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.1,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 12,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__hgb__1.5-3m.json",
+            "all_ties_sha256": "5811ec3c290db0ff5a042ce7e91977a8647d6efcfb325b5d228e259266a1ef07"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/logit/1.5-3m/0.10",
+            "source": "faro_rho030_ambient1",
+            "method": "logit",
+            "band": "1.5-3m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.1,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 12,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__logit__1.5-3m.json",
+            "all_ties_sha256": "25744be52527a1f59310dd901203172c9c5c6762ec57b74d1521066902c278b1"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/tof/1.5-3m/0.10",
+            "source": "faro_rho030_ambient1",
+            "method": "tof",
+            "band": "1.5-3m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.1,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 12,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__tof__1.5-3m.json",
+            "all_ties_sha256": "bf5ae9d25f8884f4d3cad8494cccc309b982a04841ab39440159188a2192fecb"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/rgb/1.5-3m/0.10",
+            "source": "faro_rho030_ambient1",
+            "method": "rgb",
+            "band": "1.5-3m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.1,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 12,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__rgb__1.5-3m.json",
+            "all_ties_sha256": "8620bc841b05c1754aa8372843ae83bcc780684de5ea6b3f8b40e442d4074090"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/or/1.5-3m/0.10",
+            "source": "faro_rho030_ambient1",
+            "method": "or",
+            "band": "1.5-3m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.1,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 12,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__or__1.5-3m.json",
+            "all_ties_sha256": "8ee2b95e5205b6b06dd611657252fdf5707d1bf24767ccaf635d4460346825a9"
+          },
+          {
+            "cell_id": "faro_rho030_ambient1/and/1.5-3m/0.10",
+            "source": "faro_rho030_ambient1",
+            "method": "and",
+            "band": "1.5-3m",
+            "tie_index": 0,
+            "threshold": null,
+            "threshold_kind": "positive_infinity",
+            "W": 0,
+            "F": 0,
+            "U": 0,
+            "target": 0.1,
+            "status": "NOT_CALIBRATABLE",
+            "POS_denominator": 12,
+            "FREE_denominator": 0,
+            "UNKNOWN_denominator": 51,
+            "F_fraction": null,
+            "W_fraction": 0.0,
+            "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-v1-dev-20261011\\calibration\\cal_ties\\faro_rho030_ambient1__and__1.5-3m.json",
+            "all_ties_sha256": "6104f6363a65f0499acf0bbb570a2ec5927c4fd82055013a9d7274dd8a3f87f9"
+          }
+        ],
+        "cal_best_single": [
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "rgb",
+            "status": "ADOPTED",
+            "rule": "Auxiliary only: maxcalW, then smallerF, then fixedRGB tie priority"
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "rgb",
+            "status": "ADOPTED",
+            "rule": "Auxiliary only: maxcalW, then smallerF, then fixedRGB tie priority"
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "rgb",
+            "status": "ADOPTED",
+            "rule": "Auxiliary only: maxcalW, then smallerF, then fixedRGB tie priority"
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "rgb",
+            "status": "ADOPTED",
+            "rule": "Auxiliary only: maxcalW, then smallerF, then fixedRGB tie priority"
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "rgb",
+            "status": "NOT_CALIBRATABLE",
+            "rule": "Auxiliary only: maxcalW, then smallerF, then fixedRGB tie priority"
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "rgb",
+            "status": "NOT_CALIBRATABLE",
+            "rule": "Auxiliary only: maxcalW, then smallerF, then fixedRGB tie priority"
+          }
+        ],
+        "seeds": [
+          955,
+          956,
+          957
+        ],
+        "ensemble": "Arithmetic mean of float64 positive-class predict_proba values",
+        "input_bindings": {
+          "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-v1-dev-20261011\\train_cal_features_manifest.json": "0687a36080e4658a1f3338ba781c0abab9f7c38769bf9be1b3aad6150b6e6267",
+          "E:\\linnan\\linnan\\artifacts.local\\work\\sync-rgb-tof-dataset-v1-dev-20261011\\train_cal_reference_roster.json": "54123d6c9b9f227d7a412e8a6571a88e90af40a088fee89b0b5045f49f355bbc"
+        },
+        "source_sha256": "94e163c0f1f0c4a942ee9c4e99a3fa99c8cf1522bbcab433904e6b12394646dc",
+        "W_definition": "query alert AND POS, not pixel-overlap witness",
+        "K2": "Feature producer averaged repeats before fitting; unique frame/query enforced",
+        "hgb_recipe": {
+          "max_iter": 100,
+          "learning_rate": 0.1,
+          "max_leaf_nodes": 7,
+          "max_depth": 3,
+          "min_samples_leaf": 50,
+          "l2_regularization": 1.0,
+          "early_stopping": false
+        },
+        "logit_recipe": {
+          "scaler": "StandardScaler fittrain only",
+          "C": 1,
+          "L2": true,
+          "solver": "lbfgs",
+          "max_iter": 1000,
+          "class_weight": null
+        },
+        "CPU_wall_s": 9.936999999976251,
+        "eval_reads": 0,
+        "GPU_s": 0
+      }
+    },
+    "primary_open_authorization.json": {
+      "sha256": "1797f3ef3e6b466cd76ce5785919e9b0a4a24bfa5735ad5485bddbd79e082be8",
+      "content": {
+        "authorization": "USER_TASK_ONCE_ONLY_EVAL_AFTER_SEAL",
+        "utc": "2026-10-10T17:07:11.1920980Z",
+        "plan_sha256": "6F5A790934CA2647D1A46F3B0D1EBE8DB968823D1D3C2351102338B28B9C0593",
+        "cal_sha256": "290A100338D7414BEA7A67F4BB28A11D3A912FE37F25D450777A672CCBB31C93",
+        "preopen_audit_sha256": "AA805410D139F965AAD737ECD8D849FE4B154ED032C94924C0A009A1B1943341",
+        "no_retraining_or_rethresholding": true
+      }
+    },
+    "eval/eval_open.json": {
+      "sha256": "8e7195a9b9bb3de96e1b2587250ea701301cfc5503e847da485c6d399ef6b1c8",
+      "content": {
+        "opened_utc": "2026-10-10T17:07:25.443112+00:00",
+        "cal_seal_sha256": "290a100338d7414bea7a67f4bb28a11d3a912fe37f25d450777a672ccbb31c93",
+        "feature_seal_sha256": "d5a1ea13965b597cc13c2b396f718167e0ce075acbbfb7fdf67e32476a019db9",
+        "plan_sha256": "6f5a790934ca2647d1a46f3b0d1ebe8db968823d1d3c2351102338b28b9c0593",
+        "reference_path": "artifacts.local\\work\\sync-rgb-tof-dataset-v1-dev-20261011\\sealed\\eval\\reference_roster.json",
+        "visit_ids": [
+          "421002",
+          "421260",
+          "421393",
+          "421397"
+        ],
+        "one_shot": true
+      }
+    },
+    "eval/eval_terminal.json": {
+      "sha256": "0e79d404f4715968e119e656ec9fca8629fd19090aec768f41c092de3ad4f27c",
+      "content": {
+        "status": "COMPLETE",
+        "error": null,
+        "rows_cached": 4509,
+        "command_wall_s": 4.524818100035191,
+        "GPU_s": 0,
+        "cache_sha256": "821091094048627c8e889324da042b2d9b4cc09d77b5e95c5d39ccaeddceed56",
+        "reopen_permitted": false
+      }
+    },
+    "eval/summary.json": {
+      "sha256": "345f3a4a3d684be84f554e0c9e23b7c54f50f28c2ead4e939036ce6d83524b52",
+      "content": {
+        "metrics": [
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "hgb",
+            "status": "EVALUATED",
+            "W": 145,
+            "POS": 163,
+            "F": 8,
+            "FREE": 151,
+            "U": 16,
+            "UNKNOWN": 37,
+            "W_rate": 0.8895705521472392,
+            "F_rate": 0.052980132450331126,
+            "W_CI": {
+              "lower": 0.8058252427184466,
+              "upper": 0.92,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.07079646017699115,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "logit",
+            "status": "EVALUATED",
+            "W": 150,
+            "POS": 163,
+            "F": 14,
+            "FREE": 151,
+            "U": 35,
+            "UNKNOWN": 37,
+            "W_rate": 0.9202453987730062,
+            "F_rate": 0.09271523178807947,
+            "W_CI": {
+              "lower": 0.8148148148148148,
+              "upper": 0.97,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.02631578947368421,
+              "upper": 0.12367491166077739,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "tof",
+            "status": "EVALUATED",
+            "W": 85,
+            "POS": 163,
+            "F": 16,
+            "FREE": 151,
+            "U": 0,
+            "UNKNOWN": 37,
+            "W_rate": 0.5214723926380368,
+            "F_rate": 0.10596026490066225,
+            "W_CI": {
+              "lower": 0.42168674698795183,
+              "upper": 0.6733333333333333,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.06451612903225806,
+              "upper": 0.1348314606741573,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "rgb",
+            "status": "EVALUATED",
+            "W": 146,
+            "POS": 163,
+            "F": 2,
+            "FREE": 151,
+            "U": 32,
+            "UNKNOWN": 37,
+            "W_rate": 0.8957055214723927,
+            "F_rate": 0.013245033112582781,
+            "W_CI": {
+              "lower": 0.7766990291262136,
+              "upper": 0.94,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.02247191011235955,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "or",
+            "status": "EVALUATED",
+            "W": 153,
+            "POS": 163,
+            "F": 18,
+            "FREE": 151,
+            "U": 25,
+            "UNKNOWN": 37,
+            "W_rate": 0.9386503067484663,
+            "F_rate": 0.11920529801324503,
+            "W_CI": {
+              "lower": 0.8780487804878049,
+              "upper": 0.9590163934426229,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.06451612903225806,
+              "upper": 0.15730337078651685,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "and",
+            "status": "EVALUATED",
+            "W": 123,
+            "POS": 163,
+            "F": 11,
+            "FREE": 151,
+            "U": 0,
+            "UNKNOWN": 37,
+            "W_rate": 0.754601226993865,
+            "F_rate": 0.0728476821192053,
+            "W_CI": {
+              "lower": 0.6037735849056604,
+              "upper": 0.8571428571428571,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0449438202247191,
+              "upper": 0.1271186440677966,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "hgb",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 153,
+            "F": null,
+            "FREE": 43,
+            "U": null,
+            "UNKNOWN": 155,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "logit",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 153,
+            "F": null,
+            "FREE": 43,
+            "U": null,
+            "UNKNOWN": 155,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "tof",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 153,
+            "F": null,
+            "FREE": 43,
+            "U": null,
+            "UNKNOWN": 155,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "rgb",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 153,
+            "F": null,
+            "FREE": 43,
+            "U": null,
+            "UNKNOWN": 155,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "or",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 153,
+            "F": null,
+            "FREE": 43,
+            "U": null,
+            "UNKNOWN": 155,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "and",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 153,
+            "F": null,
+            "FREE": 43,
+            "U": null,
+            "UNKNOWN": 155,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "hgb",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 97,
+            "F": null,
+            "FREE": 13,
+            "U": null,
+            "UNKNOWN": 241,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "logit",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 97,
+            "F": null,
+            "FREE": 13,
+            "U": null,
+            "UNKNOWN": 241,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "tof",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 97,
+            "F": null,
+            "FREE": 13,
+            "U": null,
+            "UNKNOWN": 241,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "rgb",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 97,
+            "F": null,
+            "FREE": 13,
+            "U": null,
+            "UNKNOWN": 241,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "or",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 97,
+            "F": null,
+            "FREE": 13,
+            "U": null,
+            "UNKNOWN": 241,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "and",
+            "status": "NOT_CALIBRATABLE",
+            "W": null,
+            "POS": 97,
+            "F": null,
+            "FREE": 13,
+            "U": null,
+            "UNKNOWN": 241,
+            "W_rate": null,
+            "F_rate": null,
+            "W_CI": null,
+            "F_CI": null
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "hgb",
+            "status": "EVALUATED",
+            "W": 278,
+            "POS": 371,
+            "F": 7,
+            "FREE": 690,
+            "U": 74,
+            "UNKNOWN": 91,
+            "W_rate": 0.7493261455525606,
+            "F_rate": 0.010144927536231883,
+            "W_CI": {
+              "lower": 0.7061068702290076,
+              "upper": 0.8532110091743119,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.002066115702479339,
+              "upper": 0.020242914979757085,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "logit",
+            "status": "EVALUATED",
+            "W": 291,
+            "POS": 371,
+            "F": 1,
+            "FREE": 690,
+            "U": 81,
+            "UNKNOWN": 91,
+            "W_rate": 0.784366576819407,
+            "F_rate": 0.0014492753623188406,
+            "W_CI": {
+              "lower": 0.7404580152671756,
+              "upper": 0.8899082568807339,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.003963011889035667,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "tof",
+            "status": "EVALUATED",
+            "W": 209,
+            "POS": 371,
+            "F": 43,
+            "FREE": 690,
+            "U": 1,
+            "UNKNOWN": 91,
+            "W_rate": 0.5633423180592992,
+            "F_rate": 0.06231884057971015,
+            "W_CI": {
+              "lower": 0.3669724770642202,
+              "upper": 0.7364864864864865,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.021592442645074223,
+              "upper": 0.116,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "rgb",
+            "status": "EVALUATED",
+            "W": 258,
+            "POS": 371,
+            "F": 9,
+            "FREE": 690,
+            "U": 84,
+            "UNKNOWN": 91,
+            "W_rate": 0.6954177897574124,
+            "F_rate": 0.013043478260869565,
+            "W_CI": {
+              "lower": 0.5525672371638142,
+              "upper": 0.8623853211009175,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.027692307692307693,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "or",
+            "status": "EVALUATED",
+            "W": 305,
+            "POS": 371,
+            "F": 16,
+            "FREE": 690,
+            "U": 78,
+            "UNKNOWN": 91,
+            "W_rate": 0.8221024258760108,
+            "F_rate": 0.02318840579710145,
+            "W_CI": {
+              "lower": 0.7777777777777778,
+              "upper": 0.8784530386740331,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.015909090909090907,
+              "upper": 0.036,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "and",
+            "status": "EVALUATED",
+            "W": 167,
+            "POS": 371,
+            "F": 12,
+            "FREE": 690,
+            "U": 1,
+            "UNKNOWN": 91,
+            "W_rate": 0.4501347708894879,
+            "F_rate": 0.017391304347826087,
+            "W_CI": {
+              "lower": 0.36253776435045315,
+              "upper": 0.521505376344086,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.011363636363636364,
+              "upper": 0.028,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "hgb",
+            "status": "EVALUATED",
+            "W": 497,
+            "POS": 542,
+            "F": 9,
+            "FREE": 286,
+            "U": 196,
+            "UNKNOWN": 324,
+            "W_rate": 0.9169741697416974,
+            "F_rate": 0.03146853146853147,
+            "W_CI": {
+              "lower": 0.8671875,
+              "upper": 0.9615384615384616,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.011976047904191617,
+              "upper": 0.06756756756756757,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "logit",
+            "status": "EVALUATED",
+            "W": 508,
+            "POS": 542,
+            "F": 13,
+            "FREE": 286,
+            "U": 205,
+            "UNKNOWN": 324,
+            "W_rate": 0.9372693726937269,
+            "F_rate": 0.045454545454545456,
+            "W_CI": {
+              "lower": 0.87890625,
+              "upper": 0.9895104895104895,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.005988023952095809,
+              "upper": 0.10810810810810811,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "tof",
+            "status": "EVALUATED",
+            "W": 393,
+            "POS": 542,
+            "F": 28,
+            "FREE": 286,
+            "U": 65,
+            "UNKNOWN": 324,
+            "W_rate": 0.7250922509225092,
+            "F_rate": 0.0979020979020979,
+            "W_CI": {
+              "lower": 0.4439252336448598,
+              "upper": 0.9433962264150944,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.052083333333333336,
+              "upper": 0.19480519480519481,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "rgb",
+            "status": "EVALUATED",
+            "W": 352,
+            "POS": 542,
+            "F": 3,
+            "FREE": 286,
+            "U": 316,
+            "UNKNOWN": 324,
+            "W_rate": 0.6494464944649446,
+            "F_rate": 0.01048951048951049,
+            "W_CI": {
+              "lower": 0.5576519916142557,
+              "upper": 0.7221350078492935,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.025974025974025976,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "or",
+            "status": "EVALUATED",
+            "W": 496,
+            "POS": 542,
+            "F": 23,
+            "FREE": 286,
+            "U": 313,
+            "UNKNOWN": 324,
+            "W_rate": 0.915129151291513,
+            "F_rate": 0.08041958041958042,
+            "W_CI": {
+              "lower": 0.8942598187311178,
+              "upper": 0.9478672985781991,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.03125,
+              "upper": 0.1645021645021645,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "and",
+            "status": "EVALUATED",
+            "W": 347,
+            "POS": 542,
+            "F": 10,
+            "FREE": 286,
+            "U": 168,
+            "UNKNOWN": 324,
+            "W_rate": 0.6402214022140221,
+            "F_rate": 0.03496503496503497,
+            "W_CI": {
+              "lower": 0.3500784929356358,
+              "upper": 0.85546875,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.00816326530612245,
+              "upper": 0.05021834061135371,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "hgb",
+            "status": "EVALUATED",
+            "W": 511,
+            "POS": 616,
+            "F": 7,
+            "FREE": 30,
+            "U": 153,
+            "UNKNOWN": 506,
+            "W_rate": 0.8295454545454546,
+            "F_rate": 0.23333333333333334,
+            "W_CI": {
+              "lower": 0.7272727272727273,
+              "upper": 0.918552036199095,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.4666666666666667,
+              "valid_replicates": 1993,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "logit",
+            "status": "EVALUATED",
+            "W": 537,
+            "POS": 616,
+            "F": 10,
+            "FREE": 30,
+            "U": 315,
+            "UNKNOWN": 506,
+            "W_rate": 0.8717532467532467,
+            "F_rate": 0.3333333333333333,
+            "W_CI": {
+              "lower": 0.7397504456327986,
+              "upper": 0.9698340874811463,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.6666666666666666,
+              "valid_replicates": 1993,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "tof",
+            "status": "EVALUATED",
+            "W": 463,
+            "POS": 616,
+            "F": 2,
+            "FREE": 30,
+            "U": 296,
+            "UNKNOWN": 506,
+            "W_rate": 0.7516233766233766,
+            "F_rate": 0.06666666666666667,
+            "W_CI": {
+              "lower": 0.5429864253393665,
+              "upper": 0.9278846153846154,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.25,
+              "valid_replicates": 1993,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "rgb",
+            "status": "EVALUATED",
+            "W": 485,
+            "POS": 616,
+            "F": 0,
+            "FREE": 30,
+            "U": 398,
+            "UNKNOWN": 506,
+            "W_rate": 0.7873376623376623,
+            "F_rate": 0.0,
+            "W_CI": {
+              "lower": 0.7275641025641025,
+              "upper": 0.8521870286576169,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.0,
+              "valid_replicates": 1993,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "or",
+            "status": "EVALUATED",
+            "W": 551,
+            "POS": 616,
+            "F": 2,
+            "FREE": 30,
+            "U": 401,
+            "UNKNOWN": 506,
+            "W_rate": 0.8944805194805194,
+            "F_rate": 0.06666666666666667,
+            "W_CI": {
+              "lower": 0.838006230529595,
+              "upper": 0.9668508287292817,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.25,
+              "valid_replicates": 1993,
+              "total_replicates": 2000
+            }
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "and",
+            "status": "EVALUATED",
+            "W": 440,
+            "POS": 616,
+            "F": 1,
+            "FREE": 30,
+            "U": 296,
+            "UNKNOWN": 506,
+            "W_rate": 0.7142857142857143,
+            "F_rate": 0.03333333333333333,
+            "W_CI": {
+              "lower": 0.5306799336650083,
+              "upper": 0.842911877394636,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "F_CI": {
+              "lower": 0.0,
+              "upper": 0.06666666666666667,
+              "valid_replicates": 1993,
+              "total_replicates": 2000
+            }
+          }
+        ],
+        "paired": [
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "hgb",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 1,
+            "loss": 2,
+            "delta_W": -1,
+            "POS": 163,
+            "delta_W_rate": -0.006134969325153374,
+            "delta_W_rate_CI": {
+              "lower": -0.02142857142857143,
+              "upper": 0.02912621359223301,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 6,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 16
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "hgb",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 0,
+            "loss": 8,
+            "delta_W": -8,
+            "POS": 163,
+            "delta_W_rate": -0.049079754601226995,
+            "delta_W_rate_CI": {
+              "lower": -0.07936507936507936,
+              "upper": -0.024096385542168676,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 10,
+            "UNKNOWN_added": 1,
+            "UNKNOWN_removed": 10
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "logit",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 5,
+            "loss": 1,
+            "delta_W": 4,
+            "POS": 163,
+            "delta_W_rate": 0.024539877300613498,
+            "delta_W_rate_CI": {
+              "lower": 0.006711409395973154,
+              "upper": 0.07317073170731707,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 12,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 3,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "logit",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 3,
+            "loss": 6,
+            "delta_W": -3,
+            "POS": 163,
+            "delta_W_rate": -0.018404907975460124,
+            "delta_W_rate_CI": {
+              "lower": -0.07936507936507936,
+              "upper": 0.04225352112676056,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 6,
+            "FREE_removed": 10,
+            "UNKNOWN_added": 10,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "tof",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 7,
+            "loss": 68,
+            "delta_W": -61,
+            "POS": 163,
+            "delta_W_rate": -0.37423312883435583,
+            "delta_W_rate_CI": {
+              "lower": -0.51,
+              "upper": -0.15873015873015872,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 16,
+            "FREE_removed": 2,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 32
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "tof",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 0,
+            "loss": 68,
+            "delta_W": -68,
+            "POS": 163,
+            "delta_W_rate": -0.4171779141104294,
+            "delta_W_rate_CI": {
+              "lower": -0.52,
+              "upper": -0.25396825396825395,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 2,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 25
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "rgb",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 0,
+            "loss": 0,
+            "delta_W": 0,
+            "POS": 163,
+            "delta_W_rate": 0.0,
+            "delta_W_rate_CI": {
+              "lower": 0.0,
+              "upper": 0.0,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "rgb",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 0,
+            "loss": 7,
+            "delta_W": -7,
+            "POS": 163,
+            "delta_W_rate": -0.04294478527607362,
+            "delta_W_rate_CI": {
+              "lower": -0.1111111111111111,
+              "upper": -0.01,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 16,
+            "UNKNOWN_added": 7,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "or",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 7,
+            "loss": 0,
+            "delta_W": 7,
+            "POS": 163,
+            "delta_W_rate": 0.04294478527607362,
+            "delta_W_rate_CI": {
+              "lower": 0.01,
+              "upper": 0.1111111111111111,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 16,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 7
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "or",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 0,
+            "loss": 0,
+            "delta_W": 0,
+            "POS": 163,
+            "delta_W_rate": 0.0,
+            "delta_W_rate_CI": {
+              "lower": 0.0,
+              "upper": 0.0,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "and",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 6,
+            "loss": 29,
+            "delta_W": -23,
+            "POS": 163,
+            "delta_W_rate": -0.1411042944785276,
+            "delta_W_rate_CI": {
+              "lower": -0.31690140845070425,
+              "upper": 0.031746031746031744,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 10,
+            "FREE_removed": 1,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 32
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "and",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 3,
+            "loss": 33,
+            "delta_W": -30,
+            "POS": 163,
+            "delta_W_rate": -0.18404907975460122,
+            "delta_W_rate_CI": {
+              "lower": -0.323943661971831,
+              "upper": -0.06349206349206349,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 5,
+            "FREE_removed": 12,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 25
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "hgb",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 45,
+            "loss": 25,
+            "delta_W": 20,
+            "POS": 371,
+            "delta_W_rate": 0.05390835579514825,
+            "delta_W_rate_CI": {
+              "lower": -0.04035874439461883,
+              "upper": 0.19594594594594594,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 7,
+            "FREE_removed": 9,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 10
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "hgb",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 15,
+            "loss": 42,
+            "delta_W": -27,
+            "POS": 371,
+            "delta_W_rate": -0.07277628032345014,
+            "delta_W_rate_CI": {
+              "lower": -0.12139917695473251,
+              "upper": 0.0,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 7,
+            "FREE_removed": 16,
+            "UNKNOWN_added": 4,
+            "UNKNOWN_removed": 8
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "logit",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 44,
+            "loss": 11,
+            "delta_W": 33,
+            "POS": 371,
+            "delta_W_rate": 0.0889487870619946,
+            "delta_W_rate_CI": {
+              "lower": 0.00411522633744856,
+              "upper": 0.22249388753056235,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 1,
+            "FREE_removed": 9,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 3
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "logit",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 9,
+            "loss": 23,
+            "delta_W": -14,
+            "POS": 371,
+            "delta_W_rate": -0.03773584905660377,
+            "delta_W_rate_CI": {
+              "lower": -0.0945945945945946,
+              "upper": 0.03669724770642202,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 1,
+            "FREE_removed": 16,
+            "UNKNOWN_added": 4,
+            "UNKNOWN_removed": 1
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "tof",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 68,
+            "loss": 117,
+            "delta_W": -49,
+            "POS": 371,
+            "delta_W_rate": -0.1320754716981132,
+            "delta_W_rate_CI": {
+              "lower": -0.4954128440366973,
+              "upper": 0.16891891891891891,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 41,
+            "FREE_removed": 7,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 83
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "tof",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 17,
+            "loss": 113,
+            "delta_W": -96,
+            "POS": 371,
+            "delta_W_rate": -0.2587601078167116,
+            "delta_W_rate_CI": {
+              "lower": -0.48623853211009177,
+              "upper": -0.11728395061728394,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 30,
+            "FREE_removed": 3,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 77
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "rgb",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 0,
+            "loss": 0,
+            "delta_W": 0,
+            "POS": 371,
+            "delta_W_rate": 0.0,
+            "delta_W_rate_CI": {
+              "lower": 0.0,
+              "upper": 0.0,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "rgb",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 5,
+            "loss": 52,
+            "delta_W": -47,
+            "POS": 371,
+            "delta_W_rate": -0.12668463611859837,
+            "delta_W_rate_CI": {
+              "lower": -0.3108108108108108,
+              "upper": 0.018970189701897018,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 5,
+            "FREE_removed": 12,
+            "UNKNOWN_added": 6,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "or",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 52,
+            "loss": 5,
+            "delta_W": 47,
+            "POS": 371,
+            "delta_W_rate": 0.12668463611859837,
+            "delta_W_rate_CI": {
+              "lower": -0.018970189701897018,
+              "upper": 0.3108108108108108,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 12,
+            "FREE_removed": 5,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 6
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "or",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 0,
+            "loss": 0,
+            "delta_W": 0,
+            "POS": 371,
+            "delta_W_rate": 0.0,
+            "delta_W_rate_CI": {
+              "lower": 0.0,
+              "upper": 0.0,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "and",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 19,
+            "loss": 110,
+            "delta_W": -91,
+            "POS": 371,
+            "delta_W_rate": -0.24528301886792453,
+            "delta_W_rate_CI": {
+              "lower": -0.47706422018348627,
+              "upper": -0.11728395061728394,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 9,
+            "FREE_removed": 6,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 83
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "and",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 13,
+            "loss": 151,
+            "delta_W": -138,
+            "POS": 371,
+            "delta_W_rate": -0.3719676549865229,
+            "delta_W_rate_CI": {
+              "lower": -0.4743202416918429,
+              "upper": -0.2676864244741874,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 10,
+            "FREE_removed": 14,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 77
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "hgb",
+            "comparator": "tof",
+            "comparator_role": "best_single",
+            "rescue": 122,
+            "loss": 18,
+            "delta_W": 104,
+            "POS": 542,
+            "delta_W_rate": 0.1918819188191882,
+            "delta_W_rate_CI": {
+              "lower": -0.04329004329004329,
+              "upper": 0.5070643642072213,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 7,
+            "FREE_removed": 26,
+            "UNKNOWN_added": 133,
+            "UNKNOWN_removed": 2
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "hgb",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 21,
+            "loss": 20,
+            "delta_W": 1,
+            "POS": 542,
+            "delta_W_rate": 0.0018450184501845018,
+            "delta_W_rate_CI": {
+              "lower": -0.06060606060606061,
+              "upper": 0.046579330422125184,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 7,
+            "FREE_removed": 21,
+            "UNKNOWN_added": 8,
+            "UNKNOWN_removed": 125
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "logit",
+            "comparator": "tof",
+            "comparator_role": "best_single",
+            "rescue": 126,
+            "loss": 11,
+            "delta_W": 115,
+            "POS": 542,
+            "delta_W_rate": 0.21217712177121772,
+            "delta_W_rate_CI": {
+              "lower": -0.01171875,
+              "upper": 0.5447409733124019,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 10,
+            "FREE_removed": 25,
+            "UNKNOWN_added": 142,
+            "UNKNOWN_removed": 2
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "logit",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 23,
+            "loss": 11,
+            "delta_W": 12,
+            "POS": 542,
+            "delta_W_rate": 0.02214022140221402,
+            "delta_W_rate_CI": {
+              "lower": -0.02734375,
+              "upper": 0.07535321821036106,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 10,
+            "FREE_removed": 20,
+            "UNKNOWN_added": 7,
+            "UNKNOWN_removed": 115
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "tof",
+            "comparator": "tof",
+            "comparator_role": "best_single",
+            "rescue": 0,
+            "loss": 0,
+            "delta_W": 0,
+            "POS": 542,
+            "delta_W_rate": 0.0,
+            "delta_W_rate_CI": {
+              "lower": 0.0,
+              "upper": 0.0,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "tof",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 3,
+            "loss": 106,
+            "delta_W": -103,
+            "POS": 542,
+            "delta_W_rate": -0.1900369003690037,
+            "delta_W_rate_CI": {
+              "lower": -0.46261682242990654,
+              "upper": -0.00468384074941452,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 7,
+            "FREE_removed": 2,
+            "UNKNOWN_added": 3,
+            "UNKNOWN_removed": 251
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "rgb",
+            "comparator": "tof",
+            "comparator_role": "best_single",
+            "rescue": 113,
+            "loss": 154,
+            "delta_W": -41,
+            "POS": 542,
+            "delta_W_rate": -0.07564575645756458,
+            "delta_W_rate_CI": {
+              "lower": -0.3857442348008386,
+              "upper": 0.264919941775837,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 3,
+            "FREE_removed": 28,
+            "UNKNOWN_added": 256,
+            "UNKNOWN_removed": 5
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "rgb",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 9,
+            "loss": 153,
+            "delta_W": -144,
+            "POS": 542,
+            "delta_W_rate": -0.2656826568265683,
+            "delta_W_rate_CI": {
+              "lower": -0.389937106918239,
+              "upper": -0.17582417582417584,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 1,
+            "FREE_removed": 21,
+            "UNKNOWN_added": 7,
+            "UNKNOWN_removed": 4
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "or",
+            "comparator": "tof",
+            "comparator_role": "best_single",
+            "rescue": 106,
+            "loss": 3,
+            "delta_W": 103,
+            "POS": 542,
+            "delta_W_rate": 0.1900369003690037,
+            "delta_W_rate_CI": {
+              "lower": 0.00468384074941452,
+              "upper": 0.46261682242990654,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 2,
+            "FREE_removed": 7,
+            "UNKNOWN_added": 251,
+            "UNKNOWN_removed": 3
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "or",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 0,
+            "loss": 0,
+            "delta_W": 0,
+            "POS": 542,
+            "delta_W_rate": 0.0,
+            "delta_W_rate_CI": {
+              "lower": 0.0,
+              "upper": 0.0,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "and",
+            "comparator": "tof",
+            "comparator_role": "best_single",
+            "rescue": 12,
+            "loss": 58,
+            "delta_W": -46,
+            "POS": 542,
+            "delta_W_rate": -0.08487084870848709,
+            "delta_W_rate_CI": {
+              "lower": -0.16533864541832669,
+              "upper": -0.026687598116169546,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 4,
+            "FREE_removed": 22,
+            "UNKNOWN_added": 105,
+            "UNKNOWN_removed": 2
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "and",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 11,
+            "loss": 160,
+            "delta_W": -149,
+            "POS": 542,
+            "delta_W_rate": -0.27490774907749077,
+            "delta_W_rate_CI": {
+              "lower": -0.5478806907378336,
+              "upper": -0.05078125,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 3,
+            "FREE_removed": 16,
+            "UNKNOWN_added": 8,
+            "UNKNOWN_removed": 153
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "hgb",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 44,
+            "loss": 18,
+            "delta_W": 26,
+            "POS": 616,
+            "delta_W_rate": 0.04220779220779221,
+            "delta_W_rate_CI": {
+              "lower": -0.05189620758483034,
+              "upper": 0.09935897435897435,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 7,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 10,
+            "UNKNOWN_removed": 255
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "hgb",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 14,
+            "loss": 54,
+            "delta_W": -40,
+            "POS": 616,
+            "delta_W_rate": -0.06493506493506493,
+            "delta_W_rate_CI": {
+              "lower": -0.18007662835249041,
+              "upper": 0.01971830985915493,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 7,
+            "FREE_removed": 2,
+            "UNKNOWN_added": 6,
+            "UNKNOWN_removed": 254
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "logit",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 68,
+            "loss": 16,
+            "delta_W": 52,
+            "POS": 616,
+            "delta_W_rate": 0.08441558441558442,
+            "delta_W_rate_CI": {
+              "lower": -0.04790419161676647,
+              "upper": 0.15424610051993068,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 10,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 43,
+            "UNKNOWN_removed": 126
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "logit",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 29,
+            "loss": 43,
+            "delta_W": -14,
+            "POS": 616,
+            "delta_W_rate": -0.022727272727272728,
+            "delta_W_rate_CI": {
+              "lower": -0.15708812260536398,
+              "upper": 0.07605633802816901,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 9,
+            "FREE_removed": 1,
+            "UNKNOWN_added": 39,
+            "UNKNOWN_removed": 125
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "tof",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 74,
+            "loss": 96,
+            "delta_W": -22,
+            "POS": 616,
+            "delta_W_rate": -0.03571428571428571,
+            "delta_W_rate_CI": {
+              "lower": -0.3092006033182504,
+              "upper": 0.20032051282051283,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 2,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 41,
+            "UNKNOWN_removed": 143
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "tof",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 8,
+            "loss": 96,
+            "delta_W": -88,
+            "POS": 616,
+            "delta_W_rate": -0.14285714285714285,
+            "delta_W_rate_CI": {
+              "lower": -0.36318407960199006,
+              "upper": -0.01532567049808429,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 37,
+            "UNKNOWN_removed": 142
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "rgb",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 0,
+            "loss": 0,
+            "delta_W": 0,
+            "POS": 616,
+            "delta_W_rate": 0.0,
+            "delta_W_rate_CI": {
+              "lower": 0.0,
+              "upper": 0.0,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "rgb",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 0,
+            "loss": 66,
+            "delta_W": -66,
+            "POS": 616,
+            "delta_W_rate": -0.10714285714285714,
+            "delta_W_rate_CI": {
+              "lower": -0.22010398613518198,
+              "upper": -0.03770739064856712,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 2,
+            "UNKNOWN_added": 1,
+            "UNKNOWN_removed": 4
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "or",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 66,
+            "loss": 0,
+            "delta_W": 66,
+            "POS": 616,
+            "delta_W_rate": 0.10714285714285714,
+            "delta_W_rate_CI": {
+              "lower": 0.03770739064856712,
+              "upper": 0.22010398613518198,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 2,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 4,
+            "UNKNOWN_removed": 1
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "or",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 0,
+            "loss": 0,
+            "delta_W": 0,
+            "POS": 616,
+            "delta_W_rate": 0.0,
+            "delta_W_rate_CI": {
+              "lower": 0.0,
+              "upper": 0.0,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 0,
+            "UNKNOWN_removed": 0
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "and",
+            "comparator": "rgb",
+            "comparator_role": "best_single",
+            "rescue": 51,
+            "loss": 96,
+            "delta_W": -45,
+            "POS": 616,
+            "delta_W_rate": -0.07305194805194805,
+            "delta_W_rate_CI": {
+              "lower": -0.3212669683257919,
+              "upper": 0.10576923076923077,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 1,
+            "FREE_removed": 0,
+            "UNKNOWN_added": 41,
+            "UNKNOWN_removed": 143
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "and",
+            "comparator": "or",
+            "comparator_role": "OR",
+            "rescue": 5,
+            "loss": 116,
+            "delta_W": -111,
+            "POS": 616,
+            "delta_W_rate": -0.18019480519480519,
+            "delta_W_rate_CI": {
+              "lower": -0.39347079037800686,
+              "upper": -0.0529595015576324,
+              "valid_replicates": 2000,
+              "total_replicates": 2000
+            },
+            "FREE_added": 0,
+            "FREE_removed": 1,
+            "UNKNOWN_added": 37,
+            "UNKNOWN_removed": 142
+          }
+        ],
+        "best_single": [
+          {
+            "source": "faro_rho030_ambient1",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "rgb",
+            "rule": "W largest; tie F smallest; tie RGB; identity fixed in bootstrap"
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.3-0.8m",
+            "target": 0.02,
+            "method": "rgb",
+            "rule": "W largest; tie F smallest; tie RGB; identity fixed in bootstrap"
+          },
+          {
+            "source": "native_perturbed",
+            "band": "0.8-1.5m",
+            "target": 0.05,
+            "method": "tof",
+            "rule": "W largest; tie F smallest; tie RGB; identity fixed in bootstrap"
+          },
+          {
+            "source": "native_perturbed",
+            "band": "1.5-3m",
+            "target": 0.1,
+            "method": "rgb",
+            "rule": "W largest; tie F smallest; tie RGB; identity fixed in bootstrap"
+          }
+        ],
+        "conclusions": [
+          {
+            "method": "hgb",
+            "band_targets": {
+              "0.3-0.8m": 0.02,
+              "0.8-1.5m": 0.05,
+              "1.5-3m": 0.1
+            },
+            "source_success_bands": {
+              "faro_rho030_ambient1": [],
+              "native_perturbed": [
+                "0.3-0.8m",
+                "0.8-1.5m"
+              ]
+            },
+            "shared_success_bands": [],
+            "result": "ONLY_SEMICIRCULAR_SOURCE_SUPPORT"
+          },
+          {
+            "method": "logit",
+            "band_targets": {
+              "0.3-0.8m": 0.02,
+              "0.8-1.5m": 0.05,
+              "1.5-3m": 0.1
+            },
+            "source_success_bands": {
+              "faro_rho030_ambient1": [],
+              "native_perturbed": [
+                "0.3-0.8m",
+                "0.8-1.5m"
+              ]
+            },
+            "shared_success_bands": [],
+            "result": "ONLY_SEMICIRCULAR_SOURCE_SUPPORT"
+          }
+        ],
+        "bootstrap": {
+          "unit": "visit_cluster",
+          "visits": [
+            "421002",
+            "421260",
+            "421393",
+            "421397"
+          ],
+          "replicates": 2000,
+          "seed": 20261011,
+          "zero_denominator": "NaN excluded; valid counts reported",
+          "comparator_identity": "fixed full-eval identity, no replica selection"
+        },
+        "witness_contract": "query-level predicted positive AND query POSITIVE; not historical pixel-overlap witness"
+      }
+    },
+    "independent_contract_audit_plan_aligned.json": {
+      "sha256": "910d9a2e68d49d1e1fac354ea5ce77d236aa40b55114b732f649681ae71f60b0",
+      "content": {
+        "status": "PASS",
+        "tie_cases": 60,
+        "targets_per_case": 3,
+        "missing_tests": 3,
+        "eval_reference_reads": 0,
+        "eval_model_score_reads": 0,
+        "seconds": 0.8681002999655902,
+        "audit_source_sha256": "dd2f45850addf9f51b9aaf314fd7d3070d07d058bc60a974baac145bd055f729"
+      }
+    },
+    "independent_preopen_audit.json": {
+      "sha256": "aa805410d139f965aad737ecd8d849fe4b154ed032c94924c0a009a1b1943341",
+      "content": {
+        "status": "PASS",
+        "feature_tables": [
+          {
+            "source": "native_perturbed",
+            "role": "train",
+            "rows": 5184,
+            "frames": 192
+          },
+          {
+            "source": "native_perturbed",
+            "role": "cal",
+            "rows": 1728,
+            "frames": 64
+          },
+          {
+            "source": "native_perturbed",
+            "role": "eval",
+            "rows": 3456,
+            "frames": 128
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "role": "train",
+            "rows": 1539,
+            "frames": 57
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "role": "cal",
+            "rows": 189,
+            "frames": 7
+          },
+          {
+            "source": "faro_rho030_ambient1",
+            "role": "eval",
+            "rows": 1053,
+            "frames": 39
+          }
+        ],
+        "models_verified": 12,
+        "cal_cells_recomputed": 36,
+        "visits": {
+          "train": [
+            "381650",
+            "381652",
+            "421065",
+            "421252",
+            "421254",
+            "421259"
+          ],
+          "cal": [
+            "421006",
+            "421009"
+          ],
+          "eval": [
+            "421002",
+            "421260",
+            "421393",
+            "421397"
+          ]
+        },
+        "cal_seal_sha256": "290a100338d7414bea7a67f4bb28a11d3a912fe37f25d450777a672ccbb31c93",
+        "feature_manifest_sha256": "d5a1ea13965b597cc13c2b396f718167e0ce075acbbfb7fdf67e32476a019db9",
+        "plan_sha256": "6f5a790934ca2647d1a46f3b0d1ebe8db968823d1d3c2351102338b28b9c0593",
+        "eval_observation_features_read": true,
+        "eval_reference_reads": 0,
+        "eval_model_score_reads": 0,
+        "seconds": 4.057932200026698,
+        "audit_source_sha256": "fb2c1ff31f5eeaccb5e5205668df7e6b7a423dfe35031a3e06a8759c800ed9b8"
+      }
+    },
+    "independent_source_bindings_audit.json": {
+      "sha256": "60039cf1906386a01213efa60915f2a01309a236c0cd4a90194cde3408c1d52f",
+      "content": {
+        "status": "PASS",
+        "feature_input_hashes": 1751,
+        "feature_code_sha256": "47a59d81c800452f74541e851fa05e845e9a1b73bfbc35ff4f0d930c2a27502c",
+        "train_code_sha256": "94e163c0f1f0c4a942ee9c4e99a3fa99c8cf1522bbcab433904e6b12394646dc",
+        "eval_code_sha256": "cb8c4a3445e87c396bb16ec614f58f73efec0b8ea9c45cfb1f97d8d9319823f7",
+        "seconds": 0.2902190999593586,
+        "eval_label_reads": 0,
+        "eval_method_score_reads": 0
+      }
+    },
+    "independent_posteval_audit.json": {
+      "sha256": "390861d756be69695055ce929a925dfdf8b71cb819064d98b02deaa2a21b6735",
+      "content": {
+        "status": "PASS",
+        "cached_rows": 4509,
+        "query_decisions_checked": 22842,
+        "metrics_checked": 36,
+        "paired_rows_checked": 48,
+        "bootstrap_replicates": 2000,
+        "unit": "original four visit clusters",
+        "cache_sha256": "821091094048627c8e889324da042b2d9b4cc09d77b5e95c5d39ccaeddceed56",
+        "summary_sha256": "345f3a4a3d684be84f554e0c9e23b7c54f50f28c2ead4e939036ce6d83524b52",
+        "eval_reference_reopens": 0,
+        "model_reruns": 0,
+        "conclusions": [
+          {
+            "method": "hgb",
+            "band_targets": {
+              "0.3-0.8m": 0.02,
+              "0.8-1.5m": 0.05,
+              "1.5-3m": 0.1
+            },
+            "source_success_bands": {
+              "faro_rho030_ambient1": [],
+              "native_perturbed": [
+                "0.3-0.8m",
+                "0.8-1.5m"
+              ]
+            },
+            "shared_success_bands": [],
+            "result": "ONLY_SEMICIRCULAR_SOURCE_SUPPORT"
+          },
+          {
+            "method": "logit",
+            "band_targets": {
+              "0.3-0.8m": 0.02,
+              "0.8-1.5m": 0.05,
+              "1.5-3m": 0.1
+            },
+            "source_success_bands": {
+              "faro_rho030_ambient1": [],
+              "native_perturbed": [
+                "0.3-0.8m",
+                "0.8-1.5m"
+              ]
+            },
+            "shared_success_bands": [],
+            "result": "ONLY_SEMICIRCULAR_SOURCE_SUPPORT"
+          }
+        ],
+        "seconds": 0.19578930002171546,
+        "audit_source_sha256": "556d4c7b568f8343240a64339e214aab94b2b60cda4f47c44dd225be75013553"
+      }
+    },
+    "independent_report_audit.json": {
+      "sha256": "4f87768c1e0979931651984c6c3a93c235e87b25e51d718e29f2de04af06720c",
+      "content": {
+        "status": "PASS",
+        "metric_rows": 36,
+        "paired_rows": 16,
+        "calibration_rows": 36,
+        "report_sha256": "34c223ef8785bf88cdb22d8dc724d5fd27062aa2ea7b0120552f395646a8822b",
+        "report_path": "research\\active\\dtr-r0\\nearfield\\SYNC_FUSION_V1_DEV_20261011.md",
+        "scope": "text tables and stated evidence boundaries",
+        "seconds": 0.007458099978975952,
+        "audit_source_sha256": "4c7bacc4ea2b7cee037a4038b35c2b2159791b29d0e8a98d0cac142f24a9cfa9"
+      }
+    }
+  },
+  "eval_query_cache": {
+    "path": "eval/per_query.jsonl",
+    "sha256": "821091094048627c8e889324da042b2d9b4cc09d77b5e95c5d39ccaeddceed56"
+  },
+  "local_payload_files": [
+    {
+      "path": "calibration\\cal_seal.json",
+      "bytes": 40723,
+      "sha256": "290a100338d7414bea7a67f4bb28a11d3a912fe37f25d450777a672ccbb31c93"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__and__0.3-0.8m.json",
+      "bytes": 10336,
+      "sha256": "20e3ab92c4f4740aa1a519d89ed4ccb143e98d24ab3f7aad7e621479b62a7723"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__and__0.8-1.5m.json",
+      "bytes": 10459,
+      "sha256": "0523ea1a40ac28bd336a170e724ac69f6b9295ec208cf1bb3ae1857f876c0f72"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__and__1.5-3m.json",
+      "bytes": 10504,
+      "sha256": "6104f6363a65f0499acf0bbb570a2ec5927c4fd82055013a9d7274dd8a3f87f9"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__hgb__0.3-0.8m.json",
+      "bytes": 9613,
+      "sha256": "913375f615dd563edb26505c2dcafef4a083312ffaa4cd529ebe0adbf649669b"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__hgb__0.8-1.5m.json",
+      "bytes": 8639,
+      "sha256": "3ecfb5756cea6479b850ec73dd5bb60c8bb4c6e90370780906f92742f5666a9b"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__hgb__1.5-3m.json",
+      "bytes": 9795,
+      "sha256": "5811ec3c290db0ff5a042ce7e91977a8647d6efcfb325b5d228e259266a1ef07"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__logit__0.3-0.8m.json",
+      "bytes": 10416,
+      "sha256": "db60d78ca88f4c38c38c9a6ab19e589b3c263c2c5a72759e3cdd98e20c3091c6"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__logit__0.8-1.5m.json",
+      "bytes": 10388,
+      "sha256": "ec52caadd5af19bb74f5828b778f44f443f061cbc6e6236dcbc0a7195afc8348"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__logit__1.5-3m.json",
+      "bytes": 10435,
+      "sha256": "25744be52527a1f59310dd901203172c9c5c6762ec57b74d1521066902c278b1"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__or__0.3-0.8m.json",
+      "bytes": 10479,
+      "sha256": "f9821244b8ee48e9003bbd102109fae77b8cf7ab57b2a73afbcc631dcd229c94"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__or__0.8-1.5m.json",
+      "bytes": 9628,
+      "sha256": "874a45557552e75e53e99836a370440dcedfcbea453fa955c64233a7a58c91cd"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__or__1.5-3m.json",
+      "bytes": 10367,
+      "sha256": "8ee2b95e5205b6b06dd611657252fdf5707d1bf24767ccaf635d4460346825a9"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__rgb__0.3-0.8m.json",
+      "bytes": 10479,
+      "sha256": "97735a2a034b9020f92122a97050193da40b4a49e247cce69c4b275403bf32ac"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__rgb__0.8-1.5m.json",
+      "bytes": 9618,
+      "sha256": "74a1647d1412c75f7115b8c389685fe60ab35375b69c156ebc5640d4142d3992"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__rgb__1.5-3m.json",
+      "bytes": 10366,
+      "sha256": "8620bc841b05c1754aa8372843ae83bcc780684de5ea6b3f8b40e442d4074090"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__tof__0.3-0.8m.json",
+      "bytes": 10337,
+      "sha256": "ab50a7f3ce2fbf5fcc37e28ce7f1fd4ebec481b275e3f94c608e80c704d37560"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__tof__0.8-1.5m.json",
+      "bytes": 10470,
+      "sha256": "72dc161e46f4f1a72f86158d7198edeef61ae31c9254afd35d126357e3d87365"
+    },
+    {
+      "path": "calibration\\cal_ties\\faro_rho030_ambient1__tof__1.5-3m.json",
+      "bytes": 10506,
+      "sha256": "bf5ae9d25f8884f4d3cad8494cccc309b982a04841ab39440159188a2192fecb"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__and__0.3-0.8m.json",
+      "bytes": 58827,
+      "sha256": "82378b421a2afe9817ce7fdf76d86b8ea7ca3054f0de12ed54f5c6165a60c17f"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__and__0.8-1.5m.json",
+      "bytes": 65206,
+      "sha256": "32a6adeddbd42d15c0a0b7498ca8dafc837d4aa7a8c7685fb5544ce27ebf2fbb"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__and__1.5-3m.json",
+      "bytes": 61472,
+      "sha256": "1bc51391cfb90ad4b0536f7165a90c4845885a1ea947afde6adcda5184a85477"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__hgb__0.3-0.8m.json",
+      "bytes": 50410,
+      "sha256": "2a1e9ab6fd58c9deb3581f91226210c298a5f4f8dfc852f2c9de7f605a914d8d"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__hgb__0.8-1.5m.json",
+      "bytes": 76756,
+      "sha256": "7d5afa62285dc15de055bf1d344e2e7030148dd63c448ddfd59a841cc4015ed9"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__hgb__1.5-3m.json",
+      "bytes": 73853,
+      "sha256": "e1dd5fa0b05a262720a2ed857914b81fba6ca3a4d4147c2de9aacc22814d9810"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__logit__0.3-0.8m.json",
+      "bytes": 94794,
+      "sha256": "1376b4d843e2837775cdd808af4d466e39b7a415026a852ee57de4d8bba74999"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__logit__0.8-1.5m.json",
+      "bytes": 93945,
+      "sha256": "bab3429f42ea5be8067bed0a51a9e4440cfdf9bf52e98068c9a141e4ffe1dd8a"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__logit__1.5-3m.json",
+      "bytes": 93789,
+      "sha256": "3dd867665ddb91467fd997f5780fbd702495621023f799318f227812e59ec185"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__or__0.3-0.8m.json",
+      "bytes": 94749,
+      "sha256": "33b6e757bda4d1bac5e30b27dc741a7280854fbd39c8553f2b3027dd95a0ec8d"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__or__0.8-1.5m.json",
+      "bytes": 89339,
+      "sha256": "2bf710d12b0593e1af9febcad16a324ec93a6bcbf5939c73fe717cd175cd5d47"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__or__1.5-3m.json",
+      "bytes": 91725,
+      "sha256": "26b4bd73473320e4eedbb17972685aff8fba08d8423156fcbae1d5f68a058417"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__rgb__0.3-0.8m.json",
+      "bytes": 94710,
+      "sha256": "e649b53a47ac93b88b29b42ced1fad4565e15c2628de20a3f49f68ec4dd8b343"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__rgb__0.8-1.5m.json",
+      "bytes": 87349,
+      "sha256": "62b8927d52d54ca7b0cbd8126dd27605b0837097a5d63151bcd788b7cd563a22"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__rgb__1.5-3m.json",
+      "bytes": 91429,
+      "sha256": "3ad57e60897e3090518c1d80e2cf489ecb1d927ff24e085755cb105a871a1919"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__tof__0.3-0.8m.json",
+      "bytes": 58872,
+      "sha256": "9d908000e9a422190a79083aa590053596393912349f8b05be24ba3fb36a4c0c"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__tof__0.8-1.5m.json",
+      "bytes": 66476,
+      "sha256": "564402dd3a811d95fcaf2968fbad1ef55fca0b78741f490cd55a0ff276c88860"
+    },
+    {
+      "path": "calibration\\cal_ties\\native_perturbed__tof__1.5-3m.json",
+      "bytes": 61494,
+      "sha256": "c0de833160aba05e89f531e1ec007c3909cd97b8fca605ad85a83509966d65cd"
+    },
+    {
+      "path": "calibration\\executed_train_cal.py",
+      "bytes": 11622,
+      "sha256": "94e163c0f1f0c4a942ee9c4e99a3fa99c8cf1522bbcab433904e6b12394646dc"
+    },
+    {
+      "path": "calibration\\faro_rho030_ambient1_cal_scores.npz",
+      "bytes": 10075,
+      "sha256": "3435dc74dbdaf487361f33df901b8c98d6049f65ee73c90bbe6e39a47a746869"
+    },
+    {
+      "path": "calibration\\models\\faro_rho030_ambient1\\hgb_955.joblib",
+      "bytes": 93584,
+      "sha256": "59418876a42a65d649e8088a9ec1f1040cc827ccc84509412da1e8004b92130e"
+    },
+    {
+      "path": "calibration\\models\\faro_rho030_ambient1\\hgb_956.joblib",
+      "bytes": 93584,
+      "sha256": "cc42d033bfb6918ae193d6f360eefd77ea82f27d76d0fd19687b2b404d9a270d"
+    },
+    {
+      "path": "calibration\\models\\faro_rho030_ambient1\\hgb_957.joblib",
+      "bytes": 93584,
+      "sha256": "ba5b0ab17ab3c5bb9fcaa29b830deb69ee02ccbc2efd754d440569d3c18c7c5d"
+    },
+    {
+      "path": "calibration\\models\\faro_rho030_ambient1\\logit_955.joblib",
+      "bytes": 1969,
+      "sha256": "62141f8dc5a9fb3b1ab68f34f6711b338dad3b9646a6a376ca23b8d5a87e2762"
+    },
+    {
+      "path": "calibration\\models\\faro_rho030_ambient1\\logit_956.joblib",
+      "bytes": 1969,
+      "sha256": "636ac5c14a66d0638c599c5ab165138879f0c94f9a3c1c46aad3034907cbbf91"
+    },
+    {
+      "path": "calibration\\models\\faro_rho030_ambient1\\logit_957.joblib",
+      "bytes": 1969,
+      "sha256": "aeb5c661ba6d6536e4d7ef3e189306ffe32be7d232b09146b789dcb5fae2cd72"
+    },
+    {
+      "path": "calibration\\models\\native_perturbed\\hgb_955.joblib",
+      "bytes": 102960,
+      "sha256": "cb0b9f32186c174c36ac10fb22036ddc94b8b5925db2a92971ef3439e1aa9cdf"
+    },
+    {
+      "path": "calibration\\models\\native_perturbed\\hgb_956.joblib",
+      "bytes": 102960,
+      "sha256": "459da32428f8b35d3d076a2ed5d0fc2e4908d6bc4808c256f1a48bb23f670ed8"
+    },
+    {
+      "path": "calibration\\models\\native_perturbed\\hgb_957.joblib",
+      "bytes": 102960,
+      "sha256": "56cf9e7a45b4691bf4b2c030ae40d29f86be2ed082731dd67befd569c0819506"
+    },
+    {
+      "path": "calibration\\models\\native_perturbed\\logit_955.joblib",
+      "bytes": 1969,
+      "sha256": "f5ca0d82f1c2c0517f2e96d7e398aa6dd5a00118a90a7272674167715b4e8360"
+    },
+    {
+      "path": "calibration\\models\\native_perturbed\\logit_956.joblib",
+      "bytes": 1969,
+      "sha256": "29dcafe60a5bd8a1e86e1114e2035e50d1a7c9571a421cbb86716af8996e4660"
+    },
+    {
+      "path": "calibration\\models\\native_perturbed\\logit_957.joblib",
+      "bytes": 1969,
+      "sha256": "7f826aab86e24ba5812fe42f69668467ef15c2de3fa889de9143dfe0d1d06a08"
+    },
+    {
+      "path": "calibration\\native_perturbed_cal_scores.npz",
+      "bytes": 62191,
+      "sha256": "9fc03ea909d2276bb9689b124742ce8ba798bc13418f7d77bd7d07658aa1d7e4"
+    },
+    {
+      "path": "eval\\eval_open.json",
+      "bytes": 551,
+      "sha256": "8e7195a9b9bb3de96e1b2587250ea701301cfc5503e847da485c6d399ef6b1c8"
+    },
+    {
+      "path": "eval\\eval_terminal.json",
+      "bytes": 242,
+      "sha256": "0e79d404f4715968e119e656ec9fca8629fd19090aec768f41c092de3ad4f27c"
+    },
+    {
+      "path": "eval\\faro_rho030_ambient1_input_receipt.json",
+      "bytes": 110,
+      "sha256": "99b5e8208af5c4cac8bf279308fb7d2a15aa8071b9b5f03352039865f25a3fdf"
+    },
+    {
+      "path": "eval\\metrics.csv",
+      "bytes": 9111,
+      "sha256": "9943f1dd7598d2ae8c1c3a04efe8fd2ff929f382254c8f9883168bb48d14089f"
+    },
+    {
+      "path": "eval\\native_perturbed_input_receipt.json",
+      "bytes": 110,
+      "sha256": "eba7c12984f8b603efdfc8cc9fd44cac08471181044e60b4dbf09b4ed70c8b84"
+    },
+    {
+      "path": "eval\\paired.csv",
+      "bytes": 9953,
+      "sha256": "d0f497119a98f55e5355b5f9c7b4b52fec6e8fb9831220c6d29fdce89d4b9761"
+    },
+    {
+      "path": "eval\\per_query.jsonl",
+      "bytes": 2605855,
+      "sha256": "821091094048627c8e889324da042b2d9b4cc09d77b5e95c5d39ccaeddceed56"
+    },
+    {
+      "path": "eval\\report_fragment.md",
+      "bytes": 6213,
+      "sha256": "f95e8296639cba4c476e718393c9496ec8b42df7c68d44f43a516111cb2117ae"
+    },
+    {
+      "path": "eval\\summary.json",
+      "bytes": 51414,
+      "sha256": "345f3a4a3d684be84f554e0c9e23b7c54f50f28c2ead4e939036ce6d83524b52"
+    },
+    {
+      "path": "eval_code_seal.json",
+      "bytes": 600,
+      "sha256": "e45885dc1111059bbc7032f847b1521ae1bc1d13b25ae59be9b34b4e3269da1b"
+    },
+    {
+      "path": "eval_code_snapshot.py",
+      "bytes": 12258,
+      "sha256": "cb8c4a3445e87c396bb16ec614f58f73efec0b8ea9c45cfb1f97d8d9319823f7"
+    },
+    {
+      "path": "feature_accounting.json",
+      "bytes": 350,
+      "sha256": "42c83b1584b360206b42d0b6332c7b7d67182b5ec04308fb09f1b7df02166ae4"
+    },
+    {
+      "path": "feature_admission.json",
+      "bytes": 128917,
+      "sha256": "fcd19b74332981be1b5b0ba4240963a82d1313bdadb1d1d0b02bb2afac98ca25"
+    },
+    {
+      "path": "feature_execution_source.py",
+      "bytes": 9571,
+      "sha256": "47a59d81c800452f74541e851fa05e845e9a1b73bfbc35ff4f0d930c2a27502c"
+    },
+    {
+      "path": "feature_execution_source_receipt.json",
+      "bytes": 361,
+      "sha256": "b8aae85fc4e58a57273ee303046d4655ff4b9fe16fd2d7de2f0b271f547246df"
+    },
+    {
+      "path": "feature_inputs.json",
+      "bytes": 452526,
+      "sha256": "271dfdf209aa16a2d447d11baa273e77ed10f4f800e78610bf626e398b02a9a8"
+    },
+    {
+      "path": "feature_manifest.json",
+      "bytes": 3567,
+      "sha256": "d5a1ea13965b597cc13c2b396f718167e0ce075acbbfb7fdf67e32476a019db9"
+    },
+    {
+      "path": "feature_progress.json",
+      "bytes": 94,
+      "sha256": "80680e482d7eed9de3ba312637dcd6771c235da3f075ecfb587b238e8f2bccc0"
+    },
+    {
+      "path": "feature_structural_check.json",
+      "bytes": 802,
+      "sha256": "3130fc2ab664c2a45ef3420459f5c4043f4ef38468931ef1fd2aa9aff0d29106"
+    },
+    {
+      "path": "features\\faro_rho030_ambient1\\cal.npz",
+      "bytes": 20462,
+      "sha256": "94ed4093be79cb940bc57273aa3980e3c53fa549a16a67948e4f64f101cfbf3a"
+    },
+    {
+      "path": "features\\faro_rho030_ambient1\\eval.npz",
+      "bytes": 85479,
+      "sha256": "1140fa0056833c9b79f86f411b9b015fd01311aca65b045914522e44e03b87e2"
+    },
+    {
+      "path": "features\\faro_rho030_ambient1\\train.npz",
+      "bytes": 119151,
+      "sha256": "7ee96f3f9ac039ed9bf14e61d2e1daa170180b74d769388f4eb4c69a7eb4ddbd"
+    },
+    {
+      "path": "features\\native_perturbed\\cal.npz",
+      "bytes": 131743,
+      "sha256": "06b2b6bdbff0ad8fc1d380b835db4ec1741f3e2d77350eb22254b4f850e3199a"
+    },
+    {
+      "path": "features\\native_perturbed\\eval.npz",
+      "bytes": 241623,
+      "sha256": "b1868c5b205bdca1ac47c8eacbb99ae7787d103cbf62cce0c908a4c1dedb6d84"
+    },
+    {
+      "path": "features\\native_perturbed\\train.npz",
+      "bytes": 386025,
+      "sha256": "045dca7fd24625edf2fd4ca0973c15e616ba19d2001f1d81321a809ab81e4301"
+    },
+    {
+      "path": "final_budget.json",
+      "bytes": 370,
+      "sha256": "a14befc5020727d7b4a270b9c6f4526c8fa3f1c520bd5e5c2d4fe064bddc80c9"
+    },
+    {
+      "path": "finalize_receipts.py",
+      "bytes": 1955,
+      "sha256": "5feaec3c92077f3a9aa63d94cd0fe9e4c6ea5427e7fd06cd44d175a34c5760b0"
+    },
+    {
+      "path": "independent_audit_budget.json",
+      "bytes": 571,
+      "sha256": "4a845986a43a90f6d3707f6b0d2f3a263b979b7d97213fd51e43c3e756bdf648"
+    },
+    {
+      "path": "independent_contract_audit.json",
+      "bytes": 283,
+      "sha256": "6413549af519f9cda9354e30fa16a09962b3e6dce6503724105a9e9c38db1283"
+    },
+    {
+      "path": "independent_contract_audit_plan_aligned.json",
+      "bytes": 283,
+      "sha256": "910d9a2e68d49d1e1fac354ea5ce77d236aa40b55114b732f649681ae71f60b0"
+    },
+    {
+      "path": "independent_posteval_audit.json",
+      "bytes": 1413,
+      "sha256": "390861d756be69695055ce929a925dfdf8b71cb819064d98b02deaa2a21b6735"
+    },
+    {
+      "path": "independent_preopen_audit.json",
+      "bytes": 1613,
+      "sha256": "aa805410d139f965aad737ecd8d849fe4b154ed032c94924c0a009a1b1943341"
+    },
+    {
+      "path": "independent_report_audit.json",
+      "bytes": 460,
+      "sha256": "4f87768c1e0979931651984c6c3a93c235e87b25e51d718e29f2de04af06720c"
+    },
+    {
+      "path": "independent_source_bindings_audit.json",
+      "bytes": 429,
+      "sha256": "60039cf1906386a01213efa60915f2a01309a236c0cd4a90194cde3408c1d52f"
+    },
+    {
+      "path": "integrate_report.py",
+      "bytes": 3061,
+      "sha256": "8ab97a90c7479bd40d5d6c03121a7e317eada54b12c7f18b805d1aefec7df022"
+    },
+    {
+      "path": "PLAN.json",
+      "bytes": 7640,
+      "sha256": "6f5a790934ca2647d1a46f3b0d1ebe8db968823d1d3c2351102338b28b9c0593"
+    },
+    {
+      "path": "primary_open_authorization.json",
+      "bytes": 416,
+      "sha256": "1797f3ef3e6b466cd76ce5785919e9b0a4a24bfa5735ad5485bddbd79e082be8"
+    },
+    {
+      "path": "train_cal_budget_receipt.json",
+      "bytes": 1034,
+      "sha256": "fbac732562c82860e6bf81ff5292b2efe6f81c9df0f909e200df118d1a31c49b"
+    },
+    {
+      "path": "train_cal_command_wall.json",
+      "bytes": 108,
+      "sha256": "aa9d7c8148c6cee2c69882b4dbddd1d859803a503d81ec0adbc6cb759415b5d3"
+    },
+    {
+      "path": "train_cal_execution_receipt.json",
+      "bytes": 432,
+      "sha256": "a5672bc2e9cdf68b674c7e8f9f0166b50a0c288a55e084f6e1aa0a1aea7b36cf"
+    },
+    {
+      "path": "train_cal_execution_snapshot.py",
+      "bytes": 11622,
+      "sha256": "94e163c0f1f0c4a942ee9c4e99a3fa99c8cf1522bbcab433904e6b12394646dc"
+    },
+    {
+      "path": "train_cal_features_manifest.json",
+      "bytes": 1276,
+      "sha256": "0687a36080e4658a1f3338ba781c0abab9f7c38769bf9be1b3aad6150b6e6267"
+    },
+    {
+      "path": "update_currents.py",
+      "bytes": 3195,
+      "sha256": "46ef0ca732a2487829b273be8be17ba70f35e8d94f8178758c35251c9a588918"
+    }
+  ]
+}

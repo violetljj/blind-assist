@@ -1,6 +1,23 @@
 # 8×8 ToF 硬件避障展示
 
-2026-09-23，Android v10.15.1（45），手机热点直连。
+当前：Android v10.17.2（56），手机与硬件在同一局域网或已配置的热点。
+首页“开始辅助”现在自动识别 H3 TCP CNH 和旧 UDP 测距固件。H3 使用基础 ToF 提醒，
+相机画面独立显示；旧 UDP 时序协议保留 A+LOCAL 实验模式。进入页面后才连接，退出即停止连接和反馈。
+
+H3 保留原生区域距离/status/target，复用完整 CNH 解析器；重复、回退、坏帧不刷新就绪。
+最近接收超过 750 ms 判为过期，3 秒无有效帧关闭连接后重试。接收时间并非曝光或采样时龄：
+`tofTimingBasis=host_receipt_only`、`tofAgeMs=null`，单独保存 `tofReceiptAgeMs`。
+网络前段积压不在该时龄上界内，因此 H3 不运行 A+LOCAL 跨设备融合；原始数据和冻结模型不改。
+
+v10.17.2 将基础走廊判决绑定到不可变的新 ToF 样本，在来源线程计算；显示轮询只复用当前
+有效样本的结果。时龄、断线、停止仍逐次检查，失效即返回 UNKNOWN。原页面绘制路径保留。
+
+首页提醒频率仅调整持续障碍的重复间隔：安静 20 秒、标准 12 秒、更频繁 6 秒；首次提醒与
+接近事件规则不变。语言、语音风格、震动强度及关怀模式在下次开始辅助时传递。
+辅助页语音／震动开关也同步回首页。中英语音和主要状态已支持，工程与留证详情仍为中文。
+场景和旧调试选项不改变这条硬件辅助链路，界面已标明；原单区设备入口保留为旧版管理。
+
+以下为历史 v10.15.1（45）入口与旧固件验证记录，不能当作 H3 的 A+LOCAL 验证：
 **打开 App 先进入原首页，不启动辅助。点击原首页“开始辅助”才运行当前 A+LOCAL；
 “结束辅助”返回首页并停止采集、推理和反馈。** 这修正了 v10.13–10.15.0 把硬件页面
 设为默认入口的误解。首页按钮明确使用 Wi-Fi A+LOCAL，复制首页语音/震动开关；
@@ -10,6 +27,20 @@ v10.15.1：6 项 S24 Ultra / Android 16 回归通过，覆盖 launcher、首页�
 开始/结束、语音/震动设置传递、模式持久化和详情折叠；debug/androidTest 构建、lint
 及 APK 45 / 10.15.1 身份/签名/16 KB 检查通过，原位安装保留数据。手机最终停留原首页。
 证据与截图：`artifacts.local/hardware-bringup/home-assist-20260923/`。
+
+## 辅助页性能诊断
+
+安装匹配的 debug 与 androidTest APK，两板在线且无电脑 TCP 采集消费者时，可运行：
+
+```powershell
+adb shell am instrument -w -r -e class com.linnan.blindassist.HardwareAssistPerformanceTest -e hardwareAssistPerformance true -e hardwareAssistPerformanceSeconds 15 com.linnan.blindassist.test/androidx.test.runner.AndroidJUnitRunner
+```
+
+诊断临时关闭语音／震动并恢复设置，使用真实 Android 帧时钟，输出 App cache 中的
+`hardware-assist-performance.json` 和 `hardware-assist-performance-gfx.txt`。
+快照序号变化率不是传感器 FPS；进程 CPU 用时包含工作线程和测试采样，单轮结果不是续航证据。
+另加 `-e hardwareAssistComposeTrace true` 可配合启用本包 atrace 的 Perfetto 捕获定位重组；
+它会增加开销，只用于归因，不与无跟踪跑分混用。当前实现对应 Compose runtime 1.7.4。
 
 ## A+LOCAL 实验模式
 

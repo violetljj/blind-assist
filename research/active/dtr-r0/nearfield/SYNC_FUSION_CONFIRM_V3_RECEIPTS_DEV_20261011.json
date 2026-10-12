@@ -1,0 +1,1714 @@
+{
+  "task": "SYNC_FUSION_CONFIRM_V3_DEV_20261011",
+  "result": "主中带确认未通过",
+  "protocol": {
+    "commit": "ec252d683c57a432ffd07e84e1fe2f4dd48d1075",
+    "plan_sha256": "24f7915d41cc325178d24d15045cd43227d35465c2b2d5a5d804df690174d612",
+    "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\SYNC_FUSION_CONFIRM_V3_PROTOCOL_DEV_20261011.json",
+    "pushed_before_data": true,
+    "git_blob_sha256": "2a68cc2a3eb0499137f57e24db73d9b217066bd15f82a74ab7f48f67d14851c0",
+    "newline_binding": "Exact bytes after Git CRLF to LF normalization; raw local PLAN hash retained. No JSON/model/criteria modification."
+  },
+  "primary": {
+    "arm": "native_perturbed",
+    "band": 1,
+    "method": "D_prime",
+    "comparator": "rgb",
+    "comparator_role": "best_single",
+    "rescue": 213,
+    "loss": 126,
+    "delta_W": 87,
+    "POS": 2077,
+    "delta_W_rate": 0.04188733750601829,
+    "delta_W_CI": {
+      "lower": -5.024999999999999,
+      "upper": 195.0,
+      "valid_replicates": 2000,
+      "total_replicates": 2000
+    },
+    "delta_W_rate_CI": {
+      "lower": -0.0030792811839323465,
+      "upper": 0.09154670828248691,
+      "valid_replicates": 2000,
+      "total_replicates": 2000
+    },
+    "FREE_added": 0,
+    "FREE_removed": 63,
+    "UNKNOWN_added": 11,
+    "UNKNOWN_removed": 148,
+    "FREE_rate": 0.005805515239477504,
+    "FREE_tolerance": 0.075,
+    "criteria": {
+      "calibrated_and_denominators": true,
+      "positive_difference": true,
+      "interval_lower_positive": false,
+      "FREE_tolerance_pass": true
+    },
+    "status": "FAIL",
+    "pass_all": false
+  },
+  "secondary": [
+    {
+      "arm": "faro_rho030_ambient1",
+      "method": "D_prime",
+      "delta_W_vs_RGB": -2,
+      "FREE_rate": 0.14285714285714285,
+      "FREE_tolerance": 0.04,
+      "criteria": {
+        "calibrated_and_denominators": true,
+        "nonnegative_net": false,
+        "FREE_tolerance_pass": false
+      },
+      "status": "FAIL",
+      "pass_all": false
+    },
+    {
+      "arm": "faro_rho030_ambient1",
+      "method": "B_prime",
+      "delta_W_vs_RGB": -2,
+      "FREE_rate": 0.14285714285714285,
+      "FREE_tolerance": 0.04,
+      "criteria": {
+        "calibrated_and_denominators": true,
+        "nonnegative_net": false,
+        "FREE_tolerance_pass": false
+      },
+      "status": "FAIL",
+      "pass_all": false
+    },
+    {
+      "arm": "faro_rho030_ambient1",
+      "method": "audit_b",
+      "delta_W_vs_RGB": -2,
+      "FREE_rate": 0.14285714285714285,
+      "FREE_tolerance": 0.04,
+      "criteria": {
+        "calibrated_and_denominators": true,
+        "nonnegative_net": false,
+        "FREE_tolerance_pass": false
+      },
+      "status": "FAIL",
+      "pass_all": false
+    },
+    {
+      "arm": "faro_rho030_ambient10",
+      "method": "D_prime",
+      "delta_W_vs_RGB": -58,
+      "FREE_rate": 0.07109283196239718,
+      "FREE_tolerance": 0.04,
+      "criteria": {
+        "calibrated_and_denominators": true,
+        "nonnegative_net": false,
+        "FREE_tolerance_pass": false
+      },
+      "status": "FAIL",
+      "pass_all": false
+    },
+    {
+      "arm": "faro_rho030_ambient10",
+      "method": "B_prime",
+      "delta_W_vs_RGB": -58,
+      "FREE_rate": 0.07109283196239718,
+      "FREE_tolerance": 0.04,
+      "criteria": {
+        "calibrated_and_denominators": true,
+        "nonnegative_net": false,
+        "FREE_tolerance_pass": false
+      },
+      "status": "FAIL",
+      "pass_all": false
+    },
+    {
+      "arm": "faro_rho030_ambient10",
+      "method": "audit_b",
+      "delta_W_vs_RGB": -58,
+      "FREE_rate": 0.07109283196239718,
+      "FREE_tolerance": 0.04,
+      "criteria": {
+        "calibrated_and_denominators": true,
+        "nonnegative_net": false,
+        "FREE_tolerance_pass": false
+      },
+      "status": "FAIL",
+      "pass_all": false
+    }
+  ],
+  "model_primary_comparison": [
+    {
+      "arm": "native_perturbed",
+      "band": 1,
+      "method": "D_prime",
+      "comparator": "rgb",
+      "comparator_role": "best_single",
+      "rescue": 213,
+      "loss": 126,
+      "delta_W": 87,
+      "POS": 2077,
+      "delta_W_rate": 0.04188733750601829,
+      "delta_W_CI": {
+        "lower": -5.024999999999999,
+        "upper": 195.0,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "delta_W_rate_CI": {
+        "lower": -0.0030792811839323465,
+        "upper": 0.09154670828248691,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 63,
+      "UNKNOWN_added": 11,
+      "UNKNOWN_removed": 148,
+      "FREE_rate": 0.005805515239477504,
+      "FREE_tolerance": 0.075,
+      "criteria": {
+        "calibrated_and_denominators": true,
+        "positive_difference": true,
+        "interval_lower_positive": false,
+        "FREE_tolerance_pass": true
+      },
+      "status": "FAIL",
+      "pass_all": false
+    },
+    {
+      "arm": "native_perturbed",
+      "band": 1,
+      "method": "B_prime",
+      "comparator": "rgb",
+      "comparator_role": "best_single",
+      "rescue": 210,
+      "loss": 124,
+      "delta_W": 86,
+      "POS": 2077,
+      "delta_W_rate": 0.041405873856523834,
+      "delta_W_CI": {
+        "lower": -10.0,
+        "upper": 203.0,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "delta_W_rate_CI": {
+        "lower": -0.005192914690465559,
+        "upper": 0.09557254948231612,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 59,
+      "UNKNOWN_added": 17,
+      "UNKNOWN_removed": 71,
+      "FREE_rate": 0.011611030478955007,
+      "FREE_tolerance": 0.075,
+      "criteria": {
+        "calibrated_and_denominators": true,
+        "positive_difference": true,
+        "interval_lower_positive": false,
+        "FREE_tolerance_pass": true
+      },
+      "status": "FAIL",
+      "pass_all": false
+    },
+    {
+      "arm": "native_perturbed",
+      "band": 1,
+      "method": "audit_b",
+      "comparator": "rgb",
+      "comparator_role": "best_single",
+      "rescue": 219,
+      "loss": 310,
+      "delta_W": -91,
+      "POS": 2077,
+      "delta_W_rate": -0.043813192103996146,
+      "delta_W_CI": {
+        "lower": -243.0,
+        "upper": 53.0,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "delta_W_rate_CI": {
+        "lower": -0.1135385897720601,
+        "upper": 0.025346603757782145,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "FREE_added": 0,
+      "FREE_removed": 67,
+      "UNKNOWN_added": 17,
+      "UNKNOWN_removed": 176,
+      "FREE_rate": 0.0,
+      "FREE_tolerance": 0.075,
+      "criteria": {
+        "calibrated_and_denominators": true,
+        "positive_difference": false,
+        "interval_lower_positive": false,
+        "FREE_tolerance_pass": true
+      },
+      "status": "FAIL",
+      "pass_all": false
+    }
+  ],
+  "resources": {
+    "CPU_command_wall_measured_stage_sum_s": 1974.6648646999254,
+    "CPU_command_wall_conservative_upper_s": 2209.6648646999256,
+    "CPU_limit_s": 2400,
+    "GPU_process_wall_s": 211.57742009998765,
+    "GPU_limit_s": 600,
+    "download_bytes": 833358553,
+    "download_final_bytes": 3889213192,
+    "download_limit_bytes": 4000000000,
+    "incidental_upper_allowance_s": {
+      "primary_read_git_packaging": 150,
+      "data_diagnostics_and_startup": 60,
+      "model_diagnostics_and_startup": 15,
+      "audit_diagnostics_and_startup": 10
+    },
+    "processes_released": true
+  },
+  "payload_root": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011",
+  "files": [
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\PLAN.json",
+      "sha256": "24f7915d41cc325178d24d15045cd43227d35465c2b2d5a5d804df690174d612"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\protocol_commit.json",
+      "sha256": "6ad9d1295113e67d3edf9b71e310795bda46c3149bda3e4424e75211ec3f9833"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\dataset_manifest_v3_complete.json",
+      "sha256": "010a2f3929773c6cc408bc5d06e10038fe7dad7695dec619640d7104b0c6de9f"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\consumed_inventory.json",
+      "sha256": "8dda7e629bfdb98c060812a5f5261731909626526797e91cb3848b93e72e3c1d"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\candidate_gate_records.json",
+      "sha256": "281377929ab7428b2fa46f2679d01a182a743bf69ffd94ff82bd71afa85c8638"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\visit_split.csv",
+      "sha256": "fe6e0c31e720c1e2cb913c171a081c2b2f05aa695efb150785f5648c4c69f236"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\public_roster.json",
+      "sha256": "fd7fad11c5d764cdbd05e77215f856e128b39faad6d11af41a1ecc163962b2c9"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\reference_roster.json",
+      "sha256": "9f85600ea4848782fe6c54c7e31d375099add0134f7cef8fd9ee6da4530899d8"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train_cal_reference_roster.json",
+      "sha256": "6e0a1b2d5dd8579f272b00a89cf92bf513ce294220df49d80cd577685a9e8447"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\frozen_readout_seal.json",
+      "sha256": "8f39b21ef12f1daf0e89c39990c094d716718c49aafc910ac558f04fd1702f47"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\residual_pool.npz",
+      "sha256": "8a9764ce3ac81452b762d0d79990d0fe65b453b5414650db2990f220ca73bf9b"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\data_input_seal.json",
+      "sha256": "f487fcbdb099896085f19229433a689047d3d0d6e9c59727147ea106214329e0"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\feature_manifest.json",
+      "sha256": "fec5e0bf5c9d0ef5b67f5ed29a948376179c0a02f78d3902d536076b92740af8"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\train_seal.json",
+      "sha256": "da024262dc39824b99ee3f8396c3bdf14c51ba0bfcbebbb12a0ce1b778fce0ae"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\cal_seal.json",
+      "sha256": "0b1ad689a40efe676a324aced38238df55d35fead3c1aa6101e652e606edb865"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\cache.npz",
+      "sha256": "63ce355de0602da24929b0d366694bdc7e81066de9ba362344b4f3f474cc40e1"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\eval\\eval_open.json",
+      "sha256": "529b256296922f0835372b650d2686ca8be7d801f3076ae0f3e6b2860c594ebc"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\eval\\cache_seal.json",
+      "sha256": "0b1c9c801549a39ca8ffb8f405c3bc195a02369dd3187984c6bea28157d27309"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\eval\\cache.npz",
+      "sha256": "23c2df0557fc1ec0a00a5718a86030c3f86e9aaa42d437de15e9b8409e83af65"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\eval\\per_query.csv",
+      "sha256": "10e8b7bf7d042383e5ca32a84329f0561519e4b691388e8805bf34e5f3a5b8d0"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\eval\\summary.json",
+      "sha256": "b2f4dcd9b3bb2d55fe075b9631a4d343a897b99d612a927105db71959afd8c20"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\eval\\independent_evidence_decomposition.json",
+      "sha256": "4304c3478b2ed59f2fc110ad293ef4c131762bebfe1cf33d91503114beb36bf2"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\faro_source_completion_scope.json",
+      "sha256": "e850e617a54c2ae45c7e907591101c614f9725d96d4cf1d9e44a9003b8354e60"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\faro_source_manifest.json",
+      "sha256": "63803f56b123bff068689c29a2001adefffd62fe6f301e2cacd7895b7c882c49"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\surface_manifest.json",
+      "sha256": "f5eeebe1ff5d374a459474890f95198049e407bd1713fa6d83591c46c3719889"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\resource_reallocation_receipt.json",
+      "sha256": "a5e8baf5e80c3bec93fb9247ae146fbd7cd1e3b8688067778d9eabca7fae484d"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\data_resource_ledger.json",
+      "sha256": "fe403831c4fcbcb5f50f1ded7b93b59eadfcbee84ce1b15f03e6936284769dce"
+    }
+  ],
+  "models": [
+    {
+      "method": "D_prime",
+      "seed": 955,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\D_prime_955.joblib",
+      "sha256": "156f136699b2931798dbbce1c5f3077ebd81ca6e9d81cacd9484209fcdf03449",
+      "known_rows": 106016,
+      "warnings": []
+    },
+    {
+      "method": "D_prime",
+      "seed": 956,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\D_prime_956.joblib",
+      "sha256": "a7c79c9de701fcb7135b9ef4c881d06fcd93c1c2ea37e0589664c624998753fd",
+      "known_rows": 106016,
+      "warnings": []
+    },
+    {
+      "method": "D_prime",
+      "seed": 957,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\D_prime_957.joblib",
+      "sha256": "42ae14ae15f30733e137583e6a17af9eb5e2a74aafaf1889b0931801b4f59626",
+      "known_rows": 106016,
+      "warnings": []
+    },
+    {
+      "method": "B_prime",
+      "seed": 955,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\B_prime_955.joblib",
+      "sha256": "5e33980187263a14cfceba7ed5e0a8ebd08ee2833ab03310619902d1103ec750",
+      "known_rows": 106016,
+      "warnings": [
+        "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+      ]
+    },
+    {
+      "method": "B_prime",
+      "seed": 956,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\B_prime_956.joblib",
+      "sha256": "b86272bef19e721582982fbefb8aa753e1a9362404dc81f2c088e2b6005856f2",
+      "known_rows": 106016,
+      "warnings": [
+        "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+      ]
+    },
+    {
+      "method": "B_prime",
+      "seed": 957,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\B_prime_957.joblib",
+      "sha256": "bc0ae23a2c84a0beb49f566a9dca551631969aed57ea5927d4584d5d2fe5fdd4",
+      "known_rows": 106016,
+      "warnings": [
+        "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+      ]
+    },
+    {
+      "method": "audit_b",
+      "seed": 955,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\audit_b_955.joblib",
+      "sha256": "daa534e8fe6256dbc349547bfd77c6fafd499dda914c8fa8a18eb241ba0876d7",
+      "known_rows": 20487,
+      "warnings": [
+        "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+      ]
+    },
+    {
+      "method": "audit_b",
+      "seed": 956,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\audit_b_956.joblib",
+      "sha256": "0d55972b19e759c68e90d2217f72a990d519809f99e364f3fb5ef2c83a0081ad",
+      "known_rows": 20487,
+      "warnings": [
+        "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+      ]
+    },
+    {
+      "method": "audit_b",
+      "seed": 957,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\audit_b_957.joblib",
+      "sha256": "af3db97c82ecdd72688b8ad5abf9ee0c701d5cf5e8c4e03fee9eb8ed7581b45e",
+      "known_rows": 20487,
+      "warnings": [
+        "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+      ]
+    }
+  ],
+  "cal_cells": [
+    {
+      "method": "D_prime",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 462,
+      "threshold": 0.14145471956129974,
+      "threshold_kind": "finite",
+      "W": 1608,
+      "F": 84,
+      "U": 20,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 2225,
+      "FREE_denominator": 6304,
+      "UNKNOWN_denominator": 210,
+      "F_fraction": 0.0133248730964467,
+      "W_fraction": 0.7226966292134831,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\D_prime__band0.json",
+      "all_ties_sha256": "33331c61c9ecc10732ddb0c4150463dbb3868a8c78e53f99994af9552f57096e"
+    },
+    {
+      "method": "B_prime",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 769,
+      "threshold": 0.13449406293538696,
+      "threshold_kind": "finite",
+      "W": 1608,
+      "F": 83,
+      "U": 20,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 2225,
+      "FREE_denominator": 6304,
+      "UNKNOWN_denominator": 210,
+      "F_fraction": 0.013166243654822335,
+      "W_fraction": 0.7226966292134831,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\B_prime__band0.json",
+      "all_ties_sha256": "81371dd6daa70b2b35703bf80a9dbcf50151238b17a6e9f9425b8d12bbb63744"
+    },
+    {
+      "method": "audit_b",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 763,
+      "threshold": 0.08881792422991179,
+      "threshold_kind": "finite",
+      "W": 1608,
+      "F": 83,
+      "U": 21,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 2225,
+      "FREE_denominator": 6304,
+      "UNKNOWN_denominator": 210,
+      "F_fraction": 0.013166243654822335,
+      "W_fraction": 0.7226966292134831,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\audit_b__band0.json",
+      "all_ties_sha256": "c2edc5ff234950cc68ef9ab9b59254652dd482503ad6434f03d09636fe0436ff"
+    },
+    {
+      "method": "tof",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 298,
+      "threshold": -0.11338944984469301,
+      "threshold_kind": "finite",
+      "W": 569,
+      "F": 125,
+      "U": 7,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 2225,
+      "FREE_denominator": 6304,
+      "UNKNOWN_denominator": 210,
+      "F_fraction": 0.019828680203045686,
+      "W_fraction": 0.25573033707865167,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\tof__band0.json",
+      "all_ties_sha256": "4132df1880600bd0d91a285e09e882420daf23ea13742a363d18ae55a45ec9e6"
+    },
+    {
+      "method": "rgb",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 375,
+      "threshold": -0.04010022878646846,
+      "threshold_kind": "finite",
+      "W": 1755,
+      "F": 121,
+      "U": 70,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 2225,
+      "FREE_denominator": 6304,
+      "UNKNOWN_denominator": 210,
+      "F_fraction": 0.019194162436548222,
+      "W_fraction": 0.7887640449438202,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\rgb__band0.json",
+      "all_ties_sha256": "47f7d51e66ece8030daa1e0bbcabe3b04604328dc29802d33cba11f1941efb40"
+    },
+    {
+      "method": "or",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 426,
+      "threshold": -0.00968831358785427,
+      "threshold_kind": "finite",
+      "W": 1655,
+      "F": 124,
+      "U": 36,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 2225,
+      "FREE_denominator": 6304,
+      "UNKNOWN_denominator": 210,
+      "F_fraction": 0.01967005076142132,
+      "W_fraction": 0.7438202247191011,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\or__band0.json",
+      "all_ties_sha256": "23c0749b34d5e3369bc0da4db3eb5080d1624d9b5c61e69b1a50e43e5d8a33c4"
+    },
+    {
+      "method": "and",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 281,
+      "threshold": -0.1340079771214978,
+      "threshold_kind": "finite",
+      "W": 715,
+      "F": 109,
+      "U": 5,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 2225,
+      "FREE_denominator": 6304,
+      "UNKNOWN_denominator": 210,
+      "F_fraction": 0.017290609137055837,
+      "W_fraction": 0.32134831460674157,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\and__band0.json",
+      "all_ties_sha256": "fe305a1d7a28562161cf55005202e1f9b30d3e7e03984b8fd5b72b716af1054c"
+    },
+    {
+      "method": "D_prime",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 1701,
+      "threshold": 0.7201940199540299,
+      "threshold_kind": "finite",
+      "W": 3970,
+      "F": 107,
+      "U": 188,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 5900,
+      "FREE_denominator": 2186,
+      "UNKNOWN_denominator": 653,
+      "F_fraction": 0.048947849954254344,
+      "W_fraction": 0.6728813559322034,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\D_prime__band1.json",
+      "all_ties_sha256": "322d831bc6b868e8826de3915e77184592b5471863981fd6abf5f6a491e4eedd"
+    },
+    {
+      "method": "B_prime",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 3051,
+      "threshold": 0.6657001118556171,
+      "threshold_kind": "finite",
+      "W": 3986,
+      "F": 109,
+      "U": 266,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 5900,
+      "FREE_denominator": 2186,
+      "UNKNOWN_denominator": 653,
+      "F_fraction": 0.049862763037511436,
+      "W_fraction": 0.6755932203389831,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\B_prime__band1.json",
+      "all_ties_sha256": "306f1fdc11609ed2d79b56e9e71c10ab834faa37826a5343c456e74a866b51c7"
+    },
+    {
+      "method": "audit_b",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 2686,
+      "threshold": 0.8946230735501498,
+      "threshold_kind": "finite",
+      "W": 3477,
+      "F": 108,
+      "U": 79,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 5900,
+      "FREE_denominator": 2186,
+      "UNKNOWN_denominator": 653,
+      "F_fraction": 0.04940530649588289,
+      "W_fraction": 0.5893220338983051,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\audit_b__band1.json",
+      "all_ties_sha256": "46012dd9c8a65b1a1cf158ec7da50bd365d8c3e252e682201fbbe5bde7b0be5e"
+    },
+    {
+      "method": "tof",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 1231,
+      "threshold": 0.18001170691472668,
+      "threshold_kind": "finite",
+      "W": 1562,
+      "F": 108,
+      "U": 5,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 5900,
+      "FREE_denominator": 2186,
+      "UNKNOWN_denominator": 653,
+      "F_fraction": 0.04940530649588289,
+      "W_fraction": 0.2647457627118644,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\tof__band1.json",
+      "all_ties_sha256": "fb378bec5461fdbb1da480fea01016cd61e64448278980e2c9a173c1ea93e8ff"
+    },
+    {
+      "method": "rgb",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 672,
+      "threshold": -0.095703125,
+      "threshold_kind": "finite",
+      "W": 3691,
+      "F": 101,
+      "U": 501,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 5900,
+      "FREE_denominator": 2186,
+      "UNKNOWN_denominator": 653,
+      "F_fraction": 0.046203110704483075,
+      "W_fraction": 0.625593220338983,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\rgb__band1.json",
+      "all_ties_sha256": "0a0df175edc446173cca2d6fdbe8cc9b328382150d27c4e17a310d6048220064"
+    },
+    {
+      "method": "or",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 1044,
+      "threshold": 0.18035247607880778,
+      "threshold_kind": "finite",
+      "W": 2891,
+      "F": 107,
+      "U": 200,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 5900,
+      "FREE_denominator": 2186,
+      "UNKNOWN_denominator": 653,
+      "F_fraction": 0.048947849954254344,
+      "W_fraction": 0.49,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\or__band1.json",
+      "all_ties_sha256": "fb0f68b840b6dcbb95f4d598c037a95449a0a004eb362c0774643c0cbfe0638e"
+    },
+    {
+      "method": "and",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 1212,
+      "threshold": -0.2395271973850851,
+      "threshold_kind": "finite",
+      "W": 1986,
+      "F": 107,
+      "U": 202,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 5900,
+      "FREE_denominator": 2186,
+      "UNKNOWN_denominator": 653,
+      "F_fraction": 0.048947849954254344,
+      "W_fraction": 0.33661016949152545,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\and__band1.json",
+      "all_ties_sha256": "549908df23495d0d1e1cb2146f8c41f693d5d19c0a4b739f908f727429544ef3"
+    },
+    {
+      "method": "D_prime",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 2624,
+      "threshold": 0.07138392063806182,
+      "threshold_kind": "finite",
+      "W": 5387,
+      "F": 42,
+      "U": 1114,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 6128,
+      "FREE_denominator": 425,
+      "UNKNOWN_denominator": 2186,
+      "F_fraction": 0.0988235294117647,
+      "W_fraction": 0.879079634464752,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\D_prime__band2.json",
+      "all_ties_sha256": "7f737135fd92e606872954072282766d5dc7684c00a220676cda74d3cec968fc"
+    },
+    {
+      "method": "B_prime",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 4630,
+      "threshold": 0.11626446170579373,
+      "threshold_kind": "finite",
+      "W": 5387,
+      "F": 32,
+      "U": 1058,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 6128,
+      "FREE_denominator": 425,
+      "UNKNOWN_denominator": 2186,
+      "F_fraction": 0.07529411764705882,
+      "W_fraction": 0.879079634464752,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\B_prime__band2.json",
+      "all_ties_sha256": "0a6fa6e3f4fbf6f57afb2afa1633033e70151b4e31e08fe260860c0d20d67a37"
+    },
+    {
+      "method": "audit_b",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 4452,
+      "threshold": 0.09715354590504029,
+      "threshold_kind": "finite",
+      "W": 5387,
+      "F": 42,
+      "U": 1114,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 6128,
+      "FREE_denominator": 425,
+      "UNKNOWN_denominator": 2186,
+      "F_fraction": 0.0988235294117647,
+      "W_fraction": 0.879079634464752,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\audit_b__band2.json",
+      "all_ties_sha256": "03a018b1ffd643b045087d4e594bdb342f52fa47b68ce82301ad976451b0fd4c"
+    },
+    {
+      "method": "tof",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 2357,
+      "threshold": 0.02029417415990742,
+      "threshold_kind": "finite",
+      "W": 2305,
+      "F": 42,
+      "U": 93,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 6128,
+      "FREE_denominator": 425,
+      "UNKNOWN_denominator": 2186,
+      "F_fraction": 0.0988235294117647,
+      "W_fraction": 0.3761422976501306,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\tof__band2.json",
+      "all_ties_sha256": "106d8e45bea6249e0bc6c9912df832431c33232336168596ab72cef07b52a4da"
+    },
+    {
+      "method": "rgb",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 1289,
+      "threshold": -0.3515291213989258,
+      "threshold_kind": "finite",
+      "W": 5407,
+      "F": 35,
+      "U": 1563,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 6128,
+      "FREE_denominator": 425,
+      "UNKNOWN_denominator": 2186,
+      "F_fraction": 0.08235294117647059,
+      "W_fraction": 0.8823433420365535,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\rgb__band2.json",
+      "all_ties_sha256": "bdf265ecd48d42c6320d9f0874c46c8b485134dd6bf5e0d5047cedbe6103d699"
+    },
+    {
+      "method": "or",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 2069,
+      "threshold": 0.060610294342041016,
+      "threshold_kind": "finite",
+      "W": 5253,
+      "F": 42,
+      "U": 966,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 6128,
+      "FREE_denominator": 425,
+      "UNKNOWN_denominator": 2186,
+      "F_fraction": 0.0988235294117647,
+      "W_fraction": 0.8572127937336814,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\or__band2.json",
+      "all_ties_sha256": "8af3c7f0675b5d58c04aefcf311a61c70e5f48eab9f8b47c775d024d4528a213"
+    },
+    {
+      "method": "and",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 2793,
+      "threshold": -0.7699042099352225,
+      "threshold_kind": "finite",
+      "W": 3034,
+      "F": 41,
+      "U": 597,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 6128,
+      "FREE_denominator": 425,
+      "UNKNOWN_denominator": 2186,
+      "F_fraction": 0.09647058823529411,
+      "W_fraction": 0.49510443864229764,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\ties\\and__band2.json",
+      "all_ties_sha256": "6914ca3b14836751c07b3132d1ba7abb864f19f007d32a618a951045ff891dd6"
+    }
+  ],
+  "independent_audits": {
+    "protocol": {
+      "status": "PASS",
+      "protocol_sha256": "24f7915d41cc325178d24d15045cd43227d35465c2b2d5a5d804df690174d612",
+      "features": 16,
+      "shared_ensembles": 3,
+      "calibration_cells": 21,
+      "arms": 6,
+      "new_eval_reference_reads": 0,
+      "new_candidate_reads": 0,
+      "checks": [
+        "six-arm weighted fixed HGB and LR plus native-only LR",
+        "all four explicit query/band indices removed",
+        "unclipped original sensor minimum evidence gate",
+        "new chronological cal6/eval12 visits and fixed windows",
+        "all-ties mixed calibration and shared thresholds",
+        "mid primary positive paired gain/CI and FREE7.5%",
+        "FARO and ambient10 near secondary gain>=0/FREE4%",
+        "full12visit paired bootstrap and missing-denominator rejection",
+        "far descriptive only; protected480/test excluded",
+        "strict command-wall/GPU/download budget and once-only eval"
+      ],
+      "CPU_command_wall_s": 0.007792600023094565,
+      "GPU_s": 0
+    },
+    "train": {
+      "status": "PASS",
+      "train_seal_sha256": "da024262dc39824b99ee3f8396c3bdf14c51ba0bfcbebbb12a0ce1b778fce0ae",
+      "training_feature_sha256": "b3ecdd9fdac4863d203bd2a01128af2b7216edb060e35f4718d1bbf933077e9c",
+      "models_verified": 9,
+      "weighted_arm_sums_verified": 6,
+      "training_visits": 30,
+      "feature_columns": 16,
+      "protocol_commit": "ec252d683c57a432ffd07e84e1fe2f4dd48d1075",
+      "protocol_plan_sha256": "24f7915d41cc325178d24d15045cd43227d35465c2b2d5a5d804df690174d612",
+      "protocol_git_blob_sha256": "2a68cc2a3eb0499137f57e24db73d9b217066bd15f82a74ab7f48f67d14851c0",
+      "protocol_binding": "exact text after CRLF to LF normalization; decoded JSON equal",
+      "new_eval_reads": 0,
+      "model_inference_runs": 0,
+      "model_refits": 0,
+      "CPU_command_wall_s": 1.9415780000272207,
+      "GPU_s": 0
+    },
+    "preeval": {
+      "status": "PASS",
+      "models_verified": 9,
+      "weighted_arm_sums_verified": 6,
+      "training_visits": 30,
+      "calibration_visits": 6,
+      "calibration_rows": 26217,
+      "exhaustive_cells": 21,
+      "exhaustive_ties_checked": 54566,
+      "data_integrity": {
+        "status": "PASS",
+        "cohort_complete": true,
+        "admitted_visits": 18,
+        "historically_excluded_visits": 143,
+        "frames": 576,
+        "window_preselection_recomputed": 36,
+        "split_counts": {
+          "cal": 6,
+          "eval": 12
+        },
+        "FOV_45_fully_covered_frames": 576,
+        "FOV_45_incomplete_frames": 0,
+        "minimum_side_half_FOV_deg": 23.04097916220116,
+        "RGB_grid_abs_residual_s": {
+          "n": 576,
+          "median": 0.0010000000183936208,
+          "p90": 0.0020000000367872417,
+          "max": 0.003000000026077032
+        },
+        "trajectory_nearest_residual_s": {
+          "n": 874,
+          "median": 0.0020702300025732256,
+          "p90": 0.018200123007409273,
+          "max": 0.019488460035063326
+        },
+        "trajectory_bracket_span_s": {
+          "n": 874,
+          "median": 0.09995899998466484,
+          "p90": 0.09996029999456368,
+          "max": 0.11662033000902738
+        },
+        "pose_missing_brackets": 278,
+        "new_eval_reference_reads": 0,
+        "new_eval_model_score_reads": 0
+      },
+      "sensor_samples": {
+        "status": "PASS",
+        "selection": "first and last public calibration frames, independent of outcomes",
+        "calibration_frame_ids": [
+          "42446517_197417.682",
+          "42447221_212452.249"
+        ],
+        "pressure_arrays_exact": 80,
+        "six_arm_query_rows_exact": 270,
+        "FARO_K0_gate_frames": 2,
+        "FARO_K0_gates": [
+          {
+            "frame_id": "42446517_197417.682",
+            "joint_pass_zones": 0,
+            "admitted": false
+          },
+          {
+            "frame_id": "42447221_212452.249",
+            "joint_pass_zones": 0,
+            "admitted": false
+          }
+        ],
+        "new_eval_reference_reads": 0,
+        "new_eval_model_score_reads": 0
+      },
+      "prior_train_audit_sha256": "c0146d16d30a525c4a8400a7d77c9a68d4d32f325c41b62b62112cbc6617c589",
+      "cal_seal_sha256": "0b1ad689a40efe676a324aced38238df55d35fead3c1aa6101e652e606edb865",
+      "new_eval_reference_reads": 0,
+      "new_eval_model_score_reads": 0,
+      "training_model_refits": 0,
+      "CPU_command_wall_s": 19.34289070003433,
+      "GPU_s": 0
+    },
+    "posteval": {
+      "status": "PASS",
+      "cached_rows": 53001,
+      "query_decisions_checked": 371007,
+      "CSV_rows_verified": 53001,
+      "metrics_checked": 126,
+      "paired_rows_checked": 108,
+      "evidence_rows_checked": 504,
+      "four_group_decompositions": 432,
+      "bootstrap_replicates": 2000,
+      "visit_clusters": 12,
+      "cache_sha256": "23c2df0557fc1ec0a00a5718a86030c3f86e9aaa42d437de15e9b8409e83af65",
+      "summary_sha256": "b2f4dcd9b3bb2d55fe075b9631a4d343a897b99d612a927105db71959afd8c20",
+      "evidence_decomposition_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\eval\\independent_evidence_decomposition.json",
+      "evidence_decomposition_sha256": "4304c3478b2ed59f2fc110ad293ef4c131762bebfe1cf33d91503114beb36bf2",
+      "primary": {
+        "arm": "native_perturbed",
+        "band": 1,
+        "method": "D_prime",
+        "comparator": "rgb",
+        "comparator_role": "best_single",
+        "rescue": 213,
+        "loss": 126,
+        "delta_W": 87,
+        "POS": 2077,
+        "delta_W_rate": 0.04188733750601829,
+        "delta_W_CI": {
+          "lower": -5.024999999999999,
+          "upper": 195.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": -0.0030792811839323465,
+          "upper": 0.09154670828248691,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 63,
+        "UNKNOWN_added": 11,
+        "UNKNOWN_removed": 148,
+        "FREE_rate": 0.005805515239477504,
+        "FREE_tolerance": 0.075,
+        "criteria": {
+          "calibrated_and_denominators": true,
+          "positive_difference": true,
+          "interval_lower_positive": false,
+          "FREE_tolerance_pass": true
+        },
+        "status": "FAIL",
+        "pass_all": false
+      },
+      "secondary": [
+        {
+          "arm": "faro_rho030_ambient1",
+          "method": "D_prime",
+          "delta_W_vs_RGB": -2,
+          "FREE_rate": 0.14285714285714285,
+          "FREE_tolerance": 0.04,
+          "criteria": {
+            "calibrated_and_denominators": true,
+            "nonnegative_net": false,
+            "FREE_tolerance_pass": false
+          },
+          "status": "FAIL",
+          "pass_all": false
+        },
+        {
+          "arm": "faro_rho030_ambient10",
+          "method": "D_prime",
+          "delta_W_vs_RGB": -58,
+          "FREE_rate": 0.07109283196239718,
+          "FREE_tolerance": 0.04,
+          "criteria": {
+            "calibrated_and_denominators": true,
+            "nonnegative_net": false,
+            "FREE_tolerance_pass": false
+          },
+          "status": "FAIL",
+          "pass_all": false
+        }
+      ],
+      "new_eval_reference_reopens": 0,
+      "model_inference_reruns": 0,
+      "result": "主中带确认未通过",
+      "CPU_command_wall_s": 2.8049982999800704,
+      "GPU_s": 0
+    }
+  },
+  "source_scope": {
+    "status": "PARTIAL",
+    "error": "TimeoutError('First incomplete optional component exceeds download cap; stop fixed prefix')",
+    "reason": "First incomplete full component exceeds remaining4GB allocation",
+    "target_captures": 18,
+    "completed_registered_siblings": [
+      "42446519",
+      "42446522",
+      "42446529",
+      "42446532",
+      "42446561",
+      "42446574",
+      "42447199",
+      "42447203",
+      "42447226",
+      "42897409",
+      "42897410",
+      "42897426",
+      "42897434",
+      "42897479",
+      "42897482",
+      "42897542",
+      "42897554",
+      "42897559",
+      "42897564",
+      "42897566",
+      "42897607",
+      "42897633",
+      "42897634"
+    ],
+    "ordered_sibling_candidates": [
+      {
+        "capture": "42446519",
+        "target_capture": "42446517",
+        "visit_id": "422391",
+        "role": "cal",
+        "metadata_index": 936,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42446519",
+          "visit_id": "422391",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/test/422391/42446519/42446519_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42446519_refined_transform.npy",
+          "sha256": "27724b0dc8db472d9033df1f9c8cc51e74d061a67777cc325e5f25976e042cd7"
+        }
+      },
+      {
+        "capture": "42446522",
+        "target_capture": "42446517",
+        "visit_id": "422391",
+        "role": "cal",
+        "metadata_index": 937,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42446522",
+          "visit_id": "422391",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/test/422391/42446522/42446522_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42446522_refined_transform.npy",
+          "sha256": "74c3fd9c983c323c6c0cfbb0aceb4f821e783419cc662d6ace9d909448b8b3dc"
+        }
+      },
+      {
+        "capture": "42446529",
+        "target_capture": "42446527",
+        "visit_id": "422386",
+        "role": "cal",
+        "metadata_index": 939,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42446529",
+          "visit_id": "422386",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/test/422386/42446529/42446529_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42446529_refined_transform.npy",
+          "sha256": "c6f4dfd5c92ce08f60cc04eb90151ea719e63bdc7e16497413899262e6419b71"
+        }
+      },
+      {
+        "capture": "42446532",
+        "target_capture": "42446527",
+        "visit_id": "422386",
+        "role": "cal",
+        "metadata_index": 940,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42446532",
+          "visit_id": "422386",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/test/422386/42446532/42446532_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42446532_refined_transform.npy",
+          "sha256": "d7506e675a3519cbe01559fb792cd761748fe9994c9abe2e74d9a398620f9ee5"
+        }
+      },
+      {
+        "capture": "42446535",
+        "target_capture": "42446533",
+        "visit_id": "422382",
+        "role": "cal",
+        "metadata_index": 942,
+        "status": "EXCLUDED_TARGET_REGISTRATION_NOT_AVAILABLE",
+        "transform_receipt": null
+      },
+      {
+        "capture": "42446536",
+        "target_capture": "42446533",
+        "visit_id": "422382",
+        "role": "cal",
+        "metadata_index": 943,
+        "status": "EXCLUDED_TARGET_REGISTRATION_NOT_AVAILABLE",
+        "transform_receipt": null
+      },
+      {
+        "capture": "42446561",
+        "target_capture": "42446558",
+        "visit_id": "422399",
+        "role": "cal",
+        "metadata_index": 948,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42446561",
+          "visit_id": "422399",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/422399/42446561/42446561_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42446561_refined_transform.npy",
+          "sha256": "8f97cd07fd11a2a9a1b80ff7dfd4e00706f910858da552274989a69bbc6b35fd"
+        }
+      },
+      {
+        "capture": "42446574",
+        "target_capture": "42446558",
+        "visit_id": "422399",
+        "role": "cal",
+        "metadata_index": 949,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42446574",
+          "visit_id": "422399",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/422399/42446574/42446574_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42446574_refined_transform.npy",
+          "sha256": "9b8cd8deffad29361cf0e6845fb12e049dd86496de08d3e614aaa60268437604"
+        }
+      },
+      {
+        "capture": "42447199",
+        "target_capture": "42446607",
+        "visit_id": "422384",
+        "role": "cal",
+        "metadata_index": 960,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42447199",
+          "visit_id": "422384",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/422384/42447199/42447199_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42447199_refined_transform.npy",
+          "sha256": "f42449c192f613e561a4c9c0a3cc4b88c3edd7f1e32b1ffa0f76c0014f874ab3"
+        }
+      },
+      {
+        "capture": "42447203",
+        "target_capture": "42446607",
+        "visit_id": "422384",
+        "role": "cal",
+        "metadata_index": 962,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42447203",
+          "visit_id": "422384",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/422384/42447203/42447203_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42447203_refined_transform.npy",
+          "sha256": "491ffc27fc6333e69fe201183f460bd0a124c04d3222b4e6c35dd00a67c9e079"
+        }
+      },
+      {
+        "capture": "42447226",
+        "target_capture": "42447221",
+        "visit_id": "423511",
+        "role": "cal",
+        "metadata_index": 968,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42447226",
+          "visit_id": "423511",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/423511/42447226/42447226_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42447226_refined_transform.npy",
+          "sha256": "fa0d671b282676bc02606a9e9878b3d5b7fed91c90ca563c25b403c17aa9189c"
+        }
+      },
+      {
+        "capture": "42897409",
+        "target_capture": "42897405",
+        "visit_id": "423474",
+        "role": "eval",
+        "metadata_index": 984,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897409",
+          "visit_id": "423474",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/423474/42897409/42897409_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897409_refined_transform.npy",
+          "sha256": "579af4559727353257635b66cd8ee4d624c47390d89e7f0f3850131322cd129e"
+        }
+      },
+      {
+        "capture": "42897410",
+        "target_capture": "42897405",
+        "visit_id": "423474",
+        "role": "eval",
+        "metadata_index": 985,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897410",
+          "visit_id": "423474",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/423474/42897410/42897410_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897410_refined_transform.npy",
+          "sha256": "7b2306b48003d7d4392e5267d5a34909715878b2e497e6e3d47a2f9cd41aba44"
+        }
+      },
+      {
+        "capture": "42897426",
+        "target_capture": "42897422",
+        "visit_id": "423452",
+        "role": "eval",
+        "metadata_index": 990,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897426",
+          "visit_id": "423452",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/423452/42897426/42897426_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897426_refined_transform.npy",
+          "sha256": "adadca5c42ed17cc2bb3124e5f99f82eb05e4bcd9c218eb53cb39125ad83d942"
+        }
+      },
+      {
+        "capture": "42897434",
+        "target_capture": "42897422",
+        "visit_id": "423452",
+        "role": "eval",
+        "metadata_index": 991,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897434",
+          "visit_id": "423452",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/423452/42897434/42897434_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897434_refined_transform.npy",
+          "sha256": "fe5a67967b7acd864754b84a0c9920a1f1690b74018b2285d3ae5896fbc6fb52"
+        }
+      },
+      {
+        "capture": "42897479",
+        "target_capture": "42897478",
+        "visit_id": "423442",
+        "role": "eval",
+        "metadata_index": 1000,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897479",
+          "visit_id": "423442",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/423442/42897479/42897479_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897479_refined_transform.npy",
+          "sha256": "b6a367e74b97092b9c4a2b9877f069ff7cc6735592dca2260da548320095cf64"
+        }
+      },
+      {
+        "capture": "42897482",
+        "target_capture": "42897478",
+        "visit_id": "423442",
+        "role": "eval",
+        "metadata_index": 1002,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897482",
+          "visit_id": "423442",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/423442/42897482/42897482_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897482_refined_transform.npy",
+          "sha256": "32f30ffb5803b57a196a4ac0e7ccfe33ad544c0b55440fcc04e52b874cbd02f4"
+        }
+      },
+      {
+        "capture": "42897542",
+        "target_capture": "42897541",
+        "visit_id": "422826",
+        "role": "eval",
+        "metadata_index": 1016,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897542",
+          "visit_id": "422826",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/test/422826/42897542/42897542_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897542_refined_transform.npy",
+          "sha256": "212832187b68383cc154455165cec4e7d512b733f8ad39720ec756ccabaf6609"
+        }
+      },
+      {
+        "capture": "42897554",
+        "target_capture": "42897552",
+        "visit_id": "422803",
+        "role": "eval",
+        "metadata_index": 1022,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897554",
+          "visit_id": "422803",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/test/422803/42897554/42897554_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897554_refined_transform.npy",
+          "sha256": "be42e79421e776495bd5a37825f7812b92cdf33d0f92252685e34b96f2494a52"
+        }
+      },
+      {
+        "capture": "42897559",
+        "target_capture": "42897552",
+        "visit_id": "422803",
+        "role": "eval",
+        "metadata_index": 1023,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897559",
+          "visit_id": "422803",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/test/422803/42897559/42897559_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897559_refined_transform.npy",
+          "sha256": "b52fb5ef7c482c36f6e854baafb9a204ef89fc7c9c5732c3e08251fa2e5733e3"
+        }
+      },
+      {
+        "capture": "42897564",
+        "target_capture": "42897561",
+        "visit_id": "422785",
+        "role": "eval",
+        "metadata_index": 1026,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897564",
+          "visit_id": "422785",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/test/422785/42897564/42897564_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897564_refined_transform.npy",
+          "sha256": "c17c98b8a521cdedefdaa0fef7f35fc30cde860605b3e31b42d9e63367649045"
+        }
+      },
+      {
+        "capture": "42897566",
+        "target_capture": "42897561",
+        "visit_id": "422785",
+        "role": "eval",
+        "metadata_index": 1027,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897566",
+          "visit_id": "422785",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/test/422785/42897566/42897566_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897566_refined_transform.npy",
+          "sha256": "aec703941dc78d731ac52f9700ecb70d8c42777e4e37df2d89ec29346f3e23b0"
+        }
+      },
+      {
+        "capture": "42897600",
+        "target_capture": "42897598",
+        "visit_id": "422379",
+        "role": "eval",
+        "metadata_index": 1034,
+        "status": "EXCLUDED_TARGET_REGISTRATION_NOT_AVAILABLE",
+        "transform_receipt": null
+      },
+      {
+        "capture": "42897607",
+        "target_capture": "42897605",
+        "visit_id": "422376",
+        "role": "eval",
+        "metadata_index": 1036,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897607",
+          "visit_id": "422376",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/422376/42897607/42897607_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897607_refined_transform.npy",
+          "sha256": "5df889a107c337b1a6580129a1e7f682239f97f469e35dffb96e7a51ef395189"
+        }
+      },
+      {
+        "capture": "42897612",
+        "target_capture": "42897605",
+        "visit_id": "422376",
+        "role": "eval",
+        "metadata_index": 1037,
+        "status": "NOT_AVAILABLE",
+        "transform_receipt": {
+          "capture": "42897612",
+          "visit_id": "422376",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/422376/42897612/42897612_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 0,
+          "status": "NOT_AVAILABLE",
+          "error": "ValueError('Official HEAD did not return200')"
+        }
+      },
+      {
+        "capture": "42897633",
+        "target_capture": "42897631",
+        "visit_id": "422354",
+        "role": "eval",
+        "metadata_index": 1043,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897633",
+          "visit_id": "422354",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/422354/42897633/42897633_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897633_refined_transform.npy",
+          "sha256": "449c0af59a679dcada3c4413c37c02e1aa326bdaa5437de9f35c5d14bda936c2"
+        }
+      },
+      {
+        "capture": "42897634",
+        "target_capture": "42897631",
+        "visit_id": "422354",
+        "role": "eval",
+        "metadata_index": 1044,
+        "status": "COMPLETE_REGISTERED_SIBLING",
+        "transform_receipt": {
+          "capture": "42897634",
+          "visit_id": "422354",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/422354/42897634/42897634_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897634_refined_transform.npy",
+          "sha256": "390d75f1f9cd36f1106291eaa77ccbb3d1729b1e693a5497f21b9cecf2048e07"
+        }
+      },
+      {
+        "capture": "42897722",
+        "target_capture": "42897720",
+        "visit_id": "423325",
+        "role": "eval",
+        "metadata_index": 1067,
+        "status": "VALID",
+        "transform_receipt": {
+          "capture": "42897722",
+          "visit_id": "423325",
+          "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/423325/42897722/42897722_refined_transform.npy",
+          "method": "HEAD_THEN_GET",
+          "received_bytes": 256,
+          "status": "VALID",
+          "http_status": 200,
+          "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897722_refined_transform.npy",
+          "sha256": "1c077cbeadd904b905e55f5008cdde0419ef8c76edffb29e770a77d42b75e04c"
+        }
+      },
+      {
+        "capture": "42897744",
+        "target_capture": "42897743",
+        "visit_id": "423306",
+        "role": "eval",
+        "metadata_index": 1076,
+        "status": "UNINSPECTED_AFTER_PREFIX",
+        "transform_receipt": null
+      },
+      {
+        "capture": "42897745",
+        "target_capture": "42897743",
+        "visit_id": "423306",
+        "role": "eval",
+        "metadata_index": 1077,
+        "status": "UNINSPECTED_AFTER_PREFIX",
+        "transform_receipt": null
+      },
+      {
+        "capture": "42897783",
+        "target_capture": "42897743",
+        "visit_id": "423306",
+        "role": "eval",
+        "metadata_index": 1088,
+        "status": "UNINSPECTED_AFTER_PREFIX",
+        "transform_receipt": null
+      },
+      {
+        "capture": "42897784",
+        "target_capture": "42897743",
+        "visit_id": "423306",
+        "role": "eval",
+        "metadata_index": 1089,
+        "status": "UNINSPECTED_AFTER_PREFIX",
+        "transform_receipt": null
+      },
+      {
+        "capture": "42897785",
+        "target_capture": "42897743",
+        "visit_id": "423306",
+        "role": "eval",
+        "metadata_index": 1090,
+        "status": "UNINSPECTED_AFTER_PREFIX",
+        "transform_receipt": null
+      }
+    ],
+    "first_uncompleted_candidate": {
+      "capture": "42897722",
+      "target_capture": "42897720",
+      "visit_id": "423325",
+      "role": "eval",
+      "metadata_index": 1067,
+      "status": "VALID",
+      "transform_receipt": {
+        "capture": "42897722",
+        "visit_id": "423325",
+        "url": "https://cvg-data.inf.ethz.ch/scenefun3d/v1/train/423325/42897722/42897722_refined_transform.npy",
+        "method": "HEAD_THEN_GET",
+        "received_bytes": 256,
+        "status": "VALID",
+        "http_status": 200,
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\transforms\\42897722_refined_transform.npy",
+        "sha256": "1c077cbeadd904b905e55f5008cdde0419ef8c76edffb29e770a77d42b75e04c"
+      }
+    },
+    "unadopted_extracted_payloads": [],
+    "unadopted_archives": [],
+    "failed_received_payloads": [],
+    "download_bytes": 3889213192,
+    "download_limit_bytes": 4000000000,
+    "budget_stopped_components": [
+      {
+        "capture": "42897722",
+        "visit_id": "423325",
+        "role": "eval",
+        "target_capture": "42897720",
+        "scope": "registered sibling",
+        "continuation": true,
+        "status": "BYTE_BUDGET_STOP"
+      }
+    ],
+    "source_manifest_sha256": "63803f56b123bff068689c29a2001adefffd62fe6f301e2cacd7895b7c882c49",
+    "no_registration_from_native": true
+  }
+}

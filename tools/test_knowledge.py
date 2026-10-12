@@ -539,7 +539,7 @@ class KnowledgeCliTest(unittest.TestCase):
             with self.assertRaisesRegex(knowledge.KnowledgeError, "must be null"):
                 knowledge._read_terminal_inheritance(root, {"terminal-smoke"})
 
-    def test_register_experiment_writes_p1_and_refreshes_index(self) -> None:
+    def test_register_and_close_experiment_preserve_frozen_inputs(self) -> None:
         with TemporaryDirectory(prefix="blindassist-register-experiment-") as temporary:
             repo_root = Path(temporary) / "repo"
             root = repo_root / "research" / "knowledge"
@@ -686,6 +686,64 @@ class KnowledgeCliTest(unittest.TestCase):
                 root, "build-decision-index", "--check"
             )
             self.assertEqual(0, result, stderr)
+
+            result_ref = "research/active/smoke/result.json"
+            (repo_root / result_ref).write_text('{"status":"complete"}\n', encoding="utf-8")
+            ledger = repo_root / "experiments" / "index.jsonl"
+            # Closing must preserve even unrelated legacy row formatting.
+            prefix = b'{ "id": "legacy-run", "status": "archived" }\r\n\n'
+            ledger.write_bytes(prefix + ledger.read_bytes())
+            self.assertEqual(0, self.run_cli(root, "build-decision-index")[0])
+            original_ledger = ledger.read_bytes()
+            index_path = root / "decision" / "index.json"
+            original_index = index_path.read_bytes()
+            close_args = ("--decision", "SIMULATION_EVIDENCE_ONLY",
+                          "--report", result_ref)
+            for identifier, extra, expected in (
+                ("missing-run", (), "found 0"),
+                ("smoke-run-v1", ("--status", "archived"), "require --decision-id"),
+                ("smoke-run-v1", ("--decision-id", "missing-terminal"), "unknown --decision-id"),
+                ("smoke-run-v1", ("--artifact-ref", "../outside"), "safe repository-relative"),
+            ):
+                with self.subTest(close_rejected=expected):
+                    result, _, stderr = self.run_cli(root, "close-experiment", identifier,
+                                                     *close_args, *extra)
+                    self.assertEqual(2, result)
+                    self.assertIn(expected, stderr)
+                    self.assertEqual(original_ledger, ledger.read_bytes())
+                    self.assertEqual(original_index, index_path.read_bytes())
+            with patch.object(knowledge, "_build_decision_index_payload",
+                              side_effect=knowledge.KnowledgeError("injected index failure")):
+                result, _, stderr = self.run_cli(root, "close-experiment", "smoke-run-v1", *close_args)
+            self.assertEqual(2, result)
+            self.assertIn("injected index failure", stderr)
+            self.assertEqual(original_ledger, ledger.read_bytes())
+            self.assertEqual(original_index, index_path.read_bytes())
+
+            result, output, stderr = self.run_cli(
+                root, "close-experiment", "smoke-run-v1", *close_args,
+                "--artifact-ref", "artifacts.local/evidence/smoke-result.json")
+            self.assertEqual(0, result, stderr)
+            self.assertIn("completed", output)
+            closed = knowledge._read_experiment_rows(repo_root)[1]
+            mutable = {"status", "decision", "report", "decision_id", "artifact_refs"}
+            self.assertEqual({key: value for key, value in row.items() if key not in mutable},
+                             {key: value for key, value in closed.items() if key not in mutable})
+            self.assertEqual("completed", closed["status"])
+            self.assertIsNone(closed["decision_id"])
+            self.assertEqual(result_ref, closed["report"])
+            self.assertEqual(row["artifact_refs"] + [result_ref, "artifacts.local/evidence/smoke-result.json"],
+                             closed["artifact_refs"])
+            self.assertTrue(ledger.read_bytes().startswith(prefix))
+            index = knowledge._load_decision_index(root)
+            completed = next(value for value in index["experiments"] if value["id"] == "smoke-run-v1")
+            self.assertEqual("completed", completed["status"])
+            self.assertEqual([], [value for value in index["experiments"]
+                                  if value["kind"] == "current_terminal"])
+            result, _, stderr = self.run_cli(root, "close-experiment", "smoke-run-v1", *close_args)
+            self.assertEqual(2, result)
+            self.assertIn("must be active", stderr)
+            self.assertEqual(0, self.run_cli(root, "build-decision-index", "--check")[0])
 
     def test_current_route_aliases_share_one_context_family(self) -> None:
         item = {

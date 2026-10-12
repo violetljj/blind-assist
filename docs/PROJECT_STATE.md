@@ -1,36 +1,39 @@
 # 项目现在做到哪里
 
-更新：2026-10-02。这里回答系统、指标、当前问题；实验细节按链接查看。
+更新：2026-10-10（研究路由；设备记录沿用）。研究决定以[总决定](CURRENT_DECISION.md)为准。
 
-## 现在运行什么
+## 运行与使用边界
 
-Android v10.15.1 打开原首页，点击“开始辅助”才运行 **相机 + 8×8 ToF 的 A+LOCAL 实验模式**；可切回基础 ToF，结束辅助后停止会话。模型在手机离线运行，几何配准仍是名义参数，尚未完成物理标定。[运行与设备证据](HARDWARE_OBSTACLE_DEMO.md)
+Android v10.15.1保留原首页，手动“开始辅助”运行相机+8×8 ToF的A+LOCAL实验模式，可切回基础ToF，结束即停止会话。模型离线运行，几何配准仍是名义参数，未完成物理标定。[设备证据](HARDWARE_OBSTACLE_DEMO.md)
 
-定位是 **盲杖互补的类别无关前视障碍感知**（cane-complementary forward perception）：关注墙体、身体/头部突出物、悬空障碍及杆状物；使用者决定怎么移动。它是论文和展示原型，不是已证明安全的导航产品。
+定位为盲杖互补的类别无关前视障碍感知（cane-complementary forward perception），关注墙体、身体/头部突出物、悬空障碍和杆状物。使用者决定如何移动；研究展示原型未证明真实导航安全，UNKNOWN不等于无障碍。
 
-## 指标是多少
+受控仿真A→A+LOCAL：24→29/32正事件检出，误报帧7→22、漏报帧106→65（576帧/48段）；UNKNOWN538/576，可与提醒并存。[原结果](../research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md)。手机10秒窗口101/101 ToF样本完成A+LOCAL，处理时间中位53ms/P95 61ms，未含提醒全链路时延或真实障碍真值；不能作为M3成绩。
 
-没有跨数据集的单一“最好成绩”。下面是同一批 **576 帧、48 段受控仿真、32 个正事件**的固定对照；不是实机准确率。
+## 当前工作
 
-| 方案 | 正确提醒帧 | 误报帧 | 漏报帧 | 检出的正事件 |
-| --- | ---: | ---: | ---: | ---: |
-| A 基线 | 118 | 7 | 106 | 24 / 32 |
-| A+LOCAL | 159 | 22 | 65 | 29 / 32 |
+RGB [分带混合评价](../research/active/dtr-r0/nearfield/RGB_BAND_HYBRID_DEV_20261010.md)完成六新Validation visit各16帧：Uni近带全局ARKcal仅用已消费240帧/2019严格FREE、全带5%封存cut0.0385859m，DAV中远沿用pooled304 cut0.2440383m。混合近W1→48/159、6/6capture改善，但FREE1→29/694（4.18%）超过预声明绝对2%（最多13），未采用混合，维持DAV2 Indoor Large raw R0、RGB≥0.8m/近带ToF。Uni pooled304漂移对照cut0.0961610为W27/159、FREE11/694（1.59%）；ARKcal放宽带来+21W/+18FREE，不据eval换主切点。中/远W208/634、401/606，FREE0/208、0/36，两个混合与DAV逐query全字段一致（3456次），属结构保留。双模型驻留689.15M参数，热态合计中位0.271s/P950.335s；仅部署参考，GPU已释放。独立native/校准/逐query复算PASS；新近带描述曲线也有交叉，仅Development与近POS覆盖富集，非实机/安全确认。旧[同FREE排序描述](../research/active/dtr-r0/nearfield/RGB_MATCHED_FREE_ARKIT_CAL_DEV_20261010.md)阶段2stop及所有旧失败/冻结对照保留。
 
-LOCAL 多发现 5 个事件，同时增加 15 个误报帧；并未解决稳定性问题。该评估中 UNKNOWN 为 538/576，UNKNOWN 可与提醒并存，不能解释为安全。[原始结果和分母](../research/active/dtr-r0/nearfield/LOCAL_RESCUE_RESULTS_20260923.md)
+用户于2026-10-10明确：本阶段暂按“头朝向＝身体朝向＝行进方向”处理，ToF身体/头部query共用这一方向。以ideal/共向条件为主比较；方向估计、PDR及方向不确定性合同暂不作为本阶段前置工作。这是当前任务假设，旧偏差实验的结果和身份保留。
 
-手机已有的 10 秒验证窗口：101/101 个 ToF 样本完成 A+LOCAL，处理时间中位数 53 ms、P95 61 ms。这只证明该窗口的运行情况，不含感测到听到提醒的全链路时延，也没有真实障碍真值。[设备边界](HARDWARE_OBSTACLE_DEMO.md)
+目标回到ToF任务收益与分级提醒：明显风险给强提醒，接触/擦边难分时允许轻提醒；不把精确分界作为继续推进的前提。分级只依据运行时可见的分数与证据质量，真值仅评价；弱证据保留不确定含义。重点是弱/细目标证据在投影、累积和完整bin读出中的保留，以及分级能否增加有用及时提醒。强/轻提醒分别报告接触检出、完整救/损、pass与clear clip/slot成本，强转轻也单列；轻提醒可接受但打扰成本不记为零，不设零损失门槛。共向假设不替代外参、时钟或空间投影核验。
 
-## 当前只攻什么
+[冻结配置新场景端到端评价](../research/active/dtr-r0/nearfield/CNH_RGB_FROZEN_E2E_RESULTS_20261010.md)完成ToF→通知比较：cal/hold各768新物理scene、K2，新背景family分开，主seed955预声明。主HEAD细横杆厚1.7cm，16scene/32相关事件；原5格与同通知成本匹配臂均2/32，救0损0。HEAD158/256不变，BODY116→119/256救3损0；hold空闲/纯擦边联合通知均28/37。原both为HEAD202、BODY154各/256、细横杆3/32，但通知49/286；956/957匹配HEAD细救回也0，956擦边38比原37多1。不支持主目标同成本收益，不升级App，固定配方结束不在该hold调参。原M3/5格/旧both及head50、L2和所有失败保留；旧剩余检出诊断见Git1311e202同路径。仅解析AABB共向ideal/有限背景、短窗口离线通知，完整RGB＋ToF不可评价。
 
-多帧留出观测检验判为`NOT_SUPPORTED`。该固定signed共享场代理未通过留帧预测机制检验，不转入报警训练，不追加本配方调参；264次求解均达50步上限而未达设定容差，结论限于固定预算；下一机制需处理表面可见性和距离响应。6个既有训练单位、132场景、40388个共同留出测量格；七帧拟合、末帧预测。六单位等权MSE：一次反投影2.5901、共享场ridge 3.6249、错配姿态ridge 4.3617。正确ridge减反投影1.0348 [0.8899, 1.1469]，减错配-0.7368 [-1.3114, -0.3345]（95%配对单位区间）。[本轮结果](../research/active/dtr-r0/nearfield/CNH_MULTIFRAME_OBSERVATION_PROBE_20261002.md)；原逐帧分支[失败结果](../research/active/dtr-r0/nearfield/CNH_FRAME_HISTORY_RESULTS_20261002.md)保留。
+[HEAD细横杆期望回波诊断](../research/active/dtr-r0/nearfield/CNH_HEAD_THIN_SIGNAL_ORACLE_DEV_20261010.md)完成：厚度/反射率受控扫中，1.7cm在f13前距0.97m最佳bin SNR为1.37/3.59（rho .19/.57）；0.65m原薄杆整盒出横向视场。固定bin移动8帧SNR降至0.78/2.27，真值matched为2.38/6.54，静态√K不可搬用。原M3细杆3/32及时、29静默，但27/32及时窗曾有相容top8，支持中位2帧；query线性投影描述比例约16.4%，非网络因果。sub32敏感性显著，不能宣布硬件物理上限。当时建议的稀疏运动读出已完成，结果见下文；不同统计量阈值不可直接比较，不在已消费E2E hold调参，完整融合仍NOT_EVALUABLE。
 
-最新完成全物体三级真值审计：立杆M3原95次“清晰报警”有30次实际为背景0–10cm擦身。固定分数与阈值后，source评估清晰NEAR543/4741=11.45%→M3 519/4741=10.95%；旧六背景260/3920=6.63%→254/3920=6.48%。浅/深检出原值不变，M3继续作为候选，M8跨背景增幅2.30pp仍超限。修正评价归属不是新模型增益；原判读与序列目标标签结果保留。双读出补报仍未过预设条件，不压制可接受擦身。[最新审计](../research/active/dtr-r0/nearfield/CNH_ALL_OBJECT_TRUTH_AUDIT_20261002.md)
+[局部运动路径读出](../research/active/dtr-r0/nearfield/CNH_GRADED_MOTION_PATH_DEV_20261010.md)完成旧consumed ideal对照，不采用。当前top8 native中心沿公共运动回溯past8，正负值/缺帧/各rank保留；匹配静态同核同窗，两臂各6个固定浅层模型。validation运动相对head50：HEAD救/损0:0、2:3、0:5，BODY2:4、1:4、1:6，各/384；BODY弱横杆0:0、0:1、1:0，各/48。静默弱横杆相容路径诊断Z约3.5 vs静态1.3–1.5，但峰值模型margin仍−1.51/−1.12/−1.49，及时支持4帧；空闲最高路径Z中位3.62，幅度不足分离噪声。cal9/11 clear union slots/pass整clip约束通过，validation成本漂移单列。12cells/6cuts/360cohorts、公共几何与因果前缀通过，51事件/52诊断组补核验；源失败保留。下一候选共享多实例读出联合空间/路径形态，NOT_RUN，不扫本轮参数。[前轮聚合读出](../research/active/dtr-r0/nearfield/CNH_GRADED_WEAK_MASS_DEV_20261010.md)两聚合负结果、原M3/5格/L2/480/工作点/stop保留；未读已消费新E2E hold，仅模拟非实机。更新前当前页见Git b746125b。
 
-**提高前视障碍感知在明确使用范围内的稳定性，同时讲清漏报、误报、提醒时机和无法判断。** 10月2日用户确定三级真值：伸入身体走廊为必须报的擦碰；身体外0–10cm擦身报警可接受，不计误报；更远或其他高度带才计清晰误报。原目标操作标签下的新模拟单位比较，冻结M3通过跑前判据：浅擦碰145/168对NEAR122/168，差+13.69pp、95%区间[8.28,20.51]；深擦碰未下降，实际合并清晰误报11.55%对12.07%。M8独立同规则也通过。详见[避障当前页](../research/active/dtr-r0/CURRENT.md)。
+[稀疏峰运动对齐读出](../research/active/dtr-r0/nearfield/CNH_SPARSE_RAY_TRACK_DEV_20261010.md)完成固定EXPLORE：旧consumed ideal cal/validation各384行×K4，当前峰与已观测pose做1/2/4帧因果对齐，负例实际通知预算只在cal选阈值。validation原5格与主追加方案HEAD298/BODY244各/384、4cm HEAD19/64、暗4cm1/32均相同，及时/完整窗救损及提前全部0，擦边通知61→63；独立替代4cm及时救2损10，完整窗救2损17。擦边高尾将主阈值推至30.816，4cm及时最大分数仅8.012/17.537（rho .25/.65），当前幅度累积缺少空间选择性；薄杆支持也在外侧，不能直接删外侧峰。固定配方结束，原M3/5格不动；下一若继续，先查局部形状/背景对比可分性，NOT_RUN。本次不证明1.7cm迁移或实物物理极限，不在新E2E hold调参，完整RGB融合仍NOT_EVALUABLE。
 
-本轮48单位校准、96单位评估；仍属已消费Development配方下的新随机模拟单位，不是保护盲测。M3可接受擦身报警增加，同高度外侧清晰误报略增，合并收益来自另一高度带。序列描述与RGB分数交付见[本轮报告](../research/active/dtr-r0/nearfield/CNH_MARGIN_CONFIRM_RESULTS_20261002.md)。静态mask扩展37条0补回/8丢失，停止同批H3归属小试；原外扩guard失败、方向误差失败及旧NEAR序列基线均保留，不被本轮改判。尚无新实机效果证据。[实验日志](../research/active/dtr-r0/RUNS.md)
+已完成的[步行参考](../research/active/dtr-r0/nearfield/CNH_WALKING_CORRIDOR_DEV_20261010.md)、[方向合同](../research/active/dtr-r0/nearfield/CNH_DIRECTION_CONTRACT_DEV_20261009.md)和全部方向聚合/锚定/高度混合结果作为历史诊断保留，不再驱动本阶段主线。步行参考的18–20°是过去/未来轨迹差异，非ToF姿态精度；单位/名义时钟限制仍按原报告。更新前CNH当前正文见Git 53bb1069同路径。
 
-避障是唯一推进的论文研究主线。L10 为 `L10_R0_PAUSED`，保留结果；TARO、SANPO、PanoLab、语义锚点不再作为独立推进线。`DTR_R2_DYNAMIC_RETAINED` 是历史算法状态，不表示恢复动态研究。[范围决定](CURRENT_DECISION.md)
+[Nymeria](../research/active/dtr-r0/nearfield/CNH_NYMERIA_SAMPLE_AUDIT_DEV_20261008.md)样本异常未修补、合法段注册仅离线参考。原始IMU→CPF姿态前缀检查通过，准确度未评；位置/PDR未实现，E1整链不可评价。该audit run的位移接口与参与者抽样当时暂缓；新步行参考run见上述报告。
 
-[关键证据备份](operations/CRITICAL_EVIDENCE_BACKUP.md) · [研究工作方式](../research/WORKFLOW.md) · [历史正文](operations/snapshots/PROJECT_STATE_20260924.md)
+恢复设备时，M3/CNH链路单独核对真实输入处理与逐query标定真值，再评价迁移效果。City、保护test、新UE及硬件第二阶段暂停。`L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`仅历史状态；TARO、PanoLab、语义锚点不作独立推进线。SANPO由原“不作独立推进线”调整为RGB真实评价候选；旧SANPO筛查停止与负结果按原run保留。
+
+## 按任务进入
+
+[研究决定](CURRENT_DECISION.md) · [避障证据](../research/active/dtr-r0/CURRENT.md) · [代码地图](CODE_MAP.md) · [硬件路线](GLASSES_HARDWARE_ROUTE.md) · [设备回归](DEVICE_REGRESSION.md) · [关键备份](operations/CRITICAL_EVIDENCE_BACKUP.md)
+
+本次更新前全文：Git `41d4baf3` 同路径；更早设备记录见`4f174009da62a8fcd9f219bb6758375f3f1ce2aa`。旧待决不覆盖当前决定。

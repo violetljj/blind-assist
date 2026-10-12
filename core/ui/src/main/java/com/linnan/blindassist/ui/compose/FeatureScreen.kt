@@ -69,7 +69,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.localization.AppLanguage
-import com.linnan.blindassist.preferences.DailyUsageMode
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
@@ -79,11 +78,10 @@ fun FeatureScreen(
     appVersion: String,
     onOpenCamera: () -> Unit,
     onShowGlassesCenter: () -> Unit,
-    onDailyUsageModeChange: (DailyUsageMode) -> Unit,
+    onProfileChange: (AlertProfile) -> Unit,
     modifier: Modifier = Modifier,
     glassesConnectionState: GlassesConnectionState = GlassesConnectionState.DISCONNECTED,
-    onQuietShortcut: () -> Unit = {},
-    onSensitiveShortcut: () -> Unit = {}
+    onOpenDataCapture: () -> Unit = {}
 ) {
     val language = controls.appLanguage
     val selectedMode = when (controls.alertProfile) {
@@ -106,10 +104,10 @@ fun FeatureScreen(
                 .align(Alignment.TopCenter)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 22.dp)
-                .padding(top = 84.dp, bottom = 30.dp)
+                .padding(top = 40.dp, bottom = 24.dp)
         ) {
             HomeBrandHeader(language = language)
-            Spacer(Modifier.height(88.dp))
+            Spacer(Modifier.height(44.dp))
 
             Text(
                 text = if (language == AppLanguage.EN) {
@@ -127,15 +125,15 @@ fun FeatureScreen(
             Spacer(Modifier.height(28.dp))
 
             PrimaryAssistAction(
-                subtitle = if (language == AppLanguage.EN) "A+LOCAL · Camera + ToF hardware\n$feedbackSummary"
-                    else "A+LOCAL · 相机与 ToF 硬件\n$feedbackSummary",
+                subtitle = if (language == AppLanguage.EN) "Camera + ToF assistance\n$feedbackSummary"
+                    else "相机与 ToF 辅助\n$feedbackSummary",
                 language = language,
                 onClick = onOpenCamera
             )
             Spacer(Modifier.height(38.dp))
 
             Text(
-                text = if (language == AppLanguage.EN) "Choose assist mode" else "选择辅助模式",
+                text = if (language == AppLanguage.EN) "Choose reminder cadence" else "选择提醒频率",
                 color = BaHomeInk,
                 fontSize = 18.sp,
                 lineHeight = 24.sp,
@@ -147,12 +145,20 @@ fun FeatureScreen(
             HomeModeSelector(
                 selectedMode = selectedMode,
                 language = language,
-                onDailyClick = { onDailyUsageModeChange(DailyUsageMode.GENERAL_DAILY) },
-                onQuietClick = onQuietShortcut,
-                onSensitiveClick = onSensitiveShortcut
+                onDailyClick = { onProfileChange(AlertProfile.STANDARD) },
+                onQuietClick = { onProfileChange(AlertProfile.QUIET) },
+                onSensitiveClick = { onProfileChange(AlertProfile.SENSITIVE) }
             )
             Spacer(Modifier.height(28.dp))
 
+            HomeInfoRow(
+                icon = Icons.Outlined.CameraAlt,
+                iconTint = BaHomeCobalt,
+                title = if (language == AppLanguage.EN) "Collect RGB + ToF + IMU" else "数据采集 · RGB / ToF / IMU",
+                onClick = onOpenDataCapture,
+                trailingIcon = Icons.Rounded.ChevronRight,
+                modifier = Modifier.testTag("home_capture_entry")
+            )
             HomeInfoRow(
                 icon = Icons.Outlined.Visibility,
                 iconTint = BaHomeCobalt,
@@ -451,9 +457,9 @@ private fun HomeModeItem(
             )
             .semantics {
                 contentDescription = if (language == AppLanguage.EN) {
-                    "Choose $label assist mode"
+                    "Choose $label reminder cadence"
                 } else {
-                    "选择${label}辅助模式"
+                    "选择${label}提醒频率"
                 }
                 stateDescription = if (selected) {
                     if (language == AppLanguage.EN) "Current assist mode" else "当前辅助模式"
@@ -576,7 +582,7 @@ private fun feedbackSummary(
 ): String {
     val mode = when (controls.alertProfile) {
         AlertProfile.QUIET -> if (language == AppLanguage.EN) "Quiet" else "安静提醒"
-        AlertProfile.SENSITIVE -> if (language == AppLanguage.EN) "Sensitive" else "灵敏提醒"
+        AlertProfile.SENSITIVE -> if (language == AppLanguage.EN) "More frequent" else "更频繁提醒"
         else -> if (language == AppLanguage.EN) "General daily" else "通用日常"
     }
     val channels = if (language == AppLanguage.EN) {
@@ -616,7 +622,7 @@ private fun glassesLabel(
             GlassesConnectionState.CONNECTION_LOST -> "连接已断开"
         }
     }
-    return if (language == AppLanguage.EN) "Glasses · $status" else "眼镜设备 · $status"
+    return if (language == AppLanguage.EN) "Legacy single-zone devices · $status" else "旧版单区设备 · $status"
 }
 
 private enum class HomeAssistMode {
@@ -627,7 +633,7 @@ private enum class HomeAssistMode {
     fun label(language: AppLanguage): String = when (this) {
         DAILY -> if (language == AppLanguage.EN) "Daily" else "日常"
         QUIET -> if (language == AppLanguage.EN) "Quiet" else "安静"
-        SENSITIVE -> if (language == AppLanguage.EN) "Sensitive" else "灵敏"
+        SENSITIVE -> if (language == AppLanguage.EN) "Frequent" else "更频繁"
     }
 }
 

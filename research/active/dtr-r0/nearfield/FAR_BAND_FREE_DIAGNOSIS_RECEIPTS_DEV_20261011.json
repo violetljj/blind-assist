@@ -1,0 +1,2552 @@
+{
+  "task": "FAR_BAND_FREE_DIAGNOSIS_DEV_20261011",
+  "start_commit": "1d16bde2c70e01c88aa83d11f32be3f41b25fc20",
+  "payload_logical": "artifacts.local/work/far-band-free-diagnosis-dev-20261011/",
+  "payload_physical": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\far-band-free-diagnosis-dev-20261011",
+  "summary": {
+    "status": "COMPLETE",
+    "plan_sha256": "dbaf2faa4389cef057b90c0bcf643471eb5c5122e4fbedf4ff78ee9aa23badb1",
+    "implementation_sha256": "3aeb705ef80a402a5e226f97109c3dcaaa819f2ee3001fb24ffb835e4a10ebba",
+    "selection_sha256": "6f79821da3350387bd24b9c352c37cbd5cbfb1d1482e6786335b92981ac3618f",
+    "groups": [
+      {
+        "dataset": "all",
+        "group": "a",
+        "n": 176,
+        "visits": 15,
+        "categories": {
+          "label_suspect": {
+            "count": 116,
+            "denominator": 176,
+            "rate": 0.6590909090909091
+          },
+          "geometry_risk": {
+            "count": 111,
+            "denominator": 176,
+            "rate": 0.6306818181818182
+          },
+          "model_error_strong": {
+            "count": 33,
+            "denominator": 176,
+            "rate": 0.1875
+          },
+          "model_disagreement_unconfirmed": {
+            "count": 62,
+            "denominator": 176,
+            "rate": 0.3522727272727273
+          },
+          "fusion_only": {
+            "count": 82,
+            "denominator": 176,
+            "rate": 0.4659090909090909
+          },
+          "unresolved": {
+            "count": 11,
+            "denominator": 176,
+            "rate": 0.0625
+          },
+          "sparse_native": {
+            "count": 0,
+            "denominator": 176,
+            "rate": 0.0
+          },
+          "low_confidence": {
+            "count": 108,
+            "denominator": 176,
+            "rate": 0.6136363636363636
+          },
+          "faro_surface_conflict": {
+            "count": 20,
+            "denominator": 176,
+            "rate": 0.11363636363636363
+          },
+          "faro_confirms_empty": {
+            "count": 84,
+            "denominator": 176,
+            "rate": 0.4772727272727273
+          },
+          "faro_surface_present": {
+            "count": 20,
+            "denominator": 176,
+            "rate": 0.11363636363636363
+          }
+        },
+        "confidence_available": 176,
+        "faro_coverage_median": 0.9541347480284538,
+        "confidence2_fraction_median": 0.8537197007888433,
+        "intersection_ray_median_m": 0.5242274526295176,
+        "dav_absdiff_native_median_m": 0.7093329429626465
+      },
+      {
+        "dataset": "all",
+        "group": "b",
+        "n": 176,
+        "visits": 16,
+        "categories": {
+          "label_suspect": {
+            "count": 130,
+            "denominator": 176,
+            "rate": 0.7386363636363636
+          },
+          "geometry_risk": {
+            "count": 92,
+            "denominator": 176,
+            "rate": 0.5227272727272727
+          },
+          "model_error_strong": {
+            "count": 9,
+            "denominator": 176,
+            "rate": 0.05113636363636364
+          },
+          "model_disagreement_unconfirmed": {
+            "count": 16,
+            "denominator": 176,
+            "rate": 0.09090909090909091
+          },
+          "fusion_only": {
+            "count": 0,
+            "denominator": 176,
+            "rate": 0.0
+          },
+          "unresolved": {
+            "count": 25,
+            "denominator": 176,
+            "rate": 0.14204545454545456
+          },
+          "sparse_native": {
+            "count": 0,
+            "denominator": 176,
+            "rate": 0.0
+          },
+          "low_confidence": {
+            "count": 129,
+            "denominator": 176,
+            "rate": 0.7329545454545454
+          },
+          "faro_surface_conflict": {
+            "count": 25,
+            "denominator": 176,
+            "rate": 0.14204545454545456
+          },
+          "faro_confirms_empty": {
+            "count": 83,
+            "denominator": 176,
+            "rate": 0.4715909090909091
+          },
+          "faro_surface_present": {
+            "count": 25,
+            "denominator": 176,
+            "rate": 0.14204545454545456
+          }
+        },
+        "confidence_available": 176,
+        "faro_coverage_median": 0.9260598538081649,
+        "confidence2_fraction_median": 0.7117663828465519,
+        "intersection_ray_median_m": 0.522242928539332,
+        "dav_absdiff_native_median_m": 0.6112590432167053
+      },
+      {
+        "dataset": "all",
+        "group": "c",
+        "n": 176,
+        "visits": 15,
+        "categories": {
+          "label_suspect": {
+            "count": 66,
+            "denominator": 176,
+            "rate": 0.375
+          },
+          "geometry_risk": {
+            "count": 122,
+            "denominator": 176,
+            "rate": 0.6931818181818182
+          },
+          "model_error_strong": {
+            "count": 0,
+            "denominator": 176,
+            "rate": 0.0
+          },
+          "model_disagreement_unconfirmed": {
+            "count": 0,
+            "denominator": 176,
+            "rate": 0.0
+          },
+          "fusion_only": {
+            "count": 32,
+            "denominator": 176,
+            "rate": 0.18181818181818182
+          },
+          "unresolved": {
+            "count": 37,
+            "denominator": 176,
+            "rate": 0.21022727272727273
+          },
+          "sparse_native": {
+            "count": 0,
+            "denominator": 176,
+            "rate": 0.0
+          },
+          "low_confidence": {
+            "count": 66,
+            "denominator": 176,
+            "rate": 0.375
+          },
+          "faro_surface_conflict": {
+            "count": 0,
+            "denominator": 176,
+            "rate": 0.0
+          },
+          "faro_confirms_empty": {
+            "count": 3,
+            "denominator": 176,
+            "rate": 0.017045454545454544
+          },
+          "faro_surface_present": {
+            "count": 127,
+            "denominator": 176,
+            "rate": 0.7215909090909091
+          }
+        },
+        "confidence_available": 176,
+        "faro_coverage_median": 0.8956434906619848,
+        "confidence2_fraction_median": 0.9383089280862724,
+        "intersection_ray_median_m": 0.5177681712876426,
+        "dav_absdiff_native_median_m": 0.31617631018161774
+      },
+      {
+        "dataset": "v1_1_all",
+        "group": "a",
+        "n": 65,
+        "visits": 5,
+        "categories": {
+          "label_suspect": {
+            "count": 33,
+            "denominator": 65,
+            "rate": 0.5076923076923077
+          },
+          "geometry_risk": {
+            "count": 44,
+            "denominator": 65,
+            "rate": 0.676923076923077
+          },
+          "model_error_strong": {
+            "count": 18,
+            "denominator": 65,
+            "rate": 0.27692307692307694
+          },
+          "model_disagreement_unconfirmed": {
+            "count": 37,
+            "denominator": 65,
+            "rate": 0.5692307692307692
+          },
+          "fusion_only": {
+            "count": 10,
+            "denominator": 65,
+            "rate": 0.15384615384615385
+          },
+          "unresolved": {
+            "count": 4,
+            "denominator": 65,
+            "rate": 0.06153846153846154
+          },
+          "sparse_native": {
+            "count": 0,
+            "denominator": 65,
+            "rate": 0.0
+          },
+          "low_confidence": {
+            "count": 28,
+            "denominator": 65,
+            "rate": 0.4307692307692308
+          },
+          "faro_surface_conflict": {
+            "count": 5,
+            "denominator": 65,
+            "rate": 0.07692307692307693
+          },
+          "faro_confirms_empty": {
+            "count": 36,
+            "denominator": 65,
+            "rate": 0.5538461538461539
+          },
+          "faro_surface_present": {
+            "count": 5,
+            "denominator": 65,
+            "rate": 0.07692307692307693
+          }
+        },
+        "confidence_available": 65,
+        "faro_coverage_median": 0.9679499336241228,
+        "confidence2_fraction_median": 0.9173146216575004,
+        "intersection_ray_median_m": 0.5123128180417844,
+        "dav_absdiff_native_median_m": 0.9001748561859131
+      },
+      {
+        "dataset": "v1_1_all",
+        "group": "b",
+        "n": 65,
+        "visits": 6,
+        "categories": {
+          "label_suspect": {
+            "count": 59,
+            "denominator": 65,
+            "rate": 0.9076923076923077
+          },
+          "geometry_risk": {
+            "count": 40,
+            "denominator": 65,
+            "rate": 0.6153846153846154
+          },
+          "model_error_strong": {
+            "count": 2,
+            "denominator": 65,
+            "rate": 0.03076923076923077
+          },
+          "model_disagreement_unconfirmed": {
+            "count": 9,
+            "denominator": 65,
+            "rate": 0.13846153846153847
+          },
+          "fusion_only": {
+            "count": 0,
+            "denominator": 65,
+            "rate": 0.0
+          },
+          "unresolved": {
+            "count": 1,
+            "denominator": 65,
+            "rate": 0.015384615384615385
+          },
+          "sparse_native": {
+            "count": 0,
+            "denominator": 65,
+            "rate": 0.0
+          },
+          "low_confidence": {
+            "count": 59,
+            "denominator": 65,
+            "rate": 0.9076923076923077
+          },
+          "faro_surface_conflict": {
+            "count": 11,
+            "denominator": 65,
+            "rate": 0.16923076923076924
+          },
+          "faro_confirms_empty": {
+            "count": 16,
+            "denominator": 65,
+            "rate": 0.24615384615384617
+          },
+          "faro_surface_present": {
+            "count": 11,
+            "denominator": 65,
+            "rate": 0.16923076923076924
+          }
+        },
+        "confidence_available": 65,
+        "faro_coverage_median": 0.913521714394083,
+        "confidence2_fraction_median": 0.3812867716834314,
+        "intersection_ray_median_m": 0.5181910520899506,
+        "dav_absdiff_native_median_m": 0.9919948577880859
+      },
+      {
+        "dataset": "v1_1_all",
+        "group": "c",
+        "n": 65,
+        "visits": 5,
+        "categories": {
+          "label_suspect": {
+            "count": 27,
+            "denominator": 65,
+            "rate": 0.4153846153846154
+          },
+          "geometry_risk": {
+            "count": 44,
+            "denominator": 65,
+            "rate": 0.676923076923077
+          },
+          "model_error_strong": {
+            "count": 0,
+            "denominator": 65,
+            "rate": 0.0
+          },
+          "model_disagreement_unconfirmed": {
+            "count": 0,
+            "denominator": 65,
+            "rate": 0.0
+          },
+          "fusion_only": {
+            "count": 6,
+            "denominator": 65,
+            "rate": 0.09230769230769231
+          },
+          "unresolved": {
+            "count": 14,
+            "denominator": 65,
+            "rate": 0.2153846153846154
+          },
+          "sparse_native": {
+            "count": 0,
+            "denominator": 65,
+            "rate": 0.0
+          },
+          "low_confidence": {
+            "count": 27,
+            "denominator": 65,
+            "rate": 0.4153846153846154
+          },
+          "faro_surface_conflict": {
+            "count": 0,
+            "denominator": 65,
+            "rate": 0.0
+          },
+          "faro_confirms_empty": {
+            "count": 0,
+            "denominator": 65,
+            "rate": 0.0
+          },
+          "faro_surface_present": {
+            "count": 47,
+            "denominator": 65,
+            "rate": 0.7230769230769231
+          }
+        },
+        "confidence_available": 65,
+        "faro_coverage_median": 0.8990147783251231,
+        "confidence2_fraction_median": 0.9083754918493536,
+        "intersection_ray_median_m": 0.5121126881432992,
+        "dav_absdiff_native_median_m": 0.36919665336608887
+      },
+      {
+        "dataset": "v2_eval",
+        "group": "a",
+        "n": 111,
+        "visits": 10,
+        "categories": {
+          "label_suspect": {
+            "count": 83,
+            "denominator": 111,
+            "rate": 0.7477477477477478
+          },
+          "geometry_risk": {
+            "count": 67,
+            "denominator": 111,
+            "rate": 0.6036036036036037
+          },
+          "model_error_strong": {
+            "count": 15,
+            "denominator": 111,
+            "rate": 0.13513513513513514
+          },
+          "model_disagreement_unconfirmed": {
+            "count": 25,
+            "denominator": 111,
+            "rate": 0.22522522522522523
+          },
+          "fusion_only": {
+            "count": 72,
+            "denominator": 111,
+            "rate": 0.6486486486486487
+          },
+          "unresolved": {
+            "count": 7,
+            "denominator": 111,
+            "rate": 0.06306306306306306
+          },
+          "sparse_native": {
+            "count": 0,
+            "denominator": 111,
+            "rate": 0.0
+          },
+          "low_confidence": {
+            "count": 80,
+            "denominator": 111,
+            "rate": 0.7207207207207207
+          },
+          "faro_surface_conflict": {
+            "count": 15,
+            "denominator": 111,
+            "rate": 0.13513513513513514
+          },
+          "faro_confirms_empty": {
+            "count": 48,
+            "denominator": 111,
+            "rate": 0.43243243243243246
+          },
+          "faro_surface_present": {
+            "count": 15,
+            "denominator": 111,
+            "rate": 0.13513513513513514
+          }
+        },
+        "confidence_available": 111,
+        "faro_coverage_median": 0.9150036954915004,
+        "confidence2_fraction_median": 0.7798786181139122,
+        "intersection_ray_median_m": 0.5299349230478476,
+        "dav_absdiff_native_median_m": 0.6058171987533569
+      },
+      {
+        "dataset": "v2_eval",
+        "group": "b",
+        "n": 111,
+        "visits": 10,
+        "categories": {
+          "label_suspect": {
+            "count": 71,
+            "denominator": 111,
+            "rate": 0.6396396396396397
+          },
+          "geometry_risk": {
+            "count": 52,
+            "denominator": 111,
+            "rate": 0.46846846846846846
+          },
+          "model_error_strong": {
+            "count": 7,
+            "denominator": 111,
+            "rate": 0.06306306306306306
+          },
+          "model_disagreement_unconfirmed": {
+            "count": 7,
+            "denominator": 111,
+            "rate": 0.06306306306306306
+          },
+          "fusion_only": {
+            "count": 0,
+            "denominator": 111,
+            "rate": 0.0
+          },
+          "unresolved": {
+            "count": 24,
+            "denominator": 111,
+            "rate": 0.21621621621621623
+          },
+          "sparse_native": {
+            "count": 0,
+            "denominator": 111,
+            "rate": 0.0
+          },
+          "low_confidence": {
+            "count": 70,
+            "denominator": 111,
+            "rate": 0.6306306306306306
+          },
+          "faro_surface_conflict": {
+            "count": 14,
+            "denominator": 111,
+            "rate": 0.12612612612612611
+          },
+          "faro_confirms_empty": {
+            "count": 67,
+            "denominator": 111,
+            "rate": 0.6036036036036037
+          },
+          "faro_surface_present": {
+            "count": 14,
+            "denominator": 111,
+            "rate": 0.12612612612612611
+          }
+        },
+        "confidence_available": 111,
+        "faro_coverage_median": 0.9653318502039303,
+        "confidence2_fraction_median": 0.8034174125305126,
+        "intersection_ray_median_m": 0.5229801258362876,
+        "dav_absdiff_native_median_m": 0.4748525619506836
+      },
+      {
+        "dataset": "v2_eval",
+        "group": "c",
+        "n": 111,
+        "visits": 10,
+        "categories": {
+          "label_suspect": {
+            "count": 39,
+            "denominator": 111,
+            "rate": 0.35135135135135137
+          },
+          "geometry_risk": {
+            "count": 78,
+            "denominator": 111,
+            "rate": 0.7027027027027027
+          },
+          "model_error_strong": {
+            "count": 0,
+            "denominator": 111,
+            "rate": 0.0
+          },
+          "model_disagreement_unconfirmed": {
+            "count": 0,
+            "denominator": 111,
+            "rate": 0.0
+          },
+          "fusion_only": {
+            "count": 26,
+            "denominator": 111,
+            "rate": 0.23423423423423423
+          },
+          "unresolved": {
+            "count": 23,
+            "denominator": 111,
+            "rate": 0.2072072072072072
+          },
+          "sparse_native": {
+            "count": 0,
+            "denominator": 111,
+            "rate": 0.0
+          },
+          "low_confidence": {
+            "count": 39,
+            "denominator": 111,
+            "rate": 0.35135135135135137
+          },
+          "faro_surface_conflict": {
+            "count": 0,
+            "denominator": 111,
+            "rate": 0.0
+          },
+          "faro_confirms_empty": {
+            "count": 3,
+            "denominator": 111,
+            "rate": 0.02702702702702703
+          },
+          "faro_surface_present": {
+            "count": 80,
+            "denominator": 111,
+            "rate": 0.7207207207207207
+          }
+        },
+        "confidence_available": 111,
+        "faro_coverage_median": 0.8811858076563959,
+        "confidence2_fraction_median": 0.9497916253224846,
+        "intersection_ray_median_m": 0.5232969883007581,
+        "dav_absdiff_native_median_m": 0.3003627061843872
+      }
+    ],
+    "visit_contrasts": [
+      {
+        "dataset": "v1_1_all",
+        "comparator": "b",
+        "common_visits": [
+          "381650",
+          "421252",
+          "421259",
+          "421260"
+        ],
+        "unit": "unweighted mean of per-visit a minus control rates; descriptive, unmatched counts",
+        "differences_pp": {
+          "label_suspect": -9.464285714285715,
+          "geometry_risk": 14.801587301587302,
+          "model_error_strong": 1.7857142857142856,
+          "model_disagreement_unconfirmed": 23.214285714285715,
+          "fusion_only": 25.0,
+          "unresolved": 5.0,
+          "sparse_native": 0.0,
+          "low_confidence": -9.464285714285715,
+          "faro_surface_conflict": 0.0,
+          "faro_confirms_empty": 20.615079365079364,
+          "faro_surface_present": 0.0
+        }
+      },
+      {
+        "dataset": "v1_1_all",
+        "comparator": "c",
+        "common_visits": [
+          "381650",
+          "421252",
+          "421254",
+          "421259",
+          "421260"
+        ],
+        "unit": "unweighted mean of per-visit a minus control rates; descriptive, unmatched counts",
+        "differences_pp": {
+          "label_suspect": 14.14285714285714,
+          "geometry_risk": 15.714285714285712,
+          "model_error_strong": 35.42857142857142,
+          "model_disagreement_unconfirmed": 44.57142857142857,
+          "fusion_only": 8.0,
+          "unresolved": -26.857142857142858,
+          "sparse_native": 0.0,
+          "low_confidence": 9.142857142857142,
+          "faro_surface_conflict": 5.0,
+          "faro_confirms_empty": 64.71428571428571,
+          "faro_surface_present": -67.28571428571428
+        }
+      },
+      {
+        "dataset": "v2_eval",
+        "comparator": "b",
+        "common_visits": [
+          "421657",
+          "422134",
+          "422148",
+          "422217",
+          "422521",
+          "422523",
+          "422535",
+          "422569",
+          "422589"
+        ],
+        "unit": "unweighted mean of per-visit a minus control rates; descriptive, unmatched counts",
+        "differences_pp": {
+          "label_suspect": 2.047930283224402,
+          "geometry_risk": 6.7523646135617215,
+          "model_error_strong": 4.122674710910005,
+          "model_disagreement_unconfirmed": 25.763923803139487,
+          "fusion_only": 64.95726495726495,
+          "unresolved": -6.579939668174963,
+          "sparse_native": 0.0,
+          "low_confidence": 0.822859058153176,
+          "faro_surface_conflict": 2.2697056030389358,
+          "faro_confirms_empty": 9.782833361264736,
+          "faro_surface_present": 2.2697056030389358
+        }
+      },
+      {
+        "dataset": "v2_eval",
+        "comparator": "c",
+        "common_visits": [
+          "421657",
+          "422011",
+          "422134",
+          "422148",
+          "422217",
+          "422521",
+          "422523",
+          "422535",
+          "422569",
+          "422589"
+        ],
+        "unit": "unweighted mean of per-visit a minus control rates; descriptive, unmatched counts",
+        "differences_pp": {
+          "label_suspect": 38.50732600732601,
+          "geometry_risk": -4.771062271062271,
+          "model_error_strong": 5.769230769230769,
+          "model_disagreement_unconfirmed": 30.769230769230766,
+          "fusion_only": 42.524420024420024,
+          "unresolved": -10.885225885225884,
+          "sparse_native": 0.0,
+          "low_confidence": 36.904761904761905,
+          "faro_surface_conflict": 22.542735042735043,
+          "faro_confirms_empty": 40.57692307692308,
+          "faro_surface_present": -53.492063492063494
+        }
+      }
+    ],
+    "command_wall_s": 11.740968999976758,
+    "GPU_s": 0,
+    "rows": 528,
+    "panels": 176
+  },
+  "resources": {
+    "unit": "summed command-wall seconds, not CPU core-seconds or elapsed chat time",
+    "CPU_limit_s": 1500,
+    "CPU_conservative_charge_s": 400,
+    "GPU_limit_s": 300,
+    "GPU_used_s": 0,
+    "scientific_stage_external_upper_s": {
+      "select": 8.8,
+      "confidence": 10.893,
+      "diagnose_attempt0": 19.216,
+      "diagnose_final": 11.751,
+      "independent_audit": 51.248
+    },
+    "admin_and_exploration_and_delivery_allowance_s": 298.092,
+    "allowance_note": "Conservative headroom covers all remaining parent/child shell reads, setup, resource checks, report repairs and git delivery; not an additional run or a claimed measured duration. Agent totals source23s / independent58s include their scientific stages; do not double count.",
+    "download_bytes": 43723321,
+    "network_sessions_closed": true,
+    "retained_task_owned_processes": [],
+    "old_eval_rerun": false,
+    "protected_480_test_access": false
+  },
+  "audit": {
+    "status": "PASS",
+    "independent": true,
+    "scope": "Full selected raw-frame recomputation; no parent rays/rules/reproject imports, no model forward, no protected 480/test access",
+    "inventory_queries": 6912,
+    "selected_queries": 528,
+    "raw_frames": 239,
+    "panels": 176,
+    "plan_sha256": "dbaf2faa4389cef057b90c0bcf643471eb5c5122e4fbedf4ff78ee9aa23badb1",
+    "script_sha256": "602b803c15e81dbf4c596914957a411c17b93b97e4c2e0e072b11d638091d401",
+    "checks": {
+      "identity": 2,
+      "selection": 6342,
+      "table": 2,
+      "rules": 5808,
+      "raw": 1912,
+      "measure": 58608,
+      "reference": 1408,
+      "summary": 2,
+      "aggregate": 315,
+      "contrast": 48,
+      "pages": 530,
+      "provenance": 1690
+    },
+    "failure_count": 0,
+    "failures": [],
+    "observed_repair": "FARO-inside >=16 is a surface conflict only for FREE; POSITIVE inside surfaces are compatible. Final semantics audited; no change to a/b sampling or support cuts.",
+    "raw_frame_receipts": [
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58087.701",
+        "queries": 2,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58087.901",
+        "queries": 2,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58088.101",
+        "queries": 1,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58088.301",
+        "queries": 2,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58088.501",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58088.701",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58088.901",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58089.101",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58089.301",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58089.501",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58089.700",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58089.900",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58090.300",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58090.700",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58091.500",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58091.700",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58092.299",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58092.499",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58092.699",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58092.899",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58093.099",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58093.299",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58093.499",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58093.699",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445633_58093.899",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63077.709",
+        "queries": 1,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63077.909",
+        "queries": 1,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63078.909",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63079.109",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63079.309",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63079.509",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63079.709",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63079.908",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63080.108",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63080.308",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63080.508",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63080.908",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63081.108",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63081.308",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63081.508",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63081.708",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63081.908",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63082.108",
+        "queries": 5,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63082.307",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63082.507",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445692_63082.707",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63705.524",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63706.923",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63707.123",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63707.323",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63707.523",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63707.923",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63708.123",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63708.323",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63708.922",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63709.322",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63709.922",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63710.722",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445707_63710.922",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445718_59082.093",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445718_59082.293",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445718_59082.493",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445718_59085.692",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445894_76468.522",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445894_76468.722",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445894_76468.922",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445894_76469.122",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445894_76469.522",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445894_76469.722",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445894_76469.922",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445894_76470.122",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77028.129",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77028.329",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77028.928",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77029.128",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77029.328",
+        "queries": 5,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77029.528",
+        "queries": 5,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77029.728",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77029.928",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77030.128",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77030.328",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77030.528",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77030.728",
+        "queries": 5,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77030.928",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77031.128",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77031.327",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445916_77031.527",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445931_79313.189",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445931_79313.589",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445931_79313.789",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445931_79313.989",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132139.108",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132139.308",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132139.708",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132139.908",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132140.108",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132140.308",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132140.708",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132141.108",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132141.307",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132141.507",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132141.707",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132141.907",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132142.707",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132142.907",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132143.107",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42445970_132143.307",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79945.696",
+        "queries": 2,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79946.096",
+        "queries": 3,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79946.295",
+        "queries": 2,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79946.495",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79947.295",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79947.495",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79948.295",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79948.694",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79949.094",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79949.294",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79949.494",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79949.694",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79949.894",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79950.094",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79950.294",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79950.494",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79950.694",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79951.293",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446048_79951.893",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446061_80553.097",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446061_80554.097",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446061_80555.296",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446061_80555.496",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446061_80555.896",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84268.199",
+        "queries": 3,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84268.799",
+        "queries": 2,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84268.999",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84269.799",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84269.999",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84270.199",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84270.399",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84270.599",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84270.798",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84270.998",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84271.198",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84271.398",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84271.598",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84271.798",
+        "queries": 6,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84271.998",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84272.198",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84272.398",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84272.598",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84272.798",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84272.998",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84273.197",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84273.397",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84273.597",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84273.797",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84273.997",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84274.197",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v2_eval",
+        "source_id": "42446467_84274.397",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5301.758",
+        "queries": 1,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5302.957",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5303.557",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5303.757",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5304.157",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5304.357",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5304.556",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5304.756",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5305.156",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5305.356",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5305.556",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5306.156",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5306.556",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "41048262_5307.155",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444499_2456.732",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444499_2457.931",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79538.693",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79539.092",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79539.292",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79539.492",
+        "queries": 5,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79539.692",
+        "queries": 5,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79539.892",
+        "queries": 6,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79540.092",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79540.292",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79540.492",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79540.692",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79540.892",
+        "queries": 5,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79541.092",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79541.292",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79541.491",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79541.691",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79541.891",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444748_79542.091",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80969.479",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80969.679",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80969.879",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80970.079",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80970.279",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80970.479",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80970.679",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80970.879",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80971.078",
+        "queries": 6,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80971.278",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80971.478",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80971.678",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80971.878",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80972.078",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444754_80972.478",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444762_81553.302",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444762_81553.901",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444762_81554.101",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444762_81554.301",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96568.369",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96568.569",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96568.769",
+        "queries": 5,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96568.968",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96569.168",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96569.368",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96569.568",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96569.968",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96570.168",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96570.368",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96570.568",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96570.768",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96570.968",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96571.168",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96571.367",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96571.567",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444858_96571.967",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104185.412",
+        "queries": 1,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104185.812",
+        "queries": 4,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104187.011",
+        "queries": 1,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104187.211",
+        "queries": 2,
+        "pose_transform_available": false,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104187.411",
+        "queries": 4,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104187.611",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104187.811",
+        "queries": 3,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104188.011",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104188.211",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104188.411",
+        "queries": 2,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104188.611",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      },
+      {
+        "dataset": "v1_1_all",
+        "source_id": "42444891_104189.810",
+        "queries": 1,
+        "pose_transform_available": true,
+        "confidence_available": true
+      }
+    ],
+    "command_wall_s": 51.24709910003003,
+    "GPU_s": 0
+  },
+  "output_hashes": [
+    {
+      "path": "selection.json",
+      "sha256": "6f79821da3350387bd24b9c352c37cbd5cbfb1d1482e6786335b92981ac3618f"
+    },
+    {
+      "path": "summary.json",
+      "sha256": "2ba97cedab5f0c570c69235f02a3622d5bb3221b5040a6c0936fa390b3002557"
+    },
+    {
+      "path": "per_query_diagnosis.csv",
+      "sha256": "e3691a1be1d823fc865e594d24d8d7d4ad58d65eafda36222cdba9a1c88230c2"
+    },
+    {
+      "path": "per_query_diagnosis.jsonl",
+      "sha256": "6c260916280c518c3ef9619620715c0fc001497ddb6154f7418dfc59ed7076fd"
+    },
+    {
+      "path": "far_query_inventory.csv",
+      "sha256": "72add5f7b2522af36868623907ae74cd27418e9c587a1171cde00b8a2968163f"
+    },
+    {
+      "path": "per_visit.csv",
+      "sha256": "9e857dd3601708e753a3f2f3fd888e4d3ee669501365403a91585af551130fa6"
+    },
+    {
+      "path": "input_hashes.json",
+      "sha256": "d369463430dd5e0732b954a998bfcdd20fac5245480070c94646837e2e1d0aa4"
+    },
+    {
+      "path": "independent_audit.json",
+      "sha256": "0f914a3d3c54fcb600762f2d691544636ac2a17fd84208460b7b9c8853031176"
+    },
+    {
+      "path": "confidence/manifest.json",
+      "sha256": "2969933bb0cc44b14546c3c20605d12b017325ecb1c21ace38d7cbe22e234eeb"
+    },
+    {
+      "path": "rule_clarification.json",
+      "sha256": "b3e46c7727338f1eba69e32def027b746bae45f97b31f225a125a0e9b4890be7"
+    },
+    {
+      "path": "resources.json",
+      "sha256": "f7de940ce1556321856f76178ed1218ac8ef80f7a588a0053eacd15094a649ad"
+    },
+    {
+      "path": "index.html",
+      "sha256": "2fbff54c687a04b9f352982467ca550ceda707201ef9835969bcb3e1bd0e0bb6"
+    },
+    {
+      "path": "report_audit.json",
+      "sha256": "b8e721bd3dfab041f061eabdd5f7d338302153ec40037eaff3c0eb75d7523104"
+    }
+  ],
+  "report_audit": {
+    "status": "PASS",
+    "report_sha256": "bd3905d3f7b4218c994e1f13432c4cd531f10e36ccc1423b48bea9bd70994643",
+    "checks": 62,
+    "failures": [],
+    "findings": [
+      "Explicitly state that DAV inside>=16 uses diagnostic zero-margin intrusion, not inherited RGB support cut 0.24403834342956543m. This explains b model_error_strong=9 and disagreement=16 despite frozen RGB unsupported.",
+      "POS UniDepth absolute-difference median is 0.16649582982063293m, rounding to 0.166m rather than reported 0.167m."
+    ],
+    "limits": "Read-only report-to-final-table/summary cross-check; no rerun of full audit.",
+    "corrections_verified": {
+      "diagnostic_zero_margin": true,
+      "v1_frozen_cut": true,
+      "v2_frozen_cut": true,
+      "corrected_uni_c": true
+    },
+    "resolution": "Both prior findings corrected in final report; original findings retained for traceability. No data audit rerun."
+  },
+  "code_hashes": [
+    {
+      "path": "research/active/dtr-r0/nearfield/far_band_free_diagnosis.py",
+      "sha256": "3aeb705ef80a402a5e226f97109c3dcaaa819f2ee3001fb24ffb835e4a10ebba"
+    },
+    {
+      "path": "research/active/dtr-r0/nearfield/acquire_far_band_confidence.py",
+      "sha256": "43b894c54643ea48e422ce3e5602be2ae5a91aee0c20fc6594de78c085e0f90b"
+    },
+    {
+      "path": "research/active/dtr-r0/nearfield/audit_far_band_free_diagnosis.py",
+      "sha256": "602b803c15e81dbf4c596914957a411c17b93b97e4c2e0e072b11d638091d401"
+    }
+  ]
+}

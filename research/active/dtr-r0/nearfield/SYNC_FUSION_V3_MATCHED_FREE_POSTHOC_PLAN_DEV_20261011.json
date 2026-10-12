@@ -1,0 +1,19 @@
+{
+  "task": "SYNC_FUSION_V3_MATCHED_FREE_POSTHOC_DEV_20261011",
+  "phase": "POSTHOC_ORACLE_DESCRIPTION_CONSUMED_DEVELOPMENT",
+  "source_commit": "b9f227e5",
+  "budget": {"CPU_command_wall_s": 900, "GPU_s": 0, "download_bytes": 0},
+  "allowed": "Existing v3 cal/eval score and observation caches only; no protected 480/test, fitting, model/readout/cal-threshold changes",
+  "arms": ["native_perturbed", "faro_rho030_ambient1", "faro_rho030_ambient10"],
+  "methods": ["D_prime", "B_prime", "audit_b", "rgb", "tof", "or", "and"],
+  "curve": "All finite eval score ties plus disabled +inf; -inf remains unavailable. For each exactly reachable FREE count maximize W, then maximize threshold. No interpolation or randomized tie splitting.",
+  "fixed_levels": ["0", "4", "67", "1%", "2%", "5%", "10%"],
+  "selection": "Floor percentage times local FREE denominator; choose greatest reachable FREE count <= cap, then its maximum W. FREE denominator zero => N/E for rates and matched-rate comparison; exact count curve remains descriptive.",
+  "bootstrap": {"seed": 20261011, "replicates": 2000, "clusters": "all original 12 eval visits, including zero-row FARO visits", "levels": [0.02, 0.05], "reselection": "Recompute weighted whole-tie W/F in each paired visit draw and reselect nearest reachable point below floor(rate * resampled FREE denominator)", "interval": "2.5/97.5 percentile descriptive interval for W difference and POS-normalized pp; omit zero-FREE/POS draws, disclose count"},
+  "per_visit": "Individually select same-rate oracle point using each visit's FREE denominator; also show visit contributions under full-eval pooled oracle thresholds. Use individual visit selection for rule (b); zero FREE => N/E, does not count as success.",
+  "loss": "All 126 native middle-band POS queries RGB_pred & !D_prime_pred at original sealed working points. RGB margin quartiles among all RGB-supported POS; cached RGB depth support rays and median observed axial Z within band; ToF UNKNOWN/support and raw accepted-peak SNR; finite outside-query evidence described separately from UNKNOWN and physical emptiness.",
+  "decision": {"a": "native middle at 1%,2%,5%: D_prime W >= rgb W AND >= or W at every level", "b": "native middle at each of 2%,5%: >=8/12 visits D_prime W >= rgb W using per-visit same-rate selection", "if_both": "建议进入条件仲裁器设计与新 visit 确认", "otherwise": "D′ 的双向占优不稳定，暂停融合迭代", "secondary_arms": "Description only, excluded from decision"},
+  "boundary": "Eval-label thresholds are posthoc oracles for ranking only, never deployable working points. Original preregistered v3 FAIL text/numbers unchanged; add only one linked explanatory sentence to CURRENT_DECISION.",
+  "deliverables": ["Chinese report", "all ties and exact-F curves CSV/plot", "fixed points", "bootstrap table/draws", "visit consistency", "cal/eval pooled and per-arm/per-visit drift", "loss query/group tables", "independent audit", "RUNS update", "direct normal push master"],
+  "decision_check": "Primary native middle has POS2077/FREE689, 1/2/5 percent caps are 6/13/34. Equality meets descriptive rule, not inferential noninferiority; 12 visits permit threshold 8. This is a successor-design decision only, not confirmation or baseline promotion."
+}

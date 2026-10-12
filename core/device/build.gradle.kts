@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.javax.inject)
 
     testImplementation(libs.junit4)
+    testImplementation("org.json:json:20240303")
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext.junit)
 }

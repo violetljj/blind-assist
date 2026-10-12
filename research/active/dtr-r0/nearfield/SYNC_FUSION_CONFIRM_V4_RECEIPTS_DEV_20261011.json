@@ -1,0 +1,1124 @@
+{
+  "task": "SYNC_FUSION_CONFIRM_V4_DEV_20261011",
+  "status": "PASS",
+  "conclusion": "冻结 D′ 在中带低误报区间的排序优于 RGB-only 与 OR（真实 RGB + 半合成 ToF，新 visit 预注册）",
+  "primary": [
+    {
+      "arm": "native_perturbed",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "POS": 2873,
+      "FREE": 866,
+      "comparator": "rgb",
+      "delta_pAUC": 0.3191962437570789,
+      "lower": 0.16995584592882784,
+      "upper": 0.44802768618052535,
+      "valid_replicates": 2000,
+      "total_replicates": 2000,
+      "pass_lower_gt_zero": true,
+      "all_2000_valid": true
+    },
+    {
+      "arm": "native_perturbed",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "POS": 2873,
+      "FREE": 866,
+      "comparator": "or",
+      "delta_pAUC": 0.19957733424758184,
+      "lower": 0.05493576542652315,
+      "upper": 0.3846379438157083,
+      "valid_replicates": 2000,
+      "total_replicates": 2000,
+      "pass_lower_gt_zero": true,
+      "all_2000_valid": true
+    }
+  ],
+  "protocol_commit": {
+    "commit": "270abc0a4155d58678ab574df8208c2b62620684",
+    "plan_sha256": "dfeba5102b53269d59b91aecfcbe6ed7564c0c511019dda74483aa55adbfea59",
+    "git_blob_sha256": "dfeba5102b53269d59b91aecfcbe6ed7564c0c511019dda74483aa55adbfea59",
+    "pushed_before_data": true,
+    "remote_master": "270abc0a4155d58678ab574df8208c2b62620684\trefs/heads/master"
+  },
+  "frozen_v3_model_entries": [
+    {
+      "method": "D_prime",
+      "seed": 955,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\D_prime_955.joblib",
+      "sha256": "156f136699b2931798dbbce1c5f3077ebd81ca6e9d81cacd9484209fcdf03449",
+      "known_rows": 106016,
+      "warnings": []
+    },
+    {
+      "method": "D_prime",
+      "seed": 956,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\D_prime_956.joblib",
+      "sha256": "a7c79c9de701fcb7135b9ef4c881d06fcd93c1c2ea37e0589664c624998753fd",
+      "known_rows": 106016,
+      "warnings": []
+    },
+    {
+      "method": "D_prime",
+      "seed": 957,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\D_prime_957.joblib",
+      "sha256": "42ae14ae15f30733e137583e6a17af9eb5e2a74aafaf1889b0931801b4f59626",
+      "known_rows": 106016,
+      "warnings": []
+    }
+  ],
+  "cal_cells": [
+    {
+      "method": "D_prime",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 2775,
+      "threshold": 0.8047067786078067,
+      "threshold_kind": "finite",
+      "W": 9623,
+      "F": 612,
+      "U": 972,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 17246,
+      "FREE_denominator": 30612,
+      "UNKNOWN_denominator": 3154,
+      "F_fraction": 0.0199921599372795,
+      "W_fraction": 0.5579844601646758,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\D_prime__band0.json",
+      "all_ties_sha256": "a1af8d1e7efb385add78f483fc5cb75362ee29f9ca8386a823a5015eb957c22b"
+    },
+    {
+      "method": "rgb",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 1924,
+      "threshold": 0.026485311985015914,
+      "threshold_kind": "finite",
+      "W": 8916,
+      "F": 612,
+      "U": 783,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 17246,
+      "FREE_denominator": 30612,
+      "UNKNOWN_denominator": 3154,
+      "F_fraction": 0.0199921599372795,
+      "W_fraction": 0.51698944682825,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\rgb__band0.json",
+      "all_ties_sha256": "b4d7fcfaffaf98764ddcec4ea1d69368fa1e736059dc81819b6a465c1020d091"
+    },
+    {
+      "method": "tof",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 1272,
+      "threshold": 0.10942066580914989,
+      "threshold_kind": "finite",
+      "W": 2885,
+      "F": 609,
+      "U": 13,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 17246,
+      "FREE_denominator": 30612,
+      "UNKNOWN_denominator": 3154,
+      "F_fraction": 0.019894159153273226,
+      "W_fraction": 0.16728516757508988,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\tof__band0.json",
+      "all_ties_sha256": "9396aa0e3f2bf96001d8577c219e740846f6bd7104fed13bdf5543be53d52198"
+    },
+    {
+      "method": "or",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 1742,
+      "threshold": 0.11107826038374058,
+      "threshold_kind": "finite",
+      "W": 6115,
+      "F": 612,
+      "U": 206,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 17246,
+      "FREE_denominator": 30612,
+      "UNKNOWN_denominator": 3154,
+      "F_fraction": 0.0199921599372795,
+      "W_fraction": 0.35457497390699294,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\or__band0.json",
+      "all_ties_sha256": "abd16728282038caeb9853b7f454f8debff0792a53434d550f0d362b9018c011"
+    },
+    {
+      "method": "and",
+      "band": 0,
+      "band_name": "0.3-0.8m",
+      "tie_index": 2254,
+      "threshold": -0.11476142872284767,
+      "threshold_kind": "finite",
+      "W": 6485,
+      "F": 609,
+      "U": 326,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 17246,
+      "FREE_denominator": 30612,
+      "UNKNOWN_denominator": 3154,
+      "F_fraction": 0.019894159153273226,
+      "W_fraction": 0.376029224167923,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\and__band0.json",
+      "all_ties_sha256": "bbfc03fd1f24b107e89b603990140684ebf5e39b8ccf256f42c60f97e6983c4a"
+    },
+    {
+      "method": "D_prime",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 11933,
+      "threshold": 0.6347067212906958,
+      "threshold_kind": "finite",
+      "W": 24097,
+      "F": 604,
+      "U": 6505,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 29222,
+      "FREE_denominator": 12116,
+      "UNKNOWN_denominator": 9674,
+      "F_fraction": 0.04985143611753054,
+      "W_fraction": 0.8246184381630278,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\D_prime__band1.json",
+      "all_ties_sha256": "829f5ee78364b702ad0cf0b8f7ba795afb43179f506065c504dc6fd4af5df9d9"
+    },
+    {
+      "method": "rgb",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 3192,
+      "threshold": 0.0771484375,
+      "threshold_kind": "finite",
+      "W": 17473,
+      "F": 601,
+      "U": 7260,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 29222,
+      "FREE_denominator": 12116,
+      "UNKNOWN_denominator": 9674,
+      "F_fraction": 0.0496038296467481,
+      "W_fraction": 0.5979399082882759,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\rgb__band1.json",
+      "all_ties_sha256": "5fec4447f0be1862acac22f3737d535fd3d3376f8e908db30ba7fdfe0416f965"
+    },
+    {
+      "method": "tof",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 9568,
+      "threshold": 0.07247430521688031,
+      "threshold_kind": "finite",
+      "W": 13930,
+      "F": 605,
+      "U": 210,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 29222,
+      "FREE_denominator": 12116,
+      "UNKNOWN_denominator": 9674,
+      "F_fraction": 0.04993397160779135,
+      "W_fraction": 0.4766956402710287,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\tof__band1.json",
+      "all_ties_sha256": "5bd62ef66e563a08ad3cf46e586ce36368a8e6df6a999340620bb5164a073413"
+    },
+    {
+      "method": "or",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 6926,
+      "threshold": 0.177779372958642,
+      "threshold_kind": "finite",
+      "W": 19711,
+      "F": 604,
+      "U": 5103,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 29222,
+      "FREE_denominator": 12116,
+      "UNKNOWN_denominator": 9674,
+      "F_fraction": 0.04985143611753054,
+      "W_fraction": 0.6745260420231333,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\or__band1.json",
+      "all_ties_sha256": "c88b892a460b9fb98c4c62e047897029e5ee80bdb222d40e189d580949d29998"
+    },
+    {
+      "method": "and",
+      "band": 1,
+      "band_name": "0.8-1.5m",
+      "tie_index": 8491,
+      "threshold": -0.15129981902668488,
+      "threshold_kind": "finite",
+      "W": 13598,
+      "F": 602,
+      "U": 3898,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 29222,
+      "FREE_denominator": 12116,
+      "UNKNOWN_denominator": 9674,
+      "F_fraction": 0.049686365137008914,
+      "W_fraction": 0.46533433714324823,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\and__band1.json",
+      "all_ties_sha256": "52538da60297fb5d58b30c484b7c2fae392db8f24d7530f7e9e2341b9ebebe46"
+    },
+    {
+      "method": "D_prime",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 14078,
+      "threshold": 0.548943167178316,
+      "threshold_kind": "finite",
+      "W": 24808,
+      "F": 372,
+      "U": 4968,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 29359,
+      "FREE_denominator": 3721,
+      "UNKNOWN_denominator": 17932,
+      "F_fraction": 0.0999731255038968,
+      "W_fraction": 0.8449879083075037,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\D_prime__band2.json",
+      "all_ties_sha256": "4388be7a0a4a4d07e8ea3861a52000887ea6ff1cc83ff73c3c766ea84c0e3503"
+    },
+    {
+      "method": "rgb",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 3602,
+      "threshold": 0.30793094635009766,
+      "threshold_kind": "finite",
+      "W": 18034,
+      "F": 370,
+      "U": 2613,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 29359,
+      "FREE_denominator": 3721,
+      "UNKNOWN_denominator": 17932,
+      "F_fraction": 0.09943563558183284,
+      "W_fraction": 0.6142579788139924,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\rgb__band2.json",
+      "all_ties_sha256": "c64f5ae2cd6c04dac3e7dcf89acb8b597c76d0900b59df30c378bfc0ebae3b2f"
+    },
+    {
+      "method": "tof",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 17070,
+      "threshold": -0.4738394114840485,
+      "threshold_kind": "finite",
+      "W": 14492,
+      "F": 372,
+      "U": 4671,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 29359,
+      "FREE_denominator": 3721,
+      "UNKNOWN_denominator": 17932,
+      "F_fraction": 0.0999731255038968,
+      "W_fraction": 0.4936135426955959,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\tof__band2.json",
+      "all_ties_sha256": "558b6a454bc8f81be3c5be9e1500ca152fc3c8e3f0078960c910290da76e2637"
+    },
+    {
+      "method": "or",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 5821,
+      "threshold": 0.33320326276905676,
+      "threshold_kind": "finite",
+      "W": 18821,
+      "F": 372,
+      "U": 2445,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 29359,
+      "FREE_denominator": 3721,
+      "UNKNOWN_denominator": 17932,
+      "F_fraction": 0.0999731255038968,
+      "W_fraction": 0.6410640689396778,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\or__band2.json",
+      "all_ties_sha256": "914e36ebd79c22230cdad3f821144167a3632a8b1026ee26f3b32d44a009f70b"
+    },
+    {
+      "method": "and",
+      "band": 2,
+      "band_name": "1.5-3m",
+      "tie_index": 18168,
+      "threshold": -0.7998856266173653,
+      "threshold_kind": "finite",
+      "W": 15811,
+      "F": 371,
+      "U": 9877,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 29359,
+      "FREE_denominator": 3721,
+      "UNKNOWN_denominator": 17932,
+      "F_fraction": 0.09970438054286482,
+      "W_fraction": 0.5385401410129773,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\and__band2.json",
+      "all_ties_sha256": "080d8ada518443477cc445f8acd8dc588f1cda78b47b1bfc1664aaa42939d538"
+    }
+  ],
+  "oof_folds": [
+    {
+      "fold": 0,
+      "held_visit_ids": [
+        "421009",
+        "421393",
+        "381650",
+        "421647",
+        "422569",
+        "422535"
+      ],
+      "train_visit_ids": [
+        "381652",
+        "420673",
+        "421002",
+        "421006",
+        "421065",
+        "421252",
+        "421254",
+        "421259",
+        "421260",
+        "421372",
+        "421397",
+        "421652",
+        "421657",
+        "421659",
+        "421667",
+        "422007",
+        "422011",
+        "422134",
+        "422148",
+        "422217",
+        "422521",
+        "422523",
+        "422539",
+        "422589"
+      ],
+      "train_known_rows": 84576,
+      "hold_rows": 26838,
+      "arm_counts": [
+        {
+          "arm": "native_perturbed",
+          "known": 16276,
+          "weight_each": 0.8660604571147702,
+          "weight_sum": 14096.0
+        },
+        {
+          "arm": "faro_rho015_ambient1",
+          "known": 16276,
+          "weight_each": 0.8660604571147702,
+          "weight_sum": 14096.0
+        },
+        {
+          "arm": "faro_rho060_ambient1",
+          "known": 16276,
+          "weight_each": 0.8660604571147702,
+          "weight_sum": 14096.0
+        },
+        {
+          "arm": "faro_rho030_ambient3",
+          "known": 16276,
+          "weight_each": 0.8660604571147702,
+          "weight_sum": 14096.0
+        },
+        {
+          "arm": "faro_rho030_ambient1",
+          "known": 3196,
+          "weight_each": 4.410513141426783,
+          "weight_sum": 14096.0
+        },
+        {
+          "arm": "faro_rho030_ambient10",
+          "known": 16276,
+          "weight_each": 0.8660604571147702,
+          "weight_sum": 14096.0
+        }
+      ]
+    },
+    {
+      "fold": 1,
+      "held_visit_ids": [
+        "421397",
+        "422523",
+        "421065",
+        "421652",
+        "422521",
+        "422134"
+      ],
+      "train_visit_ids": [
+        "381650",
+        "381652",
+        "420673",
+        "421002",
+        "421006",
+        "421009",
+        "421252",
+        "421254",
+        "421259",
+        "421260",
+        "421372",
+        "421393",
+        "421647",
+        "421657",
+        "421659",
+        "421667",
+        "422007",
+        "422011",
+        "422148",
+        "422217",
+        "422535",
+        "422539",
+        "422569",
+        "422589"
+      ],
+      "train_known_rows": 84970,
+      "hold_rows": 27000,
+      "arm_counts": [
+        {
+          "arm": "native_perturbed",
+          "known": 16396,
+          "weight_each": 0.8637269252663251,
+          "weight_sum": 14161.666666666666
+        },
+        {
+          "arm": "faro_rho015_ambient1",
+          "known": 16396,
+          "weight_each": 0.8637269252663251,
+          "weight_sum": 14161.666666666666
+        },
+        {
+          "arm": "faro_rho060_ambient1",
+          "known": 16396,
+          "weight_each": 0.8637269252663251,
+          "weight_sum": 14161.666666666666
+        },
+        {
+          "arm": "faro_rho030_ambient3",
+          "known": 16396,
+          "weight_each": 0.8637269252663251,
+          "weight_sum": 14161.666666666666
+        },
+        {
+          "arm": "faro_rho030_ambient1",
+          "known": 2990,
+          "weight_each": 4.73634336677815,
+          "weight_sum": 14161.666666666666
+        },
+        {
+          "arm": "faro_rho030_ambient10",
+          "known": 16396,
+          "weight_each": 0.8637269252663251,
+          "weight_sum": 14161.666666666666
+        }
+      ]
+    },
+    {
+      "fold": 2,
+      "held_visit_ids": [
+        "422589",
+        "421254",
+        "422539",
+        "420673",
+        "421252",
+        "422007"
+      ],
+      "train_visit_ids": [
+        "381650",
+        "381652",
+        "421002",
+        "421006",
+        "421009",
+        "421065",
+        "421259",
+        "421260",
+        "421372",
+        "421393",
+        "421397",
+        "421647",
+        "421652",
+        "421657",
+        "421659",
+        "421667",
+        "422011",
+        "422134",
+        "422148",
+        "422217",
+        "422521",
+        "422523",
+        "422535",
+        "422569"
+      ],
+      "train_known_rows": 85917,
+      "hold_rows": 28566,
+      "arm_counts": [
+        {
+          "arm": "native_perturbed",
+          "known": 16790,
+          "weight_each": 0.8528588445503276,
+          "weight_sum": 14319.5
+        },
+        {
+          "arm": "faro_rho015_ambient1",
+          "known": 16790,
+          "weight_each": 0.8528588445503276,
+          "weight_sum": 14319.5
+        },
+        {
+          "arm": "faro_rho060_ambient1",
+          "known": 16790,
+          "weight_each": 0.8528588445503276,
+          "weight_sum": 14319.5
+        },
+        {
+          "arm": "faro_rho030_ambient3",
+          "known": 16790,
+          "weight_each": 0.8528588445503276,
+          "weight_sum": 14319.5
+        },
+        {
+          "arm": "faro_rho030_ambient1",
+          "known": 1967,
+          "weight_each": 7.2798678190137265,
+          "weight_sum": 14319.5
+        },
+        {
+          "arm": "faro_rho030_ambient10",
+          "known": 16790,
+          "weight_each": 0.8528588445503276,
+          "weight_sum": 14319.5
+        }
+      ]
+    },
+    {
+      "fold": 3,
+      "held_visit_ids": [
+        "421657",
+        "421659",
+        "421006",
+        "421667",
+        "381652",
+        "422148"
+      ],
+      "train_visit_ids": [
+        "381650",
+        "420673",
+        "421002",
+        "421009",
+        "421065",
+        "421252",
+        "421254",
+        "421259",
+        "421260",
+        "421372",
+        "421393",
+        "421397",
+        "421647",
+        "421652",
+        "422007",
+        "422011",
+        "422134",
+        "422217",
+        "422521",
+        "422523",
+        "422535",
+        "422539",
+        "422569",
+        "422589"
+      ],
+      "train_known_rows": 83561,
+      "hold_rows": 26649,
+      "arm_counts": [
+        {
+          "arm": "native_perturbed",
+          "known": 16090,
+          "weight_each": 0.8655583177957323,
+          "weight_sum": 13926.833333333334
+        },
+        {
+          "arm": "faro_rho015_ambient1",
+          "known": 16090,
+          "weight_each": 0.8655583177957323,
+          "weight_sum": 13926.833333333334
+        },
+        {
+          "arm": "faro_rho060_ambient1",
+          "known": 16090,
+          "weight_each": 0.8655583177957323,
+          "weight_sum": 13926.833333333334
+        },
+        {
+          "arm": "faro_rho030_ambient3",
+          "known": 16090,
+          "weight_each": 0.8655583177957323,
+          "weight_sum": 13926.833333333334
+        },
+        {
+          "arm": "faro_rho030_ambient1",
+          "known": 3111,
+          "weight_each": 4.47664202292939,
+          "weight_sum": 13926.833333333334
+        },
+        {
+          "arm": "faro_rho030_ambient10",
+          "known": 16090,
+          "weight_each": 0.8655583177957323,
+          "weight_sum": 13926.833333333334
+        }
+      ]
+    },
+    {
+      "fold": 4,
+      "held_visit_ids": [
+        "421372",
+        "422011",
+        "421260",
+        "421002",
+        "422217",
+        "421259"
+      ],
+      "train_visit_ids": [
+        "381650",
+        "381652",
+        "420673",
+        "421006",
+        "421009",
+        "421065",
+        "421252",
+        "421254",
+        "421393",
+        "421397",
+        "421647",
+        "421652",
+        "421657",
+        "421659",
+        "421667",
+        "422007",
+        "422134",
+        "422148",
+        "422521",
+        "422523",
+        "422535",
+        "422539",
+        "422569",
+        "422589"
+      ],
+      "train_known_rows": 85040,
+      "hold_rows": 26703,
+      "arm_counts": [
+        {
+          "arm": "native_perturbed",
+          "known": 16396,
+          "weight_each": 0.8644384809303082,
+          "weight_sum": 14173.333333333334
+        },
+        {
+          "arm": "faro_rho015_ambient1",
+          "known": 16396,
+          "weight_each": 0.8644384809303082,
+          "weight_sum": 14173.333333333334
+        },
+        {
+          "arm": "faro_rho060_ambient1",
+          "known": 16396,
+          "weight_each": 0.8644384809303082,
+          "weight_sum": 14173.333333333334
+        },
+        {
+          "arm": "faro_rho030_ambient3",
+          "known": 16396,
+          "weight_each": 0.8644384809303082,
+          "weight_sum": 14173.333333333334
+        },
+        {
+          "arm": "faro_rho030_ambient1",
+          "known": 3060,
+          "weight_each": 4.631808278867102,
+          "weight_sum": 14173.333333333334
+        },
+        {
+          "arm": "faro_rho030_ambient10",
+          "known": 16396,
+          "weight_each": 0.8644384809303082,
+          "weight_sum": 14173.333333333334
+        }
+      ]
+    }
+  ],
+  "model_cal_eval_distinction": "OOF15calibrators only; byte-frozen v3 eval; no remapping",
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011",
+  "resources": {
+    "CPU_command_wall_s_conservative_upper": 2034.9477458000006,
+    "CPU_metered_stage_sum": 1734.9477458000006,
+    "CPU_unitemized_commands_startup_reporting_Git_reserve_s": 300.0,
+    "CPU_components": {
+      "data_stages": 1057.5668456000008,
+      "RGB_observations_including_GPU_process": 263.38109829999985,
+      "feature_first_stage_retained_failure": 115.17560679999997,
+      "feature_array_equal_resume": 133.38398499999994,
+      "crossfit": 64.875,
+      "calibration": 7.188000000000102,
+      "sole_eval": 4.608999999999924,
+      "cache_summary_and_plot": 27.17099999999982,
+      "independent_protocol_audit": 0.2878940999999031,
+      "independent_preOPEN_audit": 28.954213299999992,
+      "independent_cache_postaudit": 32.355102700000316
+    },
+    "GPU_wall_s": 263.19248370000014,
+    "download_bytes": 3488869655,
+    "limits": {
+      "CPU_command_wall_s": 2400,
+      "GPU_wall_s": 600,
+      "download_bytes": 4000000000
+    },
+    "accounting": "Sum all substantive process wall receipts including parallel work and GPU process; add 300s conservative reserve for shell/startup, protocol setup, agents inspection, reporting, verification and final Git delivery. Reserve is within original total, not extra authorization.",
+    "description": "CPU 保守上界 2034.948/2400 command-wall s（已计时阶段 1734.948s，另计启动、协议/读检、代理、报告和 Git 交付余量300s；并行相加，GPU进程也计入CPU）；GPU 263.192/600s；下载 3,488,869,655/4,000,000,000B。首次特征阶段115.176s上限停止已保留，precal前逐数组核对缓存续跑；内部额度转移，总预算不变。"
+  },
+  "independent_audit": {
+    "status": "PASS",
+    "eval_cache_sha256": "9a56cf34c296dca219aabc0205c736960f9f39482ae71ab3eba94f2485d72e79",
+    "summary_sha256": "f1fb7e9fbd45a989dd04e7435df2c928c8e626552a6e45fb9c8708d4eda74c80",
+    "cached_rows": 71604,
+    "per_query_CSV_rows_verified": 71604,
+    "eval_reference_gate_recomputed_visits": 16,
+    "deployed_decisions_checked": 358020,
+    "v3_cut_decisions_checked": 358020,
+    "pAUC_cells_verified": 90,
+    "bootstrap_curves_verified": 90,
+    "bootstrap_replicates_each": 2000,
+    "exact_F_curve_rows_verified": 59146,
+    "bootstrap_comparisons_verified": 36,
+    "visit_pAUC_rows_verified": 1440,
+    "deployment_pairs_verified": 72,
+    "drift_all_roles_and_visits_verified": true,
+    "primary": [
+      {
+        "arm": "native_perturbed",
+        "band": 1,
+        "comparator": "rgb",
+        "POS": 2873,
+        "FREE": 866,
+        "delta_pAUC": 0.3191962437570789,
+        "lower": 0.16995584592882773,
+        "upper": 0.44802768618052546,
+        "valid_replicates": 2000,
+        "total_replicates": 2000,
+        "pass_lower_gt_zero": true,
+        "all_2000_valid": true
+      },
+      {
+        "arm": "native_perturbed",
+        "band": 1,
+        "comparator": "or",
+        "POS": 2873,
+        "FREE": 866,
+        "delta_pAUC": 0.19957733424758184,
+        "lower": 0.05493576542652304,
+        "upper": 0.38463794381570826,
+        "valid_replicates": 2000,
+        "total_replicates": 2000,
+        "pass_lower_gt_zero": true,
+        "all_2000_valid": true
+      }
+    ],
+    "confirmation_status": "PASS",
+    "conclusion": "冻结 D′ 在中带低误报区间的排序优于 RGB-only 与 OR（真实 RGB + 半合成 ToF，新 visit 预注册）",
+    "new_eval_reference_reads": 0,
+    "model_inference_reruns": 0,
+    "CPU_command_wall_s": 32.355102700000316,
+    "GPU_s": 0,
+    "protected_480_test_reads": 0,
+    "audit_source_sha256": "73a5f3d38ccd3cfb9071b70db1c9fcd2187a7d364a4d4474ff1c98c19c97aec7",
+    "independent_implementation": true,
+    "eval_reference_reopens": 0,
+    "model_refits": 0
+  },
+  "files": [
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\PLAN.json",
+      "bytes": 14207,
+      "sha256": "dfeba5102b53269d59b91aecfcbe6ed7564c0c511019dda74483aa55adbfea59"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\protocol_commit.json",
+      "bytes": 345,
+      "sha256": "b159f168cc47d589bd7cb787dd7abe85641bcea85f45069a7292acf6689a6bc0"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\dataset_manifest.json",
+      "bytes": 3543541,
+      "sha256": "d3f98b974bbfd5f1c11baeaad57be63004e2bb549b4b8a0a8d1a2192352362ef"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\candidate_gate_records.json",
+      "bytes": 11785,
+      "sha256": "d54697f80d99c422e1d832a61cde3726928333c393547c1c68d540bec7dd1068"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\oof\\oof_seal.json",
+      "bytes": 17001,
+      "sha256": "08c5ea52a05e17fad9cd023adba278a9cc11d9ce974f58414636c4555b92afd0"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\cal_seal.json",
+      "bytes": 14032,
+      "sha256": "5ed689e9f85a2a898406013cde5979f75a3d3e17a74230339492fe9c6035ce1a"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\eval\\eval_open.json",
+      "bytes": 1449,
+      "sha256": "d0fc29884ac1827850fae2361a80e556d8bf235cb0d21176924db8c415250693"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\eval\\cache_seal.json",
+      "bytes": 769,
+      "sha256": "0157a4625fdc30f7c000dc9f4826b84327575fece9eddda2ddd73e6b0a6c4515"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\summary.json",
+      "bytes": 72216,
+      "sha256": "f1fb7e9fbd45a989dd04e7435df2c928c8e626552a6e45fb9c8708d4eda74c80"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\D_prime__band0.json",
+      "bytes": 759986,
+      "sha256": "a1af8d1e7efb385add78f483fc5cb75362ee29f9ca8386a823a5015eb957c22b"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\rgb__band0.json",
+      "bytes": 1671475,
+      "sha256": "b4d7fcfaffaf98764ddcec4ea1d69368fa1e736059dc81819b6a465c1020d091"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\tof__band0.json",
+      "bytes": 2739173,
+      "sha256": "9396aa0e3f2bf96001d8577c219e740846f6bd7104fed13bdf5543be53d52198"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\or__band0.json",
+      "bytes": 2779455,
+      "sha256": "abd16728282038caeb9853b7f454f8debff0792a53434d550f0d362b9018c011"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\and__band0.json",
+      "bytes": 2106873,
+      "sha256": "bbfc03fd1f24b107e89b603990140684ebf5e39b8ccf256f42c60f97e6983c4a"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\D_prime__band1.json",
+      "bytes": 2244172,
+      "sha256": "829f5ee78364b702ad0cf0b8f7ba795afb43179f506065c504dc6fd4af5df9d9"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\rgb__band1.json",
+      "bytes": 1232738,
+      "sha256": "5fec4447f0be1862acac22f3737d535fd3d3376f8e908db30ba7fdfe0416f965"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\tof__band1.json",
+      "bytes": 3551849,
+      "sha256": "5bd62ef66e563a08ad3cf46e586ce36368a8e6df6a999340620bb5164a073413"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\or__band1.json",
+      "bytes": 2784884,
+      "sha256": "c88b892a460b9fb98c4c62e047897029e5ee80bdb222d40e189d580949d29998"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\and__band1.json",
+      "bytes": 2467151,
+      "sha256": "52538da60297fb5d58b30c484b7c2fae392db8f24d7530f7e9e2341b9ebebe46"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\D_prime__band2.json",
+      "bytes": 2497189,
+      "sha256": "4388be7a0a4a4d07e8ea3861a52000887ea6ff1cc83ff73c3c766ea84c0e3503"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\rgb__band2.json",
+      "bytes": 1351957,
+      "sha256": "c64f5ae2cd6c04dac3e7dcf89acb8b597c76d0900b59df30c378bfc0ebae3b2f"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\tof__band2.json",
+      "bytes": 3781088,
+      "sha256": "558b6a454bc8f81be3c5be9e1500ca152fc3c8e3f0078960c910290da76e2637"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\or__band2.json",
+      "bytes": 2162247,
+      "sha256": "914e36ebd79c22230cdad3f821144167a3632a8b1026ee26f3b32d44a009f70b"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\ties\\and__band2.json",
+      "bytes": 3398336,
+      "sha256": "080d8ada518443477cc445f8acd8dc588f1cda78b47b1bfc1664aaa42939d538"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\independent_protocol_audit.json",
+      "bytes": 611,
+      "sha256": "7f88438d810803c2fdf42eea674a158604c3656f0473d620a083fc01b8f1528b"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\independent_preeval_audit.json",
+      "bytes": 2267,
+      "sha256": "4e1400fc620fc6ddd47ed229549b0dfc86645956717e3940482bbbda34bb66eb"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\resource_observations_reallocation.json",
+      "bytes": 737,
+      "sha256": "3f3d5f187871eccf417ec5b2b6fd823b68eea571c78b0092ad8b9181f649c548"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\features_observation_failure.json",
+      "bytes": 102,
+      "sha256": "ca52051aba62f14fb1c4b2e059c89df0bb79e96778d56dd240b3d557ece62ee3"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\data_resource_ledger.json",
+      "bytes": 1837,
+      "sha256": "30a1f934aa84a75cf73ff9e4eee86c5ed2c9fb61edb74e33bf1e6ed7bdac551b"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\features_observation_terminal.json",
+      "bytes": 102,
+      "sha256": "be5e65cda6c31f92cc699289a45a65df88cf2db13f332a3ee6295633ace7a7ae"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\infer_observation_terminal.json",
+      "bytes": 71,
+      "sha256": "49fed670489c43c496aea6ee7b36716ac2cd23c2bd6cb8a7a04f2212f8f86e7b"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\faro_source_completion_scope.json",
+      "bytes": 16854,
+      "sha256": "defb2da7936537a5e7b241e8762160fe424f7eae76750a45d1242b841827233e"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\acquisition_terminal.json",
+      "bytes": 12695,
+      "sha256": "ebce2d21b0dc31a69e8cf9e292eb29e5eb8e439bbd1178b8c0fc63d3d7b40314"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\faro_source_terminal.json",
+      "bytes": 30969,
+      "sha256": "93fce1448a1971324e2e58b20e92b6e70741ea64e207d43bec8d7907f9821302"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\native_synthesis_terminal.json",
+      "bytes": 120,
+      "sha256": "7a47950fca06b76c7ccc51b32d4a7d7ea13637541c414c38ee6a0e7f190d9807"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\faro_synthesis_terminal.json",
+      "bytes": 119,
+      "sha256": "c0ea4bd60679a0a4848b9abfd7882038d001dc9f358b012e9b17bf8d68609d9a"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\bootstrap.csv",
+      "bytes": 4583,
+      "sha256": "97aff87554055cea9e95ccd1058209930926f7e9cf1d5bb5c02e2f71b5257acd"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\curves.csv",
+      "bytes": 6846109,
+      "sha256": "f124ca057209824f2f5de2e36f0782df5a1ffcb5fcfc2acc68bf3e0d34e1fa15"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\deployment_paired.csv",
+      "bytes": 3842,
+      "sha256": "1b6adaf9bd62a5091c83e41d89b46ebf49b4642a15f0d50abb4439b2dc4deff1"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\deployment_points.csv",
+      "bytes": 8940,
+      "sha256": "01b7605edb263117742c57e7008d15d4b02f0fd459a959f52929b75ccb786766"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\drift.csv",
+      "bytes": 74655,
+      "sha256": "720e5b26bca72ba0b2f65fb8ca0af550f9aebe95518201da8ddc68ee4e9267b7"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\drift_visit.csv",
+      "bytes": 915522,
+      "sha256": "a200c302d4da4cb78891a588134cf891ac9e8e3d40e84bc42ea559e6b7aae20d"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\pauc.csv",
+      "bytes": 6735,
+      "sha256": "49a747e741f4dd6a10b40c5fd0acaabbd6cd3efabdea521738a49a77b9d03679"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\visit_pauc.csv",
+      "bytes": 81515,
+      "sha256": "c86df0f2fc06a49cb5f306f9b3c907eb57efe54214c90ad416e99918ca9d2956"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\low_free_curves.png",
+      "bytes": 206029,
+      "sha256": "2173020341b67d5d9c2827d322e31d9d73276f4ad3eeaec254b131b14f86e3f2"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\bootstrap_replicates.npz",
+      "bytes": 1322229,
+      "sha256": "4ab84375add3e83648f7940be8e93001602b41924f9d80adb7efa589daa1f005"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\oof_vs_frozen_distribution.csv",
+      "bytes": 35692,
+      "sha256": "c25f0c3de605fff1f2f5d922f5489f0d208b8439ea794e59c948c63d7d428299"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\cal\\new4_frozen_distribution.csv",
+      "bytes": 14653,
+      "sha256": "1e85077a3a3c2f677e3fbf5ad955b89c6e53a4679374bdecf85ab2bcb57ef271"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\independent_posteval_audit.json",
+      "bytes": 2014,
+      "sha256": "317c88ab07b9d446344f7e19bf658782ee0eb4cc5ea903da1865506225551077"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\final_resource_ledger.json",
+      "bytes": 1604,
+      "sha256": "98e10f3bfabdb3f018b9a6207c0ef92c493d81bdb4d92a0bd890acc5b5ce638c"
+    },
+    {
+      "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\SYNC_FUSION_CONFIRM_V4_DEV_20261011.md",
+      "bytes": 30009,
+      "sha256": "92d215906aa331a095bd6c042dd4ef49533e12276dc9ff94703f15d69041c54b"
+    },
+    {
+      "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\report_sync_fusion_confirm_v4.py",
+      "bytes": 18706,
+      "sha256": "81dc90187ef0c401093e1e86ea20b2ad5d4cb87ca3d1ff2d61c2c76b15586ba8"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\summary\\plot_layout_receipt.json",
+      "bytes": 440,
+      "sha256": "6302acc784b23ab4e1806098f2b5710bda1db96f40de2a0bc44ad5bbbd5c99fe"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v4-dev-20261011\\render_curves_for_report.py",
+      "bytes": 2065,
+      "sha256": "d76f486b7d91bab5120408495a70e2ebf086890933c2572021f0e89ae0a1af9a"
+    }
+  ],
+  "report_generator_process_elapsed_s": 0.35227579999991576,
+  "report_GPU_s": 0,
+  "report_eval_reference_reads": 0,
+  "report_model_reads": 0,
+  "protected_480_test_reads": 0
+}

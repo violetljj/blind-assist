@@ -291,27 +291,33 @@ internal fun ProfileSelector(
     SelectorSection(
         title = if (english) "Reminder profile" else "提醒档位",
         description = if (english) {
-            "Quiet reduces interruption, Sensitive confirms medium risk earlier."
+            "Persistent reminders repeat every 20 / 12 / 6 seconds. First warnings and detection thresholds stay the same."
         } else {
-            "安静减少打扰，敏感更早确认中风险。"
+            "持续提醒间隔为 20／12／6 秒；首次提醒与检测阈值不变。"
         }
     ) {
         SegmentedSelector(
             options = AlertProfile.values().asList(),
             selected = selected,
-            optionLabel = { it.displayName(language) },
+            optionLabel = { hardwareProfileLabel(it, language) },
             selectedStateDescription = if (english) "Current profile" else "当前档位",
             unselectedStateDescription = if (english) "Not selected" else "未选择",
             optionDescription = {
                 if (english) {
-                    "Choose ${it.displayName(language)} reminder profile"
+                    "Choose ${hardwareProfileLabel(it, language)} reminder cadence"
                 } else {
-                    "选择${it.displayName(language)}提醒档位"
+                    "选择${hardwareProfileLabel(it, language)}提醒频率"
                 }
             },
             onSelected = onProfileChange
         )
     }
+}
+
+private fun hardwareProfileLabel(profile: AlertProfile, language: AppLanguage): String = when (profile) {
+    AlertProfile.QUIET -> if (language == AppLanguage.EN) "Quiet" else "安静"
+    AlertProfile.STANDARD -> if (language == AppLanguage.EN) "Standard" else "标准"
+    AlertProfile.SENSITIVE -> if (language == AppLanguage.EN) "Frequent" else "更频繁"
 }
 
 @Composable
@@ -378,9 +384,9 @@ internal fun SpeechStyleSelector(
     SelectorSection(
         title = if (english) "Speech style" else "语音风格",
         description = if (english) {
-            "Brief reduces interruption, Detailed adds object type."
+            "Brief reduces interruption; Detailed explains the measured warning without guessing an object type."
         } else {
-            "简短减少打扰，详细会补充目标类别。"
+            "简短减少打扰；详细补充测距提醒的含义，不猜测物体类别。"
         }
     ) {
         SegmentedSelector(
@@ -391,9 +397,9 @@ internal fun SpeechStyleSelector(
             unselectedStateDescription = if (english) "Not selected" else "未选择",
             optionDescription = {
                 if (english) {
-                    "Choose ${it.displayName(language)} speech style, ${it.description(language)}"
+                    "Choose ${it.displayName(language)} speech style"
                 } else {
-                    "选择${it.displayName(language)}语音风格，${it.description(language)}"
+                    "选择${it.displayName(language)}语音风格"
                 }
             },
             onSelected = onSpeechStyleChange

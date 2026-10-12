@@ -1,0 +1,255 @@
+{
+  "task": "SYNC_FUSION_CONFIRM_V4_DEV_20261011",
+  "phase": "PRE_REGISTERED_DEVELOPMENT_CONFIRM",
+  "parent_commit": "7dc9bbbab3cf59566d4d4c25717b74255d91321e",
+  "criterion_origin": {
+    "source": "Selected after viewing v3 matched-FREE posthoc analysis",
+    "v3_commit": "b9f227e5",
+    "posthoc_commit": "7dc9bbba",
+    "meaning": "Prospectively registered on new visits, not registered before seeing v3 and not a reversal of its FAIL",
+    "no_arbitrator": true
+  },
+  "budget": {
+    "CPU_command_wall_s": 2400,
+    "GPU_wall_s": 600,
+    "download_bytes": 4000000000,
+    "allocation": {
+      "data_CPU": 1500,
+      "observations_CPU": 400,
+      "models_CPU": 180,
+      "audit_CPU": 160,
+      "primary_CPU": 160
+    },
+    "hard_stop": "Sum command-wall stages including parallel agents and GPU process-wall. Reallocations within overall limits allowed; no extensions. Preserve partial results and mark NOT_EVALUABLE."
+  },
+  "registration": {
+    "mechanism": "Commit and push exact protocol before new data construction/download, retraining or eval access; bind commit and hash. Development confirmation; not protected FINAL or App inheritance.",
+    "not_protected_FINAL": true
+  },
+  "features": {
+    "names": [
+      "tof_margin16_m",
+      "tof_margin16_missing",
+      "tof_support_pixels",
+      "tof_unknown_fraction",
+      "tof_before_fraction",
+      "tof_inside_fraction",
+      "tof_after_fraction",
+      "tof_median_entry_offset_m",
+      "tof_median_exit_offset_m",
+      "tof_valid_K_count",
+      "dav_margin16_m",
+      "dav_margin16_missing",
+      "dav_finite_fraction",
+      "uni_margin16_m",
+      "uni_margin16_missing",
+      "uni_finite_fraction"
+    ],
+    "readout": "unchanged v1 peak_readout SNR>=3 coverage>=.75 and projection; no source native/reference/labels/categories/groundtruth depths used as features",
+    "margin": "16th largest min(z-entry,exit-z) over query-domain finite positive predicted rays; less16 finite rays -> -inf",
+    "ToF_K": "ordinary features arithmetic mean; either missing margin -> baseline -inf and model margin -10 with missingflag1; valid_K_count0/1/2",
+    "model_missing_floor_m": -10,
+    "model_metre_features_clip": [
+      -10,
+      10
+    ],
+    "baseline_scores_not_clipped": true,
+    "ToF_relationship": "before z<entry, inside entry<=z<=exit, after z>exit; fractions divided by query-domain rays; median offsets to entry/exit over finite positive rays, absent=-10",
+    "support": "projected pixel-ray count with predicted depth inside query, not independent subrays",
+    "RGB": "DAV2 and UniDepth own raw margin16, missing indicator, finite-domain fraction",
+    "query_indices": "Remove band_index and all query_x/y/z_index. No explicit position, distance band, domain size or arm identity as model features. Band used only for thresholds/report. Sensor interval-relative margins retained; no causal removal-of-all-priors claim.",
+    "evidence_gate": "For D_prime/B_prime/audit_b: finite unclipped raw ToF margin>=0 OR active RGB margin>=0; ToF K2 mean any missing K gives -inf; active RGB Uni near/DAV midfar. No evidence -> score -inf before cal ties/eval prediction. Minimum geometric support definition identical audit(b)."
+  },
+  "models": {
+    "final": "Bytewise identical v3 D_prime three weights; no final refit",
+    "model_entries": [
+      {
+        "method": "D_prime",
+        "seed": 955,
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\D_prime_955.joblib",
+        "sha256": "156f136699b2931798dbbce1c5f3077ebd81ca6e9d81cacd9484209fcdf03449",
+        "known_rows": 106016,
+        "warnings": []
+      },
+      {
+        "method": "D_prime",
+        "seed": 956,
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\D_prime_956.joblib",
+        "sha256": "a7c79c9de701fcb7135b9ef4c881d06fcd93c1c2ea37e0589664c624998753fd",
+        "known_rows": 106016,
+        "warnings": []
+      },
+      {
+        "method": "D_prime",
+        "seed": 957,
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\models\\D_prime_957.joblib",
+        "sha256": "42ae14ae15f30733e137583e6a17af9eb5e2a74aafaf1889b0931801b4f59626",
+        "known_rows": 106016,
+        "warnings": []
+      }
+    ],
+    "seeds": [
+      955,
+      956,
+      957
+    ],
+    "HGB": {
+      "max_iter": 100,
+      "learning_rate": 0.1,
+      "max_leaf_nodes": 7,
+      "max_depth": 3,
+      "min_samples_leaf": 50,
+      "l2_regularization": 1,
+      "early_stopping": false,
+      "class_weight": null
+    },
+    "ensemble": "arithmetic probability mean then unchanged evidence gate"
+  },
+  "inherited": {
+    "training_features_path": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-robust-dev-20261011\\features.npz",
+    "training_features_sha256": "b3ecdd9fdac4863d203bd2a01128af2b7216edb060e35f4718d1bbf933077e9c",
+    "v3_train_seal_path": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-confirm-v3-dev-20261011\\train\\train_seal.json",
+    "v3_train_seal_sha256": "da024262dc39824b99ee3f8396c3bdf14c51ba0bfcbebbb12a0ce1b778fce0ae",
+    "v3_cal_seal_path": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-confirm-v3-dev-20261011\\cal\\cal_seal.json",
+    "v3_cal_seal_sha256": "0b1ad689a40efe676a324aced38238df55d35fead3c1aa6101e652e606edb865",
+    "v3_protocol_sha256": "24f7915d41cc325178d24d15045cd43227d35465c2b2d5a5d804df690174d612",
+    "residual_pool": "artifacts.local/work/sync-rgb-tof-dataset-v1-1-dev-20261011/residual_pool.npz",
+    "residual_pool_sha256": "8a9764ce3ac81452b762d0d79990d0fe65b453b5414650db2990f220ca73bf9b",
+    "training_visits": [
+      "381650",
+      "381652",
+      "420673",
+      "421002",
+      "421006",
+      "421009",
+      "421065",
+      "421252",
+      "421254",
+      "421259",
+      "421260",
+      "421372",
+      "421393",
+      "421397",
+      "421647",
+      "421652",
+      "421657",
+      "421659",
+      "421667",
+      "422007",
+      "422011",
+      "422134",
+      "422148",
+      "422217",
+      "422521",
+      "422523",
+      "422535",
+      "422539",
+      "422569",
+      "422589"
+    ]
+  },
+  "data": {
+    "new_visits": 20,
+    "cal_visits": 4,
+    "eval_visits": 16,
+    "frames_per_visit": 32,
+    "selection": "Official metadata order; globally exclude entire consumed visits including v3 and failed gates. First time-complete upsampling capture per visit, first4 accepted cal and next16 eval, skip records retained; no migration.",
+    "windows": "v3 exact two disjoint16-frame5Hz windows fixed before labels",
+    "admission_gate": "v3 exact near POS>=16 and midfar strict FREE>=32 across32frames; reference-only gate, no predictor metrics. Entire rejected visit consumed.",
+    "metadata_path": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-confirm-v3-dev-20261011\\official\\metadata.csv",
+    "metadata_sha256": "ff4b3d3203525bdf12ebbb3fcaea0b9cf0bda5d584a48d42f21a096135c26621",
+    "observation_eval": "Observation-only eval features allowed before OPEN; reference gate only before sole OPEN"
+  },
+  "ToF": {
+    "primary": "native_perturbed, always labelled semi-circular / 半循环; no independent geometry claim",
+    "native": "v1.1 fixed residual pool, optical-Z bands [.3,.8),[.8,1.5),[1.5,3); independently sample pixel residuals with fixed seeds, invalid/nonpositive/outside range UNKNOWN; no native fill of FARO",
+    "synthesis": "Six arms inherited exact robust contract: native_perturbed, faro_rho015_ambient1, faro_rho060_ambient1, faro_rho030_ambient3, faro_rho030_ambient1, faro_rho030_ambient10. Quality arms use FARO geometry, missing rows retained, no native fill; .5/2 signal or3/10 ambient scaling from base photon expectation with frozen sample and same frame/K seeds. Frozen ambient8 mapping. FARO base only K0 joint_pass_zones>=52; other5 unfiltered.",
+    "FARO": "Optional fulltarget releasedFARO first thenofficialregistered siblings inaccepted/metadata order. Fixedprefix stops before nextwholecomponent exceeds4GB orCPUstagecap; missinggeometryUNKNOWN, nevernativefilled. Freezeacquiredprefix beforefinalsynthesis; mechanicalresume insideoverallbudget only.",
+    "FARO_gate": "Fixed K0 joint_pass_zones>=52, no outcome filtering; model+baseline description only; missing assets do not affect primary confirmation",
+    "readout": "Frozen v1 SNR>=3, zonecoverage>=.75, 16-order margin; same DAV/Uni frozenrawmodels, no model/readout edits"
+  },
+  "scores": {
+    "methods": [
+      "D_prime",
+      "rgb",
+      "tof",
+      "or",
+      "and"
+    ],
+    "baselines": "Same v3 raw scores, OR=max and AND=min; same six arms and per-band cuts"
+  },
+  "crossfit": {
+    "old_visits": 30,
+    "folds": 5,
+    "fold_assignment": "Sorted old visit_ids permuted by numpy default_rng(20261011), then array_split into5 blocks6; no label stratification",
+    "seed": 20261011,
+    "fit": "Same v3 D_prime HGB recipe seeds955/956/957, first16 sensor features, known labels only; each train fold equal6-arm total weights n_known/(6*n_arm_known). OOF predictions for all held-out rows inclUNKNOWN; unchanged evidence gate.",
+    "purpose": "OOF scores only for cal thresholds; eval uses bytewise frozen v3 D_prime",
+    "distribution_check": "OOF vs frozen v3 on same old30 rows by arm/band/label, finite fractions, quantiles and paired differences. Frozen old30 comparison is in-sample. New4 cal use frozen v3. No probability remapping to repair mismatch."
+  },
+  "calibration": {
+    "roles": [
+      "old30_OOF",
+      "new4_cal"
+    ],
+    "by": [
+      "method",
+      "band"
+    ],
+    "band_targets": {
+      "0.3-0.8m": 0.02,
+      "0.8-1.5m": 0.05,
+      "1.5-3m": 0.1
+    },
+    "threshold_rule": "score>=threshold; all finite unique score ties plus +inf all-reject; -inf is never candidate",
+    "objective": "among F<=floor(target*FREE), maximize query W on POS, then minimize F, then choose highest threshold; no tie splitting",
+    "zero_FREE": "threshold+inf, status NOT_CALIBRATABLE; never count as success",
+    "zero_POS": "threshold+inf, status NO_CAL_POS; never count as success",
+    "seal": "15cuts/allties, frozenweighthashes, OOFfold/model/cachehashes,new4calcache, executeddependencies sealedbeforeOPEN",
+    "mixture": "Concatenate available six-arm rows fromold30OOF+new4cal; FARObase fixedgate; baselines old30raw+new4raw; sharedcut per method/band."
+  },
+  "metric_contract": {
+    "W": "query-level predicted positive AND POS reference; not old pixel-intersection witness; all methods same",
+    "F": "predicted positive AND strict FREE",
+    "U": "predicted positive AND UNKNOWN; UNKNOWN excluded from fitting, included in eval support report",
+    "no_pixel_claim": "learner emits query probability only; legacy pixel-witness numbers not directly comparable"
+  },
+  "eval": {
+    "single_open": "Exclusive eval_open.json after complete20 cohort, crossfit/cal seal and independent preOPEN audit PASS; produce immutable label/score/pred cache once. AfterOPEN no weights/cut changes or label/model rereads; cache-only statistics.",
+    "bootstrap": {
+      "replicates": 2000,
+      "seed": 20261011,
+      "cluster": "Resample all16original eval visit IDs with paired multiplicities, retain zero-row FARO clusters",
+      "recompute": "Recompute whole-tie weighted curve and normalized partial area each draw",
+      "interval": "2.5/97.5 percentile; omit zeroPOS/FREE draws and reportvalidcount; primary requires all2000valid",
+      "comparisons": "Fixed D-RGB and D-OR both must pass; no postoutcome arm/band selection"
+    },
+    "forbidden": "Protected480/test never accessed; incompleteOPEN cannot reopen, preserve NOT_EVALUABLE"
+  },
+  "confirmation": {
+    "primary_method": "D_prime",
+    "primary_source": "native_perturbed",
+    "primary_band": "0.8-1.5m",
+    "pauc": {
+      "range": [
+        0,
+        0.05
+      ],
+      "normalization": "Integral divided by.05; W/POS andF/FREE proportions, normalizedscore0..1",
+      "ties": "Finite unique score ties plusdisabled+inf, -inf unavailable; each exactreachableF retain maxW, nointerp nor ties splitting.",
+      "curve": "Right-continuous attainable-budget step R(x)=max W/POS over whole-tie points withF/FREE<=x. Absorb sameF vertical jumps into maxW, then hold level untilnextF. MaxW atF0 starts x0; lastsegment flat to.05. Not trapezoidal ROC.",
+      "formula": "Sum_i (W_i/POS)*(min(nextF_i/FREE,.05)-F_i/FREE)/.05 forF_i/FREE<=.05, finalnextbound=.05",
+      "zero_denominator": "ZeroPOS/FREE => NOT_EVALUABLE"
+    },
+    "criterion": "Complete20 newvisit cohort cal4/eval16, native middlePOS/FREE>0; bothD_prime-minus-rgb andD_prime-minus-or normalizedpAUC 95%bootstrap lower>0, all2000primary drawsvalid",
+    "pass_claim": "冻结 D′ 在中带低误报区间的排序优于 RGB-only 与 OR（真实 RGB + 半合成 ToF，新 visit 预注册）",
+    "failure": "State which lowerbound<=0; incompletecohort/cache/denominator NOT_EVALUABLE",
+    "secondary": "Original pooledcal points: D_prime two-way dominates eachbaseline iffW_D>=W_base andF_D<=F_base on samerows. Reportonly, not passrequirement.",
+    "report": "All6arms/3bands pAUC/interval,deployment,drift; highlightFARO/ambient10 descriptiveonly. Comparev3 original6visitcal thresholds on samev4eval as prespecified driftcontrol; preserveoriginalv3results."
+  },
+  "retry": {
+    "before_open": "Resume source/feature mechanical interruptions with unchanged selected windows/roles/recipes, preserve failures and hashes; failed fixed fit may mechanically rerun only before outcome access with cause receipt, not a new recipe",
+    "after_open": "Exclusive open marker; cache query predictions/labels once. No second label/model pass. If incomplete, preserve terminal and report NOT_EVALUABLE; cached summaries/audits may resume unchanged."
+  },
+  "decision_check": "v3posthoc2% D-RGB/OR strong,5%D-ORCIcrosses0 and10%ORhigher motivates0..5 only. New16 independentclusters,no powerguarantee. UnknownfuturedenominatorsN/E,whole-tie plateaus integrateexactstepwidths. Ranking separatedfromOOFscoretransfer mismatch; nohardware/safetyclaim."
+}

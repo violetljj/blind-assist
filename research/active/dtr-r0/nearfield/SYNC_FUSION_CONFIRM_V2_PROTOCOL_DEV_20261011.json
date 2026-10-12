@@ -1,0 +1,204 @@
+{
+  "task": "SYNC_FUSION_CONFIRM_V2_DEV_20261011",
+  "parent_commit": "c0fd6849",
+  "phase": "PRE_REGISTERED_DEVELOPMENT_CONFIRM",
+  "created_utc": "2026-10-10T17:15:57.198334+00:00",
+  "budget": {
+    "CPU_command_wall_s": 2400,
+    "GPU_wall_s": 600,
+    "download_bytes": 4000000000,
+    "allocation": {
+      "data_CPU": 1000,
+      "observations_CPU": 400,
+      "models_CPU": 350,
+      "audit_CPU": 250,
+      "primary_CPU": 400,
+      "GPU_observations": 550,
+      "GPU_reserve": 50
+    }
+  },
+  "registration": {
+    "mechanism": "Commit this protocol before new candidate data download/selection/reference gating, retraining, or eval access; record exact commit and byte hash",
+    "not_protected_FINAL": true
+  },
+  "inherited": {
+    "v1_protocol_path": "research\\active\\dtr-r0\\nearfield\\SYNC_FUSION_V1_PLAN_DEV_20261011.json",
+    "v1_protocol_sha256": "6f5a790934ca2647d1a46f3b0d1ebe8db968823d1d3c2351102338b28b9c0593",
+    "features_source": "sync_fusion_features_v1.py",
+    "features_source_sha256": "47a59d81c800452f74541e851fa05e845e9a1b73bfbc35ff4f0d930c2a27502c",
+    "residual_pool": "artifacts.local/work/sync-rgb-tof-dataset-v1-1-dev-20261011/residual_pool.npz",
+    "residual_pool_sha256": "8a9764ce3ac81452b762d0d79990d0fe65b453b5414650db2990f220ca73bf9b",
+    "residual_fit": "Frozen v1.1 empirical signed FARO-native residual bands, old train/cal18 effective frames only; not refit from new cal/eval"
+  },
+  "features": {
+    "names": [
+      "tof_margin16_m",
+      "tof_margin16_missing",
+      "tof_support_pixels",
+      "tof_unknown_fraction",
+      "tof_before_fraction",
+      "tof_inside_fraction",
+      "tof_after_fraction",
+      "tof_median_entry_offset_m",
+      "tof_median_exit_offset_m",
+      "tof_valid_K_count",
+      "dav_margin16_m",
+      "dav_margin16_missing",
+      "dav_finite_fraction",
+      "uni_margin16_m",
+      "uni_margin16_missing",
+      "uni_finite_fraction",
+      "band_index",
+      "query_x_index",
+      "query_y_index",
+      "query_z_index"
+    ],
+    "readout": "unchanged v1 peak_readout SNR>=3 coverage>=.75 and projection; no source native/reference/labels/categories/groundtruth depths used as features",
+    "margin": "16th largest min(z-entry,exit-z) over query-domain finite positive predicted rays; less16 finite rays -> -inf",
+    "ToF_K": "ordinary features arithmetic mean; either missing margin -> baseline -inf and model margin -10 with missingflag1; valid_K_count0/1/2",
+    "model_missing_floor_m": -10,
+    "model_metre_features_clip": [
+      -10,
+      10
+    ],
+    "baseline_scores_not_clipped": true,
+    "ToF_relationship": "before z<entry, inside entry<=z<=exit, after z>exit; fractions divided by query-domain rays; median offsets to entry/exit over finite positive rays, absent=-10",
+    "support": "projected pixel-ray count with predicted depth inside query, not independent subrays",
+    "RGB": "DAV2 and UniDepth own raw margin16, missing indicator, finite-domain fraction",
+    "query_indices": "x/y/z centre sorted0/1/2; band_index=zindex; identity/source/visit/frame IDs not model features"
+  },
+  "models": {
+    "per_source": true,
+    "seeds": [
+      955,
+      956,
+      957
+    ],
+    "ensemble": "arithmetic mean positive-class probabilities",
+    "HGB": {
+      "max_iter": 100,
+      "learning_rate": 0.1,
+      "max_leaf_nodes": 7,
+      "max_depth": 3,
+      "min_samples_leaf": 50,
+      "l2_regularization": 1,
+      "early_stopping": false,
+      "class_weight": null
+    },
+    "Logistic": {
+      "preprocess": "StandardScaler fitted on source train POS/FREE only",
+      "C": 1,
+      "penalty": "l2",
+      "solver": "lbfgs",
+      "max_iter": 1000,
+      "class_weight": null
+    },
+    "train_labels": "POSITIVE=1, FREE_ON_SAMPLED_RAYS=0; UNKNOWN excluded; only train visits",
+    "no_model_selection": "Logistic primary, HGB secondary; same v1 recipes, seeds and probability mean; no hyperparameter selection"
+  },
+  "scores": {
+    "ToF": "K2 mean rawmargin, missing propagation",
+    "RGB": "Uni rawmargin for near, DAV rawmargin for mid/far",
+    "OR": "max(ToF,RGB)",
+    "AND": "min(ToF,RGB)",
+    "methods": [
+      "HGB",
+      "logistic",
+      "ToF",
+      "RGB",
+      "OR",
+      "AND"
+    ]
+  },
+  "calibration": {
+    "roles": [
+      "cal"
+    ],
+    "by": [
+      "source",
+      "method",
+      "band"
+    ],
+    "band_targets": {
+      "0.3-0.8m": 0.02,
+      "0.8-1.5m": 0.05,
+      "1.5-3m": 0.1
+    },
+    "threshold_rule": "score>=threshold; all finite unique score ties plus +inf all-reject; -inf is never candidate",
+    "objective": "among F<=floor(target*FREE), maximize query W on POS, then minimize F, then choose highest threshold; no tie splitting",
+    "zero_FREE": "threshold+inf, status NOT_CALIBRATABLE; never count as success",
+    "zero_POS": "threshold+inf, status NO_CAL_POS; never count as success",
+    "seal": "all feature names/source hashes/train-cal feature hashes/model joblib hashes/full cal tie table/cutpoints/code snapshots sealed before eval open"
+  },
+  "metric_contract": {
+    "W": "query-level predicted positive AND POS reference; not old pixel-intersection witness; all methods same",
+    "F": "predicted positive AND strict FREE",
+    "U": "predicted positive AND UNKNOWN; UNKNOWN excluded from fitting, included in eval support report",
+    "no_pixel_claim": "learner emits query probability only; legacy pixel-witness numbers not directly comparable"
+  },
+  "training": {
+    "visits": "exact v1.1 train6 plus consumed v1 eval4, total10; old cal2 excluded",
+    "roles_of_v1_features": [
+      "train",
+      "eval"
+    ],
+    "retraining": "One fixed fit per model/seed/source on the combined10visit training data; no new cal/eval labels used for fitting; source-specific gated FARO training may contain fewer contributing visits",
+    "reuse": "v1 sealed feature rows and consumed references, identify all hashes; development reuse disclosed"
+  },
+  "new_data": {
+    "target_visits": 18,
+    "cal_visits": 6,
+    "eval_visits": 12,
+    "frames_per_visit": 32,
+    "total_frames": 576,
+    "total_queries": 15552,
+    "order": "Official metadata.csv physical row order; non-NA visit and is_in_upsampling=True; all historically consumed captures propagated to visits and old attempted first-time-complete visits excluded",
+    "capture": "First time-complete capture for each unconsumed visit; failure of reference gate consumes whole visit, never alternative capture/windows after label inspection",
+    "windows": "Common native RGB/depth/K timestamps sorted; origin first common timestamp; 0.2s grid; nearest timestamp ties earlier; abs delta<=0.10000001s. First two chronological non-overlapping16-point windows, unique RGB timestamps. Seal selection before labels.",
+    "gate": {
+      "near_POS_min": 16,
+      "midfar_strict_FREE_min": 32,
+      "scope": "reference-only combined two windows, no model outputs"
+    },
+    "split": "Accepted ordinal0..5 cal;6..17 eval; all capture/window/geometry/noise/reflectance derivatives belong to same visit role; never reassign under budget stop",
+    "insufficient": "Do not relax gate; log every skip. Fewer6cal or12eval / incomplete fixed windows means primary confirmation NOT_EVALUABLE; completed results descriptive only.",
+    "inputs": "HEAD sizes before transfers; RangeZIP members allowed with archive full-size and planned-range receipts; actual transferred bytes including retries globally capped4GB. Primary native source first; optional FARO afterward in accepted order within remaining CPU/download budget.",
+    "timestamp": "Real trajectory interpolation without extrapolation; preserve missing sensor/pose grid rows as UNKNOWN; record RGB/grid/pose residuals; sensor geometric co-location and45degFOV unchanged"
+  },
+  "ToF": {
+    "primary": "native_perturbed, always labelled semi-circular / 半循环; no independent geometry claim",
+    "native": "v1.1 fixed residual pool, optical-Z bands [.3,.8),[.8,1.5),[1.5,3); independently sample pixel residuals with fixed seeds, invalid/nonpositive/outside range UNKNOWN; no native fill of FARO",
+    "synthesis": "v1 expected photon return + Skellam + ambient; rho.3/ambient1/K2 only required main arms;45deg/8x8x16/bin.3002784m/subrays16x16; seed20261011 with accepted ordinal/window/frame/repeat exactly v1.1",
+    "FARO": "Optional independent-geometry description: same v1.1 full available registered per-visit FARO depths,2cm voxels/2cm surfels/stride4, realposes/zbuffer256x192; no native holes. Acquire complete capture components in accepted visit order after primary data; stop whole next asset before4GB. Available completed component subsets and missing components disclosed.",
+    "FARO_gate": "Fixed K0 joint_pass_zones>=52, no outcome filtering; model+baseline description only; missing assets do not affect primary confirmation",
+    "readout": "Frozen v1 SNR>=3, zonecoverage>=.75, 16-order margin; same DAV/Uni frozenrawmodels, no model/readout edits"
+  },
+  "eval": {
+    "single_open": "exclusive append-only eval_open receipt after verified cal seal; produce immutable query score/label/prediction cache once; no weights or cutpoint changes afterward; later audit/bootstrap reads frozen query table only",
+    "best_single": "at frozen cal points select higher eval W of ToF/RGB within source/band; ties fewer F then RGB. Equivalent improvement criterion beats both fixed single sensors; no model or threshold selection",
+    "paired": "on same POS queries, rescue=model_yes comparator_no; loss=model_no comparator_yes; also FREE added/removed and UNKNOWN added/removed; compare best_single and OR",
+    "bootstrap": {
+      "replicates": 2000,
+      "seed": 20261011,
+      "cluster": "Resample all12original eval visit IDs with replacement; retain paired query rows and zero-row FARO clusters; comparator identity fixed to full-eval best single",
+      "interval": "percentile2.5/97.5 for W/POS,F/FREE,paired deltaW/POS and deltaW count; zero-denominator replicates omitted with valid count"
+    },
+    "saturation": "For every FARO band report RGB W/POS and remaining POS=POS-W_RGB; saturated descriptor iff ratio>=.95, predeclared and purely descriptive",
+    "forbidden": "Protected480/test never accessed; after eval opening no model/cutpoint changes; post-open audit uses immutable query cache only"
+  },
+  "confirmation": {
+    "primary_method": "logit",
+    "primary_source": "native_perturbed",
+    "primary_band": "0.8-1.5m",
+    "criterion": "Complete new6cal/12eval cohort; calibrated middle band with eval POS/FREE positive; deltaW=W_logit-max(W_ToF,W_RGB)>0; paired visit bootstrap95% interval lower for deltaW/POS>0; eval F/FREE<=.05*1.5=.075. Report count and interval pp; no CI for FREE enters decision.",
+    "secondary": "Near and far use same deltaW/clusterCI rule and target*1.5 (.03/.15) only descriptive, never affect primary pass; HGB secondary only; FARO descriptive, no dual-source gate",
+    "pass_claim": "query级融合在中带得到确认（真实RGB+半合成ToF）",
+    "failure": "List failed clauses separately; missing coverage/cohort NOT_EVALUABLE is not model falsification",
+    "independence": "New visits independent of all consumed development visits; official reference gating is label-enriched selection disclosed; semi-circular ToF does not support actual hardware claim"
+  },
+  "retry": {
+    "before_open": "Resume source/feature mechanical interruptions with unchanged selected windows/roles/recipes, preserve failures and hashes; failed fixed fit may mechanically rerun only before outcome access with cause receipt, not a new recipe",
+    "after_open": "Exclusive open marker; cache query predictions/labels once. No second label/model pass. If incomplete, preserve terminal and report NOT_EVALUABLE; cached summaries/audits may resume unchanged."
+  },
+  "decision_check": "v1 native logit middle +115/542POS=21.22pp, but4visit CI crossed0; new12visit are independent units,576frames not576 independent observations. No claimed power guarantee. Best single headroom evaluated only after seal; zeroPOS/FREE or saturated baseline is explicitly non-confirmatory. Old FARO nearRGB146/163=89.6%; new saturation reported by fixed .95 descriptor, not used to select visits."
+}

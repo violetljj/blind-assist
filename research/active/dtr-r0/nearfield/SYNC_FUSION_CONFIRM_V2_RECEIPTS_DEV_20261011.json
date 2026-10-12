@@ -1,0 +1,3860 @@
+{
+  "status": "COMPLETE_CONFIRMATORY_MIDDLE_PASS",
+  "protocol_commit": "cfe21852b24c5009713958ac3295e46dee71a91c",
+  "resource_amendment_commit": "7674cf8a3c38809ec11b3f02591d3b8e84664ad1",
+  "artifact_root": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011",
+  "visits": [
+    {
+      "ordinal": 0,
+      "visit_id": "421659",
+      "capture": "42445044",
+      "split": "cal",
+      "frames": 32
+    },
+    {
+      "ordinal": 1,
+      "visit_id": "421652",
+      "capture": "42445057",
+      "split": "cal",
+      "frames": 32
+    },
+    {
+      "ordinal": 2,
+      "visit_id": "421647",
+      "capture": "42445078",
+      "split": "cal",
+      "frames": 32
+    },
+    {
+      "ordinal": 3,
+      "visit_id": "420673",
+      "capture": "42445198",
+      "split": "cal",
+      "frames": 32
+    },
+    {
+      "ordinal": 4,
+      "visit_id": "421372",
+      "capture": "42445429",
+      "split": "cal",
+      "frames": 32
+    },
+    {
+      "ordinal": 5,
+      "visit_id": "421667",
+      "capture": "42445612",
+      "split": "cal",
+      "frames": 32
+    },
+    {
+      "ordinal": 6,
+      "visit_id": "421657",
+      "capture": "42445633",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 7,
+      "visit_id": "422148",
+      "capture": "42445692",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 8,
+      "visit_id": "422134",
+      "capture": "42445707",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 9,
+      "visit_id": "422217",
+      "capture": "42445718",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 10,
+      "visit_id": "422589",
+      "capture": "42445894",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 11,
+      "visit_id": "422569",
+      "capture": "42445916",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 12,
+      "visit_id": "422539",
+      "capture": "42445931",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 13,
+      "visit_id": "422011",
+      "capture": "42445970",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 14,
+      "visit_id": "422007",
+      "capture": "42446017",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 15,
+      "visit_id": "422535",
+      "capture": "42446048",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 16,
+      "visit_id": "422521",
+      "capture": "42446061",
+      "split": "eval",
+      "frames": 32
+    },
+    {
+      "ordinal": 17,
+      "visit_id": "422523",
+      "capture": "42446467",
+      "split": "eval",
+      "frames": 32
+    }
+  ],
+  "payload_files": [
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\acquisition_stage_00_terminal.json",
+      "sha256": "1ea1f7a2c7e3986a4aab935fee812cefb1e2f6d5ad05d7e783c9a79406c9f105"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\acquisition_stage_01_terminal.json",
+      "sha256": "3cb9c230959427acff6f76e19e8f00ea647189a3098ef98ca443c33eb730c6e7"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\acquisition_terminal.json",
+      "sha256": "657d4384a44ef7f4c382c56606baf52a8d5cd24c16854d17e12726b1935d2615"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\admission_seal.json",
+      "sha256": "b20e416abbf323d1032d092ac1f94ba2718f6650b3c8a6210669386cd4ba25c6"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\attempt0_schema_failure_observation_code_seal.json",
+      "sha256": "92b7d84793ee5a641ea43ef3572306f101545f0f712b9dfb8915f30f1d49c03f"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\attempt0_schema_failure_rgb_observation_seal.json",
+      "sha256": "9d38a31520c2299b72a9f48a6a73f4965d019dc342e4ec5e19548cbac7092469"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\budget_reallocation.json",
+      "sha256": "57479e792a765e68fb692fe2cdecebe130c4010cb77a9e2fdca5582e95b0a0cf"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal_reference_roster.json",
+      "sha256": "f39562ff211f4c641360ff0dbc12782ce061e40914132de49476c67caf7e365b"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\candidate_gate_records.json",
+      "sha256": "1addfa53e2a486700be2752cc26efd45050d9ea46f59b872c28c6228b7ad84be"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\consumed_inventory.json",
+      "sha256": "7401cdba783080e3180bbaf1c6e1bc2aba96cd8b4c837fe0452af9cead87683a"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\data_input_seal.json",
+      "sha256": "f59ef1e23d107e5e767bf08062908f752eacddf1f9f5c9fea91bca91f2b62ed5"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\data_input_statistics.json",
+      "sha256": "3eb1568c194b938a01802a37f414a27c5327124553ff123c70168f9ff54babe5"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\data_resource_accounting.json",
+      "sha256": "7b5e1232114f268af14c3857976c49db771322b68bceda178962857d74adffdd"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\dataset_manifest.json",
+      "sha256": "66a372fc8efa929f20eac97928bbe2c60ead30ff5143afe5247558fb4ae42037"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\dataset_manifest_v2.json",
+      "sha256": "931201568fc21e59563393f0f11748ca518a79a7edcf603cfc0ab9ac12b4d60b"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\eval_reference_roster.json",
+      "sha256": "ec6ba84a8ad2c2e7af8cfe31815b6e7447c69240cd178199d62751ae4a41a587"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_source_extension_progress.json",
+      "sha256": "14cfb2933080a68bd567061f8cbf73d8303d35dd8b7d2a5026a415fa7fc87f49"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_source_extension_receipt.json",
+      "sha256": "5ee971691cf9354d1a25b5badf69afdcbd4b74def02588268efbc8d8713c902d"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_source_extension_terminal.json",
+      "sha256": "824717e674c267de3b9e289ced463749695338b917085b3406d5fab8b9e0b3fd"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_source_manifest.json",
+      "sha256": "e83c561f138691cefef41fd974909b0b08d5d83b2e06e4a6e36e1aeff83b46c8"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_source_manifest_final.json",
+      "sha256": "22d260b5f5e7c23d47589d3eea887fd7f26c68b89de506de60452a0177f33200"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_source_manifest_final_pre_extension.json",
+      "sha256": "7be65a67e7c0287f0712ac61c6c98bf51ea16d18f1103c77cdca608e06942531"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_source_manifest_pre_extension.json",
+      "sha256": "ea57e08975953b9502baf7f3ab6cc72ef9153c313e024b45f3a006658dc91490"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_source_prefix_receipt.json",
+      "sha256": "4092719899374ab7e3305554951b501e820d790f482d1fa96b045785948fbcbe"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_source_terminal.json",
+      "sha256": "108575a891dd8e164baa4d2dc19a7e4235cc969cc9ad1ea06b30e1cbf3bc43b8"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_source_terminal_pre_extension.json",
+      "sha256": "108575a891dd8e164baa4d2dc19a7e4235cc969cc9ad1ea06b30e1cbf3bc43b8"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_synthesis_continuation_terminal.json",
+      "sha256": "07209615142be73cd665c1bf331ba9628ce8a16665713237943813ac280f0689"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\faro_synthesis_terminal.json",
+      "sha256": "43b68f810089e403e11310f3e5f273455c698b83a0b207b30fd40cd743b8a71f"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\feature_admission.json",
+      "sha256": "a7334dfa222f106d6e69857b320ff884d362daf766e7510b6936a37b88f4544a"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\feature_inputs.json",
+      "sha256": "f0fdb3e8bed9ac3b8cf722d524f75c8451ff1b1c4245c44860509acf559be15b"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\feature_manifest.json",
+      "sha256": "f3f0fbdee64ca1e7f3a08ed35a4ebd560e3102e2addfb27387a3a56e5113cd74"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\feature_progress.json",
+      "sha256": "48beae0cc984bad0a803ea235f9926264fd7e69df12a01c60b441b944cde6c15"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\frozen_readout_seal.json",
+      "sha256": "8f39b21ef12f1daf0e89c39990c094d716718c49aafc910ac558f04fd1702f47"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\frozen_residual_receipt.json",
+      "sha256": "caa9ef6b2c1de47be32ad223b34ff778947d6146c57d7778ba6271571e289a18"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_contract_audit.json",
+      "sha256": "2a8e1bf95a28e180d6a7ce6faca836f6d56c5c11fbc3650f6ab5d1ae017d5775"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_coverage_audit.json",
+      "sha256": "3cc6432809c7b8c9dc422186ac3ce59f70241633a2bd25d9ddef290f5c563341"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_data_integrity_audit.json",
+      "sha256": "55b75deacdb46e473f4b5f492d05014ecd7ff7894af75a9281c7b54a08c1dc06"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_FARO_prefix_audit.json",
+      "sha256": "125bac0f212d9e28f0dfd327e294c772f80ba0bca90cb47126d22690907e3dac"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_grid_pose_residual_audit.json",
+      "sha256": "93fb549bf73ac30e68963037d65127f812eba4eda85c09dc843d2ef5758b622c"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_open_lineage_audit.json",
+      "sha256": "68ac2b34efb1d9eae4851ca6dc8554a1f4bc46bbbb26142ac9cbfa285fe49276"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_posteval_audit.json",
+      "sha256": "a0f0990f636fef429c0201500a8b2c1e131039857324f42646a11526ea5f6d80"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_preOPEN_audit.json",
+      "sha256": "8d7c0c8308bbdc5becc4d37f954c107e5b6151c691db1db1c91b01bbe8c6aabf"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_protocol_audit.json",
+      "sha256": "151fdf4dc0c4cbb9b3e4f2ca4edb45afc68679c12595ba86bc45a0e773b12e07"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_resource_amendment_audit.json",
+      "sha256": "274a8f2d2a5fb65765017a635f0b668dd07a96e7cfdd3d2a33afac017aa4b858"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_retained_integrity_audit.json",
+      "sha256": "434fedccb7a93a26072e4ba61d036b291742ebed86df9ddc09bb443eba8b0749"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_source_binding_audit.json",
+      "sha256": "aaa39905498d525a09153f3dcad1b0ba0f27d175a4dff0dcc0342dfab3356b74"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_source_extension_attempt0.json",
+      "sha256": "478f0e7c263f401f650ed56a1c856c17afe932e358dc13f127b35ddfe1c46647"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_source_extension_audit.json",
+      "sha256": "8d1f27f4c093bf3a10f5ecba396411b0c8bc71ddef63ba430b917ed68209890d"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_train_audit.json",
+      "sha256": "c226d8de50c8fe80038d7415535182149f8f27b0910497074a19c712ca18742f"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_train_identity_audit.json",
+      "sha256": "e4500652036bdd3a3ffc91c63203f64f8d0b06ef5a6598555f442ab9c853a904"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\license_receipt.json",
+      "sha256": "3e0902c47a9aefbea83d9950301b9f2d3a09234e8765e2446d7f75a222e5f254"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\models_budget_receipt.json",
+      "sha256": "3c94948de10fbc37506d992ed21850dd3603084cafbf169e2ac2da380d5cab24"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\native_synthesis_terminal.json",
+      "sha256": "68bb51199c856088c92fa355cfa29d742cd0e631aa9cedac0f705d6971482bb1"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\network_progress.json",
+      "sha256": "7fef4c84d52ce5ea1ce1bd257f05e904a410b554c642ce595a1e4798e7a50006"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\observation_code_seal.json",
+      "sha256": "b14fcb806e69a34e785a2053feee86f9ed942795cf72ee9e8dc80ce29d605a53"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\observations_execution_receipt.json",
+      "sha256": "17974ffb6d95f8961281ecfb24d70b2c7865599019c6905ecf114563b931936c"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\PLAN.json",
+      "sha256": "e9387389ebd8f842975d665db9fd454ee7d43a07bc173c488fe74f274200be55"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\pretrain_execution_receipt.json",
+      "sha256": "075f1b6c8b989b1eed6a6dfb63dd11e77715b00f9d929bc49c993dd348af836b"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\primary_open_authorization.json",
+      "sha256": "e260678eaf5bb46cf0cae3b55e7925838f30882c9671118134ffb92f228c9363"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\protocol_commit.json",
+      "sha256": "c4ffb4981c47f9d404dd2445ff31f450981cbfe98e2dc0bcc5091989aec49cf3"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\protocol_commit_receipt.json",
+      "sha256": "c4ffb4981c47f9d404dd2445ff31f450981cbfe98e2dc0bcc5091989aec49cf3"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\public_roster.json",
+      "sha256": "c388cff0e08c5a208bdb3a033a6c5bae12c090d35c9a3088ebfda117020a5616"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\reference_roster.json",
+      "sha256": "6a9f4055108a74545c1dae8b57a86256c8503fadc4e173669a44123e023ce248"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\reference_roster_split_receipt.json",
+      "sha256": "9b9f598f612beeabe34c60c3ee6732dcf2c19f1fbb33d896b31b3d4d6fb2e8d5"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\resource_amendment_receipt.json",
+      "sha256": "64debbf9352f5f286a746d47d160d1283fdf20399b294343c94bc1a6d8387fcb"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\rgb_observation_seal.json",
+      "sha256": "94efdabc78e9a2a4276e1d07838e1e556046762fba0e01cecb565e790507ccb9"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\rgb_public_roster.json",
+      "sha256": "c2f922b66447f715d2c0a646627a694cb0c04c2d942f034d8f6c095d8047a1ac"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\rgb_schema_projection_receipt.json",
+      "sha256": "5a022df245a31676ce31f2e5a83937a330cde3ff07cd502cd751ad42cb39b591"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\source_render_binding_receipt.json",
+      "sha256": "a8d2aef5d5f377f137804a80d7a579a9cd43431fd3cc352b5a0ef8b3e399a0a2"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\surface_manifest.json",
+      "sha256": "aaba30e1743aaa2c7b26b048cfc61205f9c758014c6bc06c6300528ec10ddc14"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\synthesis_manifest.json",
+      "sha256": "fa3bde7115cd529df911740376199a1b25876d73402369d04abf8c96d56beb58"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\synthesis_partial_manifest.json",
+      "sha256": "f403fe277030c09e84a5a57463bce46159bd476d2fdde3c2c62918665354e859"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train_cal_reference_roster.json",
+      "sha256": "d4c5d5ee157277746d1ae263767cc504475a453ef9f144fbdbf90f62b9eac253"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\training_reference_roster.json",
+      "sha256": "963406204fd5628b050a102fa9d54889ae7529489eac9888821ef0848dc37de5"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\transform_receipts.json",
+      "sha256": "7ecdcb31622af7f60783de5c8749ebab73c9d27403471fb12de29ec4fe0fd538"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\train_seal.json",
+      "sha256": "df004591f36e95f955d531e7a901c5efa6aafff1bb3a548361387d332b9be5b0"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\mechanical_recovery_receipt.json",
+      "sha256": "c2b37fc3eae1714b039f58f9cb02d1602d8d6717e16ba1014ee2fec66874325e"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\cal_seal.json",
+      "sha256": "a60436076f6f1ade7e42578c2a412b5cc46c3810a319b6972699ba82c5cff5f7"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\eval\\eval_open.json",
+      "sha256": "e8fc895cba1d7437d987448b1846b469e8f0f33e6fb0022fac219a249ab08e47"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\eval\\eval_terminal.json",
+      "sha256": "78ea07c4f756b6e1b532cf377975841bc4ba04633fe0e32da67640f9bdb2e73d"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\eval\\summary.json",
+      "sha256": "97deac2e5bea3b370886a088cfaa7bc48c19e06f276fb9ec72a3626039c7e591"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\eval\\per_query.jsonl",
+      "sha256": "669766473b131dea17b6585e17110d17be7302d740ebdf92c3787c1207420e3c"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\models_budget_receipt.json",
+      "sha256": "3c94948de10fbc37506d992ed21850dd3603084cafbf169e2ac2da380d5cab24"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\eval\\per_query.csv",
+      "sha256": "504331f13137f7b36d4dc28a8bc8cc74d20d66c58b35b2a1e5cdb34194d73db3"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\eval\\report_fragment.md",
+      "sha256": "0ae098851945fa4798e76e2d7cb1f124cf54901afcf32b13be46d88cfff2acd1"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\integrate_results.py",
+      "sha256": "c9c24cf27c27e6de606621af3d938ae3ee8fa748db44aa44ee2363c17f815292"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\finalize_integration.py",
+      "sha256": "c3ea43f2045595b56d8f0883a7943650e38c716e3e2b5d7d23aaff65d19d9f5a"
+    },
+    {
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\audit_execution_resources_receipt.json",
+      "sha256": "2d0e87bea9a908e4cb0ef82caabcad85618c1cb2b05f8a7610b01bb19e2b8b85"
+    }
+  ],
+  "model_weights": [
+    {
+      "source": "native_perturbed",
+      "method": "hgb",
+      "seed": 955,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\native_perturbed\\hgb_955.joblib",
+      "sha256": "edf52765d5c7edb2f72a7c58ad45914f9a7ae11512ed787308212475799163f9",
+      "warnings": [],
+      "warnings_receipt": "Original fit succeeded before mechanical seal exception; no refit",
+      "train_known_rows": 6519,
+      "reused_without_refit": true
+    },
+    {
+      "source": "native_perturbed",
+      "method": "hgb",
+      "seed": 956,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\native_perturbed\\hgb_956.joblib",
+      "sha256": "b7062fca265ee58ced57f467838ca0ad66d3770c97bcbf4def6e57eaa2cb097d",
+      "warnings": [],
+      "warnings_receipt": "Original fit succeeded before mechanical seal exception; no refit",
+      "train_known_rows": 6519,
+      "reused_without_refit": true
+    },
+    {
+      "source": "native_perturbed",
+      "method": "hgb",
+      "seed": 957,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\native_perturbed\\hgb_957.joblib",
+      "sha256": "53e95963aa4d42d051a2fd983c93af7564df40954edc307e6e3624eaa1d5b519",
+      "warnings": [],
+      "warnings_receipt": "Original fit succeeded before mechanical seal exception; no refit",
+      "train_known_rows": 6519,
+      "reused_without_refit": true
+    },
+    {
+      "source": "native_perturbed",
+      "method": "logit",
+      "seed": 955,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\native_perturbed\\logit_955.joblib",
+      "sha256": "699f94697d6b43e5c3a1c1a1f867a6bb37ae166782f36821e4a9231f95caca3e",
+      "warnings": [],
+      "warnings_receipt": "Original fit succeeded before mechanical seal exception; no refit",
+      "train_known_rows": 6519,
+      "reused_without_refit": true
+    },
+    {
+      "source": "native_perturbed",
+      "method": "logit",
+      "seed": 956,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\native_perturbed\\logit_956.joblib",
+      "sha256": "0846438f3f98c9e12d59274b42a8a729fd961c70ac48411eaa688da6ff273b5d",
+      "warnings": [],
+      "warnings_receipt": "Original fit succeeded before mechanical seal exception; no refit",
+      "train_known_rows": 6519,
+      "reused_without_refit": true
+    },
+    {
+      "source": "native_perturbed",
+      "method": "logit",
+      "seed": 957,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\native_perturbed\\logit_957.joblib",
+      "sha256": "348e03071d4534ae0bbe6d1ee608afb502f1f516d6823da893412d9bb854bc28",
+      "warnings": [],
+      "warnings_receipt": "Original fit succeeded before mechanical seal exception; no refit",
+      "train_known_rows": 6519,
+      "reused_without_refit": true
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "method": "hgb",
+      "seed": 955,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\faro_rho030_ambient1\\hgb_955.joblib",
+      "sha256": "bba8682f7058f2e8c340ea9fac3c3623a2cb35326bad68ec114d3b41b5d87002",
+      "warnings": [],
+      "train_known_rows": 1482
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "method": "hgb",
+      "seed": 956,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\faro_rho030_ambient1\\hgb_956.joblib",
+      "sha256": "ecfada1207344be776ff18fa1494fcc7cb12c4eca7c4db2f155c9d62070fc170",
+      "warnings": [],
+      "train_known_rows": 1482
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "method": "hgb",
+      "seed": 957,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\faro_rho030_ambient1\\hgb_957.joblib",
+      "sha256": "e039aa21e03eacfebf367fe40adfb87da898fa707b439c793cee52d62a81947f",
+      "warnings": [],
+      "train_known_rows": 1482
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "method": "logit",
+      "seed": 955,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\faro_rho030_ambient1\\logit_955.joblib",
+      "sha256": "a54ba82ef3f25df0e6be1087e2f0b942404bc66cd14aab6fd28f64fbe4684bf7",
+      "warnings": [
+        "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+      ],
+      "train_known_rows": 1482
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "method": "logit",
+      "seed": 956,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\faro_rho030_ambient1\\logit_956.joblib",
+      "sha256": "a92bfd4a79d95248afcf71f5418e789692d6ddaef34abb2ac90db607a249f2e4",
+      "warnings": [
+        "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+      ],
+      "train_known_rows": 1482
+    },
+    {
+      "source": "faro_rho030_ambient1",
+      "method": "logit",
+      "seed": 957,
+      "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\train\\models\\faro_rho030_ambient1\\logit_957.joblib",
+      "sha256": "9cc98dc592aa62b366bdada1599955c87bc1f6120bbbbb8087fe2bf37693057d",
+      "warnings": [
+        "'penalty' was deprecated in version 1.8 and will be removed in 1.10. To avoid this warning, leave 'penalty' set to its default value and use 'l1_ratio' or 'C' instead. Use l1_ratio=0 instead of penalty='l2', l1_ratio=1 instead of penalty='l1', l1_ratio set to a float between 0 and 1 instead of penalty='elasticnet', and C=np.inf instead of penalty=None."
+      ],
+      "train_known_rows": 1482
+    }
+  ],
+  "cal_cells": [
+    {
+      "cell_id": "native_perturbed/logit/0.3-0.8m/0.02",
+      "source": "native_perturbed",
+      "method": "logit",
+      "band": "0.3-0.8m",
+      "tie_index": 566,
+      "threshold": 0.662240366037152,
+      "threshold_kind": "finite",
+      "W": 459,
+      "F": 18,
+      "U": 89,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 667,
+      "FREE_denominator": 916,
+      "UNKNOWN_denominator": 145,
+      "F_fraction": 0.019650655021834062,
+      "W_fraction": 0.6881559220389805,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__logit__0.3-0.8m.json",
+      "all_ties_sha256": "65a8010abfeee66a5fbae004aa4b705a2fd5a04d3017eedc47b0ba0b85a98c6f"
+    },
+    {
+      "cell_id": "native_perturbed/hgb/0.3-0.8m/0.02",
+      "source": "native_perturbed",
+      "method": "hgb",
+      "band": "0.3-0.8m",
+      "tie_index": 298,
+      "threshold": 0.8295808200958855,
+      "threshold_kind": "finite",
+      "W": 493,
+      "F": 16,
+      "U": 72,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 667,
+      "FREE_denominator": 916,
+      "UNKNOWN_denominator": 145,
+      "F_fraction": 0.017467248908296942,
+      "W_fraction": 0.7391304347826086,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__hgb__0.3-0.8m.json",
+      "all_ties_sha256": "13eb9256a92c2417fdaedd5b931cd71603b3c787bfc1db31fac2a359dbd8c675"
+    },
+    {
+      "cell_id": "native_perturbed/tof/0.3-0.8m/0.02",
+      "source": "native_perturbed",
+      "method": "tof",
+      "band": "0.3-0.8m",
+      "tie_index": 429,
+      "threshold": -0.11385787898165511,
+      "threshold_kind": "finite",
+      "W": 385,
+      "F": 18,
+      "U": 26,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 667,
+      "FREE_denominator": 916,
+      "UNKNOWN_denominator": 145,
+      "F_fraction": 0.019650655021834062,
+      "W_fraction": 0.5772113943028486,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__tof__0.3-0.8m.json",
+      "all_ties_sha256": "d34ba4895ccc4a1c8b2cf2a6c2697af7a7711fd458e7836620852cb39c0576c4"
+    },
+    {
+      "cell_id": "native_perturbed/rgb/0.3-0.8m/0.02",
+      "source": "native_perturbed",
+      "method": "rgb",
+      "band": "0.3-0.8m",
+      "tie_index": 462,
+      "threshold": 0.046430993080139205,
+      "threshold_kind": "finite",
+      "W": 418,
+      "F": 17,
+      "U": 27,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 667,
+      "FREE_denominator": 916,
+      "UNKNOWN_denominator": 145,
+      "F_fraction": 0.018558951965065504,
+      "W_fraction": 0.6266866566716641,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__rgb__0.3-0.8m.json",
+      "all_ties_sha256": "7b538c824cef4eccbc1f2131dd0f146370cb3df0b0cdb83e18dec2f620e7f912"
+    },
+    {
+      "cell_id": "native_perturbed/or/0.3-0.8m/0.02",
+      "source": "native_perturbed",
+      "method": "or",
+      "band": "0.3-0.8m",
+      "tie_index": 516,
+      "threshold": 0.046430993080139205,
+      "threshold_kind": "finite",
+      "W": 471,
+      "F": 18,
+      "U": 27,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 667,
+      "FREE_denominator": 916,
+      "UNKNOWN_denominator": 145,
+      "F_fraction": 0.019650655021834062,
+      "W_fraction": 0.7061469265367316,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__or__0.3-0.8m.json",
+      "all_ties_sha256": "395b9c1c54df9ce2275c13bfa818ee8ced870c91c26b2fb6709d7e6211554e44"
+    },
+    {
+      "cell_id": "native_perturbed/and/0.3-0.8m/0.02",
+      "source": "native_perturbed",
+      "method": "and",
+      "band": "0.3-0.8m",
+      "tie_index": 481,
+      "threshold": -0.12342332792068755,
+      "threshold_kind": "finite",
+      "W": 437,
+      "F": 17,
+      "U": 27,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 667,
+      "FREE_denominator": 916,
+      "UNKNOWN_denominator": 145,
+      "F_fraction": 0.018558951965065504,
+      "W_fraction": 0.6551724137931034,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__and__0.3-0.8m.json",
+      "all_ties_sha256": "779da9fb61831b7ded69e9f6deb93995344374b28754213d956bbe9fe57e342d"
+    },
+    {
+      "cell_id": "native_perturbed/logit/0.8-1.5m/0.05",
+      "source": "native_perturbed",
+      "method": "logit",
+      "band": "0.8-1.5m",
+      "tie_index": 1183,
+      "threshold": 0.7478221704733561,
+      "threshold_kind": "finite",
+      "W": 933,
+      "F": 16,
+      "U": 261,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 1027,
+      "FREE_denominator": 326,
+      "UNKNOWN_denominator": 375,
+      "F_fraction": 0.049079754601226995,
+      "W_fraction": 0.9084712755598832,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__logit__0.8-1.5m.json",
+      "all_ties_sha256": "774743b24b310819ea3ad4c0edf0fa9a1cd7a48f98072477dc67e18066c1f3d5"
+    },
+    {
+      "cell_id": "native_perturbed/hgb/0.8-1.5m/0.05",
+      "source": "native_perturbed",
+      "method": "hgb",
+      "band": "0.8-1.5m",
+      "tie_index": 740,
+      "threshold": 0.7927518582576866,
+      "threshold_kind": "finite",
+      "W": 931,
+      "F": 15,
+      "U": 259,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 1027,
+      "FREE_denominator": 326,
+      "UNKNOWN_denominator": 375,
+      "F_fraction": 0.046012269938650305,
+      "W_fraction": 0.9065238558909445,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__hgb__0.8-1.5m.json",
+      "all_ties_sha256": "330fdc0f682e11e3350354b2306735ae5876b8f7f8fe315d325b399ef33c1216"
+    },
+    {
+      "cell_id": "native_perturbed/tof/0.8-1.5m/0.05",
+      "source": "native_perturbed",
+      "method": "tof",
+      "band": "0.8-1.5m",
+      "tie_index": 759,
+      "threshold": 0.018062756954990045,
+      "threshold_kind": "finite",
+      "W": 716,
+      "F": 16,
+      "U": 27,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 1027,
+      "FREE_denominator": 326,
+      "UNKNOWN_denominator": 375,
+      "F_fraction": 0.049079754601226995,
+      "W_fraction": 0.697176241480039,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__tof__0.8-1.5m.json",
+      "all_ties_sha256": "16ad6c266737314a4977e53d130737531682e5f829a89483120558a635927083"
+    },
+    {
+      "cell_id": "native_perturbed/rgb/0.8-1.5m/0.05",
+      "source": "native_perturbed",
+      "method": "rgb",
+      "band": "0.8-1.5m",
+      "tie_index": 851,
+      "threshold": -0.05932140350341797,
+      "threshold_kind": "finite",
+      "W": 757,
+      "F": 16,
+      "U": 244,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 1027,
+      "FREE_denominator": 326,
+      "UNKNOWN_denominator": 375,
+      "F_fraction": 0.049079754601226995,
+      "W_fraction": 0.7370983446932814,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__rgb__0.8-1.5m.json",
+      "all_ties_sha256": "abd20f0a4ce54811262ead46e21f1550093023525f49885979ceb7ac1f1c38ad"
+    },
+    {
+      "cell_id": "native_perturbed/or/0.8-1.5m/0.05",
+      "source": "native_perturbed",
+      "method": "or",
+      "band": "0.8-1.5m",
+      "tie_index": 957,
+      "threshold": 0.103515625,
+      "threshold_kind": "finite",
+      "W": 895,
+      "F": 16,
+      "U": 177,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 1027,
+      "FREE_denominator": 326,
+      "UNKNOWN_denominator": 375,
+      "F_fraction": 0.049079754601226995,
+      "W_fraction": 0.8714703018500487,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__or__0.8-1.5m.json",
+      "all_ties_sha256": "a82cade831e1f12d42100e0c32cf4b527eda37cf00eb010aa8a98245afc8f2f7"
+    },
+    {
+      "cell_id": "native_perturbed/and/0.8-1.5m/0.05",
+      "source": "native_perturbed",
+      "method": "and",
+      "band": "0.8-1.5m",
+      "tie_index": 919,
+      "threshold": -0.24618518352508545,
+      "threshold_kind": "finite",
+      "W": 725,
+      "F": 16,
+      "U": 199,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 1027,
+      "FREE_denominator": 326,
+      "UNKNOWN_denominator": 375,
+      "F_fraction": 0.049079754601226995,
+      "W_fraction": 0.7059396299902629,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__and__0.8-1.5m.json",
+      "all_ties_sha256": "02c4c7904069d6e2ce1ab7fc1de888fc59117dc1ee882b5805d3657c52c5975d"
+    },
+    {
+      "cell_id": "native_perturbed/logit/1.5-3m/0.10",
+      "source": "native_perturbed",
+      "method": "logit",
+      "band": "1.5-3m",
+      "tie_index": 1367,
+      "threshold": 0.5152086788018396,
+      "threshold_kind": "finite",
+      "W": 878,
+      "F": 14,
+      "U": 534,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 926,
+      "FREE_denominator": 141,
+      "UNKNOWN_denominator": 661,
+      "F_fraction": 0.09929078014184398,
+      "W_fraction": 0.9481641468682506,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__logit__1.5-3m.json",
+      "all_ties_sha256": "bca7d40af5fac791a4d6a96f61a43472c2da0ca3fec321c38f51381cced63480"
+    },
+    {
+      "cell_id": "native_perturbed/hgb/1.5-3m/0.10",
+      "source": "native_perturbed",
+      "method": "hgb",
+      "band": "1.5-3m",
+      "tie_index": 952,
+      "threshold": 0.5247326976562672,
+      "threshold_kind": "finite",
+      "W": 866,
+      "F": 13,
+      "U": 532,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 926,
+      "FREE_denominator": 141,
+      "UNKNOWN_denominator": 661,
+      "F_fraction": 0.09219858156028368,
+      "W_fraction": 0.9352051835853131,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__hgb__1.5-3m.json",
+      "all_ties_sha256": "7386bf54ea0a80d2fce6c2a45195293a8c0b651bc8ba3603ec4393531d570abc"
+    },
+    {
+      "cell_id": "native_perturbed/tof/1.5-3m/0.10",
+      "source": "native_perturbed",
+      "method": "tof",
+      "band": "1.5-3m",
+      "tie_index": 1196,
+      "threshold": -1.1598895786940506,
+      "threshold_kind": "finite",
+      "W": 691,
+      "F": 4,
+      "U": 501,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 926,
+      "FREE_denominator": 141,
+      "UNKNOWN_denominator": 661,
+      "F_fraction": 0.028368794326241134,
+      "W_fraction": 0.7462203023758099,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__tof__1.5-3m.json",
+      "all_ties_sha256": "ce9f28dc180ea8f97e55c816f0972b2d4abdc05ed3fec7cb5b40695be182cc18"
+    },
+    {
+      "cell_id": "native_perturbed/rgb/1.5-3m/0.10",
+      "source": "native_perturbed",
+      "method": "rgb",
+      "band": "1.5-3m",
+      "tie_index": 856,
+      "threshold": 0.12002337635498161,
+      "threshold_kind": "finite",
+      "W": 734,
+      "F": 14,
+      "U": 135,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 926,
+      "FREE_denominator": 141,
+      "UNKNOWN_denominator": 661,
+      "F_fraction": 0.09929078014184398,
+      "W_fraction": 0.7926565874730022,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__rgb__1.5-3m.json",
+      "all_ties_sha256": "7dd4c75f1ec36c93ffa6584fdb333328edc08de0a8a1eef5d63603b5c33cc4e7"
+    },
+    {
+      "cell_id": "native_perturbed/or/1.5-3m/0.10",
+      "source": "native_perturbed",
+      "method": "or",
+      "band": "1.5-3m",
+      "tie_index": 887,
+      "threshold": 0.12002337635498161,
+      "threshold_kind": "finite",
+      "W": 762,
+      "F": 14,
+      "U": 135,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 926,
+      "FREE_denominator": 141,
+      "UNKNOWN_denominator": 661,
+      "F_fraction": 0.09929078014184398,
+      "W_fraction": 0.8228941684665226,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__or__1.5-3m.json",
+      "all_ties_sha256": "5ef30e0469d56dcf55e7af878dded9e74992242240fb1b3fbbebf9b9f1271f55"
+    },
+    {
+      "cell_id": "native_perturbed/and/1.5-3m/0.10",
+      "source": "native_perturbed",
+      "method": "and",
+      "band": "1.5-3m",
+      "tie_index": 1192,
+      "threshold": -1.1598895786940506,
+      "threshold_kind": "finite",
+      "W": 691,
+      "F": 3,
+      "U": 501,
+      "target": 0.1,
+      "status": "ADOPTED",
+      "POS_denominator": 926,
+      "FREE_denominator": 141,
+      "UNKNOWN_denominator": 661,
+      "F_fraction": 0.02127659574468085,
+      "W_fraction": 0.7462203023758099,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\native_perturbed__and__1.5-3m.json",
+      "all_ties_sha256": "0373f8b10ce7a1f06cc985fa70c55c3c59483d821a6e57f6ee8ce89dfdd00e9e"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/logit/0.3-0.8m/0.02",
+      "source": "faro_rho030_ambient1",
+      "method": "logit",
+      "band": "0.3-0.8m",
+      "tie_index": 33,
+      "threshold": 0.9953188847998019,
+      "threshold_kind": "finite",
+      "W": 29,
+      "F": 4,
+      "U": 0,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 260,
+      "FREE_denominator": 220,
+      "UNKNOWN_denominator": 51,
+      "F_fraction": 0.01818181818181818,
+      "W_fraction": 0.11153846153846154,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__logit__0.3-0.8m.json",
+      "all_ties_sha256": "d4f7d7760e6580a00f4b1ed1bed47f9ddad94efde93832aec756ae5e7d881019"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/hgb/0.3-0.8m/0.02",
+      "source": "faro_rho030_ambient1",
+      "method": "hgb",
+      "band": "0.3-0.8m",
+      "tie_index": 22,
+      "threshold": 0.9988953501403852,
+      "threshold_kind": "finite",
+      "W": 32,
+      "F": 4,
+      "U": 2,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 260,
+      "FREE_denominator": 220,
+      "UNKNOWN_denominator": 51,
+      "F_fraction": 0.01818181818181818,
+      "W_fraction": 0.12307692307692308,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__hgb__0.3-0.8m.json",
+      "all_ties_sha256": "a188d89d7094bc470de902b71744fe9c1abe3872415ea626438682df5a74be0f"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/tof/0.3-0.8m/0.02",
+      "source": "faro_rho030_ambient1",
+      "method": "tof",
+      "band": "0.3-0.8m",
+      "tie_index": 0,
+      "threshold": null,
+      "threshold_kind": "positive_infinity",
+      "W": 0,
+      "F": 0,
+      "U": 0,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 260,
+      "FREE_denominator": 220,
+      "UNKNOWN_denominator": 51,
+      "F_fraction": 0.0,
+      "W_fraction": 0.0,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__tof__0.3-0.8m.json",
+      "all_ties_sha256": "d85520a83ca27009118acf9a684eb18877eaa70fa0af5d001942a1ae66cfac25"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/rgb/0.3-0.8m/0.02",
+      "source": "faro_rho030_ambient1",
+      "method": "rgb",
+      "band": "0.3-0.8m",
+      "tie_index": 96,
+      "threshold": 0.10638581514358525,
+      "threshold_kind": "finite",
+      "W": 91,
+      "F": 4,
+      "U": 1,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 260,
+      "FREE_denominator": 220,
+      "UNKNOWN_denominator": 51,
+      "F_fraction": 0.01818181818181818,
+      "W_fraction": 0.35,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__rgb__0.3-0.8m.json",
+      "all_ties_sha256": "7deb19ab163a36829dce1b1cb4718dd14cea1755b95a095bc380325ccd7ed453"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/or/0.3-0.8m/0.02",
+      "source": "faro_rho030_ambient1",
+      "method": "or",
+      "band": "0.3-0.8m",
+      "tie_index": 24,
+      "threshold": 0.16051747747687112,
+      "threshold_kind": "finite",
+      "W": 24,
+      "F": 0,
+      "U": 0,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 260,
+      "FREE_denominator": 220,
+      "UNKNOWN_denominator": 51,
+      "F_fraction": 0.0,
+      "W_fraction": 0.09230769230769231,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__or__0.3-0.8m.json",
+      "all_ties_sha256": "abc7076754b8e33e7d4c2ba0fb405a0f34929d0f4ebe69604453a7c474787628"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/and/0.3-0.8m/0.02",
+      "source": "faro_rho030_ambient1",
+      "method": "and",
+      "band": "0.3-0.8m",
+      "tie_index": 42,
+      "threshold": 0.04816668033599858,
+      "threshold_kind": "finite",
+      "W": 38,
+      "F": 4,
+      "U": 0,
+      "target": 0.02,
+      "status": "ADOPTED",
+      "POS_denominator": 260,
+      "FREE_denominator": 220,
+      "UNKNOWN_denominator": 51,
+      "F_fraction": 0.01818181818181818,
+      "W_fraction": 0.14615384615384616,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__and__0.3-0.8m.json",
+      "all_ties_sha256": "6cac9e449079ba57b2fbfeb59d191cff6b001b257cbb8394314e3e894f5942de"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/logit/0.8-1.5m/0.05",
+      "source": "faro_rho030_ambient1",
+      "method": "logit",
+      "band": "0.8-1.5m",
+      "tie_index": 229,
+      "threshold": 0.9875199355017447,
+      "threshold_kind": "finite",
+      "W": 222,
+      "F": 1,
+      "U": 6,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 318,
+      "FREE_denominator": 29,
+      "UNKNOWN_denominator": 184,
+      "F_fraction": 0.034482758620689655,
+      "W_fraction": 0.6981132075471698,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__logit__0.8-1.5m.json",
+      "all_ties_sha256": "5006673416ba2205889d24ef9735dd0b9741413e6e8bbb247e34b1c4f11a493f"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/hgb/0.8-1.5m/0.05",
+      "source": "faro_rho030_ambient1",
+      "method": "hgb",
+      "band": "0.8-1.5m",
+      "tie_index": 174,
+      "threshold": 0.996201696560641,
+      "threshold_kind": "finite",
+      "W": 256,
+      "F": 1,
+      "U": 9,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 318,
+      "FREE_denominator": 29,
+      "UNKNOWN_denominator": 184,
+      "F_fraction": 0.034482758620689655,
+      "W_fraction": 0.8050314465408805,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__hgb__0.8-1.5m.json",
+      "all_ties_sha256": "eb022fd483348fd3b7e399afd1c33f703a5566753724073339b7149571915b66"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/tof/0.8-1.5m/0.05",
+      "source": "faro_rho030_ambient1",
+      "method": "tof",
+      "band": "0.8-1.5m",
+      "tie_index": 27,
+      "threshold": 0.24655173611221737,
+      "threshold_kind": "finite",
+      "W": 27,
+      "F": 0,
+      "U": 0,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 318,
+      "FREE_denominator": 29,
+      "UNKNOWN_denominator": 184,
+      "F_fraction": 0.0,
+      "W_fraction": 0.08490566037735849,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__tof__0.8-1.5m.json",
+      "all_ties_sha256": "6b3a09f6a61c5454370e6595f43fbcc74f77e149ebaf9c80f682ca8b16af01f3"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/rgb/0.8-1.5m/0.05",
+      "source": "faro_rho030_ambient1",
+      "method": "rgb",
+      "band": "0.8-1.5m",
+      "tie_index": 309,
+      "threshold": 0.05219049453735347,
+      "threshold_kind": "finite",
+      "W": 269,
+      "F": 1,
+      "U": 104,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 318,
+      "FREE_denominator": 29,
+      "UNKNOWN_denominator": 184,
+      "F_fraction": 0.034482758620689655,
+      "W_fraction": 0.8459119496855346,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__rgb__0.8-1.5m.json",
+      "all_ties_sha256": "6eccd4ad86ea3b34d24a5f1d34ffbb3374306430b230a4439c836474d43abffc"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/or/0.8-1.5m/0.05",
+      "source": "faro_rho030_ambient1",
+      "method": "or",
+      "band": "0.8-1.5m",
+      "tie_index": 200,
+      "threshold": 0.24655173611221737,
+      "threshold_kind": "finite",
+      "W": 188,
+      "F": 0,
+      "U": 66,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 318,
+      "FREE_denominator": 29,
+      "UNKNOWN_denominator": 184,
+      "F_fraction": 0.0,
+      "W_fraction": 0.5911949685534591,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__or__0.8-1.5m.json",
+      "all_ties_sha256": "5014ed01972a5f395217e0e1bc35fb011b3d3e3fd109c910083f3ca6c09220e6"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/and/0.8-1.5m/0.05",
+      "source": "faro_rho030_ambient1",
+      "method": "and",
+      "band": "0.8-1.5m",
+      "tie_index": 145,
+      "threshold": -0.08324979375285635,
+      "threshold_kind": "finite",
+      "W": 116,
+      "F": 1,
+      "U": 28,
+      "target": 0.05,
+      "status": "ADOPTED",
+      "POS_denominator": 318,
+      "FREE_denominator": 29,
+      "UNKNOWN_denominator": 184,
+      "F_fraction": 0.034482758620689655,
+      "W_fraction": 0.36477987421383645,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__and__0.8-1.5m.json",
+      "all_ties_sha256": "b6f73dd917f640d63aaee141b3e1146cd8aa3c9fa969146a6cdd97ee01be135d"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/logit/1.5-3m/0.10",
+      "source": "faro_rho030_ambient1",
+      "method": "logit",
+      "band": "1.5-3m",
+      "tie_index": 0,
+      "threshold": null,
+      "threshold_kind": "positive_infinity",
+      "W": 0,
+      "F": 0,
+      "U": 0,
+      "target": 0.1,
+      "status": "NOT_CALIBRATABLE",
+      "POS_denominator": 206,
+      "FREE_denominator": 0,
+      "UNKNOWN_denominator": 325,
+      "F_fraction": null,
+      "W_fraction": 0.0,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__logit__1.5-3m.json",
+      "all_ties_sha256": "e9e2b3d02b54b48de19bde5ba9294f30f86c3b55990325ee6f31771f4ecb8280"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/hgb/1.5-3m/0.10",
+      "source": "faro_rho030_ambient1",
+      "method": "hgb",
+      "band": "1.5-3m",
+      "tie_index": 0,
+      "threshold": null,
+      "threshold_kind": "positive_infinity",
+      "W": 0,
+      "F": 0,
+      "U": 0,
+      "target": 0.1,
+      "status": "NOT_CALIBRATABLE",
+      "POS_denominator": 206,
+      "FREE_denominator": 0,
+      "UNKNOWN_denominator": 325,
+      "F_fraction": null,
+      "W_fraction": 0.0,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__hgb__1.5-3m.json",
+      "all_ties_sha256": "384f23c24b97140bc838002eab9a0cc33597ba83b4579b10c00b2887dbfa91d6"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/tof/1.5-3m/0.10",
+      "source": "faro_rho030_ambient1",
+      "method": "tof",
+      "band": "1.5-3m",
+      "tie_index": 0,
+      "threshold": null,
+      "threshold_kind": "positive_infinity",
+      "W": 0,
+      "F": 0,
+      "U": 0,
+      "target": 0.1,
+      "status": "NOT_CALIBRATABLE",
+      "POS_denominator": 206,
+      "FREE_denominator": 0,
+      "UNKNOWN_denominator": 325,
+      "F_fraction": null,
+      "W_fraction": 0.0,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__tof__1.5-3m.json",
+      "all_ties_sha256": "d6586cfe3c251fb811e6d0611fa4f3b0144e21d48cb7cc4e91fa331cf774bff0"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/rgb/1.5-3m/0.10",
+      "source": "faro_rho030_ambient1",
+      "method": "rgb",
+      "band": "1.5-3m",
+      "tie_index": 0,
+      "threshold": null,
+      "threshold_kind": "positive_infinity",
+      "W": 0,
+      "F": 0,
+      "U": 0,
+      "target": 0.1,
+      "status": "NOT_CALIBRATABLE",
+      "POS_denominator": 206,
+      "FREE_denominator": 0,
+      "UNKNOWN_denominator": 325,
+      "F_fraction": null,
+      "W_fraction": 0.0,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__rgb__1.5-3m.json",
+      "all_ties_sha256": "022b92dd2d22c5951f8a97e48ef7ed24990691da77744bea9981f1d6f52b1ab0"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/or/1.5-3m/0.10",
+      "source": "faro_rho030_ambient1",
+      "method": "or",
+      "band": "1.5-3m",
+      "tie_index": 0,
+      "threshold": null,
+      "threshold_kind": "positive_infinity",
+      "W": 0,
+      "F": 0,
+      "U": 0,
+      "target": 0.1,
+      "status": "NOT_CALIBRATABLE",
+      "POS_denominator": 206,
+      "FREE_denominator": 0,
+      "UNKNOWN_denominator": 325,
+      "F_fraction": null,
+      "W_fraction": 0.0,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__or__1.5-3m.json",
+      "all_ties_sha256": "10355757d2318ac0caad8474ce872f7b2719ee2b60a803ca5608addc04ca6b32"
+    },
+    {
+      "cell_id": "faro_rho030_ambient1/and/1.5-3m/0.10",
+      "source": "faro_rho030_ambient1",
+      "method": "and",
+      "band": "1.5-3m",
+      "tie_index": 0,
+      "threshold": null,
+      "threshold_kind": "positive_infinity",
+      "W": 0,
+      "F": 0,
+      "U": 0,
+      "target": 0.1,
+      "status": "NOT_CALIBRATABLE",
+      "POS_denominator": 206,
+      "FREE_denominator": 0,
+      "UNKNOWN_denominator": 325,
+      "F_fraction": null,
+      "W_fraction": 0.0,
+      "all_ties_path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\cal\\ties\\faro_rho030_ambient1__and__1.5-3m.json",
+      "all_ties_sha256": "a7ce13eb28c145f3dfe5f2f264c679aa2862f6cc6bae97e2c9eede98d3c473f3"
+    }
+  ],
+  "eval_summary": {
+    "metrics": [
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "logit",
+        "cal_status": "ADOPTED",
+        "W": 52,
+        "POS": 303,
+        "F": 0,
+        "FREE": 211,
+        "U": 0,
+        "UNKNOWN": 80,
+        "W_rate": 0.1716171617161716,
+        "F_rate": 0.0,
+        "W_rate_CI": {
+          "lower": 0.04756493506493507,
+          "upper": 0.20050761421319796,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "hgb",
+        "cal_status": "ADOPTED",
+        "W": 14,
+        "POS": 303,
+        "F": 0,
+        "FREE": 211,
+        "U": 0,
+        "UNKNOWN": 80,
+        "W_rate": 0.0462046204620462,
+        "F_rate": 0.0,
+        "W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.07333333333333333,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "tof",
+        "cal_status": "ADOPTED",
+        "W": 0,
+        "POS": 303,
+        "F": 0,
+        "FREE": 211,
+        "U": 0,
+        "UNKNOWN": 80,
+        "W_rate": 0.0,
+        "F_rate": 0.0,
+        "W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "rgb",
+        "cal_status": "ADOPTED",
+        "W": 162,
+        "POS": 303,
+        "F": 0,
+        "FREE": 211,
+        "U": 4,
+        "UNKNOWN": 80,
+        "W_rate": 0.5346534653465347,
+        "F_rate": 0.0,
+        "W_rate_CI": {
+          "lower": 0.29805253623188405,
+          "upper": 0.6632826994434136,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "or",
+        "cal_status": "ADOPTED",
+        "W": 29,
+        "POS": 303,
+        "F": 0,
+        "FREE": 211,
+        "U": 0,
+        "UNKNOWN": 80,
+        "W_rate": 0.09570957095709572,
+        "F_rate": 0.0,
+        "W_rate_CI": {
+          "lower": 0.034010722933241096,
+          "upper": 0.16911764705882354,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "and",
+        "cal_status": "ADOPTED",
+        "W": 77,
+        "POS": 303,
+        "F": 0,
+        "FREE": 211,
+        "U": 0,
+        "UNKNOWN": 80,
+        "W_rate": 0.25412541254125415,
+        "F_rate": 0.0,
+        "W_rate_CI": {
+          "lower": 0.13513513513513514,
+          "upper": 0.2984106080739053,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "logit",
+        "cal_status": "ADOPTED",
+        "W": 234,
+        "POS": 284,
+        "F": 0,
+        "FREE": 22,
+        "U": 9,
+        "UNKNOWN": 288,
+        "W_rate": 0.823943661971831,
+        "F_rate": 0.0,
+        "W_rate_CI": {
+          "lower": 0.7564469914040115,
+          "upper": 0.9394030668127054,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 1998,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "hgb",
+        "cal_status": "ADOPTED",
+        "W": 234,
+        "POS": 284,
+        "F": 0,
+        "FREE": 22,
+        "U": 12,
+        "UNKNOWN": 288,
+        "W_rate": 0.823943661971831,
+        "F_rate": 0.0,
+        "W_rate_CI": {
+          "lower": 0.7709142774608219,
+          "upper": 0.9070796460176991,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 1998,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "tof",
+        "cal_status": "ADOPTED",
+        "W": 109,
+        "POS": 284,
+        "F": 4,
+        "FREE": 22,
+        "U": 0,
+        "UNKNOWN": 288,
+        "W_rate": 0.38380281690140844,
+        "F_rate": 0.18181818181818182,
+        "W_rate_CI": {
+          "lower": 0.2398409370457341,
+          "upper": 0.5029977780288479,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.3076923076923077,
+          "valid_replicates": 1998,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "rgb",
+        "cal_status": "ADOPTED",
+        "W": 177,
+        "POS": 284,
+        "F": 0,
+        "FREE": 22,
+        "U": 281,
+        "UNKNOWN": 288,
+        "W_rate": 0.6232394366197183,
+        "F_rate": 0.0,
+        "W_rate_CI": {
+          "lower": 0.4937480221518988,
+          "upper": 0.8147256891686563,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 1998,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "or",
+        "cal_status": "ADOPTED",
+        "W": 171,
+        "POS": 284,
+        "F": 4,
+        "FREE": 22,
+        "U": 159,
+        "UNKNOWN": 288,
+        "W_rate": 0.602112676056338,
+        "F_rate": 0.18181818181818182,
+        "W_rate_CI": {
+          "lower": 0.4814727463312369,
+          "upper": 0.6687116564417178,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.3076923076923077,
+          "valid_replicates": 1998,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "and",
+        "cal_status": "ADOPTED",
+        "W": 197,
+        "POS": 284,
+        "F": 0,
+        "FREE": 22,
+        "U": 49,
+        "UNKNOWN": 288,
+        "W_rate": 0.6936619718309859,
+        "F_rate": 0.0,
+        "W_rate_CI": {
+          "lower": 0.5539940037274127,
+          "upper": 0.8962904280111407,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 1998,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "logit",
+        "cal_status": "NOT_CALIBRATABLE",
+        "W": 0,
+        "POS": 129,
+        "F": 0,
+        "FREE": 0,
+        "U": 0,
+        "UNKNOWN": 465,
+        "W_rate": 0.0,
+        "F_rate": null,
+        "W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": null,
+          "upper": null,
+          "valid_replicates": 0,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "hgb",
+        "cal_status": "NOT_CALIBRATABLE",
+        "W": 0,
+        "POS": 129,
+        "F": 0,
+        "FREE": 0,
+        "U": 0,
+        "UNKNOWN": 465,
+        "W_rate": 0.0,
+        "F_rate": null,
+        "W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": null,
+          "upper": null,
+          "valid_replicates": 0,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "tof",
+        "cal_status": "NOT_CALIBRATABLE",
+        "W": 0,
+        "POS": 129,
+        "F": 0,
+        "FREE": 0,
+        "U": 0,
+        "UNKNOWN": 465,
+        "W_rate": 0.0,
+        "F_rate": null,
+        "W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": null,
+          "upper": null,
+          "valid_replicates": 0,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "rgb",
+        "cal_status": "NOT_CALIBRATABLE",
+        "W": 0,
+        "POS": 129,
+        "F": 0,
+        "FREE": 0,
+        "U": 0,
+        "UNKNOWN": 465,
+        "W_rate": 0.0,
+        "F_rate": null,
+        "W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": null,
+          "upper": null,
+          "valid_replicates": 0,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "or",
+        "cal_status": "NOT_CALIBRATABLE",
+        "W": 0,
+        "POS": 129,
+        "F": 0,
+        "FREE": 0,
+        "U": 0,
+        "UNKNOWN": 465,
+        "W_rate": 0.0,
+        "F_rate": null,
+        "W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": null,
+          "upper": null,
+          "valid_replicates": 0,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "and",
+        "cal_status": "NOT_CALIBRATABLE",
+        "W": 0,
+        "POS": 129,
+        "F": 0,
+        "FREE": 0,
+        "U": 0,
+        "UNKNOWN": 465,
+        "W_rate": 0.0,
+        "F_rate": null,
+        "W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": null,
+          "upper": null,
+          "valid_replicates": 0,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "logit",
+        "cal_status": "ADOPTED",
+        "W": 747,
+        "POS": 1110,
+        "F": 43,
+        "FREE": 2139,
+        "U": 146,
+        "UNKNOWN": 207,
+        "W_rate": 0.672972972972973,
+        "F_rate": 0.020102851799906497,
+        "W_rate_CI": {
+          "lower": 0.4808711287946898,
+          "upper": 0.8034698421127883,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.007824364668590076,
+          "upper": 0.034834884277869946,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "hgb",
+        "cal_status": "ADOPTED",
+        "W": 748,
+        "POS": 1110,
+        "F": 10,
+        "FREE": 2139,
+        "U": 118,
+        "UNKNOWN": 207,
+        "W_rate": 0.6738738738738739,
+        "F_rate": 0.004675081813931743,
+        "W_rate_CI": {
+          "lower": 0.4825159175751815,
+          "upper": 0.8050836033136918,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0009730713733846529,
+          "upper": 0.009379204592610832,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "tof",
+        "cal_status": "ADOPTED",
+        "W": 611,
+        "POS": 1110,
+        "F": 70,
+        "FREE": 2139,
+        "U": 28,
+        "UNKNOWN": 207,
+        "W_rate": 0.5504504504504505,
+        "F_rate": 0.03272557269752221,
+        "W_rate_CI": {
+          "lower": 0.33604812295288483,
+          "upper": 0.6960577363095539,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.016006616671980337,
+          "upper": 0.06045421925036985,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "rgb",
+        "cal_status": "ADOPTED",
+        "W": 543,
+        "POS": 1110,
+        "F": 31,
+        "FREE": 2139,
+        "U": 45,
+        "UNKNOWN": 207,
+        "W_rate": 0.4891891891891892,
+        "F_rate": 0.014492753623188406,
+        "W_rate_CI": {
+          "lower": 0.31636288979572347,
+          "upper": 0.6463034696475014,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.002576464581288852,
+          "upper": 0.026377771285602182,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "or",
+        "cal_status": "ADOPTED",
+        "W": 675,
+        "POS": 1110,
+        "F": 45,
+        "FREE": 2139,
+        "U": 49,
+        "UNKNOWN": 207,
+        "W_rate": 0.6081081081081081,
+        "F_rate": 0.021037868162692847,
+        "W_rate_CI": {
+          "lower": 0.44072703062583224,
+          "upper": 0.7315785218720601,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.008212062107869518,
+          "upper": 0.03564335340954329,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "and",
+        "cal_status": "ADOPTED",
+        "W": 588,
+        "POS": 1110,
+        "F": 58,
+        "FREE": 2139,
+        "U": 26,
+        "UNKNOWN": 207,
+        "W_rate": 0.5297297297297298,
+        "F_rate": 0.027115474520804116,
+        "W_rate_CI": {
+          "lower": 0.3785813780454042,
+          "upper": 0.6480163573388534,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.009568939465175874,
+          "upper": 0.05393052943576564,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "logit",
+        "cal_status": "ADOPTED",
+        "W": 1767,
+        "POS": 1923,
+        "F": 54,
+        "FREE": 959,
+        "U": 425,
+        "UNKNOWN": 574,
+        "W_rate": 0.9188767550702028,
+        "F_rate": 0.056308654848800835,
+        "W_rate_CI": {
+          "lower": 0.8759306417304694,
+          "upper": 0.9528613801452784,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.017499658469945358,
+          "upper": 0.12385347164303587,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "hgb",
+        "cal_status": "ADOPTED",
+        "W": 1790,
+        "POS": 1923,
+        "F": 43,
+        "FREE": 959,
+        "U": 411,
+        "UNKNOWN": 574,
+        "W_rate": 0.9308372334893396,
+        "F_rate": 0.04483837330552659,
+        "W_rate_CI": {
+          "lower": 0.8945127707938444,
+          "upper": 0.9609524575103354,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.011299235673361004,
+          "upper": 0.1015785603129924,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "tof",
+        "cal_status": "ADOPTED",
+        "W": 1382,
+        "POS": 1923,
+        "F": 50,
+        "FREE": 959,
+        "U": 24,
+        "UNKNOWN": 574,
+        "W_rate": 0.71866874674987,
+        "F_rate": 0.05213764337851929,
+        "W_rate_CI": {
+          "lower": 0.6331631781415872,
+          "upper": 0.7792433588851903,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.01136203133025167,
+          "upper": 0.12740451369757336,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "rgb",
+        "cal_status": "ADOPTED",
+        "W": 1349,
+        "POS": 1923,
+        "F": 94,
+        "FREE": 959,
+        "U": 524,
+        "UNKNOWN": 574,
+        "W_rate": 0.7015080603224129,
+        "F_rate": 0.09801876955161627,
+        "W_rate_CI": {
+          "lower": 0.5593398952877436,
+          "upper": 0.827711834367244,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.030639762751671414,
+          "upper": 0.2119270352203385,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "or",
+        "cal_status": "ADOPTED",
+        "W": 1537,
+        "POS": 1923,
+        "F": 75,
+        "FREE": 959,
+        "U": 489,
+        "UNKNOWN": 574,
+        "W_rate": 0.7992719708788352,
+        "F_rate": 0.07820646506777894,
+        "W_rate_CI": {
+          "lower": 0.7177118430792007,
+          "upper": 0.8593765252169198,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.0175930203493173,
+          "upper": 0.18354382547721068,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "and",
+        "cal_status": "ADOPTED",
+        "W": 1286,
+        "POS": 1923,
+        "F": 125,
+        "FREE": 959,
+        "U": 252,
+        "UNKNOWN": 574,
+        "W_rate": 0.6687467498699948,
+        "F_rate": 0.13034410844629823,
+        "W_rate_CI": {
+          "lower": 0.5733617176128093,
+          "upper": 0.7662153836176147,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.046106670743070115,
+          "upper": 0.2701875059403117,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "logit",
+        "cal_status": "ADOPTED",
+        "W": 2093,
+        "POS": 2108,
+        "F": 96,
+        "FREE": 270,
+        "U": 870,
+        "UNKNOWN": 1078,
+        "W_rate": 0.9928842504743833,
+        "F_rate": 0.35555555555555557,
+        "W_rate_CI": {
+          "lower": 0.9837832541387973,
+          "upper": 0.9988981473072382,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.23472641403979433,
+          "upper": 0.5530788910042833,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "hgb",
+        "cal_status": "ADOPTED",
+        "W": 2087,
+        "POS": 2108,
+        "F": 79,
+        "FREE": 270,
+        "U": 839,
+        "UNKNOWN": 1078,
+        "W_rate": 0.9900379506641366,
+        "F_rate": 0.29259259259259257,
+        "W_rate_CI": {
+          "lower": 0.9819022708467686,
+          "upper": 0.9963669980327201,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.1728019680099742,
+          "upper": 0.4797700821690557,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "tof",
+        "cal_status": "ADOPTED",
+        "W": 1725,
+        "POS": 2108,
+        "F": 11,
+        "FREE": 270,
+        "U": 807,
+        "UNKNOWN": 1078,
+        "W_rate": 0.8183111954459203,
+        "F_rate": 0.040740740740740744,
+        "W_rate_CI": {
+          "lower": 0.7436259706334056,
+          "upper": 0.8926922860148794,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.020201292463540303,
+          "upper": 0.07251957837281968,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "rgb",
+        "cal_status": "ADOPTED",
+        "W": 1600,
+        "POS": 2108,
+        "F": 39,
+        "FREE": 270,
+        "U": 416,
+        "UNKNOWN": 1078,
+        "W_rate": 0.7590132827324478,
+        "F_rate": 0.14444444444444443,
+        "W_rate_CI": {
+          "lower": 0.6601181424805699,
+          "upper": 0.85421094828909,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.013510123836210794,
+          "upper": 0.2878523684975297,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "or",
+        "cal_status": "ADOPTED",
+        "W": 1733,
+        "POS": 2108,
+        "F": 39,
+        "FREE": 270,
+        "U": 416,
+        "UNKNOWN": 1078,
+        "W_rate": 0.8221062618595826,
+        "F_rate": 0.14444444444444443,
+        "W_rate_CI": {
+          "lower": 0.7395178602834447,
+          "upper": 0.901068999393511,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.013510123836210794,
+          "upper": 0.2878523684975297,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "and",
+        "cal_status": "ADOPTED",
+        "W": 1725,
+        "POS": 2108,
+        "F": 10,
+        "FREE": 270,
+        "U": 807,
+        "UNKNOWN": 1078,
+        "W_rate": 0.8183111954459203,
+        "F_rate": 0.037037037037037035,
+        "W_rate_CI": {
+          "lower": 0.7436259706334056,
+          "upper": 0.8926922860148794,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "F_rate_CI": {
+          "lower": 0.01538022813688213,
+          "upper": 0.07024849229394683,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        }
+      }
+    ],
+    "paired": [
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "logit",
+        "comparator": "rgb",
+        "comparator_role": "best_single",
+        "rescue": 9,
+        "loss": 119,
+        "delta_W": -110,
+        "POS": 303,
+        "delta_W_rate": -0.36303630363036304,
+        "delta_W_CI": {
+          "lower": -250.0,
+          "upper": -17.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": -0.47333333333333333,
+          "upper": -0.21100917431192662,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 0,
+        "UNKNOWN_added": 0,
+        "UNKNOWN_removed": 4
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "logit",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 30,
+        "loss": 7,
+        "delta_W": 23,
+        "POS": 303,
+        "delta_W_rate": 0.07590759075907591,
+        "delta_W_CI": {
+          "lower": -6.0,
+          "upper": 73.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": -0.04081632653061224,
+          "upper": 0.155902004454343,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 0,
+        "UNKNOWN_added": 0,
+        "UNKNOWN_removed": 0
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "hgb",
+        "comparator": "rgb",
+        "comparator_role": "best_single",
+        "rescue": 2,
+        "loss": 150,
+        "delta_W": -148,
+        "POS": 303,
+        "delta_W_rate": -0.4884488448844885,
+        "delta_W_CI": {
+          "lower": -331.0,
+          "upper": -23.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": -0.590922077922078,
+          "upper": -0.28845858895705523,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 0,
+        "UNKNOWN_added": 0,
+        "UNKNOWN_removed": 4
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "hgb",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 13,
+        "loss": 28,
+        "delta_W": -15,
+        "POS": 303,
+        "delta_W_rate": -0.04950495049504951,
+        "delta_W_CI": {
+          "lower": -46.0,
+          "upper": 13.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": -0.15121055920024992,
+          "upper": 0.03862699896337992,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 0,
+        "UNKNOWN_added": 0,
+        "UNKNOWN_removed": 0
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "logit",
+        "comparator": "rgb",
+        "comparator_role": "best_single",
+        "rescue": 75,
+        "loss": 18,
+        "delta_W": 57,
+        "POS": 284,
+        "delta_W_rate": 0.2007042253521127,
+        "delta_W_CI": {
+          "lower": 7.0,
+          "upper": 133.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.05028899813978209,
+          "upper": 0.3160123311270286,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 0,
+        "UNKNOWN_added": 5,
+        "UNKNOWN_removed": 277
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "logit",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 73,
+        "loss": 10,
+        "delta_W": 63,
+        "POS": 284,
+        "delta_W_rate": 0.22183098591549297,
+        "delta_W_CI": {
+          "lower": 23.0,
+          "upper": 108.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.11245502767527676,
+          "upper": 0.3970609243697479,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 4,
+        "UNKNOWN_added": 8,
+        "UNKNOWN_removed": 158
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "hgb",
+        "comparator": "rgb",
+        "comparator_role": "best_single",
+        "rescue": 72,
+        "loss": 15,
+        "delta_W": 57,
+        "POS": 284,
+        "delta_W_rate": 0.2007042253521127,
+        "delta_W_CI": {
+          "lower": 6.0,
+          "upper": 139.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.043462732919254655,
+          "upper": 0.29889574726312046,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 0,
+        "UNKNOWN_added": 3,
+        "UNKNOWN_removed": 272
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "hgb",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 82,
+        "loss": 19,
+        "delta_W": 63,
+        "POS": 284,
+        "delta_W_rate": 0.22183098591549297,
+        "delta_W_CI": {
+          "lower": 21.0,
+          "upper": 109.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.13916984157883516,
+          "upper": 0.3333333333333333,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 4,
+        "UNKNOWN_added": 12,
+        "UNKNOWN_removed": 159
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "logit",
+        "comparator": "rgb",
+        "comparator_role": "best_single",
+        "rescue": 0,
+        "loss": 0,
+        "delta_W": 0,
+        "POS": 129,
+        "delta_W_rate": 0.0,
+        "delta_W_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 0,
+        "UNKNOWN_added": 0,
+        "UNKNOWN_removed": 0
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "logit",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 0,
+        "loss": 0,
+        "delta_W": 0,
+        "POS": 129,
+        "delta_W_rate": 0.0,
+        "delta_W_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 0,
+        "UNKNOWN_added": 0,
+        "UNKNOWN_removed": 0
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "hgb",
+        "comparator": "rgb",
+        "comparator_role": "best_single",
+        "rescue": 0,
+        "loss": 0,
+        "delta_W": 0,
+        "POS": 129,
+        "delta_W_rate": 0.0,
+        "delta_W_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 0,
+        "UNKNOWN_added": 0,
+        "UNKNOWN_removed": 0
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "hgb",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 0,
+        "loss": 0,
+        "delta_W": 0,
+        "POS": 129,
+        "delta_W_rate": 0.0,
+        "delta_W_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.0,
+          "upper": 0.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 0,
+        "FREE_removed": 0,
+        "UNKNOWN_added": 0,
+        "UNKNOWN_removed": 0
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "logit",
+        "comparator": "tof",
+        "comparator_role": "best_single",
+        "rescue": 199,
+        "loss": 63,
+        "delta_W": 136,
+        "POS": 1110,
+        "delta_W_rate": 0.12252252252252252,
+        "delta_W_CI": {
+          "lower": 37.0,
+          "upper": 235.02499999999986,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.03438675058500767,
+          "upper": 0.2301258998935659,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 37,
+        "FREE_removed": 64,
+        "UNKNOWN_added": 131,
+        "UNKNOWN_removed": 13
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "logit",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 172,
+        "loss": 100,
+        "delta_W": 72,
+        "POS": 1110,
+        "delta_W_rate": 0.06486486486486487,
+        "delta_W_CI": {
+          "lower": -59.0,
+          "upper": 190.02499999999986,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": -0.06728529171766626,
+          "upper": 0.1524521405586904,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 38,
+        "FREE_removed": 40,
+        "UNKNOWN_added": 109,
+        "UNKNOWN_removed": 12
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "hgb",
+        "comparator": "tof",
+        "comparator_role": "best_single",
+        "rescue": 209,
+        "loss": 72,
+        "delta_W": 137,
+        "POS": 1110,
+        "delta_W_rate": 0.12342342342342343,
+        "delta_W_CI": {
+          "lower": 36.975,
+          "upper": 224.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.031655722645617855,
+          "upper": 0.23953942781060458,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 8,
+        "FREE_removed": 68,
+        "UNKNOWN_added": 104,
+        "UNKNOWN_removed": 14
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "hgb",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 132,
+        "loss": 59,
+        "delta_W": 73,
+        "POS": 1110,
+        "delta_W_rate": 0.06576576576576576,
+        "delta_W_CI": {
+          "lower": -18.0,
+          "upper": 167.02499999999986,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": -0.018880097382836275,
+          "upper": 0.1339117981007432,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 1,
+        "FREE_removed": 36,
+        "UNKNOWN_added": 78,
+        "UNKNOWN_removed": 9
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "logit",
+        "comparator": "tof",
+        "comparator_role": "best_single",
+        "rescue": 407,
+        "loss": 22,
+        "delta_W": 385,
+        "POS": 1923,
+        "delta_W_rate": 0.2002080083203328,
+        "delta_W_CI": {
+          "lower": 267.0,
+          "upper": 520.0249999999999,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.15016953951300407,
+          "upper": 0.27495188705222656,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 23,
+        "FREE_removed": 19,
+        "UNKNOWN_added": 402,
+        "UNKNOWN_removed": 1
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "logit",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 267,
+        "loss": 37,
+        "delta_W": 230,
+        "POS": 1923,
+        "delta_W_rate": 0.11960478419136765,
+        "delta_W_CI": {
+          "lower": 110.0,
+          "upper": 358.02499999999986,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.06065200275677488,
+          "upper": 0.18089465681846714,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 24,
+        "FREE_removed": 45,
+        "UNKNOWN_added": 63,
+        "UNKNOWN_removed": 127
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "hgb",
+        "comparator": "tof",
+        "comparator_role": "best_single",
+        "rescue": 430,
+        "loss": 22,
+        "delta_W": 408,
+        "POS": 1923,
+        "delta_W_rate": 0.2121684867394696,
+        "delta_W_CI": {
+          "lower": 282.975,
+          "upper": 542.0249999999999,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.16015790433032273,
+          "upper": 0.2922269551403707,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 19,
+        "FREE_removed": 26,
+        "UNKNOWN_added": 388,
+        "UNKNOWN_removed": 1
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "hgb",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 283,
+        "loss": 30,
+        "delta_W": 253,
+        "POS": 1923,
+        "delta_W_rate": 0.1315652626105044,
+        "delta_W_CI": {
+          "lower": 118.0,
+          "upper": 390.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.06746014450643112,
+          "upper": 0.20055957789315132,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 17,
+        "FREE_removed": 49,
+        "UNKNOWN_added": 54,
+        "UNKNOWN_removed": 132
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "logit",
+        "comparator": "tof",
+        "comparator_role": "best_single",
+        "rescue": 372,
+        "loss": 4,
+        "delta_W": 368,
+        "POS": 2108,
+        "delta_W_rate": 0.174573055028463,
+        "delta_W_CI": {
+          "lower": 171.975,
+          "upper": 605.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.09784765764369917,
+          "upper": 0.25183003746275784,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 88,
+        "FREE_removed": 3,
+        "UNKNOWN_added": 67,
+        "UNKNOWN_removed": 4
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "logit",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 366,
+        "loss": 6,
+        "delta_W": 360,
+        "POS": 2108,
+        "delta_W_rate": 0.17077798861480076,
+        "delta_W_CI": {
+          "lower": 161.975,
+          "upper": 620.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.08870381156466614,
+          "upper": 0.25688941906791435,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 72,
+        "FREE_removed": 15,
+        "UNKNOWN_added": 511,
+        "UNKNOWN_removed": 57
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "hgb",
+        "comparator": "tof",
+        "comparator_role": "best_single",
+        "rescue": 365,
+        "loss": 3,
+        "delta_W": 362,
+        "POS": 2108,
+        "delta_W_rate": 0.17172675521821631,
+        "delta_W_CI": {
+          "lower": 169.95,
+          "upper": 595.0249999999999,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.09630715029225718,
+          "upper": 0.24875591385169307,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 73,
+        "FREE_removed": 5,
+        "UNKNOWN_added": 36,
+        "UNKNOWN_removed": 4
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "hgb",
+        "comparator": "or",
+        "comparator_role": "OR",
+        "rescue": 363,
+        "loss": 9,
+        "delta_W": 354,
+        "POS": 2108,
+        "delta_W_rate": 0.16793168880455409,
+        "delta_W_CI": {
+          "lower": 154.0,
+          "upper": 616.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.08478088984186545,
+          "upper": 0.25528563174184404,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_added": 61,
+        "FREE_removed": 21,
+        "UNKNOWN_added": 496,
+        "UNKNOWN_removed": 73
+      }
+    ],
+    "best_single": [
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "method": "rgb",
+        "rule": "full-eval frozen-point max W; tie smaller F; tie RGB; identity fixed bootstrap"
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "method": "rgb",
+        "rule": "full-eval frozen-point max W; tie smaller F; tie RGB; identity fixed bootstrap"
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "method": "rgb",
+        "rule": "full-eval frozen-point max W; tie smaller F; tie RGB; identity fixed bootstrap"
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.3-0.8m",
+        "method": "tof",
+        "rule": "full-eval frozen-point max W; tie smaller F; tie RGB; identity fixed bootstrap"
+      },
+      {
+        "source": "native_perturbed",
+        "band": "0.8-1.5m",
+        "method": "tof",
+        "rule": "full-eval frozen-point max W; tie smaller F; tie RGB; identity fixed bootstrap"
+      },
+      {
+        "source": "native_perturbed",
+        "band": "1.5-3m",
+        "method": "tof",
+        "rule": "full-eval frozen-point max W; tie smaller F; tie RGB; identity fixed bootstrap"
+      }
+    ],
+    "band_criteria": [
+      {
+        "method": "logit",
+        "band": "0.3-0.8m",
+        "delta_W": 136,
+        "delta_W_CI": {
+          "lower": 37.0,
+          "upper": 235.02499999999986,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.03438675058500767,
+          "upper": 0.2301258998935659,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_rate": 0.020102851799906497,
+        "FREE_tolerance": 0.03,
+        "criteria": {
+          "calibrated": true,
+          "positive_difference": true,
+          "interval_lower_positive": true,
+          "FREE_tolerance_pass": true
+        },
+        "pass_all": true,
+        "confirmatory_primary": false
+      },
+      {
+        "method": "hgb",
+        "band": "0.3-0.8m",
+        "delta_W": 137,
+        "delta_W_CI": {
+          "lower": 36.975,
+          "upper": 224.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.031655722645617855,
+          "upper": 0.23953942781060458,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_rate": 0.004675081813931743,
+        "FREE_tolerance": 0.03,
+        "criteria": {
+          "calibrated": true,
+          "positive_difference": true,
+          "interval_lower_positive": true,
+          "FREE_tolerance_pass": true
+        },
+        "pass_all": true,
+        "confirmatory_primary": false
+      },
+      {
+        "method": "logit",
+        "band": "0.8-1.5m",
+        "delta_W": 385,
+        "delta_W_CI": {
+          "lower": 267.0,
+          "upper": 520.0249999999999,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.15016953951300407,
+          "upper": 0.27495188705222656,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_rate": 0.056308654848800835,
+        "FREE_tolerance": 0.07500000000000001,
+        "criteria": {
+          "calibrated": true,
+          "positive_difference": true,
+          "interval_lower_positive": true,
+          "FREE_tolerance_pass": true
+        },
+        "pass_all": true,
+        "confirmatory_primary": true
+      },
+      {
+        "method": "hgb",
+        "band": "0.8-1.5m",
+        "delta_W": 408,
+        "delta_W_CI": {
+          "lower": 282.975,
+          "upper": 542.0249999999999,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.16015790433032273,
+          "upper": 0.2922269551403707,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_rate": 0.04483837330552659,
+        "FREE_tolerance": 0.07500000000000001,
+        "criteria": {
+          "calibrated": true,
+          "positive_difference": true,
+          "interval_lower_positive": true,
+          "FREE_tolerance_pass": true
+        },
+        "pass_all": true,
+        "confirmatory_primary": false
+      },
+      {
+        "method": "logit",
+        "band": "1.5-3m",
+        "delta_W": 368,
+        "delta_W_CI": {
+          "lower": 171.975,
+          "upper": 605.0,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.09784765764369917,
+          "upper": 0.25183003746275784,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_rate": 0.35555555555555557,
+        "FREE_tolerance": 0.15000000000000002,
+        "criteria": {
+          "calibrated": true,
+          "positive_difference": true,
+          "interval_lower_positive": true,
+          "FREE_tolerance_pass": false
+        },
+        "pass_all": false,
+        "confirmatory_primary": false
+      },
+      {
+        "method": "hgb",
+        "band": "1.5-3m",
+        "delta_W": 362,
+        "delta_W_CI": {
+          "lower": 169.95,
+          "upper": 595.0249999999999,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "delta_W_rate_CI": {
+          "lower": 0.09630715029225718,
+          "upper": 0.24875591385169307,
+          "valid_replicates": 2000,
+          "total_replicates": 2000
+        },
+        "FREE_rate": 0.29259259259259257,
+        "FREE_tolerance": 0.15000000000000002,
+        "criteria": {
+          "calibrated": true,
+          "positive_difference": true,
+          "interval_lower_positive": true,
+          "FREE_tolerance_pass": false
+        },
+        "pass_all": false,
+        "confirmatory_primary": false
+      }
+    ],
+    "primary": {
+      "method": "logit",
+      "band": "0.8-1.5m",
+      "delta_W": 385,
+      "delta_W_CI": {
+        "lower": 267.0,
+        "upper": 520.0249999999999,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "delta_W_rate_CI": {
+        "lower": 0.15016953951300407,
+        "upper": 0.27495188705222656,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "FREE_rate": 0.056308654848800835,
+      "FREE_tolerance": 0.07500000000000001,
+      "criteria": {
+        "calibrated": true,
+        "positive_difference": true,
+        "interval_lower_positive": true,
+        "FREE_tolerance_pass": true
+      },
+      "pass_all": true,
+      "confirmatory_primary": true
+    },
+    "result": "query级融合在中带得到确认（真实RGB+半合成ToF）",
+    "faro_RGB_saturation": [
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.3-0.8m",
+        "POS": 303,
+        "RGB_W": 162,
+        "RGB_W_rate": 0.5346534653465347,
+        "RGB_unwitnessed_POS": 141,
+        "RGB_cal_status": "ADOPTED",
+        "saturated_descriptor": false,
+        "classification": "Predeclared purely descriptive saturation at RGB W/POS>=.95"
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "0.8-1.5m",
+        "POS": 284,
+        "RGB_W": 177,
+        "RGB_W_rate": 0.6232394366197183,
+        "RGB_unwitnessed_POS": 107,
+        "RGB_cal_status": "ADOPTED",
+        "saturated_descriptor": false,
+        "classification": "Predeclared purely descriptive saturation at RGB W/POS>=.95"
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "band": "1.5-3m",
+        "POS": 129,
+        "RGB_W": 0,
+        "RGB_W_rate": 0.0,
+        "RGB_unwitnessed_POS": 129,
+        "RGB_cal_status": "NOT_CALIBRATABLE",
+        "saturated_descriptor": null,
+        "classification": "Predeclared purely descriptive saturation at RGB W/POS>=.95"
+      }
+    ],
+    "FARO_role": "Independent-geometry descriptive only; excluded from confirmation",
+    "bootstrap": {
+      "unit": "visit",
+      "visit_ids": [
+        "421657",
+        "422007",
+        "422011",
+        "422134",
+        "422148",
+        "422217",
+        "422521",
+        "422523",
+        "422535",
+        "422539",
+        "422569",
+        "422589"
+      ],
+      "replicates": 2000,
+      "seed": 20261011,
+      "comparator": "fixed full-eval best single identity",
+      "zero_denominator": "excluded, valid count retained"
+    },
+    "witness_contract": "query alert AND POS; same definition for all methods; not old pixel-overlap W"
+  },
+  "posteval_audit": {
+    "status": "PASS",
+    "cached_rows": 12150,
+    "query_decisions_checked": 72900,
+    "metrics_checked": 36,
+    "paired_rows_checked": 24,
+    "bootstrap_replicates": 2000,
+    "visit_clusters": 12,
+    "cache_sha256": "669766473b131dea17b6585e17110d17be7302d740ebdf92c3787c1207420e3c",
+    "summary_sha256": "97deac2e5bea3b370886a088cfaa7bc48c19e06f276fb9ec72a3626039c7e591",
+    "new_eval_reference_reopens": 0,
+    "model_reruns": 0,
+    "primary": {
+      "method": "logit",
+      "band": "0.8-1.5m",
+      "delta_W": 385,
+      "delta_W_CI": {
+        "lower": 267.0,
+        "upper": 520.0249999999999,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "delta_W_rate_CI": {
+        "lower": 0.15016953951300407,
+        "upper": 0.27495188705222656,
+        "valid_replicates": 2000,
+        "total_replicates": 2000
+      },
+      "FREE_rate": 0.056308654848800835,
+      "FREE_tolerance": 0.07500000000000001,
+      "criteria": {
+        "calibrated": true,
+        "positive_difference": true,
+        "interval_lower_positive": true,
+        "FREE_tolerance_pass": true
+      },
+      "pass_all": true,
+      "confirmatory_primary": true
+    },
+    "result": "query级融合在中带得到确认（真实RGB+半合成ToF）",
+    "seconds": 0.4463751000002958,
+    "audit_source_sha256": "1c6f0c1ee05024daad3eaf5279b823ca0633061387648d9d407f912350476572"
+  },
+  "open_lineage_audit": {
+    "status": "PASS",
+    "authorization_precedes_open": true,
+    "preOPEN_hash_verified": true,
+    "model_recipe_and_weights_unchanged": true,
+    "cal_seal_sha256": "a60436076f6f1ade7e42578c2a412b5cc46c3810a319b6972699ba82c5cff5f7",
+    "reference_hash_compared_to_sealed_terminal_only": true,
+    "new_eval_reference_reopens": 0,
+    "model_reruns": 0,
+    "audit_ast_pass": true,
+    "audit_source_sha256": "1c6f0c1ee05024daad3eaf5279b823ca0633061387648d9d407f912350476572"
+  },
+  "input_coverage": [
+    {
+      "role": "all",
+      "arm": "native_perturbed",
+      "K": 0,
+      "frames": 576,
+      "query_count": 15552,
+      "joint_ge52_frames": 137,
+      "geometry_ge52_frames": 210,
+      "pose_valid_frames": 505,
+      "valid_CNH_frames": 505,
+      "mean_subray_coverage": {
+        "N": 576,
+        "min": 0.0,
+        "median": 0.73663330078125,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "zone_subray_coverage": {
+        "N": 36864,
+        "min": 0.0,
+        "median": 1.0,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "joint_pass_zones": {
+        "N": 576,
+        "min": 0.0,
+        "median": 29.5,
+        "p90": 64.0,
+        "p95": 64.0,
+        "max": 64.0
+      }
+    },
+    {
+      "role": "all",
+      "arm": "faro_rho030_ambient1",
+      "K": 0,
+      "frames": 576,
+      "query_count": 15552,
+      "joint_ge52_frames": 125,
+      "geometry_ge52_frames": 315,
+      "pose_valid_frames": 505,
+      "valid_CNH_frames": 505,
+      "mean_subray_coverage": {
+        "N": 576,
+        "min": 0.0,
+        "median": 0.89678955078125,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "zone_subray_coverage": {
+        "N": 36864,
+        "min": 0.0,
+        "median": 1.0,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "joint_pass_zones": {
+        "N": 576,
+        "min": 0.0,
+        "median": 23.0,
+        "p90": 64.0,
+        "p95": 64.0,
+        "max": 64.0
+      }
+    },
+    {
+      "role": "cal",
+      "arm": "native_perturbed",
+      "K": 0,
+      "frames": 192,
+      "query_count": 5184,
+      "joint_ge52_frames": 38,
+      "geometry_ge52_frames": 55,
+      "pose_valid_frames": 168,
+      "valid_CNH_frames": 168,
+      "mean_subray_coverage": {
+        "N": 192,
+        "min": 0.0,
+        "median": 0.72222900390625,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "zone_subray_coverage": {
+        "N": 12288,
+        "min": 0.0,
+        "median": 1.0,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "joint_pass_zones": {
+        "N": 192,
+        "min": 0.0,
+        "median": 30.0,
+        "p90": 64.0,
+        "p95": 64.0,
+        "max": 64.0
+      }
+    },
+    {
+      "role": "cal",
+      "arm": "faro_rho030_ambient1",
+      "K": 0,
+      "frames": 192,
+      "query_count": 5184,
+      "joint_ge52_frames": 59,
+      "geometry_ge52_frames": 108,
+      "pose_valid_frames": 168,
+      "valid_CNH_frames": 168,
+      "mean_subray_coverage": {
+        "N": 192,
+        "min": 0.0,
+        "median": 0.906768798828125,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "zone_subray_coverage": {
+        "N": 12288,
+        "min": 0.0,
+        "median": 1.0,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "joint_pass_zones": {
+        "N": 192,
+        "min": 0.0,
+        "median": 27.0,
+        "p90": 64.0,
+        "p95": 64.0,
+        "max": 64.0
+      }
+    },
+    {
+      "role": "eval",
+      "arm": "native_perturbed",
+      "K": 0,
+      "frames": 384,
+      "query_count": 10368,
+      "joint_ge52_frames": 99,
+      "geometry_ge52_frames": 155,
+      "pose_valid_frames": 337,
+      "valid_CNH_frames": 337,
+      "mean_subray_coverage": {
+        "N": 384,
+        "min": 0.0,
+        "median": 0.7479248046875,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "zone_subray_coverage": {
+        "N": 24576,
+        "min": 0.0,
+        "median": 1.0,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "joint_pass_zones": {
+        "N": 384,
+        "min": 0.0,
+        "median": 29.0,
+        "p90": 64.0,
+        "p95": 64.0,
+        "max": 64.0
+      }
+    },
+    {
+      "role": "eval",
+      "arm": "faro_rho030_ambient1",
+      "K": 0,
+      "frames": 384,
+      "query_count": 10368,
+      "joint_ge52_frames": 66,
+      "geometry_ge52_frames": 207,
+      "pose_valid_frames": 337,
+      "valid_CNH_frames": 337,
+      "mean_subray_coverage": {
+        "N": 384,
+        "min": 0.0,
+        "median": 0.893707275390625,
+        "p90": 0.999371337890625,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "zone_subray_coverage": {
+        "N": 24576,
+        "min": 0.0,
+        "median": 1.0,
+        "p90": 1.0,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "joint_pass_zones": {
+        "N": 384,
+        "min": 0.0,
+        "median": 20.0,
+        "p90": 63.69999999999999,
+        "p95": 64.0,
+        "max": 64.0
+      }
+    }
+  ],
+  "time_residuals": [
+    {
+      "role": "all",
+      "frames": 576,
+      "rgb_minus_grid_abs_s": {
+        "N": 576,
+        "min": 0.0,
+        "median": 0.0010000000038417056,
+        "p90": 0.0020000000076834112,
+        "p95": 0.0020000000076834112,
+        "max": 0.0030000000042491592
+      },
+      "tof_render_minus_grid_s": 0.0,
+      "exact_RGB_grid_frames": 140,
+      "pose_unavailable_frames": 71,
+      "pose_nearest_observation_abs_s": {
+        "N": 505,
+        "min": 5.169997166376561e-06,
+        "median": 0.001912170002469793,
+        "p90": 0.018548993999138473,
+        "p95": 0.018909312010509893,
+        "max": 0.11930666999251116
+      }
+    },
+    {
+      "role": "cal",
+      "frames": 192,
+      "rgb_minus_grid_abs_s": {
+        "N": 192,
+        "min": 0.0,
+        "median": 0.0010000000002037268,
+        "p90": 0.0020000000004074536,
+        "p95": 0.0024499999988620287,
+        "max": 0.0030000000042491592
+      },
+      "tof_render_minus_grid_s": 0.0,
+      "exact_RGB_grid_frames": 45,
+      "pose_unavailable_frames": 24,
+      "pose_nearest_observation_abs_s": {
+        "N": 168,
+        "min": 5.169997166376561e-06,
+        "median": 0.0015321249999260544,
+        "p90": 0.0028266879995499043,
+        "p95": 0.017166489499959425,
+        "max": 0.01783849999992526
+      }
+    },
+    {
+      "role": "eval",
+      "frames": 384,
+      "rgb_minus_grid_abs_s": {
+        "N": 384,
+        "min": 0.0,
+        "median": 0.0010000000038417056,
+        "p90": 0.0020000000076834112,
+        "p95": 0.0020000000076834112,
+        "max": 0.0029999999969732016
+      },
+      "tof_render_minus_grid_s": 0.0,
+      "exact_RGB_grid_frames": 95,
+      "pose_unavailable_frames": 47,
+      "pose_nearest_observation_abs_s": {
+        "N": 337,
+        "min": 5.499983672052622e-06,
+        "median": 0.0023933299962664023,
+        "p90": 0.018786065999302083,
+        "p95": 0.01908316198096145,
+        "max": 0.11930666999251116
+      }
+    }
+  ],
+  "data_resources": {
+    "phases": [
+      {
+        "receipt": "consumed_inventory.json",
+        "command_wall_s": 10.415167499973904
+      },
+      {
+        "receipt": "acquisition_stage_00_terminal.json",
+        "command_wall_s": 297.8034418000025
+      },
+      {
+        "receipt": "acquisition_stage_01_terminal.json",
+        "command_wall_s": 277.57107020000694
+      },
+      {
+        "receipt": "acquisition_terminal.json",
+        "command_wall_s": 130.86075190000702
+      },
+      {
+        "receipt": "native_synthesis_terminal.json",
+        "command_wall_s": 35.52416989998892
+      },
+      {
+        "receipt": "faro_source_terminal.json",
+        "command_wall_s": 331.19944709999254
+      },
+      {
+        "receipt": "faro_source_extension_terminal.json",
+        "command_wall_s": 14.273263099952601
+      },
+      {
+        "receipt": "faro_synthesis_terminal.json",
+        "command_wall_s": 480.1053321000072
+      },
+      {
+        "receipt": "faro_synthesis_continuation_terminal.json",
+        "command_wall_s": 141.18833149998682
+      },
+      {
+        "receipt": "data_input_seal.json",
+        "command_wall_s": 18.040611399977934
+      },
+      {
+        "receipt": "data_input_statistics.json",
+        "command_wall_s": 0.9757576999836601
+      }
+    ],
+    "measured_in_process_wall_s": 1737.95734419988,
+    "measurement_note": "Receipt timers include acquisition/synthesis/seal bodies but exclude Python startup/import and short inspections/binding script. Binding command external wall 2.6169438s; shell reads/inspections are separately disclosed.",
+    "binding_external_wall_s": 2.6169438,
+    "total_download_bytes": 4109932729,
+    "pre_resource_amendment_download_bytes": 3977920664,
+    "post_amendment_increment_bytes": 132012065,
+    "GPU_s": 0,
+    "resource_amendment_commit": "7674cf8a3c38809ec11b3f02591d3b8e84664ad1",
+    "resource_amendment_document_sha256": "66edc4451b7d63c69acf6b4421dab6abe09d7c45cbd81fe6c050b7d9fc7e7ac4",
+    "original_stops_preserved": [
+      "acquisition_stage_00_terminal.json",
+      "acquisition_stage_01_terminal.json",
+      "faro_synthesis_terminal.json",
+      "faro_source_prefix_receipt.json"
+    ],
+    "resources_released": true
+  },
+  "observation_resources": {
+    "status": "COMPLETE",
+    "rgb_frames": 576,
+    "schema_failure_frames": 0,
+    "schema_failure_command_wall_s": 6.1417817,
+    "schema_failure_gpu_process_wall_s": 3.9414187999791466,
+    "successful_rgb_gpu_process_wall_s": 221.51828409999143,
+    "gpu_budget_charged_s": 225.45970289997058,
+    "successful_command_wall_conservative_s": 225.0,
+    "preparation_and_projection_conservative_wall_s": 40.0,
+    "CPU_allocation_s": 400,
+    "GPU_original_allocation_s": 550,
+    "observations_only": true,
+    "reference_file_read": false,
+    "fusion_model_prediction_calls": 0,
+    "owned_process_pid": 6620,
+    "owned_process_absent_verified": true,
+    "resources_released": true,
+    "schema_failure_preserved": "attempt0_schema_failure_rgb_inference",
+    "schema_projection_receipt": "rgb_schema_projection_receipt.json",
+    "feature_command_wall_conservative_s": 62.0,
+    "CPU_command_wall_conservative_s": 333.1417817,
+    "feature_manifest_sha256": "f3f0fbdee64ca1e7f3a08ed35a4ebd560e3102e2addfb27387a3a56e5113cd74",
+    "observation_code_seal_sha256": "b14fcb806e69a34e785a2053feee86f9ed942795cf72ee9e8dc80ce29d605a53",
+    "validation": [
+      {
+        "source": "native_perturbed",
+        "role": "train",
+        "rows": 8640,
+        "finite_X": true,
+        "labels_absent": true
+      },
+      {
+        "source": "native_perturbed",
+        "role": "cal",
+        "rows": 5184,
+        "finite_X": true,
+        "labels_absent": true
+      },
+      {
+        "source": "native_perturbed",
+        "role": "eval",
+        "rows": 10368,
+        "finite_X": true,
+        "labels_absent": true
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "role": "train",
+        "rows": 2592,
+        "finite_X": true,
+        "labels_absent": true
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "role": "cal",
+        "rows": 1593,
+        "finite_X": true,
+        "labels_absent": true
+      },
+      {
+        "source": "faro_rho030_ambient1",
+        "role": "eval",
+        "rows": 1782,
+        "finite_X": true,
+        "labels_absent": true
+      }
+    ],
+    "train_features_exact_prior_train_plus_consumed_eval": true,
+    "roles_disjoint": true,
+    "feature_stage_wall_s": 58.55195310001727,
+    "budget_accounting_note": "Measured RGB official process and feature stage walls; conservative command upper bounds include Python startup and preparation/projection/validation."
+  },
+  "frozen_science_unchanged": true,
+  "model_resources": {
+    "models_command_wall_conservative_s": 70,
+    "GPU_s": 0,
+    "initial_failed_command_wall_s": 5.4871545,
+    "resume_command_wall_s": 4.3080848,
+    "cal_command_wall_s": 8.3064711,
+    "eval_command_wall_s": 4.7584349,
+    "eval_open_count": 1,
+    "weight_cutpoint_changes_after_OPEN": false,
+    "source_sha256": "81abe8137ff17efd2ab5859eb1132ff6b74d5ae8be09f4bce7b10d5861bd5b0e",
+    "derived_outputs": {
+      "artifacts.local\\work\\sync-fusion-confirm-v2-dev-20261011\\eval\\per_query.csv": "504331f13137f7b36d4dc28a8bc8cc74d20d66c58b35b2a1e5cdb34194d73db3",
+      "artifacts.local\\work\\sync-fusion-confirm-v2-dev-20261011\\eval\\report_fragment.md": "0ae098851945fa4798e76e2d7cb1f124cf54901afcf32b13be46d88cfff2acd1"
+    }
+  },
+  "implementation_files": [
+    {
+      "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\audit_sync_fusion_confirm_v2.py",
+      "sha256": "1c6f0c1ee05024daad3eaf5279b823ca0633061387648d9d407f912350476572"
+    },
+    {
+      "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\sync_fusion_confirm_v2_data.py",
+      "sha256": "13e07f061a89a427e92f50d7e379f91c6c5a16b961aa0e1fbad305a274fc6d3d",
+      "executed_before_formatting_sha256": "2680f5622e86d0d203adbacc0085390693d0275514932dd1c28337ed7443a624"
+    },
+    {
+      "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\sync_fusion_confirm_v2_models.py",
+      "sha256": "81abe8137ff17efd2ab5859eb1132ff6b74d5ae8be09f4bce7b10d5861bd5b0e"
+    },
+    {
+      "path": "E:\\linnan\\linnan\\research\\active\\dtr-r0\\nearfield\\sync_fusion_confirm_v2_observations.py",
+      "sha256": "627672e4acdd95b0e12b4ae7b090586348fdc2ed220775ffcb435773d789b83d"
+    }
+  ],
+  "audit_resources": {
+    "status": "COMPLETE",
+    "CPU_command_wall_s_conservative": 100,
+    "measured_audit_function_seconds": 11.535845700011123,
+    "conservative_accounting_method": "Original 100-second audit allocation booked in full as a conservative command-wall allowance, including Python startup, input reads, failed audit assertions, report checks and shell commands; this is not an exact observed aggregate",
+    "function_receipts": [
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_contract_audit.json",
+        "seconds": 0.8524193000048399
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_coverage_audit.json",
+        "seconds": 0.8700685999938287
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_data_integrity_audit.json",
+        "seconds": 0.16541169997071847
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_FARO_prefix_audit.json",
+        "seconds": 0.3132729000062682
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_posteval_audit.json",
+        "seconds": 0.4463751000002958
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_preOPEN_audit.json",
+        "seconds": 4.241047399991658
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_protocol_audit.json",
+        "seconds": 0.0018751000170595944
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_resource_amendment_audit.json",
+        "seconds": 0.07561869994970039
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_retained_integrity_audit.json",
+        "seconds": 0.22437550005270168
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_source_binding_audit.json",
+        "seconds": 0.7681529999827035
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_source_extension_audit.json",
+        "seconds": 0.18265010003233328
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_train_audit.json",
+        "seconds": 1.6878035000409
+      },
+      {
+        "path": "F:\\ba-data\\blindassist-artifacts-20260805\\work\\sync-fusion-confirm-v2-dev-20261011\\independent_train_identity_audit.json",
+        "seconds": 1.706774799968116
+      }
+    ],
+    "GPU_s": 0,
+    "new_eval_reference_reopens": 0,
+    "model_reruns": 0,
+    "resources_released": true,
+    "retained_task_processes": [],
+    "GPU_allocations_created": 0,
+    "retained_sessions": [],
+    "release_evidence": "All owned exec calls completed synchronously without session_id; no task-owned service, GPU allocation or child process was created"
+  },
+  "formatting_only_source_receipt": {
+    "scope": "Trailing EOF blank line only; no scientific/data/model/cal/eval modification",
+    "before_sha256": "2680f5622e86d0d203adbacc0085390693d0275514932dd1c28337ed7443a624",
+    "after_sha256": "13e07f061a89a427e92f50d7e379f91c6c5a16b961aa0e1fbad305a274fc6d3d",
+    "executed_snapshot": "E:\\linnan\\linnan\\artifacts.local\\work\\sync-fusion-confirm-v2-dev-20261011\\executed_data_pre_formatting.py"
+  }
+}
