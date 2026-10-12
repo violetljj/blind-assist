@@ -20,6 +20,8 @@ Atom人工零参考与名义光轴仍未完成独立标定。Android接收匹配
 
 [姿态门控＋RGB可行性](REAL_POSE_GATE_RGB_FEASIBILITY_DEV_20261012.md)：俯角>+10°或|横滚|>25°不出提醒（仅去掉两段抬头天花板的98/98轻档，障碍段不变，已接入live引擎）；UniDepth无内参即可清楚看到ToF漏掉的细竖杆，但尺度/视场不可靠（地面估计1.05–1.84m），先用屏幕棋盘格标定Atom相机再做RGB读出与融合。
 
+[Atom标定＋RGB或ToF融合](REAL_RGB_TOF_FUSION_DEV_20261012.md)：屏幕棋盘格标定（RMS0.37px），ToF对齐得相机←ToF旋转（偏航10.5°/俯仰14.5°），UniDepth已知内参＋ToF尺度锚定；RGB在约1.5m看到ToF漏的正前细竖杆（BODY 72%/95%，像素宽6–12，非坐墩），空通道0；ToF强档或RGB融合首次让细杆、门柱、横杆都报。开发描述，待新录制冻结检验与手机端小模型。
+
 ## 默认、使用与历史入口
 
 模拟Development默认仍由[候选指针](../dtr-r0/nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)和[合同加载器](host/local_signed_bias_default.py)管理；[v4零证据修复](LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)与原M3/5格及失败保持。实机候选不自动替换模拟或App。
