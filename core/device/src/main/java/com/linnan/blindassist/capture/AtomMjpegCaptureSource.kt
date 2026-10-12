@@ -47,7 +47,6 @@ internal object AtomCameraCaptureReader {
         require(jpeg.size >= 4 && u(0) == 255 && u(1) == 216 &&
             u(jpeg.lastIndex - 1) == 255 && u(jpeg.lastIndex) == 217) { "Incomplete Atom JPEG markers" }
         var position = 2
-        val sof = setOf(0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf)
         while (position < jpeg.size - 2) {
             require(u(position++) == 255) { "Invalid JPEG segment marker" }
             while (position < jpeg.size && u(position) == 255) position++
@@ -58,7 +57,7 @@ internal object AtomCameraCaptureReader {
             require(position + 1 < jpeg.size) { "Incomplete JPEG segment length" }
             val length = u(position) * 256 + u(position + 1)
             require(length >= 2 && position + length <= jpeg.size) { "Incomplete JPEG segment" }
-            if (marker in sof) {
+            if (marker in 0xc0..0xcf && marker != 0xc4 && marker != 0xc8 && marker != 0xcc) {
                 require(length >= 8) { "Invalid JPEG SOF" }
                 val height = u(position + 3) * 256 + u(position + 4)
                 val width = u(position + 5) * 256 + u(position + 6)
@@ -128,8 +127,10 @@ class AtomMjpegCaptureSource(host: String, private val port: Int = 81) : AtomCam
 
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
+        // Disconnect first: closing a BufferedInputStream can wait on the monitor
+        // held by its blocking read. Abort the HTTP socket before taking that lock.
+        runCatching { connection?.disconnect() }
         runCatching { input?.close() }
-        connection?.disconnect()
         // Closing the input cancels its read. A terminal callback may close other
         // sources on this worker, so do not interrupt that callback with shutdownNow.
         worker.shutdown()

@@ -22,13 +22,22 @@ class CnhCaptureDecoder(private val maxLineBytes: Int = 65_536) {
         require(hostReceivedMonotonicNs >= 0)
         lastReceiptNs = hostReceivedMonotonicNs
         val records = mutableListOf<CnhCaptureRecord>()
-        for (byte in chunk) {
-            pending.write(byte.toInt())
-            if (byte == '\n'.code.toByte()) {
+        var offset = 0
+        while (offset < chunk.size) {
+            // Scan once and append a contiguous slice. Writing one byte at a time
+            // takes the ByteArrayOutputStream monitor for every histogram byte.
+            val limit = offset + minOf(chunk.size - offset, maxLineBytes - pending.size())
+            var end = offset
+            while (end < limit && chunk[end] != '\n'.code.toByte()) end++
+            val terminated = end < limit
+            if (terminated) end++
+            pending.write(chunk, offset, end - offset)
+            offset = end
+            if (terminated) {
                 records += decode(pending.toByteArray(), hostReceivedMonotonicNs)
                 pending.reset()
             } else if (pending.size() >= maxLineBytes) {
-                // Keep every byte in records even when an unsupported overlong packet arrives.
+                // Unsupported packets remain bounded and every byte is retained.
                 records += CnhCaptureRecord(++lineNumber, pending.toByteArray(),
                     hostReceivedMonotonicNs, null, null, listOf("line_too_long"))
                 pending.reset()
@@ -125,8 +134,11 @@ class CnhCaptureDecoder(private val maxLineBytes: Int = 65_536) {
         return (0 until 64).map { vector(value.opt(it), "$name[$it]", 16, low, high) }
     }
 
-    private fun vector(value: Any?, name: String, length: Int, low: Long, high: Long): List<Int> =
-        longVector(value, name, length, low, high).map(Long::toInt)
+    private fun vector(value: Any?, name: String, length: Int, low: Long, high: Long): List<Int> {
+        require(value is JSONArray && value.length() == length) { "$name:expected_$length" }
+        // Histograms dominate each packet. Avoid a second boxed Long list per zone.
+        return List(length) { integer(value.opt(it), "$name[$it]", low, high).toInt() }
+    }
 
     private fun longVector(value: Any?, name: String, length: Int, low: Long, high: Long): List<Long> {
         require(value is JSONArray && value.length() == length) { "$name:expected_$length" }

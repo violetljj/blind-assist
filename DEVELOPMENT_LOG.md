@@ -4,6 +4,16 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-12 — v10.16.3 capture preview, transport and export
+
+- Goal/scope: improve foreground phone collector stability, smoothness, frame handling and export speed; scoped code/build/device checks, no model or firmware work. Preserve original payloads, independent timestamps and per-record fsync. All evidence stays under `artifacts.local/evidence/phone-capture-opt-20261012/`.
+- Read new preview frames in Canvas draw, with composition only observing availability. Fixed-rate latest-frame checks now run every16ms; duplicate receipts are not decoded. Batch CNH/IMU byte assembly, cache raw offsets, and disconnect HTTP before closing its buffered reader.
+- Removed ZIP FilterOutputStream byte-at-a-time forwarding; use256KiB buffering, JPEG level0 and text BEST_SPEED. Progress/elapsed time and picker session-ID restoration added. Two same-phone30s captures,15.78/15.46MB original input: legacy29.091/36.513s vs optimized0.165/0.466s,176.5/78.4x; ZIP8.984→10.621MB and8.674→10.365MB. Cache-file benchmark, not a SAF/cloud speed guarantee. Actual system-picker local Downloads export of final5.05MB input completed in0.3s,3.392MB ZIP SHA equals cache export.
+- Preserved first offline Atom failure and the two30s run's cleanup-only Compose hierarchy failure; both completed receipts/ZIP checks existed before cleanup. Replaced cleanup UI lookup with Activity close; corrected receipt-rate denominator to include samples sharing one TCP-chunk timestamp. Focused3-test rerun passed with two5s sessions; final16ms live10s test passed.40 capture JVM tests, final debug/androidTest/lint, APK identity/signature/16KB all passed.
+- Two30s sessions saved794/708 RGB,155/155 CNH,3036/3024 IMU; stop completion329/88ms; independent host JPEG SHA and raw index/sequence checks passed. Final10s saved165/52/1014, stop185ms, preview156 unique images/10.021s, median19.874ms/P9539.254ms Android receipt→Canvas, compared to old5s median40.485/P9571.746ms. Frame rate is not claimed as an equal-source hardware gain: source RGB changed27.563→26.148→23.452→16.146Hz with larger JPEGs, while ToF~5.103Hz and IMU~100Hz. Atom synchronously sends JPEG before returning its framebuffer; sender sequence continuity does not prove no sensor-frame overwrites. Network vs receiver backpressure remains unresolved.
+- Final version49/v10.16.3 APK260301878 bytes, SHA256 CF421F1CD82D9AA97ACBEBCB9336AA12078F80CB4D65F3F1A5E3600AAAF68D12; installed over existing data and archived. Earlier49 candidate and failed receipts retained. Actual raw/ZIP integrity does not establish clock synchronization or detector performance.
+- Framework-free idle gfxinfo: old248/721 janky frames(34.40%), median7/P9536ms; final349/1241(28.12%), median5/P9532ms. Different24/38s windows and changing source JPEG load, descriptive only; tail jank remains. Ended on home with capture workers/connections released; final system-picker ZIP remains in Downloads.
+
 ## 2026-10-12 — v10.16.2 capture performance and lifecycle
 
 - User requested speed/smoothness/stability of the three-stream page; scoped to this foreground collector, preserving all received raw records and per-record fsync.

@@ -128,6 +128,38 @@ class CnhCaptureDecoderTest {
         assertEquals(listOf("range_only_frame_without_cnh"), record.issues)
     }
 
+    @Test fun boundedAssemblyPreservesBytesAcrossEveryChunkBoundaryAndRecovers() {
+        val event = "{\"type\":\"ok\"}\r\n".toByteArray()
+        val oversized = ("x".repeat(64) + "\n").toByteArray()
+        val tail = byteArrayOf(0xff.toByte(), 0x00, 0x7f)
+        val raw = oversized + event + "\n".toByteArray() + tail
+        for (chunkSize in 1..37) {
+            val decoder = CnhCaptureDecoder(32)
+            val records = raw.asList().chunked(chunkSize).flatMapIndexed { index, chunk ->
+                decoder.feed(chunk.toByteArray(), index.toLong() + 1)
+            }.toMutableList()
+            records += decoder.finish()!!
+            assertArrayEquals("chunk size $chunkSize", raw,
+                records.flatMap { it.rawLine.asIterable() }.toByteArray())
+            assertEquals(listOf("ok"), records.mapNotNull { it.kind })
+            assertTrue(records.take(3).all { it.issues.single().startsWith("line_too_long") })
+            assertEquals(listOf("truncated_line"), records.last().issues)
+            assertEquals((raw.size + chunkSize - 1L) / chunkSize, records.last().hostReceivedMonotonicNs)
+            assertNull(decoder.finish())
+        }
+    }
+
+    @Test fun newlineAtSizeLimitRemainsACompleteRecord() {
+        val packet = "{\"type\":\"ok\"}\n".toByteArray()
+        val decoder = CnhCaptureDecoder(packet.size)
+        assertTrue(decoder.feed(packet.copyOf(packet.size - 1), 10).isEmpty())
+        val record = decoder.feed(byteArrayOf('\n'.code.toByte()), 20).single()
+        assertArrayEquals(packet, record.rawLine)
+        assertEquals("ok", record.kind)
+        assertEquals(20L, record.hostReceivedMonotonicNs)
+        assertTrue(record.issues.isEmpty())
+    }
+
     private fun frame(seq: Long = 1, ms: Long = 200): JSONObject = JSONObject().apply {
         put("type", "cnh_frame")
         put("seq", seq)

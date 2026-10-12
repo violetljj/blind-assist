@@ -67,22 +67,31 @@ class PhoneCaptureActivity : ComponentActivity() {
     private var discovering by mutableStateOf(false)
     @Volatile private var foreground = false
     private var exportMessage by mutableStateOf("")
-    private var exportSession: PhoneCaptureSummary? = null
+    private var exportSessionId: String? = null
 
     private val export = registerForActivityResult(ActivityResultContracts.CreateDocument("application/zip")) { uri ->
-        val session = exportSession
-        exportSession = null
-        if (uri != null && session != null) {
+        val sessionId = exportSessionId
+        exportSessionId = null
+        if (uri != null && sessionId != null) {
             busy = true
             exportMessage = "正在导出…"
             io.execute {
+                val startNs = SystemClock.elapsedRealtimeNanos()
                 val result = runCatching {
-                    requireNotNull(contentResolver.openOutputStream(uri, "wt")).use { PhoneCaptureStore.exportZip(session, it) }
+                    val session = PhoneCaptureStore.listSessions(this).single { it.id == sessionId }
+                    requireNotNull(contentResolver.openOutputStream(uri, "wt")).use { output ->
+                        PhoneCaptureStore.exportZip(session, output) { written, total ->
+                            handler.post {
+                                if (!isDestroyed) exportMessage = "正在导出 ${if (total > 0) written * 100 / total else 100}% · ${written / 1024 / 1024} / ${total / 1024 / 1024} MB"
+                            }
+                        }
+                    }
                 }
                 handler.post {
                     if (!isDestroyed) {
                         busy = false
-                        exportMessage = result.fold({ "导出完成：${session.id}.zip" }, { "导出失败，请重新保存：${it.message}" })
+                        val seconds = (SystemClock.elapsedRealtimeNanos() - startNs) / 1e9
+                        exportMessage = result.fold({ "导出完成：$sessionId.zip（${"%.1f".format(seconds)} 秒）" }, { "导出失败，请重新保存：${it.message}" })
                     }
                 }
             }
@@ -98,6 +107,7 @@ class PhoneCaptureActivity : ComponentActivity() {
         host = preferences.getString("host", "192.168.5.10")!!
         atomHost = preferences.getString("atom_host", preferences.getString("imu_host", "192.168.5.9"))!!
         note = savedInstanceState?.getString("capture_note") ?: ""
+        exportSessionId = savedInstanceState?.getString("export_session_id")
         capture.setImuEnabled(preferences.getBoolean("imu_enabled", true))
         state = capture.snapshot()
         refreshSessions()
@@ -126,7 +136,7 @@ class PhoneCaptureActivity : ComponentActivity() {
                             if (isCurrent(generation)) connectSources(generation, tofAddress, atomAddress, imuEnabled)
                         }
                     },
-                    onExport = { session -> exportSession = session; export.launch("${session.id}.zip") },
+                    onExport = { session -> exportSessionId = session.id; export.launch("${session.id}.zip") },
                     onBack = { finish() })
             }
         }
@@ -150,17 +160,17 @@ class PhoneCaptureActivity : ComponentActivity() {
         }, 0, 200, TimeUnit.MILLISECONDS)
         previewTask?.cancel(false)
         var decodedReceiptNs = 0L
-        previewTask = previewWorker.scheduleWithFixedDelay({
-            if (!foreground) return@scheduleWithFixedDelay
+        previewTask = previewWorker.scheduleAtFixedRate({
+            if (!foreground) return@scheduleAtFixedRate
             val generation = previewGeneration.get()
             val frame = capture.peekCameraFrame()
             if (frame == null) {
                 if (previewState.value != null) handler.post {
                     if (foreground && generation == previewGeneration.get()) previewState.value = null
                 }
-                return@scheduleWithFixedDelay
+                return@scheduleAtFixedRate
             }
-            if (frame.receivedElapsedNs == decodedReceiptNs) return@scheduleWithFixedDelay
+            if (frame.receivedElapsedNs == decodedReceiptNs) return@scheduleAtFixedRate
             decodedReceiptNs = frame.receivedElapsedNs
             val decodeStart = SystemClock.elapsedRealtimeNanos()
             val image = runCatching { BitmapFactory.decodeByteArray(frame.jpeg, 0, frame.jpeg.size)?.asImageBitmap() }.getOrNull()
@@ -169,7 +179,9 @@ class PhoneCaptureActivity : ComponentActivity() {
                 latestDecoded.set(generation to AtomPreviewFrame(image, frame.receivedElapsedNs, frame.sequence))
                 queuePreviewPost()
             }
-        }, 0, 33, TimeUnit.MILLISECONDS)
+        // Check at display cadence, but decode only a new receipt. A 33ms poll
+        // can skip a source frame when JPEG decode and Wi-Fi delivery take a slot.
+        }, 0, 16, TimeUnit.MILLISECONDS)
     }
 
     private fun queuePreviewPost() {
@@ -186,6 +198,7 @@ class PhoneCaptureActivity : ComponentActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("capture_note", note)
+        outState.putString("export_session_id", exportSessionId)
         super.onSaveInstanceState(outState)
     }
 

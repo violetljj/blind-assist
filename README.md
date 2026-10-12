@@ -5,7 +5,7 @@ assistance. It combines camera perception, risk logic, and concise guidance to
 demonstrate measurable effects in clearly stated controlled conditions. It is
 not a certified mobility or safety product.
 
-App v10.16.2 opens the original home without starting perception. **Start assist**
+App v10.16.3 opens the original home without starting perception. **Start assist**
 explicitly starts the **A+LOCAL experimental mode** with
 the frozen research classifier running offline on the phone. Its nominal camera/ToF
 registration is not physical calibration; simulation results do not establish hardware
@@ -29,7 +29,7 @@ deployed or validated. See the [current perception route](research/active/dtr-r0
 ## Start here
 
 - **手机端 Atom RGB + ToF + IMU 采集**：首页“数据采集”同时预览 Atom 画面、ToF 距离网格和 IMU 读数，保存原始 JPEG、完整 8×8×16 CNH、Atom 六轴与姿态、时间戳和场景备注；停止后可导出 ZIP。使用局域网或已配置的手机热点。[采集使用说明](docs/PHONE_DATA_CAPTURE.md)
-- 默认入口（v10.16.2）：打开 App 停留原首页；点击“开始辅助”才运行[相机与 10 Hz 8×8 ToF 的 A+LOCAL](docs/HARDWARE_OBSTACLE_DEMO.md)，点击“结束辅助”回首页并停止会话。支持基础 ToF 切换、事件提醒、最近 20 秒留证、静音回放与分路降级。
+- 默认入口（v10.16.3）：打开 App 停留原首页；点击“开始辅助”才运行[相机与 10 Hz 8×8 ToF 的 A+LOCAL](docs/HARDWARE_OBSTACLE_DEMO.md)，点击“结束辅助”回首页并停止会话。支持基础 ToF 切换、事件提醒、最近 20 秒留证、静音回放与分路降级。
 - **中文一页状态（系统、指标、当前问题）**: [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md)
 - Current research decision: [docs/CURRENT_DECISION.md](docs/CURRENT_DECISION.md)
 - L10-R0 paused / retained evidence: [research/active/l10-r0/CURRENT.md](research/active/l10-r0/CURRENT.md)

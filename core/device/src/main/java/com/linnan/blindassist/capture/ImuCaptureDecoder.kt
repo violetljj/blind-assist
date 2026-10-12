@@ -62,14 +62,24 @@ class ImuCaptureDecoder(private val maxLineBytes: Int = 16_384) {
         require(hostReceivedMonotonicNs >= 0)
         lastReceiptNs = hostReceivedMonotonicNs
         val records = mutableListOf<ImuCaptureRecord>()
-        for (byte in chunk) {
-            pending.write(byte.toInt())
-            if (byte == '\n'.code.toByte()) {
+        var offset = 0
+        while (offset < chunk.size) {
+            // Scan once and append a contiguous slice. Writing one byte at a time
+            // takes the ByteArrayOutputStream monitor for every packet byte.
+            val limit = offset + minOf(chunk.size - offset, maxLineBytes - pending.size())
+            var end = offset
+            while (end < limit && chunk[end] != '\n'.code.toByte()) end++
+            val terminated = end < limit
+            if (terminated) end++
+            pending.write(chunk, offset, end - offset)
+            offset = end
+            if (terminated) {
                 records += decode(pending.toByteArray(), hostReceivedMonotonicNs)
                 pending.reset()
             } else if (pending.size() >= maxLineBytes) {
-                records += ImuCaptureRecord(++lineNumber, pending.toByteArray(), hostReceivedMonotonicNs,
-                    null, null, listOf("line_too_long"))
+                // Unsupported packets remain bounded and every byte is retained.
+                records += ImuCaptureRecord(++lineNumber, pending.toByteArray(),
+                    hostReceivedMonotonicNs, null, null, listOf("line_too_long"))
                 pending.reset()
                 discardingOversizedLine = true
             }

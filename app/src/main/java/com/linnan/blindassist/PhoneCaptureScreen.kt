@@ -164,12 +164,15 @@ internal fun PhoneCaptureScreen(
 private fun AtomImagePreview(
     preview: () -> AtomPreviewFrame?, onDraw: (Long) -> Unit, rotation: Int, mirror: Boolean
 ) {
-    val frame = preview()
-    if (frame == null) {
+    // Availability changes composition; each new image only invalidates drawing.
+    // Reading the frame in composition remeasures this preview at camera rate.
+    val available by remember(preview) { derivedStateOf { preview() != null } }
+    if (!available) {
         Text("等待 Atom 画面", color = Color.White, style = MaterialTheme.typography.bodySmall)
         return
     }
     Canvas(Modifier.fillMaxSize().testTag("capture_atom_image").semantics { contentDescription = "Atom 实时 RGB 画面" }) {
+        val frame = preview() ?: return@Canvas
         val image = frame.image
         val rotated = rotation % 180 != 0
         val width = if (rotated) image.height else image.width

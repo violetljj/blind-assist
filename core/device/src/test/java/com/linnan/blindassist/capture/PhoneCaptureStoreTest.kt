@@ -11,6 +11,8 @@ import org.junit.rules.TemporaryFolder
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.security.MessageDigest
+import java.util.Random
+import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 
 class PhoneCaptureStoreTest {
@@ -185,6 +187,68 @@ class PhoneCaptureStoreTest {
         assertTrue(files.containsKey("${saved.id}/manifest.json"))
         assertTrue(files.containsKey("${saved.id}/rgb.jsonl"))
         assertTrue(files.containsKey("${saved.id}/tof.index.jsonl"))
+    }
+
+    @Test
+    fun exportUsesProviderBulkWritesAndReportsExactSourceBytesAfterFlush() {
+        val store = PhoneCaptureStore.create(temporary.newFolder("bulk-export"))
+        val jpeg = ByteArray(1024 * 1024).also { Random(42L).nextBytes(it) }
+        val rgbPath = store.recordRgb(jpeg, 1, 2, 640, 480, 0)
+        // Text still benefits from compression while the JPEG stays streaming.
+        val raw = ("{\"padding\":\"" + "0".repeat(16_384) + "\"}\n").toByteArray()
+        store.recordTof(raw, 3)
+        val saved = store.finish()
+        val expectedBytes = saved.directory.walkTopDown().filter { it.isFile }.sumOf { it.length() }
+        val output = object : ByteArrayOutputStream() {
+            var singleWrites = 0
+            var bulkWrites = 0
+            var flushed = false
+            var closed = false
+            override fun write(value: Int) { singleWrites++; super.write(value) }
+            override fun write(bytes: ByteArray, offset: Int, length: Int) {
+                bulkWrites++
+                flushed = false
+                super.write(bytes, offset, length)
+            }
+            override fun flush() { flushed = true }
+            override fun close() { closed = true }
+        }
+        val progress = mutableListOf<Pair<Long, Long>>()
+        var lastProgressFollowedFlush = false
+        PhoneCaptureStore.exportZip(saved, output) { written, total ->
+            progress += written to total
+            lastProgressFollowedFlush = output.flushed
+        }
+        assertEquals(0, output.singleWrites)
+        assertTrue("Provider writes must be blocks, not per ZIP header or byte", output.bulkWrites in 1..8)
+        assertFalse(output.closed)
+        assertTrue(lastProgressFollowedFlush)
+        assertEquals(0L to expectedBytes, progress.first())
+        assertEquals(expectedBytes to expectedBytes, progress.last())
+        assertTrue(progress.zipWithNext().all { (before, after) -> after.first >= before.first })
+        assertTrue(progress.all { it.second == expectedBytes })
+
+        ZipInputStream(output.toByteArray().inputStream()).use { zip ->
+            var sawJpeg = false
+            var sawRaw = false
+            while (true) {
+                val entry = zip.nextEntry ?: break
+                val restored = zip.readBytes()
+                if (entry.name == "${saved.id}/$rgbPath") {
+                    sawJpeg = true
+                    assertEquals(ZipEntry.DEFLATED, entry.method)
+                    assertArrayEquals(jpeg, restored)
+                    assertTrue(entry.compressedSize >= jpeg.size.toLong())
+                    assertTrue(entry.compressedSize < jpeg.size + 1024L)
+                } else if (entry.name == "${saved.id}/tof.raw.jsonl") {
+                    sawRaw = true
+                    assertArrayEquals(raw, restored)
+                    assertTrue(entry.compressedSize < raw.size / 4L)
+                }
+            }
+            assertTrue(sawJpeg)
+            assertTrue(sawRaw)
+        }
     }
 
     @Test

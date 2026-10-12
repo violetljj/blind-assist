@@ -3,6 +3,7 @@ package com.linnan.blindassist.capture
 import android.content.Context
 import android.os.SystemClock
 import org.json.JSONObject
+import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.FilterOutputStream
@@ -16,6 +17,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import java.util.UUID
+import java.util.zip.Deflater
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -68,6 +70,7 @@ class PhoneCaptureStore private constructor(
     // Keep only the six append-only stream descriptors open. Each acknowledged row
     // still syncs its payload and index; reuse removes open/close work at IMU rate.
     private val appendStreams = mutableMapOf<File, FileOutputStream>()
+    private val appendOffsets = mutableMapOf<File, Long>()
     private val rgbDigest = MessageDigest.getInstance("SHA-256")
 
     @Synchronized
@@ -162,7 +165,7 @@ class PhoneCaptureStore private constructor(
             put("received_elapsed_ns", receivedElapsedNs)
             put("sequence", sequence ?: JSONObject.NULL)
             put("device_timestamp_ms", deviceTimestampMs ?: JSONObject.NULL)
-            put("raw_byte_offset", rawFile.length())
+            put("raw_byte_offset", appendPosition(rawFile))
             put("raw_byte_length", rawLine.size)
             put("imu_alignment", JSONObject().apply {
                 put("status", "UNAVAILABLE")
@@ -212,7 +215,7 @@ class PhoneCaptureStore private constructor(
             put("device_timestamp_us", sample?.deviceUs ?: deviceTimestampUs ?: JSONObject.NULL)
             put("device_id", sample?.deviceId ?: JSONObject.NULL)
             put("boot_id", sample?.bootId ?: JSONObject.NULL)
-            put("raw_byte_offset", rawFile.length())
+            put("raw_byte_offset", appendPosition(rawFile))
             put("raw_byte_length", rawLine.size)
             put("accel_raw", sample?.accelRaw?.let { org.json.JSONArray(it) } ?: JSONObject.NULL)
             put("gyro_raw", sample?.gyroRaw?.let { org.json.JSONArray(it) } ?: JSONObject.NULL)
@@ -302,10 +305,16 @@ class PhoneCaptureStore private constructor(
         appendBytes(file, (row.toString() + "\n").toByteArray(Charsets.UTF_8))
 
     private fun appendBytes(file: File, bytes: ByteArray) {
+        val offset = appendPosition(file)
         val output = appendStreams.getOrPut(file) { FileOutputStream(file, true) }
         output.write(bytes)
         output.fd.sync()
+        appendOffsets[file] = offset + bytes.size
     }
+
+    // This store exclusively appends these files. Retain the position after each
+    // synced write rather than stat-ing the raw file for every incoming packet.
+    private fun appendPosition(file: File): Long = appendOffsets.getOrPut(file) { file.length() }
 
     private fun closeAppendStreams() {
         var failure: Exception? = null
@@ -315,6 +324,7 @@ class PhoneCaptureStore private constructor(
             }
         }
         appendStreams.clear()
+        appendOffsets.clear()
         failure?.let { throw it }
     }
 
@@ -355,6 +365,8 @@ class PhoneCaptureStore private constructor(
     companion object {
         private val FINAL_STATUSES = setOf("COMPLETED", "INTERRUPTED", "FAILED")
         private val SESSION_NAME = Regex("capture-[0-9]{8}T[0-9]{9}Z-[0-9a-f]{8}")
+        private const val EXPORT_BUFFER_BYTES = 256 * 1024
+        private const val EXPORT_PROGRESS_INTERVAL_NS = 100_000_000L
 
         fun create(
             context: Context,
@@ -404,23 +416,59 @@ class PhoneCaptureStore private constructor(
             .sortedByDescending { it.createdAtMs }
 
         /** Caller owns output; finishing ZIP leaves the Storage Access Framework stream open. */
-        fun exportZip(session: PhoneCaptureSummary, output: OutputStream) {
+        fun exportZip(
+            session: PhoneCaptureSummary,
+            output: OutputStream,
+            onProgress: (writtenSourceBytes: Long, totalSourceBytes: Long) -> Unit = { _, _ -> },
+        ) {
             val directory = session.directory.canonicalFile
             require(directory.isDirectory) { "采集会话不存在" }
             val prefix = directory.path + File.separator
-            val zip = ZipOutputStream(object : FilterOutputStream(output) {
+            // Reuse this ordered inventory for both sizing and writing; no extra tree walk.
+            val files = directory.walkTopDown().filter { file -> file.isFile }
+                .sortedBy { file -> file.relativeTo(directory).path }.toList()
+            val totalSourceBytes = files.sumOf { it.length() }
+            var writtenSourceBytes = 0L
+            var lastProgressNs = System.nanoTime()
+            onProgress(0L, totalSourceBytes)
+            val callerOwned = object : FilterOutputStream(output) {
+                // FilterOutputStream's default bulk write loops over write(int).
+                // SAF/document providers must receive blocks, never a call per byte.
+                override fun write(bytes: ByteArray, offset: Int, length: Int) {
+                    output.write(bytes, offset, length)
+                }
                 override fun close() { flush() }
-            })
-            zip.use {
-                directory.walkTopDown().filter { file -> file.isFile }.sortedBy { file -> file.relativeTo(directory).path }
-                    .forEach { file ->
-                        require(file.canonicalPath.startsWith(prefix)) { "采集文件路径越界" }
-                        val name = "${session.id}/${file.relativeTo(directory).invariantSeparatorsPath}"
-                        it.putNextEntry(ZipEntry(name).apply { time = file.lastModified() })
-                        file.inputStream().use { input -> input.copyTo(it) }
-                        it.closeEntry()
-                    }
             }
+            val zip = ZipOutputStream(BufferedOutputStream(callerOwned, EXPORT_BUFFER_BYTES))
+            val transferBuffer = ByteArray(EXPORT_BUFFER_BYTES)
+            zip.use { archive ->
+                files.forEach { file ->
+                    require(file.canonicalPath.startsWith(prefix)) { "采集文件路径越界" }
+                    val name = "${session.id}/${file.relativeTo(directory).invariantSeparatorsPath}"
+                    // JPEG is already compressed. Keep it streaming in DEFLATED
+                    // format at level 0, avoiding both recompression and a CRC prepass.
+                    archive.setLevel(if (file.extension.equals("jpg", ignoreCase = true) ||
+                        file.extension.equals("jpeg", ignoreCase = true)) Deflater.NO_COMPRESSION
+                        else Deflater.BEST_SPEED)
+                    archive.putNextEntry(ZipEntry(name).apply { time = file.lastModified() })
+                    file.inputStream().use { input ->
+                        while (true) {
+                            val count = input.read(transferBuffer)
+                            if (count < 0) break
+                            archive.write(transferBuffer, 0, count)
+                            writtenSourceBytes += count
+                            val nowNs = System.nanoTime()
+                            if (nowNs - lastProgressNs >= EXPORT_PROGRESS_INTERVAL_NS) {
+                                onProgress(writtenSourceBytes, totalSourceBytes)
+                                lastProgressNs = nowNs
+                            }
+                        }
+                    }
+                    archive.closeEntry()
+                }
+            }
+            // Completion follows the central directory and final buffered provider write.
+            onProgress(writtenSourceBytes, totalSourceBytes)
         }
 
         private fun captureRoot(context: Context): File = File(context.noBackupFilesDir, "phone-capture")
