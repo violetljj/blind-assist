@@ -22,6 +22,8 @@ Atom人工零参考与名义光轴仍未完成独立标定。Android接收匹配
 
 [Atom标定＋RGB或ToF融合](REAL_RGB_TOF_FUSION_DEV_20261012.md)：屏幕棋盘格标定（RMS0.37px），ToF对齐得相机←ToF旋转（偏航10.5°/俯仰14.5°），UniDepth已知内参＋ToF尺度锚定；RGB在约1.5m看到ToF漏的正前细竖杆（BODY 72%/95%，像素宽6–12，非坐墩），空通道0；ToF强档或RGB融合首次让细杆、门柱、横杆都报。开发描述，待新录制冻结检验与手机端小模型。
 
+[小深度模型对比](REAL_RGB_SMALL_MODEL_DEV_20261012.md)：手机候选为DAV2-Small相对（官方Apache-2.0，与DEPTHOR内嵌逐值一致）＋ToF/地面锚定518px：正前杆BODY67%/92%（UniDepth-L 72/95），空通道0–3%，笔记本56ms；横杆HEAD仅约11%需ToF补；DAV2-S公制Hypersim淘汰（0/18%），UniDepth-S 33/77%。下一步手机端导出计时、在线头高、新录制冻结检验。
+
 ## 默认、使用与历史入口
 
 模拟Development默认仍由[候选指针](../dtr-r0/nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)和[合同加载器](host/local_signed_bias_default.py)管理；[v4零证据修复](LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)与原M3/5格及失败保持。实机候选不自动替换模拟或App。

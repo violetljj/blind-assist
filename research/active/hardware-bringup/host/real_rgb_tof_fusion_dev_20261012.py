@@ -104,4 +104,9 @@ def main():
 
 
 if __name__ == '__main__':
+    import argparse
+    ap = argparse.ArgumentParser(); ap.add_argument('--weights', help='alternative UniDepthV2 checkpoint dir (e.g. unidepth-v2-vits14)')
+    a = ap.parse_args()
+    if a.weights:
+        F.WEIGHTS = Path(a.weights); OUT = OUT / Path(a.weights).name.split('--')[-1].replace('unidepth-v2-', 'unidepth_'); OUT.mkdir(exist_ok=True)
     main()
