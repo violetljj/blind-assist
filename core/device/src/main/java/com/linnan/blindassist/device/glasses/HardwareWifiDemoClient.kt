@@ -17,6 +17,7 @@ import java.net.SocketTimeoutException
 import java.net.URI
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.Collections
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -39,6 +40,7 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
     @Volatile private var source: AtomS3rMjpegFrameSource? = null
     @Volatile private var camera: CameraSample? = null
     @Volatile private var tof: TofSample? = null
+    private val unavailableTofDecision = TofCorridorDemo.evaluate(8, 8, emptyList(), false)
     @Volatile private var cameraProblem = "等待相机握手"
     @Volatile private var tofProblem = "等待 8×8 ToF"
     @Volatile private var restartCamera = false
@@ -74,7 +76,8 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
             running.get() && !closed.get(), cameraStatusValid, now,
             c?.receivedMs, c?.ageAtReceiveMs, t?.receivedMs, t?.ageAtReceiveMs)
         val cells = if (available.tofUsable) t!!.cells else emptyList()
-        val decision = TofCorridorDemo.evaluate(8, 8, cells, available.tofUsable)
+        // Freshness is checked on every poll; only the immutable sample's geometry is reused.
+        val decision = if (available.tofUsable) t!!.decision else unavailableTofDecision
         val cameraAge = c?.let { it.ageAtReceiveMs + now - it.receivedMs }
         val tofAge = t?.takeUnless { it.receiptOnly }?.let { it.ageAtReceiveMs + now - it.receivedMs }
         val receiptAge = t?.takeIf { it.receiptOnly }?.let { now - it.receivedMs }
@@ -385,8 +388,15 @@ class HardwareWifiDemoClient(cameraEndpoint: String, tofEndpoint: String) : Auto
     private data class CameraSample(val boot: String, val sequence: Long, val bitmap: Bitmap,
         val receivedMs: Long, val ageAtReceiveMs: Long, val clockErrorMs: Long,
         val acquisitionMs: Double, val transferUpperMs: Double?, val decodeMs: Double, val copyMs: Double)
-    private data class TofSample(val boot: String, val sequence: Long, val cells: List<DemoTofCell>,
-        val receivedMs: Long, val ageAtReceiveMs: Long, val receiptOnly: Boolean = false)
+    private class TofSample(val boot: String, val sequence: Long, cells: List<DemoTofCell>,
+        val receivedMs: Long, val ageAtReceiveMs: Long, val receiptOnly: Boolean = false) {
+        // Constructed on the source callback/UDP worker before volatile publication to the UI.
+        // Own the cells so the cached decision cannot diverge from later snapshot consumers.
+        val cells: List<DemoTofCell> = Collections.unmodifiableList(cells.toList())
+        val decision = TofCorridorDemo.evaluate(8, 8, this.cells, true).let {
+            it.copy(triggeringZones = Collections.unmodifiableList(it.triggeringZones.toList()))
+        }
+    }
 }
 
 /** Transport freshness only: per-zone validity remains the ToF evaluator's responsibility. */

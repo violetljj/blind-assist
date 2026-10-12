@@ -4,6 +4,17 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-12 — v10.17.2 bounded assist overhead optimization
+
+- Scope: continue assist rendering optimization; evidence `artifacts.local/evidence/assist-draw-opt-20261012/`. Retained only sample-owned ToF decision caching; original UI, polling, feedback, expiry and evidence cadence remain. No model/firmware/threshold changes.
+- Immutable ToF samples compute the original8×8 corridor decision once on their source worker before volatile publication. Every poll still checks current availability and returns UNKNOWN when stale/stopped; cache never crosses samples or reconnects.
+- Rejected UI candidates: Canvas summary442/104missed(P9519ms), separate range row438/102(14ms), Image leaf463/200(15ms), exact display-state/number-leaf dedup472/256(15ms), image-wrapper-only489/235(13ms). Each15s run; lower redraw count did not meet fluency criteria. Receipts/traces and final rejected patches retained; no rejected UI code shipped.
+- Perfetto v3 diagnostic window15.046s:74/77 range-update doFrames exceeded8.33ms, versus0/1721 other frames; owner measure/layout averaged4.02ms. Tracing overhead prevents comparison with untraced runs; this identifies a future numeric-update bottleneck, not a proven universal cause.
+- Initial Compose-rule benchmark produced0gfx frames despite fresh snapshots; retained as INVALID and replaced with real-clock UiAutomation plus positive-render-count checks. New opt-in diagnostic records runtime APK identity, CPU, source progression, freshness and cleanup; optional compiler tracing restores its prior tracer.
+- Final same-method15s untraced pair:55/10.17.1 baseline1815frames/1missed,56/10.17.2 cache1814/1; both median7/P959/P9912ms. CPU16764→16609ms is too small and inputs too variable for a gain claim. Baseline617/617 and candidate622/622 snapshots had fresh camera+H3; source sequence observations are not sensor FPS.
+- Validation:11 focused device-core JVM tests and2 final real-device entry/exit and Wi-Fi loss/recovery tests passed. Unavailable input cleared alerts, recovery reused foreground client, exit released it; original preferences equal, Wi-Fi enabled/font1.0/density560 restored. One intermediate test-fixture nullability compile failure was fixed; rejected pixel/entry suite4passed but is not final-performance evidence.
+- Final debug/androidTest build, lint, structure and APK56/10.17.2 identity/signature/16KB checks passed. Installed in place and archived SHA256 `8644018711DCB97DCC9116BF18078EDC528679A9D089B327E9D1EAFABC8DAFEF`. No FPS, battery-life or field-safety gain claimed.
+
 ## 2026-10-12 — v10.17.1 high-standard app review
 
 - Scope: user-requested UI/behavior/performance review, current screenshots and focused live checks. Evidence: `artifacts.local/evidence/app-review-20261012/`. No model, firmware, acquisition or feedback-rule changes.
