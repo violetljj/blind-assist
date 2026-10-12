@@ -2,7 +2,7 @@
 
 ## 2026-10-13 工程接入状态
 
-同日[真实开发尺度/时序比较](../research/active/hardware-bringup/REAL_FUSION_REFINEMENT_DEV_20261013.md)完成：18段1677帧，稳健拟合成功才替换尺度的小候选使低头细杆any65→67/79、首报提前0.568秒，18段any未损；BODY另少15个query帧、无逐query真值，不能判为去误报。严格尺度拒绝/空间过滤未形成有利取舍。保留开发候选，不改变冻结v1/v2或手机默认；新头戴确认仍待完成。
+同日[真实开发尺度/时序比较](../research/active/hardware-bringup/REAL_FUSION_REFINEMENT_DEV_20261013.md)完成：18段1677帧，稳健拟合成功才替换尺度的小候选使低头细杆any65→67/79、首报提前0.568秒，18段any未损；BODY另少15个query帧、无逐query真值，不能判为去误报。[第二轮](../research/active/hardware-bringup/REAL_FUSION_REFINEMENT_V2_DEV_20261013.md)的同质/双mode锚点、运动尺度搬运与地面软回退均未超过旧候选；保留其开发身份，不改变冻结v1/v2或手机默认。下一优先固定安装几何/去杆参考，新头戴确认仍待完成。
 
 本轮 **58 / 10.19.0 已安装，工程实验待佩戴验证**：独立“数据采集 → 打开融合实验”页面，显式开始后显示 HEAD/BODY 的 ToF 强档或 RGB 融合，并作 2/3 帧确认；提供低头高度标定，无语音或震动，不替换首页 H3 基础 ToF 辅助。构建、APK 检查和 4 项模型/数值设备检查通过；首次真实流 8 帧全部超出姿态范围，RGB 分支尚未执行，不能宣称端到端融合已通过。工程接入不改变下方研究结论、模拟默认或冻结判据。[工程记录](../research/active/hardware-bringup/MOBILE_FUSION_INTEGRATION_20261012.md) · [项目状态](PROJECT_STATE.md) · [入口说明](HARDWARE_OBSTACLE_DEMO.md)。
 
