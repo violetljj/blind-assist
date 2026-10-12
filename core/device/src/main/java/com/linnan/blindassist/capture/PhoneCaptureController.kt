@@ -32,6 +32,7 @@ data class PhoneCaptureState(
     val displayRotationDegrees: Int = 90,
     val displayMirrorHorizontal: Boolean = true,
     val reconnectEnabled: Boolean = false,
+    val connectionDiagnostics: CaptureConnectionDiagnostics = CaptureConnectionDiagnostics(),
 )
 
 /** Owns only the foreground acquisition page; saved buffers never enter the assist algorithm. */
@@ -62,6 +63,17 @@ class PhoneCaptureController(
     private val imuRecent = ArrayDeque<Pair<ImuCaptureRecord, Long?>>()
     private val imuPreamble = ArrayDeque<ImuCaptureRecord>()
     private var store: PhoneCaptureStore? = null
+    private val connectionJournal = CaptureConnectionJournal(this.context.filesDir)
+    private val connectionHistory = connectionJournal.read().toMutableList()
+    private var connectionPersistenceError: String? = null
+    private val connectionTracker = CaptureConnectionTracker(connectionHistory) { event ->
+        connectionHistory.add(event)
+        if (connectionHistory.size > 64) connectionHistory.removeAt(0)
+        runCatching { connectionJournal.write(connectionHistory) }
+            .onSuccess { connectionPersistenceError = null }
+            .onFailure { connectionPersistenceError = "连接记录暂未保存：${it.message ?: it.javaClass.simpleName}" }
+        runCatching { store?.recordEvent("connection_diagnostic", diagnosticJson(event), event.elapsedRealtimeNs) }
+    }
     private val preamble = ArrayDeque<CnhCaptureRecord>()
     private var cameraSeenNs = 0L
     private var tofSeenNs = 0L
@@ -120,7 +132,7 @@ class PhoneCaptureController(
     /** Poll on the control executor while foreground; no scheduled work survives cancellation. */
     fun retryConnections() {
         val plan = synchronized(lock) { reconnectPlan.takeIf { store == null && !ending } } ?: return
-        fun <T : AutoCloseable> attempt(policy: CaptureReconnectPolicy, factory: () -> T, connect: (T) -> Unit) {
+        fun <T : AutoCloseable> attempt(key: String, policy: CaptureReconnectPolicy, factory: () -> T, connect: (T) -> Unit) {
             val due = synchronized(lock) {
                 reconnectPlan === plan && store == null && !ending && policy.beginIfDue(nowNs())
             }
@@ -132,8 +144,15 @@ class PhoneCaptureController(
                     return
                 }
                 connect(next)
-            } catch (_: Exception) {
-                synchronized(lock) { if (reconnectPlan === plan) policy.failed(nowNs()) }
+            } catch (error: Exception) {
+                synchronized(lock) {
+                    if (reconnectPlan === plan) {
+                        policy.failed(nowNs())
+                        if (next == null) connectionTracker.factoryFailed(key, error, nowNs())
+                        else connectionTracker.status(key, CnhCaptureStatus(CnhConnectionState.ERROR,
+                            "连接启动失败：${error.message}", captureFailureReason(error)), nowNs())
+                    }
+                }
             } finally {
                 // Cancellation can happen during factory/start. Release the obsolete source;
                 // the owner's serialized executor ensures no newer connection is overwritten.
@@ -142,9 +161,9 @@ class PhoneCaptureController(
                 }
             }
         }
-        attempt(plan.cameraRetry, plan.camera, ::connectCamera)
-        attempt(plan.tofRetry, plan.tof, ::connect)
-        plan.imu?.let { attempt(plan.imuRetry, it, ::connectImu) }
+        attempt("camera", plan.cameraRetry, plan.camera, ::connectCamera)
+        attempt("tof", plan.tofRetry, plan.tof, ::connect)
+        plan.imu?.let { attempt("imu", plan.imuRetry, it, ::connectImu) }
     }
 
     private fun releaseCancelledSource(obsolete: AutoCloseable) {
@@ -152,14 +171,17 @@ class PhoneCaptureController(
             // Retry only runs outside recording. Invalidate before close so even a
             // late callback from a cancelled start cannot restore obsolete readiness.
             if (cameraSource === obsolete) {
+                connectionTracker.status("camera", CnhCaptureStatus(CnhConnectionState.STOPPED, ""), nowNs())
                 cameraSource = null; cameraGeneration++
                 cameraConnected = false; cameraSeenNs = 0L; latestCamera = null
             }
             if (source === obsolete) {
+                connectionTracker.status("tof", CnhCaptureStatus(CnhConnectionState.STOPPED, ""), nowNs())
                 source = null; sourceGeneration++
                 connected = false; tofSeenNs = 0L; latestTof = null
             }
             if (imuSource === obsolete) {
+                connectionTracker.status("imu", CnhCaptureStatus(CnhConnectionState.STOPPED, ""), nowNs())
                 imuSource = null; imuGeneration++
                 imuConnected = false; imuSeenNs = 0L; latestImu = null
                 latestImuIndex = null; imuRecent.clear()
@@ -173,12 +195,14 @@ class PhoneCaptureController(
         disconnectCamera()
         val generation = whenConnectable(next) {
             cameraSource = next
+            connectionTracker.attempt("camera", next.transport, nowNs())
             ++cameraGeneration
         }
         next.start({ frame ->
             var failed = false
             synchronized(lock) {
                 if (generation != cameraGeneration) return@start
+                connectionTracker.frame("camera", nowNs(), frame.bootId)
                 cameraSeenNs = frame.receivedElapsedNs
                 latestCamera = frame
                 reconnectPlan?.cameraRetry?.received(frame.receivedElapsedNs)
@@ -202,6 +226,7 @@ class PhoneCaptureController(
             var interrupted = false
             synchronized(lock) {
                 if (generation != cameraGeneration) return@start
+                connectionTracker.status("camera", status, nowNs())
                 cameraConnected = status.state == CnhConnectionState.CONNECTED
                 cameraMessage = status.message
                 runCatching { store?.recordEvent("camera_${status.state.name.lowercase()}", status.message, nowNs()) }
@@ -222,6 +247,7 @@ class PhoneCaptureController(
         disconnectTof()
         val generation = whenConnectable(next) {
             source = next
+            connectionTracker.attempt("tof", next.transport, nowNs())
             sourceGeneration += 1
             preamble.clear()
             sourceGeneration
@@ -231,6 +257,7 @@ class PhoneCaptureController(
             synchronized(lock) {
                 if (generation != sourceGeneration) return@start
                 if (record.frame != null) {
+                    connectionTracker.frame("tof", nowNs())
                     tofSeenNs = record.hostReceivedMonotonicNs
                     latestTof = record.frame
                     reconnectPlan?.tofRetry?.received(record.hostReceivedMonotonicNs)
@@ -264,6 +291,7 @@ class PhoneCaptureController(
             var interrupted = false
             synchronized(lock) {
                 if (generation != sourceGeneration) return@start
+                connectionTracker.status("tof", status, nowNs())
                 connected = status.state == CnhConnectionState.CONNECTED
                 message = status.message
                 try {
@@ -295,6 +323,7 @@ class PhoneCaptureController(
         disconnectImu()
         val generation = whenConnectable(next) {
             imuSource = next
+            connectionTracker.attempt("imu", next.transport, nowNs())
             imuGeneration += 1
             imuPreamble.clear()
             imuGeneration
@@ -304,6 +333,7 @@ class PhoneCaptureController(
             synchronized(lock) {
                 if (generation != imuGeneration) return@start
                 if (record.frame != null) {
+                    connectionTracker.frame("imu", nowNs(), record.frame.bootId)
                     imuSeenNs = record.hostReceivedMonotonicNs
                     reconnectPlan?.imuRetry?.received(record.hostReceivedMonotonicNs)
                     imuMessage = "IMU 数据已就绪"
@@ -338,6 +368,7 @@ class PhoneCaptureController(
             var interrupted = false
             synchronized(lock) {
                 if (generation != imuGeneration) return@start
+                connectionTracker.status("imu", status, nowNs())
                 imuConnected = status.state == CnhConnectionState.CONNECTED
                 imuMessage = status.message
                 if (status.state in setOf(CnhConnectionState.ERROR, CnhConnectionState.DISCONNECTED)) {
@@ -377,6 +408,7 @@ class PhoneCaptureController(
         old?.close()
         synchronized(lock) {
             imuGeneration++
+            connectionTracker.status("imu", CnhCaptureStatus(CnhConnectionState.STOPPED, ""), nowNs())
             latestImu = null
             latestImuIndex = null
             imuRecent.clear()
@@ -390,7 +422,10 @@ class PhoneCaptureController(
             cameraSource.also { cameraSource = null }
         }
         old?.close()
-        synchronized(lock) { cameraGeneration++; latestCamera = null }
+        synchronized(lock) {
+            cameraGeneration++; latestCamera = null
+            connectionTracker.status("camera", CnhCaptureStatus(CnhConnectionState.STOPPED, ""), nowNs())
+        }
     }
 
     private fun disconnectTof() {
@@ -400,7 +435,10 @@ class PhoneCaptureController(
             source.also { source = null }
         }
         old?.close()
-        synchronized(lock) { sourceGeneration++; latestTof = null }
+        synchronized(lock) {
+            sourceGeneration++; latestTof = null
+            connectionTracker.status("tof", CnhCaptureStatus(CnhConnectionState.STOPPED, ""), nowNs())
+        }
     }
 
     private fun endRecording(reason: String, status: String) {
@@ -421,7 +459,12 @@ class PhoneCaptureController(
             disconnectCamera()
             disconnectTof()
             disconnectImu()
-            synchronized(lock) { finishLocked(reason, status) }
+            synchronized(lock) {
+                if (reason in setOf("user_stop", "disconnect", "page_backgrounded")) {
+                    connectionTracker.intentionalStop(nowNs())
+                }
+                finishLocked(reason, status)
+            }
         } finally {
             synchronized(lock) {
                 ending = false
@@ -475,6 +518,9 @@ class PhoneCaptureController(
             }
             for (record in preamble) saveTof(next, record)
             next.recordEvent("start", "User started foreground Atom capture", now)
+            connectionTracker.snapshot().history.forEach { event ->
+                next.recordEvent("connection_diagnostic_history", diagnosticJson(event), now)
+            }
             message = "正在采集；保持此页面打开"
         } catch (error: Exception) {
             message = "创建采集失败：${error.message}"
@@ -499,6 +545,7 @@ class PhoneCaptureController(
 
     fun snapshot(): PhoneCaptureState {
         val timeout = synchronized(lock) {
+            connectionTracker.check(nowNs())
             val active = store
             if (active == null || ending) null else {
                 val now = nowNs()
@@ -574,6 +621,7 @@ class PhoneCaptureController(
                 cameraConnected = cameraConnected,
                 cameraMessage = cameraMessage,
                 reconnectEnabled = reconnectPlan != null,
+                connectionDiagnostics = connectionTracker.snapshot().copy(persistenceError = connectionPersistenceError),
             )
         }
     }
@@ -647,6 +695,8 @@ class PhoneCaptureController(
             terminalCause = terminalCause?.let { "$it；$message" } ?: message
         }
     }
+
+    private fun diagnosticJson(event: CaptureConnectionEvent) = connectionEventJson(event).toString()
 
     private fun nowNs() = monotonicClock()
     private companion object {

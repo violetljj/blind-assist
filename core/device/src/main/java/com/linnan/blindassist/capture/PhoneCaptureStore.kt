@@ -419,8 +419,13 @@ class PhoneCaptureStore private constructor(
         fun exportZip(
             session: PhoneCaptureSummary,
             output: OutputStream,
+            isCancelled: () -> Boolean = { false },
             onProgress: (writtenSourceBytes: Long, totalSourceBytes: Long) -> Unit = { _, _ -> },
         ) {
+            fun checkCancelled() {
+                if (isCancelled()) throw java.util.concurrent.CancellationException("导出已取消")
+            }
+            checkCancelled()
             val directory = session.directory.canonicalFile
             require(directory.isDirectory) { "采集会话不存在" }
             val prefix = directory.path + File.separator
@@ -435,6 +440,7 @@ class PhoneCaptureStore private constructor(
                 // FilterOutputStream's default bulk write loops over write(int).
                 // SAF/document providers must receive blocks, never a call per byte.
                 override fun write(bytes: ByteArray, offset: Int, length: Int) {
+                    checkCancelled()
                     output.write(bytes, offset, length)
                 }
                 override fun close() { flush() }
@@ -443,6 +449,7 @@ class PhoneCaptureStore private constructor(
             val transferBuffer = ByteArray(EXPORT_BUFFER_BYTES)
             zip.use { archive ->
                 files.forEach { file ->
+                    checkCancelled()
                     require(file.canonicalPath.startsWith(prefix)) { "采集文件路径越界" }
                     val name = "${session.id}/${file.relativeTo(directory).invariantSeparatorsPath}"
                     // JPEG is already compressed. Keep it streaming in DEFLATED
@@ -453,6 +460,7 @@ class PhoneCaptureStore private constructor(
                     archive.putNextEntry(ZipEntry(name).apply { time = file.lastModified() })
                     file.inputStream().use { input ->
                         while (true) {
+                            checkCancelled()
                             val count = input.read(transferBuffer)
                             if (count < 0) break
                             archive.write(transferBuffer, 0, count)
@@ -468,6 +476,7 @@ class PhoneCaptureStore private constructor(
                 }
             }
             // Completion follows the central directory and final buffered provider write.
+            checkCancelled()
             onProgress(writtenSourceBytes, totalSourceBytes)
         }
 

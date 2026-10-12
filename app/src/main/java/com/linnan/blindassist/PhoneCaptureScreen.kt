@@ -39,7 +39,8 @@ internal fun PhoneCaptureScreen(
     onHostChange: (String) -> Unit, onAtomHostChange: (String) -> Unit,
     onImuEnabledChange: (Boolean) -> Unit, onNoteChange: (String) -> Unit,
     onConnect: () -> Unit, onDiscover: () -> Unit, onDisconnect: () -> Unit,
-    onStart: () -> Unit, onStop: () -> Unit, onExport: (PhoneCaptureSummary) -> Unit, onBack: () -> Unit
+    onStart: () -> Unit, onStop: () -> Unit, onExport: (PhoneCaptureSummary) -> Unit, onBack: () -> Unit,
+    exportTask: CaptureExportTask? = null, onCancelExport: () -> Unit = {}, onRetryExport: () -> Unit = {},
 ) {
     var showSettings by rememberSaveable { mutableStateOf(false) }
     var showSessions by rememberSaveable { mutableStateOf(false) }
@@ -84,6 +85,8 @@ internal fun PhoneCaptureScreen(
                 Text(state.message, style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant,
                     modifier = Modifier.testTag("capture_status"))
             }
+            exportTask?.let { CaptureExportTaskCard(it, onCancelExport, onRetryExport, retryEnabled = !state.recording && !busy) }
+            CaptureConnectionCard(state.connectionDiagnostics)
             Text("实时预览", style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.semantics { heading() })
             CapturePreviews(state, preview, onPreviewDraw)
@@ -125,7 +128,7 @@ internal fun PhoneCaptureScreen(
                         Text("RGB ${session.rgbCount} / ToF ${session.tofCount} / IMU ${session.imuCount} 帧 · ${session.bytes / 1024 / 1024} MB",
                             style = MaterialTheme.typography.bodySmall)
                         Text(if (session.status == "COMPLETED") "已保存" else "部分记录已保留", style = MaterialTheme.typography.bodySmall)
-                        OutlinedButton(onClick = { onExport(session) }, enabled = !state.recording && !busy,
+                        OutlinedButton(onClick = { onExport(session) }, enabled = !state.recording && !busy && exportTask?.isActive != true,
                             modifier = Modifier.testTag("capture_export_${session.id}")) { Text("导出 ZIP") }
                     }
                 }

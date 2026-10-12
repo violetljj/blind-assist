@@ -50,12 +50,12 @@ class TcpImuCaptureSource(host: String, private val port: Int = 3336) : ImuCaptu
                             onRawChunk?.invoke(chunk.bytes, chunk.receivedNs)
                             decoder.feed(chunk.bytes, chunk.receivedNs).forEach(onRecord)
                         }
-                        terminalStatus = CnhCaptureStatus(CnhConnectionState.DISCONNECTED, "Atom IMU 连接中断")
+                        terminalStatus = CnhCaptureStatus(CnhConnectionState.DISCONNECTED, "Atom IMU 连接中断", CaptureConnectionReason.TRANSPORT_CLOSED)
                     }
                 }
             } catch (error: Exception) {
                 if (!closed.get()) terminalStatus = CnhCaptureStatus(CnhConnectionState.ERROR,
-                    "Atom IMU 采集失败：${error.message ?: error.javaClass.simpleName}")
+                    "Atom IMU 采集失败：${error.message ?: error.javaClass.simpleName}", captureFailureReason(error))
             } finally {
                 socket = null
                 // A terminal callback may finalize storage; deliver raw partial bytes first.

@@ -49,12 +49,12 @@ class TcpCnhCaptureSource(host: String, private val port: Int = 3335) : CnhCaptu
                             onRawChunk?.invoke(chunk.bytes, chunk.receivedNs)
                             decoder.feed(chunk.bytes, chunk.receivedNs).forEach(onRecord)
                         }
-                        terminalStatus = CnhCaptureStatus(CnhConnectionState.DISCONNECTED, "ToF 连接中断")
+                        terminalStatus = CnhCaptureStatus(CnhConnectionState.DISCONNECTED, "ToF 连接中断", CaptureConnectionReason.TRANSPORT_CLOSED)
                     }
                 }
             } catch (exception: Exception) {
                 if (!closed.get()) terminalStatus = CnhCaptureStatus(CnhConnectionState.ERROR,
-                    "ToF 采集失败：${exception.message ?: exception.javaClass.simpleName}")
+                    "ToF 采集失败：${exception.message ?: exception.javaClass.simpleName}", captureFailureReason(exception))
             } finally {
                 socket = null
                 // The controller finalizes its writer on terminal status; publish the raw tail first.

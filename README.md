@@ -5,7 +5,7 @@ assistance. It combines camera perception, risk logic, and concise guidance to
 demonstrate measurable effects in clearly stated controlled conditions. It is
 not a certified mobility or safety product.
 
-App v10.17.2 opens the original home without starting perception. **Start assist**
+App v10.18.0 opens the original home without starting perception. **Start assist**
 connects the camera and ToF. Current H3 CNH firmware uses **basic range assistance**;
 the legacy mapped-time transport can use **A+LOCAL experimental mode**, with
 the frozen research classifier running offline on the phone. Its nominal camera/ToF

@@ -19,6 +19,47 @@ class PhoneCaptureStoreTest {
     @get:Rule val temporary = TemporaryFolder()
 
     @Test
+    fun cancellationDoesNotCompleteExportOrModifySourceFiles() {
+        val store = PhoneCaptureStore.create(temporary.newFolder("cancel-export"))
+        val jpeg = ByteArray(3 * 1024 * 1024).also { Random(21L).nextBytes(it) }
+        val relative = store.recordRgb(jpeg, 1, 2, 640, 480, 0)
+        val saved = store.finish()
+        val originalManifest = File(saved.directory, "manifest.json").readBytes()
+        var cancel = false
+        var closed = false
+        val output = object : ByteArrayOutputStream() {
+            override fun write(bytes: ByteArray, offset: Int, length: Int) {
+                super.write(bytes, offset, length)
+                cancel = true
+            }
+            override fun close() { closed = true }
+        }
+        var completed = false
+        val failure = runCatching {
+            PhoneCaptureStore.exportZip(saved, output, isCancelled = { cancel }) { written, total ->
+                if (written == total && total > 0) completed = true
+            }
+        }.exceptionOrNull()
+        assertTrue(failure is java.util.concurrent.CancellationException)
+        assertFalse(completed)
+        assertFalse(closed)
+        assertTrue(output.size() < jpeg.size)
+        assertArrayEquals(jpeg, File(saved.directory, relative).readBytes())
+        assertArrayEquals(originalManifest, File(saved.directory, "manifest.json").readBytes())
+    }
+
+    @Test
+    fun cancellationBeforeExportLeavesDestinationUntouched() {
+        val saved = PhoneCaptureStore.create(temporary.newFolder("cancel-before-export")).finish()
+        val output = ByteArrayOutputStream()
+        val failure = runCatching {
+            PhoneCaptureStore.exportZip(saved, output, isCancelled = { true })
+        }.exceptionOrNull()
+        assertTrue(failure is java.util.concurrent.CancellationException)
+        assertEquals(0, output.size())
+    }
+
+    @Test
     fun atomJpegHeadersAndUnmappedTimeRemainExactThroughStorageAndZip() {
         val root = temporary.newFolder("atom-captures")
         val store = PhoneCaptureStore.create(root, sourceMetadata = mapOf("rgb_source" to "atom_mjpeg_camera"))

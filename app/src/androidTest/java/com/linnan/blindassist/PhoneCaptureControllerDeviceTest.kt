@@ -29,6 +29,7 @@ class PhoneCaptureControllerDeviceTest {
         val isolated = object : ContextWrapper(base) {
             override fun getApplicationContext(): Context = this
             override fun getNoBackupFilesDir(): File = directory
+            override fun getFilesDir(): File = directory
         }
         controller = PhoneCaptureController(isolated, monotonicClock = { now })
         controller.setImuEnabled(false)

@@ -13,7 +13,11 @@ interface CnhCaptureSource : AutoCloseable {
 
 enum class CnhConnectionState { CONNECTING, CONNECTED, DISCONNECTED, ERROR, STOPPED }
 
-data class CnhCaptureStatus(val state: CnhConnectionState, val message: String)
+data class CnhCaptureStatus(
+    val state: CnhConnectionState,
+    val message: String,
+    val reason: CaptureConnectionReason? = null,
+)
 
 /** Device milliseconds and host elapsed realtime belong to independent, unmapped clocks. */
 data class CnhCaptureRecord(

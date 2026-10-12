@@ -2,6 +2,9 @@ package com.linnan.blindassist
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
@@ -10,6 +13,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,40 +71,36 @@ class PhoneCaptureActivity : ComponentActivity() {
     private var host by mutableStateOf("192.168.5.10")
     private var atomHost by mutableStateOf("192.168.5.9")
     private var note by mutableStateOf("")
-    private var busy by mutableStateOf(false)
     private var controlBusy by mutableStateOf(false)
     private var discovering by mutableStateOf(false)
     @Volatile private var foreground = false
     private var exportMessage by mutableStateOf("")
     private var exportSessionId: String? = null
+    private val exportTasks by lazy { CaptureExportTasks.get(applicationContext) }
+    private val notificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        launchExportPicker()
+    }
 
     private val export = registerForActivityResult(ActivityResultContracts.CreateDocument("application/zip")) { uri ->
         val sessionId = exportSessionId
         exportSessionId = null
         if (uri != null && sessionId != null) {
-            busy = true
-            exportMessage = "正在导出…"
-            io.execute {
-                val startNs = SystemClock.elapsedRealtimeNanos()
-                val result = runCatching {
-                    val session = PhoneCaptureStore.listSessions(this).single { it.id == sessionId }
-                    requireNotNull(contentResolver.openOutputStream(uri, "wt")).use { output ->
-                        PhoneCaptureStore.exportZip(session, output) { written, total ->
-                            handler.post {
-                                if (!isDestroyed) exportMessage = "正在导出 ${if (total > 0) written * 100 / total else 100}% · ${written / 1024 / 1024} / ${total / 1024 / 1024} MB"
-                            }
-                        }
-                    }
-                }
-                handler.post {
-                    if (!isDestroyed) {
-                        busy = false
-                        val seconds = (SystemClock.elapsedRealtimeNanos() - startNs) / 1e9
-                        exportMessage = result.fold({ "导出完成：$sessionId.zip（${"%.1f".format(seconds)} 秒）" }, { "导出失败，请重新保存：${it.message}" })
-                    }
-                }
-            }
+            exportMessage = runCatching {
+                if (exportTasks.start(sessionId, uri)) "" else "已有导出任务，请等待完成或先取消。"
+            }.getOrElse { "无法开始导出：${it.message}" }
         }
+    }
+
+    private fun requestExport(sessionId: String) {
+        if (exportTasks.state.value?.isActive == true || exportSessionId != null) return
+        exportSessionId = sessionId
+        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else launchExportPicker()
+    }
+
+    private fun launchExportPicker() {
+        exportSessionId?.let { export.launch("$it.zip") }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,8 +118,9 @@ class PhoneCaptureActivity : ComponentActivity() {
         refreshSessions()
         setContent {
             BlindAssistTheme {
+                val exportTask by exportTasks.state.collectAsStateWithLifecycle()
                 PhoneCaptureScreen(state, previewProvider, onPreviewDraw, host, atomHost, note, sessions,
-                    busy || controlBusy || discovering, exportMessage,
+                    controlBusy || discovering, exportMessage,
                     onHostChange = { host = it; routeEdited() },
                     onAtomHostChange = { atomHost = it; routeEdited() }, onNoteChange = { note = it },
                     onImuEnabledChange = { enabled ->
@@ -135,7 +136,7 @@ class PhoneCaptureActivity : ComponentActivity() {
                     onStart = {
                         // Reject a tap before Compose has disabled the old button after
                         // an address edit/disconnect; do not supersede required cleanup.
-                        if (!busy && !controlBusy && !discovering) {
+                        if (!controlBusy && !discovering) {
                             val sceneNote = note
                             runControl("无法开始") { capture.startRecording(sceneNote) }
                         }
@@ -148,8 +149,10 @@ class PhoneCaptureActivity : ComponentActivity() {
                             if (isCurrent(generation)) connectSources(generation, tofAddress, atomAddress, imuEnabled)
                         }
                     },
-                    onExport = { session -> exportSessionId = session.id; export.launch("${session.id}.zip") },
-                    onBack = { finish() })
+                    onExport = { session -> requestExport(session.id) },
+                    onBack = { finish() }, exportTask = exportTask,
+                    onCancelExport = { exportTasks.cancel() },
+                    onRetryExport = { exportTask?.let { requestExport(it.sessionId) } })
             }
         }
     }

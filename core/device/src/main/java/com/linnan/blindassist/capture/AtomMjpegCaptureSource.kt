@@ -123,7 +123,7 @@ class AtomMjpegCaptureSource internal constructor(
             } catch (error: Exception) {
                 if (!closed.get()) terminal = CnhCaptureStatus(
                     if (error is EOFException) CnhConnectionState.DISCONNECTED else CnhConnectionState.ERROR,
-                    "Atom 相机中断：${error.message ?: error.javaClass.simpleName}")
+                    "Atom 相机中断：${error.message ?: error.javaClass.simpleName}", captureFailureReason(error))
             } finally {
                 input = null
                 connection?.disconnect()

@@ -48,9 +48,9 @@ class PhoneCaptureDeviceTest {
 
     @Test
     fun capturePageShowsThreePreviewPanels() {
-        compose.onNodeWithTag("capture_preview").assertIsDisplayed()
-        compose.onNodeWithTag("capture_tof_preview").assertIsDisplayed()
-        compose.onNodeWithTag("capture_imu_preview").assertIsDisplayed()
+        compose.onNodeWithTag("capture_preview").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("capture_tof_preview").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("capture_imu_preview").performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("capture_camera_permission").assertDoesNotExist()
         compose.onNodeWithTag("capture_connect").performScrollTo().assertIsEnabled()
         compose.onNodeWithTag("capture_start").performScrollTo().assertIsNotEnabled()
