@@ -24,6 +24,8 @@ Atom人工零参考与名义光轴仍未完成独立标定。Android接收匹配
 
 [小深度模型对比](REAL_RGB_SMALL_MODEL_DEV_20261012.md)：手机候选为DAV2-Small相对（官方Apache-2.0，与DEPTHOR内嵌逐值一致）＋ToF/地面锚定518px：正前杆BODY67%/92%（UniDepth-L 72/95），空通道0–3%，笔记本56ms；横杆HEAD仅约11%需ToF补；DAV2-S公制Hypersim淘汰（0/18%），UniDepth-S 33/77%。手机实测（8 Gen 3）686×518 HTP 120ms/GPU 190ms，HTP输出与FP32相关0.99999；在线头高不可靠，改开机低头ToF标定。下一步新录制冻结检验、接入App。
 
+[冻结检验v1/v2](FROZEN_FUSION_EVAL_V1_PROTOCOL.md)：2026-10-12在新头戴录制前冻结（ToF强档或DAV2-S RGB，v2加2/3帧时序确认），明日录制后只跑脚本；蒸馏版DAV2-S使竖杆变差（67→33%），未采用。
+
 ## 默认、使用与历史入口
 
 模拟Development默认仍由[候选指针](../dtr-r0/nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)和[合同加载器](host/local_signed_bias_default.py)管理；[v4零证据修复](LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)与原M3/5格及失败保持。实机候选不自动替换模拟或App。

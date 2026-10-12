@@ -27,6 +27,8 @@ import pose_envelope as PE
 
 HEIGHT = 1.35
 ONLY_ONLINE = '--online-only' in sys.argv
+FIXED_518 = '--fixed518' in sys.argv
+WEIGHTS_OVERRIDE = next((a.split('=', 1)[1] for a in sys.argv if a.startswith('--weights=')), None)
 
 CHECKPOINT = ROOT / 'artifacts.local/work/mz140-depthor-20260915/depthor-zju-small.pt'  # depth_anything.* identical to official DAV2-Small (Apache-2.0)
 UPSTREAM = ROOT / 'artifacts.local/work/rgb-depth-backbone-compare-dev-20261010/upstream/Depth-Anything-V2'
@@ -35,12 +37,16 @@ SIZES = (518, 308)
 HEAD_HEIGHTS = (1.35, 1.25, 1.45)   # assumed sensor height above floor for ground-plane anchoring
 
 
-def load_dav2_small():
+def load_dav2_small(path=None):
     import torch
     sys.path.insert(0, str(UPSTREAM))
     from depth_anything_v2.dpt import DepthAnythingV2
-    weights = torch.load(CHECKPOINT, map_location='cpu', weights_only=True)
-    state = {k[len('depth_anything.'):]: v for k, v in weights.items() if k.startswith('depth_anything.')}
+    path = path or WEIGHTS_OVERRIDE
+    if path:
+        state = torch.load(path, map_location='cpu', weights_only=True)
+    else:
+        weights = torch.load(CHECKPOINT, map_location='cpu', weights_only=True)
+        state = {k[len('depth_anything.'):]: v for k, v in weights.items() if k.startswith('depth_anything.')}
     if len(state) != 239:
         raise ValueError('Unexpected DAV2-Small key count')
     model = DepthAnythingV2(encoder='vits', features=64, out_channels=[48, 96, 192, 384])
@@ -134,7 +140,7 @@ def main():
     report = dict(model='DAV2-Small relative (DEPTHOR embedded)', parameters=int(params), sizes={})
     global HEIGHT
     rng = np.random.default_rng(20261012)
-    configs = [(518, 'online')] if ONLY_ONLINE else [(308, 1.35), (308, 1.25), (308, 1.45), (518, 1.35), (518, 'online')]
+    configs = [(518, 1.35)] if FIXED_518 else [(518, 'online')] if ONLY_ONLINE else [(308, 1.35), (308, 1.25), (308, 1.45), (518, 1.35), (518, 'online')]
     for size, HEIGHT in configs:
         online = HEIGHT == 'online'
         latencies = []; segs = {}
@@ -196,7 +202,10 @@ def main():
                   f"{frac(rows, lambda r: r['tof_grade'][0] == 2 or r['HEAD']['rgb']):4.0%}/{frac(rows, lambda r: r['tof_grade'][1] == 2 or r['BODY']['rgb']):4.0%}", flush=True)
         report['sizes'][f"{size}_H{'online' if online else HEIGHT}"] = dict(latency_ms_median=float(np.median(latencies) * 1000), latency_ms_p95=float(np.percentile(latencies, 95) * 1000), segments=segs)
         print(f'[{size}] DAV2-S latency median {np.median(latencies)*1000:.1f} ms, p95 {np.percentile(latencies, 95)*1000:.1f} ms (laptop GPU, incl. resize)', flush=True)
-    (OUT / ('rgb_small_model_online_height.json' if ONLY_ONLINE else 'rgb_small_model_readout.json')).write_text(json.dumps(report, indent=1), encoding='utf8')
+    name = ('rgb_small_model_online_height.json' if ONLY_ONLINE else
+            f"rgb_small_model_{Path(WEIGHTS_OVERRIDE).stem}_518.json" if WEIGHTS_OVERRIDE else
+            'rgb_small_model_fixed518.json' if FIXED_518 else 'rgb_small_model_readout.json')
+    (OUT / name).write_text(json.dumps(report, indent=1), encoding='utf8')
 
 
 if __name__ == '__main__':
