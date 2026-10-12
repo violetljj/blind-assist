@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.tflite)
     implementation(libs.tflite.gpu)
     implementation(libs.tflite.gpu.api)
+    implementation(libs.onnxruntime.android)
 
     testImplementation(libs.junit4)
 }

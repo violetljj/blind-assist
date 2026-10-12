@@ -152,7 +152,14 @@ class PhoneCaptureActivity : ComponentActivity() {
                     onExport = { session -> requestExport(session.id) },
                     onBack = { finish() }, exportTask = exportTask,
                     onCancelExport = { exportTasks.cancel() },
-                    onRetryExport = { exportTask?.let { requestExport(it.sessionId) } })
+                    onRetryExport = { exportTask?.let { requestExport(it.sessionId) } },
+                    onFusionExperiment = {
+                        capture.cancelReconnect()
+                        invalidatePreview()
+                        runControl("无法打开融合实验", onComplete = {
+                            startActivity(android.content.Intent(this, MobileFusionActivity::class.java))
+                        }) { capture.disconnect() }
+                    })
             }
         }
     }
@@ -353,6 +360,7 @@ class PhoneCaptureActivity : ComponentActivity() {
     private fun connectSources(generation: Long, tofAddress: String, atomAddress: String, imuEnabled: Boolean) {
         try {
             capture.disconnect()
+            MobileFusionLease.awaitReleased()
             if (!isCurrent(generation)) return
             getSharedPreferences("phone_capture", MODE_PRIVATE).edit().putString("host", tofAddress)
                 .putString("atom_host", atomAddress).putString("imu_host", atomAddress).apply()

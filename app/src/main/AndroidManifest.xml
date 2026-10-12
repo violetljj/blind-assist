@@ -23,6 +23,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
+        <uses-native-library android:name="libcdsprpc.so" android:required="false" />
         <meta-data
             android:name="com.linnan.blindassist.vision.OBJECT_DETECTOR_PROVIDER"
             android:value="com.linnan.blindassist.vision.ProductionQnnRoutingObjectDetectorProvider" />
@@ -30,6 +31,10 @@
             android:name=".CaptureExportService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
+        <activity
+            android:name=".MobileFusionActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
         <activity
             android:name=".PhoneCaptureActivity"
             android:screenOrientation="portrait"

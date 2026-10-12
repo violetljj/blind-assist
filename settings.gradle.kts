@@ -9,6 +9,9 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        providers.gradleProperty("localMavenRepo").orNull?.let { localPath ->
+            maven { url = uri(localPath) }
+        }
         google()
         mavenCentral()
     }

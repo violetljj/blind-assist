@@ -4,6 +4,15 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-13 — v10.19.0 opt-in mobile fusion experiment
+
+- Added explicit capture-to-experiment entry, causal RGB/IMU matching, five-seed strong ToF ONNX, DAV2-S DSP runtime, calibrated RGB geometry, per-query2/3 confirmation and20-frame floor-height calibration. No voice/haptics or default-assist replacement. Models, thresholds and frozen evaluation remain unchanged.
+- Connection lease and input epoch prevent overlapping H3 ownership and stale positive publication. Stop/leave closes streams and serialized inference off the main thread. Models persist under noBackup; capture recordings/settings retained.
+- 60 vision JVM checks,2 frozen-input synthetic checks,4 device model/image parity checks,1 default-entry check passed. Initial strict live RGB check failed because all8 samples were pose-gated; explicit follow-up confirmed8/8 UNKNOWN/no alerts and worker release. Live RGB remains NOT_EXERCISED until wearer positioning; failures retained.
+- DAV2 device outputs exactly matched existing HTP reference over3 runs (121–156ms execute including tensor copies); ToF synthetic maximum error1.073e-6. These do not measure full RGB fusion latency or obstacle accuracy.
+- Initial SNPE Java JNI4KB alignment rejected before install; replaced with16KB C API bridge. Debug/test build, lint0errors/88warnings, APK identity/signature/16KB checks passed. Installed and archived58/10.19.0 SHA256 BABF5AD957EFB3E02AEC818051F8126C3CA6DD34EFD6DD12000CB10396945F06. Native cache routed through artifacts.local junction; phone returned home, task workers released.
+- Evidence, scope, failure chronology and deployment: [integration record](research/active/hardware-bringup/MOBILE_FUSION_INTEGRATION_20261012.md). New recordings still require the wearer; no new eval was opened.
+
 ## 2026-10-12 — v10.18.0 capture diagnostics and independent export
 
 - Scope: two accepted reliability priorities, bounded engineering checks; evidence `artifacts.local/evidence/capture-reliability-20261012/`. Raw bytes/clocks, firmware, models and recording lifecycle remain unchanged.

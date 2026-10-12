@@ -305,6 +305,8 @@ class HardwareDemoActivity : ComponentActivity() {
                     }
                     val camera = HardwareWifiEndpoint.normalize(cameraEndpoint)
                     val tof = HardwareWifiEndpoint.normalize(tofEndpoint)
+                    withContext(Dispatchers.IO) { MobileFusionLease.awaitReleased() }
+                    if (generation != connectionGeneration) return@launch
                     ownedWifi = HardwareWifiDemoClient(camera, tof)
                     wifiClient = ownedWifi
                     ownedWifi.start()

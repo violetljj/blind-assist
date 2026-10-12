@@ -41,6 +41,7 @@ internal fun PhoneCaptureScreen(
     onConnect: () -> Unit, onDiscover: () -> Unit, onDisconnect: () -> Unit,
     onStart: () -> Unit, onStop: () -> Unit, onExport: (PhoneCaptureSummary) -> Unit, onBack: () -> Unit,
     exportTask: CaptureExportTask? = null, onCancelExport: () -> Unit = {}, onRetryExport: () -> Unit = {},
+    onFusionExperiment: () -> Unit = {},
 ) {
     var showSettings by rememberSaveable { mutableStateOf(false) }
     var showSessions by rememberSaveable { mutableStateOf(false) }
@@ -116,6 +117,10 @@ internal fun PhoneCaptureScreen(
             }
             Text("采集时保持页面打开。切到后台或断连会结束本段，并保留已有数据。",
                 style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
+            if (!state.recording) TextButton(onClick = onFusionExperiment, enabled = !busy,
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("capture_fusion_experiment")) {
+                Text("打开融合实验")
+            }
             HorizontalDivider(color = colors.outlineVariant)
             TextButton(onClick = { showSessions = !showSessions },
                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("capture_sessions_toggle")) {

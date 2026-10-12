@@ -20,6 +20,24 @@ val hasReleaseSigningProperties = listOf("storeFile", "storePassword", "keyAlias
 val qnnLegacyPackaging = providers.gradleProperty("qnnLegacyPackaging")
     .map(String::toBoolean)
     .orElse(false)
+// Optional local research runtime. No SDK/model download and no default assist routing.
+val dav2QairtRoot = providers.gradleProperty("qairtRoot")
+    .orElse(providers.environmentVariable("QAIRT_ROOT"))
+    .orElse("E:/codex-tools/qairt/2.47.0.260601")
+val dav2SnpeLibrary = file("${dav2QairtRoot.get()}/lib/aarch64-android/libSNPE.so")
+val dav2SnpeEnabled = providers.gradleProperty("enableDav2Snpe")
+    .map(String::toBoolean).orElse(dav2SnpeLibrary.isFile).get()
+if (dav2SnpeEnabled && !dav2SnpeLibrary.isFile) {
+    throw GradleException("DAV2 SNPE requires a local QAIRT SDK: set -PqairtRoot=<SDK> or -PenableDav2Snpe=false")
+}
+val prepareDav2SnpeRuntime by tasks.registering(Sync::class) {
+    into(layout.buildDirectory.dir("generated/dav2SnpeJni/arm64-v8a"))
+    from("${dav2QairtRoot.get()}/lib/aarch64-android") {
+        include("libSnpeHtpPrepare.so", "libSnpeHtpV75Stub.so", "libSnpeHtpV75CalculatorStub.so")
+    }
+    from("${dav2QairtRoot.get()}/lib/hexagon-v75/unsigned") { include("libSnpeHtpV75Skel.so") }
+    onlyIf { dav2SnpeEnabled }
+}
 gradle.taskGraph.whenReady {
     val releasePackageTaskRequested = gradle.startParameter.taskNames.any { requestedTask ->
         requestedTask.substringAfterLast(':') in setOf("assembleRelease", "bundleRelease")
@@ -35,13 +53,14 @@ gradle.taskGraph.whenReady {
 android {
     namespace = "com.linnan.blindassist"
     compileSdk = libs.versions.compileSdk.get().toInt()
+    if (dav2SnpeEnabled) ndkVersion = "27.0.12077973"
 
     defaultConfig {
         applicationId = "com.linnan.blindassist"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 57
-        versionName = "10.18.0"
+        versionCode = 58
+        versionName = "10.19.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "USTRF_EXPERIMENT", "false")
@@ -49,6 +68,14 @@ android {
         buildConfigField("boolean", "DUAL_LOOP_SHADOW", "false")
         buildConfigField("boolean", "DUAL_LOOP_ACTIVE", "false")
         buildConfigField("boolean", "DTR_KNOWN_HEIGHT", "false")
+        buildConfigField("boolean", "DAV2_SNPE_AVAILABLE", dav2SnpeEnabled.toString())
+        if (dav2SnpeEnabled) externalNativeBuild {
+            cmake {
+                abiFilters += "arm64-v8a"
+                arguments += "-DQAIRT_ROOT=${dav2QairtRoot.get()}"
+                arguments += "-DANDROID_STL=c++_static"
+            }
+        }
     }
 
     signingConfigs {
@@ -117,6 +144,17 @@ android {
     androidResources {
         noCompress += "tflite"
     }
+    if (dav2SnpeEnabled) {
+        sourceSets.getByName("main").java.srcDir("src/dav2Snpe/java")
+        sourceSets.getByName("androidTest").java.srcDir("src/dav2SnpeAndroidTest/java")
+        sourceSets.getByName("main").jniLibs.srcDir(layout.buildDirectory.dir("generated/dav2SnpeJni"))
+        externalNativeBuild {
+            cmake {
+                path = file("src/dav2Snpe/cpp/CMakeLists.txt")
+                version = "3.22.1"
+            }
+        }
+    }
 
     packaging {
         jniLibs {
@@ -135,6 +173,8 @@ kotlin {
 kapt {
     correctErrorTypes = true
 }
+
+tasks.named("preBuild").configure { dependsOn(prepareDav2SnpeRuntime) }
 
 dependencies {
     implementation(project(":core:assist"))
