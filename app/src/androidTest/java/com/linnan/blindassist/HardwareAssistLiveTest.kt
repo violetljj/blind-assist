@@ -1,6 +1,7 @@
 package com.linnan.blindassist
 
 import android.os.SystemClock
+import android.os.ParcelFileDescriptor
 import android.content.SharedPreferences
 import android.view.accessibility.AccessibilityNodeInfo
 import android.accessibilityservice.AccessibilityServiceInfo
@@ -233,6 +234,132 @@ class HardwareAssistLiveTest {
                 .put("scope", "real home entry, independent fresh streams and foreground cleanup; no accuracy or synchronization claim")
                 .put("samples", rows).put("end_ui_diagnostics", endDiagnostics)
                 .put("stop_released_client", stopped).toString(2))
+        }
+    }
+
+    @Test fun foregroundH3AssistRecoversAfterWifiLossWithoutManualReconnect() {
+        assumeTrue(InstrumentationRegistry.getArguments().getString("hardwareAssistReconnect") == "true")
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val context = instrumentation.targetContext
+        fun shell(command: String): String = ParcelFileDescriptor.AutoCloseInputStream(
+            instrumentation.uiAutomation.executeShellCommand(command)).bufferedReader().use { it.readText() }
+        fun wifiEnabled() = shell("cmd wifi status").lineSequence()
+            .any { it.trim().equals("Wifi is enabled", ignoreCase = true) ||
+                it.trim().equals("Wi-Fi is enabled", ignoreCase = true) }
+        fun advanced(sequence: Long?, previous: Long?) = sequence != null && previous != null &&
+            ((sequence - previous) and 0xffffffffL) in 1L..0x7fffffffL
+        // Only exercise an already-enabled client connection; never turn on Wi-Fi for a hotspot-only run.
+        assumeTrue("Reconnect test requires Wi-Fi already enabled", wifiEnabled())
+        val user = context.getSharedPreferences("blindassist_user_preferences", 0)
+        val hardware = context.getSharedPreferences("hardware_demo", 0)
+        val userKeys = listOf("onboarding_completed", "app_language", "speech_enabled", "vibration_enabled")
+        val hardwareKeys = listOf("a_local", "wireless", "speech", "vibration", "alert_profile",
+            "speech_style", "vibration_strength", "language", "care", "camera", "tof")
+        val userBefore = user.all
+        val hardwareBefore = hardware.all
+        val rows = JSONArray()
+        val started = SystemClock.elapsedRealtime()
+        var activity: HardwareDemoActivity? = null
+        var client: HardwareWifiDemoClient? = null
+        var wifiNeedsRestore = false
+        var recovered = false
+        var released = false
+        var restoredWifi = false
+        fun observe(phase: String): HardwareDemoSnapshot? {
+            var sample: HardwareDemoSnapshot? = null
+            instrumentation.runOnMainSync { activity?.let { sample = snapshot(it) } }
+            sample?.let {
+                rows.put(JSONObject().put("phase", phase).put("elapsed_ms", SystemClock.elapsedRealtime() - started)
+                    .put("camera_usable", it.cameraUsable).put("tof_usable", it.tofUsable)
+                    .put("camera_sequence", it.cameraSequence ?: JSONObject.NULL)
+                    .put("tof_sequence", it.tofSequence ?: JSONObject.NULL)
+                    .put("tof_timing_basis", it.tofTimingBasis)
+                    .put("tof_receipt_age_ms", it.tofReceiptAgeMs ?: JSONObject.NULL)
+                    .put("alert", it.decision.alert).put("status", it.status))
+            }
+            return sample
+        }
+        fun awaitSample(phase: String, timeoutMs: Long, predicate: (HardwareDemoSnapshot) -> Boolean): HardwareDemoSnapshot {
+            val deadline = SystemClock.elapsedRealtime() + timeoutMs
+            while (SystemClock.elapsedRealtime() < deadline) {
+                observe(phase)?.takeIf(predicate)?.let { return it }
+                Thread.sleep(200)
+            }
+            throw AssertionError("Timed out in $phase; see hardware-assist-reconnect.json")
+        }
+        try {
+            user.edit().putBoolean("onboarding_completed", true).putString("app_language", AppLanguage.ZH.storageValue)
+                .putBoolean("speech_enabled", false).putBoolean("vibration_enabled", false).commit()
+            hardware.edit().putBoolean("wireless", true).commit()
+            ActivityScenario.launch(MainActivity::class.java).use {
+                compose.onNodeWithTag("home_primary_assist").performScrollTo().performClick()
+                val activityDeadline = SystemClock.elapsedRealtime() + 10_000
+                while (activity == null && SystemClock.elapsedRealtime() < activityDeadline) {
+                    instrumentation.runOnMainSync {
+                        activity = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED)
+                            .filterIsInstance<HardwareDemoActivity>().firstOrNull()
+                    }
+                    if (activity == null) Thread.sleep(100)
+                }
+                assertNotNull("Home must open assistance", activity)
+                val initial = awaitSample("initial_ready", 30_000) {
+                    it.cameraUsable && it.tofUsable && it.tofTimingBasis == "host_receipt_only"
+                }
+                var generation: Any? = null
+                instrumentation.runOnMainSync {
+                    client = field(requireNotNull(activity), "wifiClient") as? HardwareWifiDemoClient
+                    generation = field(requireNotNull(activity), "connectionGeneration")
+                }
+                assertNotNull(client)
+                wifiNeedsRestore = true
+                shell("svc wifi disable")
+                val disabledAt = SystemClock.elapsedRealtime()
+                val lost = awaitSample("wifi_disabled", 15_000) {
+                    !it.cameraUsable && !it.tofUsable && SystemClock.elapsedRealtime() - disabledAt >= 4_000
+                }
+                assertFalse("Unavailable data must not retain an alert", lost.decision.alert)
+                assertFalse("Wi-Fi disable must take effect", wifiEnabled())
+                shell("svc wifi enable")
+                val after = awaitSample("automatic_recovery", 45_000) {
+                    it.cameraUsable && it.tofUsable && it.tofTimingBasis == "host_receipt_only" &&
+                        it.runId == initial.runId && advanced(it.cameraSequence, initial.cameraSequence) &&
+                        advanced(it.tofSequence, initial.tofSequence)
+                }
+                assertNull(after.tofAgeMs)
+                assertEquals(64, after.cells.size)
+                assertTrue(requireNotNull(after.tofReceiptAgeMs) in 0..750)
+                instrumentation.runOnMainSync {
+                    assertSame("Recovery must reuse the existing client", client, field(requireNotNull(activity), "wifiClient"))
+                    assertEquals("Recovery must not restart the activity connection", generation,
+                        field(requireNotNull(activity), "connectionGeneration"))
+                    assertTrue("Assistance must stay foreground", ActivityLifecycleMonitorRegistry.getInstance()
+                        .getActivitiesInStage(Stage.RESUMED).contains(activity))
+                }
+                recovered = true
+            }
+        } finally {
+            try {
+                if (wifiNeedsRestore) shell("svc wifi enable")
+                val restoreDeadline = SystemClock.elapsedRealtime() + 10_000
+                while (!wifiEnabled() && SystemClock.elapsedRealtime() < restoreDeadline) Thread.sleep(200)
+                restoredWifi = wifiEnabled()
+            } finally {
+                instrumentation.runOnMainSync { activity?.takeUnless { it.isFinishing }?.finish() }
+                val releaseDeadline = SystemClock.elapsedRealtime() + 5_000
+                while (!released && SystemClock.elapsedRealtime() < releaseDeadline) {
+                    instrumentation.runOnMainSync { released = activity?.let { field(it, "wifiClient") == null } ?: true }
+                    if (!released) Thread.sleep(50)
+                }
+                released = released && client?.poll()?.let { !it.cameraUsable && !it.tofUsable } != false
+                restore(user, userBefore, userKeys)
+                restore(hardware, hardwareBefore, hardwareKeys)
+                File(context.cacheDir, "hardware-assist-reconnect.json").writeText(JSONObject()
+                    .put("scope", "opt-in real phone Wi-Fi loss and automatic foreground H3/camera recovery; no accuracy claim")
+                    .put("samples", rows).put("automatic_recovery", recovered)
+                    .put("wifi_restored_enabled", restoredWifi).put("stop_released_client", released).toString(2))
+            }
+            assertTrue("Original enabled Wi-Fi state must be restored", restoredWifi)
+            assertTrue("Finishing assistance must release its client", released)
         }
     }
 

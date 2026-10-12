@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,7 +17,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -83,59 +86,7 @@ internal fun PhoneCaptureScreen(
             }
             Text("实时预览", style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.semantics { heading() })
-            Row(Modifier.fillMaxWidth().height(384.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Card(Modifier.weight(1f).fillMaxSize().testTag("capture_preview"),
-                    shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = colors.surface),
-                    border = BorderStroke(1.dp, colors.outlineVariant)) {
-                    Column(Modifier.fillMaxSize().padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text("Atom RGB", style = MaterialTheme.typography.titleSmall)
-                        Text(freshness(state.cameraAgeMs, state.cameraReady), style = MaterialTheme.typography.labelSmall,
-                            modifier = Modifier.testTag("capture_rgb_freshness"))
-                        Box(Modifier.fillMaxWidth().weight(1f).clip(RoundedCornerShape(14.dp)).background(Color(0xff111827)), contentAlignment = Alignment.Center) {
-                            AtomImagePreview(preview, onPreviewDraw, state.displayRotationDegrees, state.displayMirrorHorizontal)
-                        }
-                        Text(state.cameraMessage, style = MaterialTheme.typography.labelSmall,
-                            modifier = Modifier.testTag("capture_camera_status"))
-                    }
-                }
-                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Card(Modifier.fillMaxWidth().height(228.dp).testTag("capture_tof_preview"),
-                        shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = colors.surface),
-                        border = BorderStroke(1.dp, colors.outlineVariant)) {
-                        Column(Modifier.fillMaxSize().padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                Text("ToF · m", style = MaterialTheme.typography.titleSmall)
-                                Text(freshness(state.tofAgeMs, state.tofReady), fontSize = 10.sp,
-                                    modifier = Modifier.testTag("capture_tof_freshness"))
-                            }
-                            TofDistanceGrid(state.tofFrame, Modifier.size(160.dp))
-                            Text("无：无读数", style = MaterialTheme.typography.labelSmall,
-                                modifier = Modifier.testTag("capture_tof_no_reading_legend"))
-                        }
-                    }
-                    Card(Modifier.fillMaxWidth().weight(1f).testTag("capture_imu_preview"),
-                        shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = colors.surface),
-                        border = BorderStroke(1.dp, colors.outlineVariant)) {
-                        Column(Modifier.padding(8.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
-                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                Text("IMU", style = MaterialTheme.typography.titleSmall)
-                                Text(if (state.imuEnabled) freshness(state.imuAgeMs, state.imuReady) else "已关闭",
-                                    fontSize = 10.sp, modifier = Modifier.testTag("capture_imu_freshness"))
-                            }
-                            val imu = state.imuFrame
-                            Text("俯仰 ${angle(imu?.pitchDeg)}  横滚 ${angle(imu?.rollDeg)}", fontSize = 11.sp, lineHeight = 14.sp,
-                                modifier = Modifier.testTag("capture_imu_angles"))
-                            Text("a(g) ${vector(imu?.accelG)}", fontSize = 10.sp, lineHeight = 13.sp,
-                                modifier = Modifier.testTag("capture_imu_accel"))
-                            Text("ω(°/s) ${vector(imu?.gyroDps)}", fontSize = 10.sp, lineHeight = 13.sp,
-                                modifier = Modifier.testTag("capture_imu_gyro"))
-                            Text("BMI270 原生轴", fontSize = 9.sp, lineHeight = 12.sp,
-                                modifier = Modifier.testTag("capture_imu_native_axes"))
-                        }
-                    }
-                }
-            }
+            CapturePreviews(state, preview, onPreviewDraw)
             if (state.imuEnabled) Text(state.imuMessage, style = MaterialTheme.typography.bodySmall,
                 color = colors.onSurfaceVariant,
                 modifier = Modifier.testTag("capture_imu_status"))
@@ -149,11 +100,7 @@ internal fun PhoneCaptureScreen(
                     Text(if (showSettings) "收起连接与备注" else "连接与备注 ▾")
                 }
                 if (showSettings) CapturePanel {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Checkbox(checked = state.imuEnabled, onCheckedChange = onImuEnabledChange,
-                            enabled = !busy, modifier = Modifier.testTag("capture_imu_enabled"))
-                        Text("同时记录 IMU")
-                    }
+                    CaptureImuToggle(state.imuEnabled, !busy, onImuEnabledChange)
                     OutlinedTextField(value = atomHost, onValueChange = onAtomHostChange,
                         label = { Text("Atom 地址（RGB 与 IMU）") }, singleLine = true,
                         modifier = Modifier.fillMaxWidth().testTag("capture_atom_host"))
@@ -183,6 +130,120 @@ internal fun PhoneCaptureScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+internal fun CaptureImuToggle(checked: Boolean, enabled: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Row(Modifier.fillMaxWidth().heightIn(min = 48.dp)
+        .testTag("capture_imu_enabled")
+        .toggleable(value = checked, enabled = enabled, role = Role.Checkbox, onValueChange = onCheckedChange),
+        verticalAlignment = Alignment.CenterVertically) {
+        Checkbox(checked = checked, onCheckedChange = null, enabled = enabled)
+        Text("同时记录 IMU", modifier = Modifier.padding(start = 12.dp))
+    }
+}
+
+@Composable
+internal fun CapturePreviews(state: PhoneCaptureState, preview: () -> AtomPreviewFrame?, onPreviewDraw: (Long) -> Unit) {
+    val fontScale = LocalDensity.current.fontScale
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        // Fixed compact cards are only suitable when their text fits beside the grid.
+        // Stacked cards measure text naturally; incoming camera frames still only invalidate Canvas.
+        val stacked = fontScale > 1.3f || maxWidth < 340.dp
+        if (stacked) {
+            Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                CaptureRgbPreview(state, preview, onPreviewDraw, Modifier.fillMaxWidth(), stacked = true)
+                CaptureTofPreview(state, Modifier.fillMaxWidth(), stacked = true)
+                CaptureImuPreview(state, Modifier.fillMaxWidth(), stacked = true)
+            }
+        } else {
+            Row(Modifier.fillMaxWidth().height(384.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                CaptureRgbPreview(state, preview, onPreviewDraw, Modifier.weight(1f).fillMaxHeight(), stacked = false)
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    CaptureTofPreview(state, Modifier.fillMaxWidth().height(228.dp), stacked = false)
+                    CaptureImuPreview(state, Modifier.fillMaxWidth().weight(1f), stacked = false)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PreviewCard(modifier: Modifier, content: @Composable ColumnScope.() -> Unit) {
+    Card(modifier, shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant), content = content)
+}
+
+@Composable
+private fun CaptureRgbPreview(state: PhoneCaptureState, preview: () -> AtomPreviewFrame?, onPreviewDraw: (Long) -> Unit,
+    modifier: Modifier, stacked: Boolean) {
+    PreviewCard(modifier.testTag("capture_preview")) {
+        Column((if (stacked) Modifier.fillMaxWidth() else Modifier.fillMaxSize()).padding(10.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text("Atom RGB", style = MaterialTheme.typography.titleSmall)
+            Text(freshness(state.cameraAgeMs, state.cameraReady), style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.testTag("capture_rgb_freshness"))
+            Box(Modifier.fillMaxWidth().then(if (stacked) Modifier.aspectRatio(4f / 3f) else Modifier.weight(1f))
+                .clip(RoundedCornerShape(14.dp)).background(Color(0xff111827)), contentAlignment = Alignment.Center) {
+                AtomImagePreview(preview, onPreviewDraw, state.displayRotationDegrees, state.displayMirrorHorizontal)
+            }
+            Text(state.cameraMessage, style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.testTag("capture_camera_status"))
+        }
+    }
+}
+
+@Composable
+private fun CaptureTofPreview(state: PhoneCaptureState, modifier: Modifier, stacked: Boolean) {
+    PreviewCard(modifier.testTag("capture_tof_preview")) {
+        Column((if (stacked) Modifier.fillMaxWidth() else Modifier.fillMaxSize()).padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            if (stacked) {
+                Text("ToF · m", style = MaterialTheme.typography.titleSmall, modifier = Modifier.testTag("capture_tof_title"))
+                Text(freshness(state.tofAgeMs, state.tofReady), style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.testTag("capture_tof_freshness"))
+            } else {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("ToF · m", style = MaterialTheme.typography.titleSmall, modifier = Modifier.testTag("capture_tof_title"))
+                    Text(freshness(state.tofAgeMs, state.tofReady), fontSize = 10.sp,
+                        modifier = Modifier.testTag("capture_tof_freshness"))
+                }
+            }
+            TofDistanceGrid(state.tofFrame,
+                if (stacked) Modifier.widthIn(max = 320.dp).fillMaxWidth() else Modifier.size(160.dp))
+            Text("无：无读数", style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.testTag("capture_tof_no_reading_legend"))
+        }
+    }
+}
+
+@Composable
+private fun CaptureImuPreview(state: PhoneCaptureState, modifier: Modifier, stacked: Boolean) {
+    PreviewCard(modifier.testTag("capture_imu_preview")) {
+        Column(Modifier.padding(8.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            if (stacked) {
+                Text("IMU", style = MaterialTheme.typography.titleSmall)
+                Text(if (state.imuEnabled) freshness(state.imuAgeMs, state.imuReady) else "已关闭",
+                    style = MaterialTheme.typography.labelSmall, modifier = Modifier.testTag("capture_imu_freshness"))
+            } else {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text("IMU", style = MaterialTheme.typography.titleSmall)
+                    Text(if (state.imuEnabled) freshness(state.imuAgeMs, state.imuReady) else "已关闭",
+                        fontSize = 10.sp, modifier = Modifier.testTag("capture_imu_freshness"))
+                }
+            }
+            val imu = state.imuFrame
+            Text("俯仰 ${angle(imu?.pitchDeg)}  横滚 ${angle(imu?.rollDeg)}", fontSize = 11.sp, lineHeight = 14.sp,
+                modifier = Modifier.testTag("capture_imu_angles"))
+            Text("a(g) ${vector(imu?.accelG)}", fontSize = 10.sp, lineHeight = 13.sp,
+                modifier = Modifier.testTag("capture_imu_accel"))
+            Text("ω(°/s) ${vector(imu?.gyroDps)}", fontSize = 10.sp, lineHeight = 13.sp,
+                modifier = Modifier.testTag("capture_imu_gyro"))
+            Text("BMI270 原生轴", fontSize = 9.sp, lineHeight = 12.sp,
+                modifier = Modifier.testTag("capture_imu_native_axes"))
         }
     }
 }

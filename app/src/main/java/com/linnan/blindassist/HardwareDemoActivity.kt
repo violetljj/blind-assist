@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.rememberScrollState
@@ -650,7 +651,7 @@ private fun HardwareDemoScreen(
                 "Repeat every ${feedbackSettings.reminderIntervalMs / 1000}s · ${feedbackSettings.style.displayName(AppLanguage.EN)} speech · ${feedbackSettings.strength.displayName(AppLanguage.EN)} vibration"),
                 color = DemoMuted, fontSize = 12.sp, modifier = Modifier.testTag("hardware_demo_feedback_settings"))
             if ((!usable || !cameraUsable) && !replay) {
-                Button(onClick = onDiscover, modifier = Modifier.fillMaxWidth().height(56.dp).testTag("hardware_demo_reconnect"),
+                Button(onClick = onDiscover, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("hardware_demo_reconnect"),
                     shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = DemoTeal)) {
                     Text(if (wireless) label("重新发现并连接", "Find devices and reconnect") else label("重新连接 USB 中转", "Reconnect USB relay"), color = MaterialTheme.colorScheme.onPrimary)
                 }

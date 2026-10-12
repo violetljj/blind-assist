@@ -66,7 +66,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.localization.AppLanguage
-import com.linnan.blindassist.preferences.DailyUsageMode
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
@@ -76,11 +75,9 @@ fun FeatureScreen(
     appVersion: String,
     onOpenCamera: () -> Unit,
     onShowGlassesCenter: () -> Unit,
-    onDailyUsageModeChange: (DailyUsageMode) -> Unit,
+    onProfileChange: (AlertProfile) -> Unit,
     modifier: Modifier = Modifier,
     glassesConnectionState: GlassesConnectionState = GlassesConnectionState.DISCONNECTED,
-    onQuietShortcut: () -> Unit = {},
-    onSensitiveShortcut: () -> Unit = {},
     onOpenDataCapture: () -> Unit = {}
 ) {
     val language = controls.appLanguage
@@ -145,9 +142,9 @@ fun FeatureScreen(
             HomeModeSelector(
                 selectedMode = selectedMode,
                 language = language,
-                onDailyClick = { onDailyUsageModeChange(DailyUsageMode.GENERAL_DAILY) },
-                onQuietClick = onQuietShortcut,
-                onSensitiveClick = onSensitiveShortcut
+                onDailyClick = { onProfileChange(AlertProfile.STANDARD) },
+                onQuietClick = { onProfileChange(AlertProfile.QUIET) },
+                onSensitiveClick = { onProfileChange(AlertProfile.SENSITIVE) }
             )
             Spacer(Modifier.height(28.dp))
 
@@ -407,9 +404,9 @@ private fun HomeModeItem(
             )
             .semantics {
                 contentDescription = if (language == AppLanguage.EN) {
-                    "Choose $label assist mode"
+                    "Choose $label reminder cadence"
                 } else {
-                    "选择${label}辅助模式"
+                    "选择${label}提醒频率"
                 }
             },
         shape = shape,

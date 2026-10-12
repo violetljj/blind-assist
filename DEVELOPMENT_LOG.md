@@ -4,6 +4,16 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-12 — v10.17.1 high-standard app review
+
+- Scope: user-requested UI/behavior/performance review, current screenshots and focused live checks. Evidence: `artifacts.local/evidence/app-review-20261012/`. No model, firmware, acquisition or feedback-rule changes.
+- Fixed home cadence controls invoking legacy presets that silently reset speech/vibration/care/scene; now only AlertProfile changes. Added regression comparing complete persisted settings across all three choices; test fixtures restore both preference stores after Activity destruction.
+- Fixed200% font/narrow-screen capture preview crowding with stacked natural-height cards, preserved normal dual-column layout and Canvas update path. IMU checkbox now one labelled48dp row. Reconnect button uses minimum height so text can grow. Current normal/200% home, assist, settings and capture screenshots inspected; home secondary summary still ellipsizes at200%, and unchecked settings switch has a minor residual tint.
+- Rejected age-only UI publication gate: matched15s observations baseline1751frames/75janky(4.28%), median6ms/P9511ms; candidate435/307(70.57%), median11ms/P9518ms. Four gate JVM tests passed but real rendering worsened, so gate and tests removed from product and archived. Final restored path15.169s:1679/135(8.04%), median7ms/P9513ms. No FPS/jank improvement claim; repeated whole-screen updates remain a performance target.
+- Initial device suite7:5passed,2layout-test failures. Diagnostic repeat retained same2failures: TextLayoutResult paragraph container1190px vs content779px incorrectly triggered aggregate overflow. Replaced aggregate flag with actual line bounds, height, ellipsis and card overlap checks. Final6/6passed (3layout/accessibility, normal capture panels, live entry/exit, Wi-Fi loss/recovery); prior3settings tests passed. No manual TalkBack or spoken/haptic-quality validation.
+- Final real Wi-Fi interruption: stayed in same foreground Activity/client/generation, both inputs became unavailable with no retained alert; after Wi-Fi enable, observations reached fresh camera+H3 in4.016s (200ms observation cadence). Original Wi-Fi enabled state restored and exit released client. This covers phone client Wi-Fi interruption, not hardware reboot or hotspot mode. User preferences equal pre-test values; font scale restored1.0, density unchanged560.
+- Final debug/androidTest build, lint, structure and APK identity/signature/16KB checks passed. Installed55/10.17.1 in place; archived SHA256 `D80BBA0749875999E854D3D31AFB71802721263F19B34F362170FB2BB8FC86A8`. Finished at home, temporary device screenshot files removed; evidence and failed candidate retained.
+
 ## 2026-10-12 — v10.17.0 integrated assist and unified frontend
 
 - Scope: restore current H3 in the main assist flow, connect home feedback settings, unify home/assist/capture/settings visuals. Evidence: `artifacts.local/evidence/assist-integration-20261012/`. No model thresholds or device firmware changes.

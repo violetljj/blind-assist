@@ -5,7 +5,7 @@ assistance. It combines camera perception, risk logic, and concise guidance to
 demonstrate measurable effects in clearly stated controlled conditions. It is
 not a certified mobility or safety product.
 
-App v10.17.0 opens the original home without starting perception. **Start assist**
+App v10.17.1 opens the original home without starting perception. **Start assist**
 connects the camera and ToF. Current H3 CNH firmware uses **basic range assistance**;
 the legacy mapped-time transport can use **A+LOCAL experimental mode**, with
 the frozen research classifier running offline on the phone. Its nominal camera/ToF
@@ -30,7 +30,7 @@ deployed or validated. See the [current perception route](research/active/dtr-r0
 ## Start here
 
 - **手机端 Atom RGB + ToF + IMU 采集**：首页“数据采集”同时预览 Atom 画面、ToF 距离网格和 IMU 读数，保存原始 JPEG、完整 8×8×16 CNH、Atom 六轴与姿态、时间戳和场景备注；停止后可导出 ZIP。使用局域网或已配置的手机热点。[采集使用说明](docs/PHONE_DATA_CAPTURE.md)
-- 默认入口（v10.17.0）：打开 App 停留首页；点击“开始辅助”连接相机与 ToF，当前 H3 固件使用基础测距，旧版时序协议保留 A+LOCAL 实验模式。[使用说明](docs/HARDWARE_OBSTACLE_DEMO.md)。首页语言、提醒频率、语音风格、震动强度和关怀模式作用于辅助页；结束后停止连接与反馈。支持最近 20 秒留证、静音回放与分路降级。
+- 默认入口（v10.17.1）：打开 App 停留首页；点击“开始辅助”连接相机与 ToF，当前 H3 固件使用基础测距，旧版时序协议保留 A+LOCAL 实验模式。[使用说明](docs/HARDWARE_OBSTACLE_DEMO.md)。首页语言、提醒频率、语音风格、震动强度和关怀模式作用于辅助页；结束后停止连接与反馈。支持最近 20 秒留证、静音回放与分路降级。
 - **中文一页状态（系统、指标、当前问题）**: [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md)
 - Current research decision: [docs/CURRENT_DECISION.md](docs/CURRENT_DECISION.md)
 - L10-R0 paused / retained evidence: [research/active/l10-r0/CURRENT.md](research/active/l10-r0/CURRENT.md)

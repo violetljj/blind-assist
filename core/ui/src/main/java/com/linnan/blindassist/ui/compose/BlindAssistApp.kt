@@ -347,10 +347,8 @@ private fun MainShell(
                     onOpenCamera = onOpenCamera,
                     onShowGlassesCenter = onShowGlassesCenter,
                     onOpenDataCapture = onOpenDataCapture,
-                    onDailyUsageModeChange = onDailyUsageModeChange,
-                    glassesConnectionState = glassesState.connectionState,
-                    onQuietShortcut = onQuietShortcut,
-                    onSensitiveShortcut = onSensitiveShortcut
+                    onProfileChange = onProfileChange,
+                    glassesConnectionState = glassesState.connectionState
                 )
                 BottomTab.Settings -> SettingsScreen(
                     controls = controls,
