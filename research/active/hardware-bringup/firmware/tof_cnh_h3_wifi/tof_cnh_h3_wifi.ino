@@ -14,6 +14,7 @@ extern "C" {
 static bool sendCnhClient(const String& text);
 static void serviceCnhClient();
 static bool ok(const char* op, uint8_t s);
+static bool probeSensorAtStartup();
 static String cnhHttpStatus();
 static void serviceCnhHttp();
 static void prepareHttpResponse(unsigned code, const String& payload);
@@ -157,10 +158,46 @@ static uint32_t bytes=0, seq=0, lastFrame=0, lastNote=0, readUs=0;
 static bool running=false;
 static const char* lastOp="none";
 static unsigned lastStatus=0;
+static uint8_t startupProbeAttempts=0, startupFirstStatus=0, startupFirstAlive=0;
+static bool startupBusRecovery=false;
+static int startupSdaBefore=-1, startupSdaAfter=-1, startupSclAfter=-1;
 static bool ok(const char* op, uint8_t s) {
   cnhOutput.printf("{\"type\":\"step\",\"op\":\"%s\",\"status\":%u}\n",op,s);
   lastOp=op; lastStatus=s;
   return s==0;
+}
+static bool probeSensorAtStartup() {
+  uint8_t alive=0;
+  startupProbeAttempts=1;
+  startupFirstStatus=vl53lmz_is_alive(&dev,&alive);
+  startupFirstAlive=alive;
+  if (ok("is_alive",startupFirstStatus) && alive) return true;
+  // The sensor remains powered across an MCU reset, which can interrupt an
+  // I2C read with SDA held low. Match tof_wifi's bus clear before ONE retry;
+  // never reset or reconfigure the sensor during an active capture.
+  startupBusRecovery=true;
+  Wire.end();
+  pinMode(5,INPUT_PULLUP);
+  pinMode(6,OUTPUT_OPEN_DRAIN); digitalWrite(6,HIGH);
+  delayMicroseconds(10);
+  startupSdaBefore=digitalRead(5);
+  for(int i=0;i<9;++i) {
+    digitalWrite(6,LOW); delayMicroseconds(10);
+    digitalWrite(6,HIGH); delayMicroseconds(10);
+  }
+  // STOP: release SDA while SCL is high, using open drain throughout.
+  digitalWrite(6,LOW);
+  pinMode(5,OUTPUT_OPEN_DRAIN); digitalWrite(5,LOW);
+  delayMicroseconds(10);
+  digitalWrite(6,HIGH); delayMicroseconds(10);
+  digitalWrite(5,HIGH); delayMicroseconds(10);
+  startupSdaAfter=digitalRead(5); startupSclAfter=digitalRead(6);
+  cnhOutput.printf("{\"type\":\"startup_bus_recovery\",\"first_status\":%u,\"first_alive\":%u,\"sda_before\":%d,\"sda_after\":%d,\"scl_after\":%d}\n",
+    startupFirstStatus,startupFirstAlive,startupSdaBefore,startupSdaAfter,startupSclAfter);
+  if (!Wire.begin(5,6,CNH_I2C_HZ)) return ok("wire_reopen",1);
+  Wire.setTimeOut(100);
+  alive=0; startupProbeAttempts=2;
+  return ok("is_alive_retry",vl53lmz_is_alive(&dev,&alive)) && alive;
 }
 // The SDK WebServer parser busy-spins on incomplete request lines and contends
 // on the lwIP lock even from a separate task. H3 needs two read-only GET routes:
@@ -179,6 +216,11 @@ static String cnhHttpStatus() {
   String identity=status; identity.remove(identity.length()-1);
   String payload=identity+",\"transport\":\"tcp_ndjson\",\"tcp_port\":3335,\"firmware_config\":";
   payload+=cnhOutput.configRecord.isEmpty()?"null":cnhOutput.configRecord;
+  payload+=",\"startup_diagnostics\":{\"probe_attempts\":"+String(startupProbeAttempts)+
+    ",\"first_status\":"+String(startupFirstStatus)+",\"first_alive\":"+String(startupFirstAlive)+
+    ",\"bus_recovery\":"+(startupBusRecovery?"true":"false")+
+    ",\"sda_before\":"+String(startupSdaBefore)+",\"sda_after\":"+String(startupSdaAfter)+
+    ",\"scl_after\":"+String(startupSclAfter)+"}";
   payload+=",\"tcp_diagnostics\":{\"row_deadline_ms\":"+String(CNH_TCP_ROW_DEADLINE_US/1000)+
     ",\"stall_deadline_ms\":"+String(CNH_TCP_STALL_DEADLINE_US/1000)+
     ",\"send_disconnect_count\":"+String(cnhSendDisconnects)+
@@ -273,10 +315,10 @@ void setup() {
   api.stop();
   cnhHttpServer.begin();
   cnhOutput.printf("{\"type\":\"boot\",\"firmware\":\"xiao-cnh-h3-wifi-v1\",\"startup_kind\":\"physical_boot\",\"boot_id\":\"%s\",\"device_id\":\"%s\"}\n",bootId.c_str(),deviceId.c_str());
-  Wire.begin(5,6,CNH_I2C_HZ); Wire.setTimeOut(100);
+  if (!Wire.begin(5,6,CNH_I2C_HZ)) { ok("wire_begin",1); return; }
+  Wire.setTimeOut(100);
   dev.platform.address=0x52;
-  uint8_t alive=0;
-  if(!ok("is_alive",vl53lmz_is_alive(&dev,&alive)) || !alive) return;
+  if(!probeSensorAtStartup()) return;
   if(!ok("init",vl53lmz_init(&dev))) return;
   if(!ok("resolution",vl53lmz_set_resolution(&dev,Z))) return;
   if(!ok("mode",vl53lmz_set_ranging_mode(&dev,VL53LMZ_RANGING_MODE_AUTONOMOUS))) return;

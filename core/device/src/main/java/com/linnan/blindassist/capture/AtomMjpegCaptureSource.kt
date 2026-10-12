@@ -71,7 +71,15 @@ internal object AtomCameraCaptureReader {
 }
 
 /** One explicit HTTP stream, no auto-reconnect and no device-clock mapping. */
-class AtomMjpegCaptureSource(host: String, private val port: Int = 81) : AtomCameraCaptureSource {
+class AtomMjpegCaptureSource internal constructor(
+    host: String,
+    private val port: Int,
+    private val openConnection: (URL) -> HttpURLConnection,
+    private val readFrame: (BufferedInputStream, String) -> AtomCameraCaptureFrame = { input, endpoint ->
+        AtomCameraCaptureReader.read(input, endpoint)
+    },
+) : AtomCameraCaptureSource {
+    constructor(host: String, port: Int = 81) : this(host, port, { it.openConnection() as HttpURLConnection })
     private val host = try { captureHost(host) } catch (error: IllegalArgumentException) {
         throw IllegalArgumentException("请输入 Atom 相机的局域网 IPv4 地址", error)
     }
@@ -93,7 +101,7 @@ class AtomMjpegCaptureSource(host: String, private val port: Int = 81) : AtomCam
             var terminal: CnhCaptureStatus? = null
             try {
                 onStatus(CnhCaptureStatus(CnhConnectionState.CONNECTING, "连接 Atom 相机 $host:$port"))
-                val http = (URL(transport).openConnection() as HttpURLConnection).apply {
+                val http = openConnection(URL(transport)).apply {
                     connectTimeout = 2500
                     // Preview freshness is not a transport deadline. Allow a short
                     // network stall; the controller records/limits missing input.
@@ -109,7 +117,7 @@ class AtomMjpegCaptureSource(host: String, private val port: Int = 81) : AtomCam
                     BufferedInputStream(http.inputStream, 64 * 1024).use { stream ->
                         input = stream
                         onStatus(CnhCaptureStatus(CnhConnectionState.CONNECTED, "Atom 相机已连接"))
-                        while (!closed.get()) onFrame(AtomCameraCaptureReader.read(stream, transport))
+                        while (!closed.get()) onFrame(readFrame(stream, transport))
                     }
                 }
             } catch (error: Exception) {
@@ -136,6 +144,9 @@ class AtomMjpegCaptureSource(host: String, private val port: Int = 81) : AtomCam
         // Closing the input cancels its read. A terminal callback may close other
         // sources on this worker, so do not interrupt that callback with shutdownNow.
         worker.shutdown()
-        if (Thread.currentThread() != workerThread) worker.awaitTermination(1500, TimeUnit.MILLISECONDS)
+        // A fully read JPEG may still be waiting for the controller's storage
+        // lock. Drain its callback before the controller advances generation and
+        // finalizes the session, even when another stream's fsync takes > 1.5 s.
+        if (Thread.currentThread() != workerThread) worker.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS)
     }
 }

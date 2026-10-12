@@ -4,6 +4,15 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-12 — v10.16.6 camera stop drain and H3 startup recovery
+
+- Scope: foreground stability follow-up; two300s real sessions on installed v10.16.5/bounded-HTTP H3, then fix concrete camera-stop tail loss and startup recovery omission. Focused tests/build, app-only H3 flash, three warm resets and final30s capture. Evidence: `artifacts.local/evidence/phone-soak-20261012/`. No model, quality, source rate or timestamp changes.
+- Baseline two300s sessions PASS:7998/7806RGB,1533/1532ToF,30013/30013IMU; only start/normal-stop events, no sender sequence gaps. ToF5.1035Hz/max198ms both; receipt max221.720/242.391ms. Preview25.420/24.950fps, receipt-to-Canvas P9542.141/43.736ms. Stop408/394ms.171,904,259/171,299,696 original bytes exported in3409.959/3259.603ms,8005/7813 ZIP entries byte-identical. Two separate5-minute segments, not one uninterrupted10-minute segment.
+- Camera close previously abandoned its worker after1500ms, allowing controller generation/finalization to race an accepted JPEG callback delayed by storage. Now drains the worker like TCP, with self-worker bypass. Two JVM regressions parse an actual JPEG, hold callback beyond1800ms, check callback→STOPPED→close ordering and self-close without deadlock; all7 affected reader/source tests passed. Stop may take longer when storage is slow.
+- H3 first failed startup probe now runs ONE nine-clock/open-drain STOP bus release and ONE retry; first status/alive and bus levels are exposed in startup_diagnostics. No in-recording retry/reset. Compiled1,059,392byte image SHA256 `6a498efff62fea05025a90da95dce3a61fc5b40031a535ee69179170d97cc02b`; old image retained, app-only flash hash verified. Flash boot plus3 warm resets each produced6 frames/max197ms with distinct boot IDs. All first probes succeeded, so actual failed-probe recovery branch remains hardware-unverified and historical warm-reset failure is not declared eliminated.
+- Debug/androidTest build, lint, APK identity/signature/16KB checks passed; installed52/v10.16.6 without clearing data, archived APK SHA256 `022DB5DB042FFECB718908572379E29882018A14194E616B6431F29124EA5FEB`.
+- Final30.073s integration PASS:806RGB/154ToF/3017IMU, COMPLETED/user_stop, discovery/recreation,281ms stop;17,008,991 original bytes exported in278.748ms,813 ZIP entries exact. ToF5.1029Hz/source max229ms/receipt279.942ms. IMU had one sequence_gap:2 at2.33s, sample_gap_count0; current Atom latest-sample transport can skip during delayed sending, but exact scheduling cause is unproven. Preserved the gap and manual-stop truncated ToF tail; no disconnection/timeout. Atom firmware unchanged and this remaining gap is not fixed by camera drain. Ended at launcher with task consumers closed; durable captures/evidence retained.
+
 ## 2026-10-12 — H3 bounded HTTP polling prevents query-induced sampling stalls
 
 - Scope: diagnose and repair ToF source stalls under slow status queries; scoped firmware compile, controlled before/after probes and one60s phone capture. Preserve CNH settings/raw format, Android v10.16.5 and original firmware backup. Evidence: `artifacts.local/evidence/h3-loop-opt-20261012/`.
@@ -99,23 +108,14 @@ This file records only current milestones. Full earlier history is preserved at
 ## 2026-09-23 — v10.13.0 hardware-first entry and event feedback
 
 - User-authorized launcher promotion: HardwareDemoActivity is the main launcher; MainActivity remains available through More functions. Added direct offline retry.
-- Added a pure Kotlin feedback policy: immediate first alert, 12-second reminder,
-  300 mm approach escalation with 1-second pacing, 1-second non-alert release,
-  single loss notification and recovery. UNKNOWN never announces clear space.
-- Speech and vibration have independent persisted switches and accessibility labels.
-  Replay is silent; leaving the page releases acquisition and stops feedback.
-- 15 focused JVM tests and 7 on-device tests passed on S24 Ultra / Android 16;
-  final accessibility-label revision reran its 2 affected Compose tests successfully.
-  10-second wireless receipt: 287/287 usable snapshots, 203 camera / 100 ToF frames.
-- Final debug APK 42 / 10.13.0 installed in place and archived; signature/version/
-  16 KB static checks passed. No firmware, sampling, geometry or freshness change.
-  Human speech/haptic experience, manual TalkBack and long-run behavior untested.
-  Evidence: artifacts.local/hardware-bringup/app-entry-20260923-*.
+- Added a pure Kotlin feedback policy: immediate first alert, 12-second reminder, 300 mm approach escalation with 1-second pacing, 1-second non-alert release, single loss notification and recovery. UNKNOWN never announces clear space.
+- Speech and vibration have independent persisted switches and accessibility labels. Replay is silent; leaving the page releases acquisition and stops feedback.
+- 15 focused JVM tests and 7 on-device tests passed on S24 Ultra / Android 16; final accessibility-label revision reran its 2 affected Compose tests successfully. 10-second wireless receipt: 287/287 usable snapshots, 203 camera / 100 ToF frames.
+- Final debug APK 42 / 10.13.0 installed in place and archived; signature/version/ 16 KB static checks passed. No firmware, sampling, geometry or freshness change. Human speech/haptic experience, manual TalkBack and long-run behavior untested. Evidence: artifacts.local/hardware-bringup/app-entry-20260923-*.
 
 ## 2026-09-23 — bounded camera coalescing A/B/A, original retained
 
-- Tested one camera-only mechanism: copy JPEG to a bounded PSRAM buffer, return
-  camera framebuffer before TCP send, combine multipart header/JPEG into one chunk.
+- Tested one camera-only mechanism: copy JPEG to a bounded PSRAM buffer, return camera framebuffer before TCP send, combine multipart header/JPEG into one chunk.
   VGA/Q12 and ToF 10 Hz were fixed; original timestamp semantics preserved.
 - Three 45-second runs gave camera age-bound P95 200 / 161 / 175 ms (A/B/A), with
   all snapshots usable. First apparent 19.5% gain narrowed to 8% against restored
