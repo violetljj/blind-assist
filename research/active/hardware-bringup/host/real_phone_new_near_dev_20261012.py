@@ -92,7 +92,7 @@ def findings(results):
         "18 段新录制均使用原始输入，CPU 描述；不运行模型，不估新阈值。区域为模型侧零起始 row/col，r7c7 对应 raw zone0。新段时间键为 UTC，旧 100754 为本地时间键。", "",
         "固件 valid 为 status 5/6/9/10。valid 距离是固件弱参考，不能单独定位回波来源。normalized bin1 为既有 signed-bias/noise 归一化后的输入；frame SD 与相邻差 SD 均含姿态/场景变化。", "",
         "部分新段固件 valid 距离出现 1–3 mm，另列 <=10 mm 与 11–599 mm 数量，不把 status valid 自动等同于可信几何距离。", "",
-        "| 段 UTC | IMU pitch ° | r7c7 bin1/bin0 中位 | r7c7 归一化均值 / 帧 SD | r7c7 valid / 帧 | 距离中位 mm | bin1 均值最大区域 |", 
+        "| 段 UTC | IMU pitch ° | r7c7 bin1/bin0 中位 | r7c7 归一化均值 / 帧 SD | r7c7 valid / 帧 | 距离中位 mm | bin1 均值最大区域 |",
         "|---|---:|---:|---:|---:|---:|---|",
     ]
     for r in results["sessions"]:
@@ -107,9 +107,9 @@ def findings(results):
         v = r["r7c7"]
         near = v["firmware_valid_under600mm"]
         lines.append(f"- {r['utc_key']}：IMU pitch {r['pitch_mean']:.2f}°；r7c7 valid<600 mm {near}/{r['frames']}，归一化 bin1 均值 {v['normalized_bin1_mean']:.2f}，该段最强区域 {r['normalized_bin1_mean_peak_zone']}。")
-    lines += ["", "## 证据范围", "", 
+    lines += ["", "## 证据范围", "",
               "18 新段 r7c7 的 bin1/bin0 中位为 0.01080–0.02240，均远低于旧段 0.75411；但 073138、073245 的 r7c7 归一化均值/帧 SD 为 10.23/29.84、36.79/94.93，仍存在随时间变化的较大回波，不能把低中位比率解释成全帧无近距信号。各段 bin1 均值最大区域也发生变化，三段低头分别落在 r4c6、r4c5、r7c3。", "",
-              "可确认每段的局部幅值、空间位置、固件测距和稳定性是否复现旧 r7c7 近回波；这些量不依赖场景标签。RGB 画面未参与本脚本，安装高度和物体处于哪条身体 query 尚无独立真值。不能仅凭 r7c7 重复出现、与 bin0 相关、低头时增强或场景视觉为空，就称固定串扰、按物理回波删除、或排除真实近距表面。跨段比较也同时混有姿态、背景和温度/仪器状态变化。", "", 
+              "可确认每段的局部幅值、空间位置、固件测距和稳定性是否复现旧 r7c7 近回波；这些量不依赖场景标签。RGB 画面未参与本脚本，安装高度和物体处于哪条身体 query 尚无独立真值。不能仅凭 r7c7 重复出现、与 bin0 相关、低头时增强或场景视觉为空，就称固定串扰、按物理回波删除、或排除真实近距表面。跨段比较也同时混有姿态、背景和温度/仪器状态变化。", "",
               "完整 64 区统计、raw zone 对应、status 分母、归一化热图和固件近距区分布均保存在 results.json；不会改写原输入。"]
     return "\n".join(lines) + "\n"
 
