@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.linnan.blindassist.preferences.UserPreferences
 import com.linnan.blindassist.runtime.AssistRuntimeControllerFactory
 import com.linnan.blindassist.runtime.AssistRuntimeIntent
 import com.linnan.blindassist.runtime.AssistRuntimeMode
@@ -39,6 +40,17 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         assistSession.dispatch(AssistRuntimeIntent.CameraPermissionResult(granted))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // The hardware screen writes the same output preferences. Refresh the existing
+        // home session when returning via either End assistance or system Back.
+        if (::assistSession.isInitialized) {
+            val preferences = UserPreferences(this).load()
+            assistSession.dispatch(AssistRuntimeIntent.SpeechEnabled(preferences.speechEnabled))
+            assistSession.dispatch(AssistRuntimeIntent.VibrationEnabled(preferences.vibrationEnabled))
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,6 +118,11 @@ class MainActivity : ComponentActivity() {
                                     .putBoolean("wireless", true)
                                     .putBoolean("speech", uiState.controls.speechEnabled)
                                     .putBoolean("vibration", uiState.controls.vibrationEnabled)
+                                    .putString("alert_profile", uiState.controls.alertProfile.storageValue)
+                                    .putString("speech_style", uiState.controls.speechStyle.storageValue)
+                                    .putString("vibration_strength", uiState.controls.vibrationStrength.storageValue)
+                                    .putString("language", uiState.controls.appLanguage.storageValue)
+                                    .putBoolean("care", uiState.controls.careModeEnabled)
                                     .apply()
                                 startActivity(Intent(this@MainActivity, HardwareDemoActivity::class.java))
                             },
@@ -146,6 +163,15 @@ class MainActivity : ComponentActivity() {
                         glasses = GlassesSimulatorActions(
                             onOpenHardwareDemo = {
                                 assistSession.dispatch(AssistRuntimeIntent.CloseCamera)
+                                getSharedPreferences("hardware_demo", MODE_PRIVATE).edit()
+                                    .putBoolean("speech", uiState.controls.speechEnabled)
+                                    .putBoolean("vibration", uiState.controls.vibrationEnabled)
+                                    .putString("alert_profile", uiState.controls.alertProfile.storageValue)
+                                    .putString("speech_style", uiState.controls.speechStyle.storageValue)
+                                    .putString("vibration_strength", uiState.controls.vibrationStrength.storageValue)
+                                    .putString("language", uiState.controls.appLanguage.storageValue)
+                                    .putBoolean("care", uiState.controls.careModeEnabled)
+                                    .apply()
                                 startActivity(Intent(this@MainActivity, HardwareDemoActivity::class.java))
                             },
                             onConnect = appViewModel::onConnectGlassesDevice,

@@ -25,6 +25,10 @@ class HardwareLocalRuntime(private val model: HardwareLocalModel, private val cl
             key = null; cached = null
             return input.copy(status = "A+LOCAL 实验 · ToF 不可用 · ${input.status}")
         }
+        if (input.tofTimingBasis == "host_receipt_only") {
+            key = null; cached = null
+            return input.copy(status = "基础测距 · 未做跨设备时序融合 · ${input.status}")
+        }
         val tokens = HardwareLocalGeometry.tokens(input.cells)
         val a = HardwareCalibratedA.evaluate(tokens)
         val zones = a.triggeringZones.map(HardwareLocalGeometry::rawZone)
@@ -76,12 +80,15 @@ class HardwareLocalRuntime(private val model: HardwareLocalModel, private val cl
         /** Recheck after dispatcher return: scheduling delay also consumes freshness. */
         fun afterProcessing(raw: HardwareDemoSnapshot, result: HardwareDemoSnapshot, elapsed: Long): HardwareDemoSnapshot {
             if (raw.mode != "live") return result
-            val tofFresh = result.tofUsable && (raw.tofAgeMs?.plus(elapsed)?.let { it <= 750 } ?: true)
+            val tofReceiptAge = raw.tofReceiptAgeMs?.plus(elapsed.coerceAtLeast(0))
+            val tofFresh = result.tofUsable && (if (raw.tofTimingBasis == "host_receipt_only")
+                tofReceiptAge?.let { it in 0..750 } == true else
+                raw.tofAgeMs?.plus(elapsed)?.let { it <= 750 } ?: true)
             val cameraAge = listOfNotNull(raw.cameraAgeMs, result.cameraAgeMs).maxOrNull()?.plus(elapsed)
             val cameraFresh = result.cameraUsable && (cameraAge?.let { it <= 750 } ?: true)
             val rejectedLocal = !cameraFresh && result.decision.state == "LOCAL_EXPERIMENT_UNKNOWN"
             return result.copy(tofUsable = tofFresh, cameraUsable = cameraFresh, liveUsable = tofFresh && cameraFresh,
-                tofAgeMs = raw.tofAgeMs?.plus(elapsed), cameraAgeMs = cameraAge,
+                tofAgeMs = raw.tofAgeMs?.plus(elapsed), tofReceiptAgeMs = tofReceiptAge, cameraAgeMs = cameraAge,
                 image = result.image.takeIf { cameraFresh },
                 status = if (rejectedLocal) "A+LOCAL 画面过期 · LOCAL 已暂停 · UNKNOWN" else result.status,
                 decision = if (!tofFresh || rejectedLocal) DemoTofDecision(false, "UNKNOWN", null, emptyList(),

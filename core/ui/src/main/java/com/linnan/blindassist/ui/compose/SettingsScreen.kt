@@ -47,9 +47,9 @@ fun SettingsScreen(
             eyebrow = if (language == AppLanguage.EN) "PERSONALIZE" else "个性化辅助",
             title = if (language == AppLanguage.EN) "Settings" else "设置",
             body = if (language == AppLanguage.EN) {
-                "These preferences affect reminders on the camera page. Detection can still be controlled after entering the camera."
+                "Language, feedback, reminder cadence and Care Mode apply next time you start assistance. Legacy-only settings are marked below."
             } else {
-                "这些偏好会影响摄像头页的提醒方式。检测开关进入相机后仍可随时控制。"
+                "语言、提醒方式、提醒频率和关怀模式在下次开始辅助时生效。仅适用于旧版相机的选项会单独标明。"
             }
         )
         Spacer(Modifier.height(26.dp))
@@ -63,7 +63,7 @@ fun SettingsScreen(
         SettingSwitchRow(
             icon = Icons.Outlined.FavoriteBorder,
             title = if (language == AppLanguage.EN) "Care Mode" else "关怀模式",
-            body = if (language == AppLanguage.EN) "Use a larger, quieter camera panel with less debug noise" else "使用更大、更安静的相机面板并减少调试干扰",
+            body = if (language == AppLanguage.EN) "Use larger guidance text during assistance" else "辅助时使用更大的状态与提醒文字",
             checked = controls.careModeEnabled,
             language = language,
             modifier = Modifier.testTag("settings_care_mode_toggle"),
@@ -107,13 +107,20 @@ fun SettingsScreen(
         )
         Spacer(Modifier.height(24.dp))
 
-        SettingsSectionHeader(if (language == AppLanguage.EN) "Walking scenario" else "行走场景")
+        SettingsSectionHeader(if (language == AppLanguage.EN) "Reminder cadence" else "提醒频率")
         ProfileSelector(
             selected = controls.alertProfile,
             language = language,
             onProfileChange = onProfileChange
         )
         Spacer(Modifier.height(20.dp))
+        SettingsSectionHeader(if (language == AppLanguage.EN) "Legacy camera settings" else "旧版相机设置")
+        Text(
+            if (language == AppLanguage.EN) "These scene and debug options do not change Camera + ToF assistance."
+            else "以下场景与调试选项不改变当前相机 + ToF 辅助。",
+            style = MaterialTheme.typography.bodySmall
+        )
+        Spacer(Modifier.height(12.dp))
         ScenarioSelector(
             selected = controls.assistScenario,
             language = language,
@@ -126,7 +133,7 @@ fun SettingsScreen(
             SettingSwitchRow(
                 icon = Icons.Outlined.BugReport,
                 title = if (language == AppLanguage.EN) "Debug details" else "调试信息",
-                body = if (language == AppLanguage.EN) "Show FPS, timing, and risk summary on the camera page" else "在相机页显示 FPS、耗时和风险判定摘要",
+                body = if (language == AppLanguage.EN) "Legacy camera only: show FPS, timing and risk summary" else "仅旧版相机：显示 FPS、耗时和风险判定摘要",
                 checked = controls.debugVisible,
                 language = language,
                 modifier = Modifier.testTag("settings_debug_toggle"),

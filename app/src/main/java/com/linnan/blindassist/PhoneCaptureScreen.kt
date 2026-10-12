@@ -1,20 +1,24 @@
 package com.linnan.blindassist
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,24 +40,58 @@ internal fun PhoneCaptureScreen(
 ) {
     var showSettings by rememberSaveable { mutableStateOf(false) }
     var showSessions by rememberSaveable { mutableStateOf(false) }
-    Scaffold { insets ->
-        Column(Modifier.fillMaxSize().padding(insets).verticalScroll(rememberScrollState()).padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    val colors = MaterialTheme.colorScheme
+    Scaffold(containerColor = colors.background) { insets ->
+        Column(Modifier.fillMaxSize().padding(insets).verticalScroll(rememberScrollState()).padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically) {
                 Column {
-                    Text("数据采集", style = MaterialTheme.typography.titleLarge)
-                    Text("Atom RGB / ToF / IMU", style = MaterialTheme.typography.bodySmall)
+                    Text("数据采集", style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.semantics { heading() })
+                    Text("画面 · 距离 · 姿态", style = MaterialTheme.typography.bodyMedium,
+                        color = colors.onSurfaceVariant)
                 }
                 TextButton(onClick = onBack) { Text("返回首页") }
             }
+            CapturePanel {
+                Text(if (state.recording) "正在记录 · ${state.elapsedMs / 1000} 秒" else "准备采集",
+                    style = MaterialTheme.typography.titleMedium, color = colors.primary)
+                Text("RGB ${if (state.cameraReady) "已就绪" else "等待画面"}  ·  ToF ${if (state.tofReady) "已就绪" else "等待数据"}",
+                    style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("capture_readiness"))
+                if (state.imuEnabled) Text("IMU ${if (state.imuReady) "已就绪" else "等待数据"}",
+                    style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant,
+                    modifier = Modifier.testTag("capture_imu_readiness"))
+                if (!state.recording) Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(onClick = onDiscover, enabled = !busy,
+                        modifier = Modifier.weight(1f).heightIn(min = 48.dp).testTag("capture_discover")) { Text("自动寻找设备") }
+                    OutlinedButton(onClick = onConnect, enabled = !busy,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("capture_connect")) { Text("连接 / 重连") }
+                }
+                if (state.recording) {
+                    Button(onClick = onStop, enabled = !busy,
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("capture_stop")) { Text("停止并保存") }
+                } else {
+                    Button(onClick = onStart, enabled = state.cameraReady && state.tofReady && (!state.imuEnabled || state.imuReady) && !busy,
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("capture_start")) { Text("开始采集") }
+                }
+                Text("RGB ${state.rgbCount} · ToF ${state.tofCount}" + (if (state.imuEnabled) " · IMU ${state.imuCount}" else ""),
+                    style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant,
+                    modifier = Modifier.testTag("capture_counts"))
+                Text(state.message, style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant,
+                    modifier = Modifier.testTag("capture_status"))
+            }
+            Text("实时预览", style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.semantics { heading() })
             Row(Modifier.fillMaxWidth().height(384.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Card(Modifier.weight(1f).fillMaxSize().testTag("capture_preview")) {
+                Card(Modifier.weight(1f).fillMaxSize().testTag("capture_preview"),
+                    shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = colors.surface),
+                    border = BorderStroke(1.dp, colors.outlineVariant)) {
                     Column(Modifier.fillMaxSize().padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Text("Atom RGB", style = MaterialTheme.typography.titleSmall)
                         Text(freshness(state.cameraAgeMs, state.cameraReady), style = MaterialTheme.typography.labelSmall,
                             modifier = Modifier.testTag("capture_rgb_freshness"))
-                        Box(Modifier.fillMaxWidth().weight(1f).background(Color(0xff111827)), contentAlignment = Alignment.Center) {
+                        Box(Modifier.fillMaxWidth().weight(1f).clip(RoundedCornerShape(14.dp)).background(Color(0xff111827)), contentAlignment = Alignment.Center) {
                             AtomImagePreview(preview, onPreviewDraw, state.displayRotationDegrees, state.displayMirrorHorizontal)
                         }
                         Text(state.cameraMessage, style = MaterialTheme.typography.labelSmall,
@@ -61,7 +99,9 @@ internal fun PhoneCaptureScreen(
                     }
                 }
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Card(Modifier.fillMaxWidth().height(228.dp).testTag("capture_tof_preview")) {
+                    Card(Modifier.fillMaxWidth().height(228.dp).testTag("capture_tof_preview"),
+                        shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = colors.surface),
+                        border = BorderStroke(1.dp, colors.outlineVariant)) {
                         Column(Modifier.fillMaxSize().padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(3.dp)) {
                             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -74,7 +114,9 @@ internal fun PhoneCaptureScreen(
                                 modifier = Modifier.testTag("capture_tof_no_reading_legend"))
                         }
                     }
-                    Card(Modifier.fillMaxWidth().weight(1f).testTag("capture_imu_preview")) {
+                    Card(Modifier.fillMaxWidth().weight(1f).testTag("capture_imu_preview"),
+                        shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = colors.surface),
+                        border = BorderStroke(1.dp, colors.outlineVariant)) {
                         Column(Modifier.padding(8.dp), verticalArrangement = Arrangement.spacedBy(3.dp)) {
                             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                 Text("IMU", style = MaterialTheme.typography.titleSmall)
@@ -94,37 +136,19 @@ internal fun PhoneCaptureScreen(
                     }
                 }
             }
-            Text("RGB ${if (state.cameraReady) "已就绪" else "等待画面"}  ·  ToF ${if (state.tofReady) "已就绪" else "等待数据"}",
-                style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("capture_readiness"))
-            if (state.imuEnabled) Text("IMU ${if (state.imuReady) "已就绪" else "等待数据"}",
-                style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("capture_imu_readiness"))
-            if (!state.recording) Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedButton(onClick = onDiscover, enabled = !busy,
-                    modifier = Modifier.weight(1f).testTag("capture_discover")) { Text("自动寻找设备") }
-                OutlinedButton(onClick = onConnect, enabled = !busy,
-                    modifier = Modifier.testTag("capture_connect")) { Text("连接 / 重连") }
-            }
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
-                Text("RGB ${state.rgbCount} · ToF ${state.tofCount}" + (if (state.imuEnabled) " · IMU ${state.imuCount}" else ""),
-                    style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("capture_counts"))
-                Text(if (state.recording) "采集中 ${state.elapsedMs / 1000}s" else "本段记录", style = MaterialTheme.typography.labelSmall)
-            }
-            if (state.recording) {
-                Button(onClick = onStop, enabled = !busy, modifier = Modifier.fillMaxWidth().testTag("capture_stop")) { Text("停止并保存") }
-            } else {
-                Button(onClick = onStart, enabled = state.cameraReady && state.tofReady && (!state.imuEnabled || state.imuReady) && !busy,
-                    modifier = Modifier.fillMaxWidth().testTag("capture_start")) { Text("开始采集") }
-            }
-            Text(state.message, style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("capture_status"))
             if (state.imuEnabled) Text(state.imuMessage, style = MaterialTheme.typography.bodySmall,
+                color = colors.onSurfaceVariant,
                 modifier = Modifier.testTag("capture_imu_status"))
-            if (exportMessage.isNotBlank()) Text(exportMessage, style = MaterialTheme.typography.bodySmall)
+            if (exportMessage.isNotBlank()) Surface(color = colors.primaryContainer, shape = RoundedCornerShape(18.dp)) {
+                Text(exportMessage, modifier = Modifier.fillMaxWidth().padding(14.dp),
+                    style = MaterialTheme.typography.bodyMedium, color = colors.onPrimaryContainer)
+            }
             if (!state.recording) {
-                TextButton(onClick = { showSettings = !showSettings }, modifier = Modifier.testTag("capture_settings_toggle")) {
+                OutlinedButton(onClick = { showSettings = !showSettings },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("capture_settings_toggle")) {
                     Text(if (showSettings) "收起连接与备注" else "连接与备注 ▾")
                 }
-                if (showSettings) {
+                if (showSettings) CapturePanel {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(checked = state.imuEnabled, onCheckedChange = onImuEnabledChange,
                             enabled = !busy, modifier = Modifier.testTag("capture_imu_enabled"))
@@ -140,13 +164,16 @@ internal fun PhoneCaptureScreen(
                     if (state.connected || state.cameraConnected) TextButton(onClick = onDisconnect) { Text("断开设备") }
                 }
             }
-            Text("保持页面打开；切到后台或断连时结束采集并保留已有数据。", style = MaterialTheme.typography.bodySmall)
-            TextButton(onClick = { showSessions = !showSessions }, modifier = Modifier.testTag("capture_sessions_toggle")) {
+            Text("采集时保持页面打开。切到后台或断连会结束本段，并保留已有数据。",
+                style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
+            HorizontalDivider(color = colors.outlineVariant)
+            TextButton(onClick = { showSessions = !showSessions },
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("capture_sessions_toggle")) {
                 Text("已保存 ${sessions.size} 段 ${if (showSessions) "▴" else "▾"}")
             }
             if (showSessions) sessions.forEach { session ->
-                Card(Modifier.fillMaxWidth()) {
-                    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                key(session.id) {
+                    CapturePanel {
                         Text(session.sceneNote.ifBlank { session.id }, style = MaterialTheme.typography.titleSmall)
                         Text("RGB ${session.rgbCount} / ToF ${session.tofCount} / IMU ${session.imuCount} 帧 · ${session.bytes / 1024 / 1024} MB",
                             style = MaterialTheme.typography.bodySmall)
@@ -157,6 +184,14 @@ internal fun PhoneCaptureScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun CapturePanel(content: @Composable ColumnScope.() -> Unit) {
+    Surface(modifier = Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.surface,
+        shape = RoundedCornerShape(24.dp), border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp), content = content)
     }
 }
 

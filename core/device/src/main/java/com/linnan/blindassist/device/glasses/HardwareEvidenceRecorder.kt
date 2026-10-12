@@ -18,6 +18,7 @@ data class HardwareEvidenceFrame(
     val cameraUsable: Boolean, val tofUsable: Boolean, val cameraAgeMs: Long?, val tofAgeMs: Long?,
     val rows: Int, val cols: Int, val cells: List<DemoTofCell>,
     val decision: DemoTofDecision, val status: String, val thumbnail: ByteArray? = null,
+    val tofTimingBasis: String = "unknown", val tofReceiptAgeMs: Long? = null,
 )
 
 /** Output requests are logged; queued TTS is not proof of audible speech. */
@@ -51,7 +52,8 @@ data class HardwareEvidenceClip(
             bitmap, frame.cells, frame.rows, frame.cols, frame.decision, false,
             "历史记录 · 静音 · ${if (bitmap == null) "此时未记录画面" else "2 Hz 抽帧，非同步"} · ${frame.status}",
             cameraUsable = bitmap != null, tofUsable = frame.tofUsable,
-            cameraAgeMs = frame.cameraAgeMs, tofAgeMs = frame.tofAgeMs)
+            cameraAgeMs = frame.cameraAgeMs, tofAgeMs = frame.tofAgeMs,
+            tofTimingBasis = frame.tofTimingBasis, tofReceiptAgeMs = frame.tofReceiptAgeMs)
     }
 }
 
@@ -91,7 +93,8 @@ class HardwareEvidenceRecorder(private val appVersion: String) : AutoCloseable {
         val frame = HardwareEvidenceFrame(nowMs, snapshot.runId, snapshot.cameraSequence, snapshot.tofSequence,
             snapshot.cameraUsable, snapshot.tofUsable, snapshot.cameraAgeMs, snapshot.tofAgeMs,
             snapshot.rows, snapshot.cols, snapshot.cells.toList(), snapshot.decision.copy(
-                triggeringZones = snapshot.decision.triggeringZones.toList()), snapshot.status)
+                triggeringZones = snapshot.decision.triggeringZones.toList()), snapshot.status,
+            tofTimingBasis = snapshot.tofTimingBasis, tofReceiptAgeMs = snapshot.tofReceiptAgeMs)
         frames.addLast(frame)
         while (frames.size > 256 || frames.first().atMs < nowMs - 20_000) frames.removeFirst()
         while (events.isNotEmpty() && events.first().atMs < frames.first().atMs) events.removeFirst()
@@ -196,6 +199,8 @@ class HardwareEvidenceStore(private val directory: File) {
             put("camera_seq", f.cameraSequence ?: JSONObject.NULL); put("tof_seq", f.tofSequence ?: JSONObject.NULL)
             put("camera_usable", f.cameraUsable); put("tof_usable", f.tofUsable)
             put("camera_age_ms", f.cameraAgeMs ?: JSONObject.NULL); put("tof_age_ms", f.tofAgeMs ?: JSONObject.NULL)
+            put("tof_timing_basis", f.tofTimingBasis)
+            put("tof_receipt_age_ms", f.tofReceiptAgeMs ?: JSONObject.NULL)
             put("rows", f.rows); put("cols", f.cols); put("status", f.status)
             put("cells", JSONArray().apply { f.cells.forEach { c -> put(JSONObject().apply {
                 put("zone", c.zone); put("mm", if (c.rangeMm.isFinite()) c.rangeMm else JSONObject.NULL)
@@ -243,7 +248,9 @@ class HardwareEvidenceStore(private val directory: File) {
                 f.nullableLong("tof_seq"), f.getBoolean("camera_usable"), tofUsable,
                 f.nullableLong("camera_age_ms"), f.nullableLong("tof_age_ms"), f.getInt("rows"), f.getInt("cols"),
                 cells, DemoTofDecision(alert, d.getString("state"), d.nullableLong("nearest_mm")?.toInt(),
-                    (0 until zones.length()).map(zones::getInt), d.getInt("valid_zones")), f.getString("status"), thumbnail)
+                    (0 until zones.length()).map(zones::getInt), d.getInt("valid_zones")), f.getString("status"), thumbnail,
+                f.optString("tof_timing_basis", "unknown"),
+                if (f.has("tof_receipt_age_ms")) f.nullableLong("tof_receipt_age_ms") else null)
         }
         require(frames.zipWithNext().all { (a, b) -> b.atMs >= a.atMs })
         require(frames.last().atMs - frames.first().atMs in 0..20_000)

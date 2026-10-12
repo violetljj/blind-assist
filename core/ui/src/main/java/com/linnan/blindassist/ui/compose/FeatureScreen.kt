@@ -104,10 +104,10 @@ fun FeatureScreen(
                 .align(Alignment.TopCenter)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 22.dp)
-                .padding(top = 84.dp, bottom = 30.dp)
+                .padding(top = 40.dp, bottom = 24.dp)
         ) {
             HomeBrandHeader(language = language)
-            Spacer(Modifier.height(88.dp))
+            Spacer(Modifier.height(44.dp))
 
             Text(
                 text = if (language == AppLanguage.EN) {
@@ -125,15 +125,15 @@ fun FeatureScreen(
             Spacer(Modifier.height(28.dp))
 
             PrimaryAssistAction(
-                subtitle = if (language == AppLanguage.EN) "A+LOCAL · Camera + ToF hardware\n$feedbackSummary"
-                    else "A+LOCAL · 相机与 ToF 硬件\n$feedbackSummary",
+                subtitle = if (language == AppLanguage.EN) "Camera + ToF assistance\n$feedbackSummary"
+                    else "相机与 ToF 辅助\n$feedbackSummary",
                 language = language,
                 onClick = onOpenCamera
             )
             Spacer(Modifier.height(38.dp))
 
             Text(
-                text = if (language == AppLanguage.EN) "Choose assist mode" else "选择辅助模式",
+                text = if (language == AppLanguage.EN) "Choose reminder cadence" else "选择提醒频率",
                 color = BaHomeInk,
                 fontSize = 18.sp,
                 lineHeight = 24.sp,
@@ -498,7 +498,7 @@ private fun feedbackSummary(
 ): String {
     val mode = when (controls.alertProfile) {
         AlertProfile.QUIET -> if (language == AppLanguage.EN) "Quiet" else "安静提醒"
-        AlertProfile.SENSITIVE -> if (language == AppLanguage.EN) "Sensitive" else "灵敏提醒"
+        AlertProfile.SENSITIVE -> if (language == AppLanguage.EN) "More frequent" else "更频繁提醒"
         else -> if (language == AppLanguage.EN) "General daily" else "通用日常"
     }
     val channels = if (language == AppLanguage.EN) {
@@ -538,7 +538,7 @@ private fun glassesLabel(
             GlassesConnectionState.CONNECTION_LOST -> "连接已断开"
         }
     }
-    return if (language == AppLanguage.EN) "Glasses · $status" else "眼镜设备 · $status"
+    return if (language == AppLanguage.EN) "Legacy single-zone devices · $status" else "旧版单区设备 · $status"
 }
 
 private enum class HomeAssistMode {
@@ -549,7 +549,7 @@ private enum class HomeAssistMode {
     fun label(language: AppLanguage): String = when (this) {
         DAILY -> if (language == AppLanguage.EN) "Daily" else "日常"
         QUIET -> if (language == AppLanguage.EN) "Quiet" else "安静"
-        SENSITIVE -> if (language == AppLanguage.EN) "Sensitive" else "灵敏"
+        SENSITIVE -> if (language == AppLanguage.EN) "Frequent" else "更频繁"
     }
 }
 

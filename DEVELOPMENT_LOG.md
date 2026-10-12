@@ -4,6 +4,16 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-12 — v10.17.0 integrated assist and unified frontend
+
+- Scope: restore current H3 in the main assist flow, connect home feedback settings, unify home/assist/capture/settings visuals. Evidence: `artifacts.local/evidence/assist-integration-20261012/`. No model thresholds or device firmware changes.
+- H3 TCP CNH now feeds basic ToF assistance; legacy UDP remains supported. Duplicate/regressing/bad frames do not refresh readiness; receipt expires at750ms, no valid frames for3s triggers reconnect. H3 receipt freshness is not exposure age, so A+LOCAL stays disabled for this input. Evidence/replay preserve the timing distinction. Shutdown invalidates pending callbacks and clears snapshots after draining.
+- Home language/style/vibration/care/frequency settings reach main assist; speech/vibration switches propagate back. Sustained reminder cadence20/12/6s leaves first/approach rules unchanged. Warm-white/deep-green theme, consistent cards/buttons/spacing, primary controls first, diagnostics folded. Removed preview gradient; no continuous animation added.
+- 17 device-core and10 assist-core JVM tests passed; debug/androidTest build, lint, APK identity/signature/16KB checks passed. Device suite19:17 passed,1 live-exit automation failure,1 opt-in legacy-model test skipped. Earlier Compose-idle and accessibility text-query exit failures retained; visible-node traversal fixed the test. Final live-exit plus3 changed settings tests passed4/4. Live receipt has12 fresh H3 observations, first ready4186ms and exit released client. Settings handoff in both languages passed earlier; original phone preferences restored after tests.
+- Final30.052s three-stream capture PASS:624RGB/154ToF/3019IMU, zero sender sequence gaps, stop246ms; RGB20.665Hz, ToF5.1037Hz, IMU99.9508Hz. Preview receipt-to-Canvas median/P9510.348/36.686ms.14,075,050 source bytes exported to cache in163.809ms;631 ZIP files byte-identical. This does not measure document-provider export overhead or exposure-to-display latency.
+- Four actual screen captures inspected. Assist UI sample17.073s:1861 rendered frames,135 janky (7.25%), draw median7ms/P9513ms. No matched baseline or overall FPS-gain claim; tail jank remains. Manual TalkBack, spoken/haptic quality and field obstacle accuracy were not tested.
+- Installed54/10.17.0 in place, APK SHA256 `AFDFAF718CE5550EE69A4396E14F1FC2FA0FA603CEDDB3C01D27D4A16076B956`; archived APK and failed receipts retained. Finished at home with task streams closed.
+
 ## 2026-10-12 — v10.16.7 foreground recovery, IMU history and event preview
 
 - Scope: user's four follow-ups: bounded Atom IMU history, foreground reconnect without recording stitching, event-driven preview, and real H3 startup fault recovery. Evidence: `artifacts.local/evidence/capture-all-opt-20261012/`; Atom native/build evidence also in `phone-capture-all-opt-20261012/`.

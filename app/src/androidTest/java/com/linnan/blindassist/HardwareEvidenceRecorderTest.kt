@@ -79,7 +79,8 @@ class HardwareEvidenceRecorderTest {
 
     @Test fun roundTripPreservesInvalidCellsSavedDecisionAndOutputRequests() = withStore { store, _ ->
         HardwareEvidenceRecorder("synthetic-version").use { recorder ->
-            val original = snapshot(camera = false)
+            val original = snapshot(camera = false).copy(tofAgeMs = null,
+                tofTimingBasis = "host_receipt_only", tofReceiptAgeMs = 42)
             recorder.offer(original, 1000)
             val event = HardwareEvidenceEvent(1005, "ALERT", "测试提示", true, false)
             recorder.recordEvent(event)
@@ -92,6 +93,9 @@ class HardwareEvidenceRecorderTest {
             assertTrue(loaded.frames.single().cells[1].rangeMm.isNaN())
             assertEquals(original.decision, loaded.frames.single().decision)
             assertEquals(original.decision, loaded.snapshotAt(0).decision)
+            assertNull(loaded.snapshotAt(0).tofAgeMs)
+            assertEquals("host_receipt_only", loaded.snapshotAt(0).tofTimingBasis)
+            assertEquals(42L, loaded.snapshotAt(0).tofReceiptAgeMs)
             assertFalse(loaded.snapshotAt(0).liveUsable)
             assertEquals("replay", loaded.snapshotAt(0).mode)
             val json = JSONObject(store.readBytes(id).toString(Charsets.UTF_8))

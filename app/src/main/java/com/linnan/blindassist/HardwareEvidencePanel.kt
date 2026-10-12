@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -15,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -36,8 +36,8 @@ internal fun HardwareEvidencePanel(
     onReplay: (String) -> Unit, onExport: (String) -> Unit, onDelete: (String) -> Unit,
     onSeek: (Long) -> Unit, onPlay: () -> Unit, onLive: () -> Unit,
 ) {
-    val muted = Color(0xFF9B9E9E)
-    val ink = Color(0xFFB6C9BE)
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    val ink = MaterialTheme.colorScheme.primary
     var deleteId by remember { mutableStateOf<String?>(null) }
     var expanded by remember { mutableStateOf(false) }
     val dateFormat = remember { SimpleDateFormat("MM-dd HH:mm:ss", Locale.getDefault()) }

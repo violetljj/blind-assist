@@ -26,7 +26,10 @@ data class HardwareDemoSnapshot(
     val cameraUsable: Boolean = liveUsable,
     val tofUsable: Boolean = liveUsable,
     val cameraAgeMs: Long? = null,
-    val tofAgeMs: Long? = null
+    val tofAgeMs: Long? = null,
+    /** H3 receipt freshness is not a bound on exposure age or cross-device skew. */
+    val tofTimingBasis: String = "unknown",
+    val tofReceiptAgeMs: Long? = null
 )
 
 /** Read-only USB/localhost bridge. No capture controls or device-clock comparisons. */

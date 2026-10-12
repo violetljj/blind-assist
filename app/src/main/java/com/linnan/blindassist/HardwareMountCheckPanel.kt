@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.linnan.blindassist.device.glasses.HardwareDemoSnapshot
@@ -65,11 +65,11 @@ fun HardwareMountCheckPanel(snapshot: HardwareDemoSnapshot?) {
         collecting = false
     }
     Column(verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.testTag("hardware_mount_panel")) {
-        Text("安装粗检查 · 本次会话", color = Color.White)
-        Text("固定设备、保持背景不动，使用较大的平面目标，目标应比背景近至少 20 厘米。每步保持 2 秒；目标上下位置尽量居中。", color = Color(0xFFBFCAD5))
-        Text("只检查声明位置与原始测距变化的对应；不验证安全性、视场精度或像素对齐。", color = Color(0xFFBFCAD5))
-        Text(message, color = Color.White, modifier = Modifier.testTag("hardware_mount_status"))
-        if (captures.size < 4) Text("第 ${captures.size + 1}/4 步：${steps[captures.size]}", color = Color.White)
+        Text("安装粗检查 · 本次会话", color = MaterialTheme.colorScheme.onSurface)
+        Text("固定设备、保持背景不动，使用较大的平面目标，目标应比背景近至少 20 厘米。每步保持 2 秒；目标上下位置尽量居中。", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("只检查声明位置与原始测距变化的对应；不验证安全性、视场精度或像素对齐。", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(message, color = MaterialTheme.colorScheme.onSurface, modifier = Modifier.testTag("hardware_mount_status"))
+        if (captures.size < 4) Text("第 ${captures.size + 1}/4 步：${steps[captures.size]}", color = MaterialTheme.colorScheme.onSurface)
         Row {
             if (captures.size < 4) TextButton(onClick = { collecting = true },
                 enabled = !collecting && snapshot?.mode == "live" && snapshot?.liveUsable == true && snapshot?.image != null,
@@ -80,11 +80,11 @@ fun HardwareMountCheckPanel(snapshot: HardwareDemoSnapshot?) {
             }, modifier = Modifier.testTag("hardware_mount_reset")) { Text("重新检查") }
         }
         result?.let { r ->
-            Text(r.message, color = if (r.consistent) Color(0xFF7CE8BF) else Color(0xFFFFC37D), modifier = Modifier.testTag("hardware_mount_result"))
+            Text(r.message, color = if (r.consistent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary, modifier = Modifier.testTag("hardware_mount_result"))
             r.positions.forEachIndexed { i, p ->
-                Text(String.format(Locale.ROOT, "%s：左右重心 %.2f，上下重心 %.2f；变化 %d / 配对 %d 区域", listOf("中央", "左侧", "右侧")[i], p.row, p.column, p.changedZones, p.pairedZones), color = Color(0xFFBFCAD5))
+                Text(String.format(Locale.ROOT, "%s：左右重心 %.2f，上下重心 %.2f；变化 %d / 配对 %d 区域", listOf("中央", "左侧", "右侧")[i], p.row, p.column, p.changedZones, p.pairedZones), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            Text("重心范围 −1 至 +1：左右值越大越靠相机左侧，上下值越大越靠上。", color = Color(0xFFBFCAD5))
+            Text("重心范围 −1 至 +1：左右值越大越靠相机左侧，上下值越大越靠上。", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

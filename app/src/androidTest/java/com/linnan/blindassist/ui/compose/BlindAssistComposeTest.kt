@@ -111,7 +111,7 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithText("设置").performClick()
         composeRule.onNodeWithText("语音提醒").assertExists()
         composeRule.onNodeWithText("辅助").performClick()
-        composeRule.onNodeWithText("选择辅助模式").assertExists()
+        composeRule.onNodeWithText("选择提醒频率").assertExists()
     }
 
     @Test
@@ -148,15 +148,15 @@ class BlindAssistComposeTest {
         prepareMainShell()
         openFeaturesTab()
 
-        composeRule.onNodeWithContentDescription("选择灵敏辅助模式")
+        composeRule.onNodeWithContentDescription("选择更频繁辅助模式")
             .performScrollTo()
             .performClick()
         composeRule.onNodeWithText("设置").performClick()
 
-        composeRule.onNodeWithContentDescription("选择敏感提醒档位")
+        composeRule.onNodeWithContentDescription("选择更频繁提醒频率")
             .performScrollTo()
             .assertExists()
-        composeRule.onNodeWithContentDescription("选择标准语音风格，使用当前短句提醒")
+        composeRule.onNodeWithContentDescription("选择标准语音风格")
             .performScrollTo()
             .assertExists()
         composeRule.onNodeWithContentDescription("选择强震动强度，增强近处和迫近提醒")
@@ -170,13 +170,13 @@ class BlindAssistComposeTest {
 
         composeRule.onNodeWithText("设置").performClick()
         composeRule.onNodeWithText("语音风格").assertExists()
-        composeRule.onNodeWithContentDescription("选择详细语音风格，补充目标类别和避让建议")
+        composeRule.onNodeWithContentDescription("选择详细语音风格")
             .performScrollTo()
             .performClick()
         composeRule.onNodeWithContentDescription("选择强震动强度，增强近处和迫近提醒")
             .performScrollTo()
             .performClick()
-        composeRule.onNodeWithContentDescription("选择敏感提醒档位")
+        composeRule.onNodeWithContentDescription("选择更频繁提醒频率")
             .performScrollTo()
             .performClick()
         composeRule.onNodeWithTag("scenario_selector").performScrollTo().assertExists()
@@ -195,17 +195,17 @@ class BlindAssistComposeTest {
         composeRule.onNodeWithText("Speech reminders").assertExists()
         composeRule.onNodeWithText("Assist").performClick()
         composeRule.onNodeWithTag("daily_usage_mode_selector").performScrollTo().assertExists()
-        composeRule.onNodeWithContentDescription("Choose Sensitive assist mode")
+        composeRule.onNodeWithContentDescription("Choose Frequent assist mode")
             .performScrollTo()
             .performClick()
         composeRule.onNodeWithText("Settings").performClick()
-        composeRule.onNodeWithContentDescription("Choose Detailed speech style, Adds object type and avoidance guidance")
+        composeRule.onNodeWithContentDescription("Choose Detailed speech style")
             .performScrollTo()
             .assertExists()
         composeRule.onNodeWithContentDescription("Choose Strong vibration strength, Strengthen near and critical reminders")
             .performScrollTo()
             .assertExists()
-        composeRule.onNodeWithContentDescription("Choose Sensitive reminder profile")
+        composeRule.onNodeWithContentDescription("Choose Frequent reminder cadence")
             .performScrollTo()
             .assertExists()
     }
@@ -224,7 +224,7 @@ class BlindAssistComposeTest {
         composeRule.waitUntil(timeoutMillis = 5000) {
             composeRule.onAllNodesWithTag("hardware_demo_mode").fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithTag("hardware_demo_algorithm_status").performScrollTo().assertExists()
+        composeRule.onNodeWithTag("hardware_demo_feedback_settings").performScrollTo().assertExists()
         val prefs = composeRule.activity.getSharedPreferences("hardware_demo", 0)
         org.junit.Assert.assertFalse(prefs.getBoolean("speech", true))
         org.junit.Assert.assertFalse(prefs.getBoolean("vibration", true))
@@ -309,7 +309,7 @@ class BlindAssistComposeTest {
     }
 
     private fun openFeaturesTab() {
-        if (!hasText("选择辅助模式") && !hasText("Choose assist mode")) {
+        if (!hasText("选择提醒频率") && !hasText("Choose reminder cadence")) {
             if (hasText("Assist")) {
                 composeRule.onNodeWithText("Assist").performClick()
             } else {
@@ -574,7 +574,7 @@ class CameraControlPanelStandaloneTest {
             }
         }
 
-        composeRule.onNodeWithText("Choose assist mode").assertIsDisplayed()
+        composeRule.onNodeWithText("Choose reminder cadence").assertIsDisplayed()
         composeRule.onAllNodesWithText("本地视觉辅助引擎启动中").assertCountEquals(0)
     }
 
