@@ -131,6 +131,112 @@ class PhoneCaptureControllerDeviceTest {
         assertFalse(controller.snapshot().recording)
     }
 
+    @Test fun failedRecordingIsSavedBeforeReconnectAndNeverAutomaticallyResumes() {
+        val cameras = mutableListOf<Camera>()
+        val tofs = mutableListOf<Tof>()
+        controller.connectAutomatically(
+            { Camera().also { cameras.add(it) } },
+            { Tof().also { tofs.add(it) } },
+        )
+        cameras.last().emit(now)
+        tofs.last().emit(now)
+        controller.startRecording("interrupted segment")
+        cameras.last().emit(now)
+        tofs.last().emit(now)
+        val oldId = controller.snapshot().sessionId
+        tofs.first().status(CnhCaptureStatus(CnhConnectionState.DISCONNECTED, "synthetic peer EOF"))
+        val manifestFile = File(sessionDirectory(), "manifest.json")
+        val savedManifest = manifestFile.readText()
+        assertEquals("INTERRUPTED", JSONObject(savedManifest).getString("status"))
+        assertEquals("tof_disconnected", JSONObject(savedManifest).getString("finish_reason"))
+        now += 999_000_000L
+        controller.retryConnections()
+        assertEquals(1, tofs.size)
+        now += 1_000_000L
+        controller.retryConnections()
+        assertEquals(2, cameras.size)
+        assertEquals(2, tofs.size)
+        cameras.last().emit(now)
+        tofs.last().emit(now)
+        val restored = controller.snapshot()
+        assertFalse(restored.recording)
+        assertTrue(restored.cameraReady && restored.tofReady)
+        assertEquals(oldId, restored.sessionId)
+        assertTrue(restored.message.contains("synthetic peer EOF"))
+        assertTrue(restored.message.contains("连接已恢复"))
+        assertEquals(savedManifest, manifestFile.readText())
+        // Obsolete callbacks cannot change readiness or reopen/append the old segment.
+        tofs.first().status(CnhCaptureStatus(CnhConnectionState.ERROR, "obsolete failure"))
+        cameras.first().emit(now - 10_000_000_000L)
+        assertTrue(controller.snapshot().cameraReady && controller.snapshot().tofReady)
+        controller.startRecording("explicit new segment")
+        assertNotEquals(oldId, controller.snapshot().sessionId)
+        assertEquals(savedManifest, manifestFile.readText())
+    }
+
+    @Test fun cancelledFactoryIsClosedWithoutStartingOrConnectingAnotherStream() {
+        var starts = 0
+        var closes = 0
+        var tofFactories = 0
+        val obsolete = object : AtomCameraCaptureSource {
+            override val transport = "cancelled-test"
+            override fun start(onFrame: (AtomCameraCaptureFrame) -> Unit, onStatus: (CnhCaptureStatus) -> Unit) {
+                starts++
+            }
+            override fun close() { closes++ }
+        }
+        controller.connectAutomatically(
+            { controller.cancelReconnect(); obsolete },
+            { tofFactories++; Tof() },
+        )
+        now += 60_000_000_000L
+        controller.retryConnections()
+        assertEquals(0, starts)
+        assertEquals(1, closes)
+        assertEquals(0, tofFactories)
+        assertFalse(controller.snapshot().reconnectEnabled)
+    }
+
+    @Test fun manualDisconnectAndPageExitCancelOfflineRetries() {
+        var attempts = 0
+        fun connectOffline() = controller.connectAutomatically(
+            { attempts++; throw IllegalStateException("offline") },
+            { throw IllegalStateException("offline") },
+        )
+        connectOffline()
+        assertEquals(1, attempts)
+        controller.disconnect()
+        now += 60_000_000_000L
+        controller.retryConnections()
+        assertEquals(1, attempts)
+        connectOffline()
+        assertEquals(2, attempts)
+        controller.stopForeground()
+        now += 60_000_000_000L
+        controller.retryConnections()
+        assertEquals(2, attempts)
+        assertFalse(controller.snapshot().reconnectEnabled)
+    }
+
+    @Test fun cancellationDuringStartRejectsItsLateCallbacks() {
+        val cancelled = Camera()
+        val obsolete = object : AtomCameraCaptureSource by cancelled {
+            override fun start(onFrame: (AtomCameraCaptureFrame) -> Unit, onStatus: (CnhCaptureStatus) -> Unit) {
+                cancelled.start(onFrame, onStatus)
+                controller.cancelReconnect()
+            }
+        }
+        controller.connectAutomatically({ obsolete }, { Tof() })
+        cancelled.status(CnhCaptureStatus(CnhConnectionState.CONNECTED, "late connected"))
+        cancelled.emit(now)
+        assertFalse(controller.snapshot().cameraConnected)
+        assertFalse(controller.snapshot().cameraReady)
+        assertNull(controller.peekCameraFrame())
+        assertEquals(1, cancelled.closes)
+        controller.stopForeground()
+        assertEquals(1, cancelled.closes)
+    }
+
     private fun sessionDirectory() = File(directory, "phone-capture").listFiles()!!.single()
     private fun events() = File(sessionDirectory(), "events.jsonl").readLines().map(::JSONObject)
 

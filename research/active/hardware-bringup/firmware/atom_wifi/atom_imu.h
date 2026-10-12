@@ -7,6 +7,7 @@
 #include <freertos/task.h>
 #include "atom_bmi270_config.h"
 #include "atom_imu_filter.h"
+#include "atom_imu_history.h"
 
 // AtomS3R-M12 internal I2C: SDA45/SCL0 (M5Stack schematic and M5Unified).
 // With explicit SCCB pins, esp_camera ignores camera_config.sccb_i2c_port and
@@ -39,6 +40,13 @@ struct Sample {
   bool valid = false, accelCorrection = false, gap = false;
 };
 static Sample latest;
+static constexpr size_t historySamples=64;
+static constexpr int64_t historyMaxAgeUs=500000;
+using SampleHistory=AtomImuHistory<Sample,historySamples>;
+static SampleHistory history;
+// Transport is serviced only by the Arduino loop, as is the HTTP status handler.
+// These cumulative counters include consumers that have since disconnected.
+static uint64_t historyOverwritten=0,historyExpired=0;
 
 static bool writeRegister(uint8_t reg, const uint8_t* bytes, size_t count) {
   sensorWire.beginTransmission(address);
@@ -131,7 +139,7 @@ static void sensorTask(void*) {
     s.accelCorrection=filter.accelCorrection;
     for(int i=0;i<3;++i)s.gravity[i]=filter.gravity[i];
     s.pitch=filter.pitchDeg();s.roll=filter.rollDeg();
-    portENTER_CRITICAL(&sampleMux);latest=s;portEXIT_CRITICAL(&sampleMux);
+    portENTER_CRITICAL(&sampleMux);latest=s;history.publish(s);portEXIT_CRITICAL(&sampleMux);
   }
 }
 static int bootJson(char* out,size_t capacity) {
@@ -156,9 +164,11 @@ static int frameJson(const Sample& s,char* out,size_t capacity) {
 static int statusJson(char* out,size_t capacity) {
   uint32_t errors;Sample s=snapshot(&errors);
   return snprintf(out,capacity,
-    "{\"type\":\"imu_status\",\"schema_version\":1,\"device_id\":\"%s\",\"boot_id\":\"%s\",\"device_us\":%lld,\"ready\":%s,\"init_status\":\"%s\",\"read_errors\":%lu,\"last_seq\":%lu,\"sample_age_us\":%lld}\n",
+    "{\"type\":\"imu_status\",\"schema_version\":1,\"device_id\":\"%s\",\"boot_id\":\"%s\",\"device_us\":%lld,\"ready\":%s,\"init_status\":\"%s\",\"read_errors\":%lu,\"last_seq\":%lu,\"sample_age_us\":%lld,"
+    "\"transport_history_samples\":64,\"transport_max_age_us\":500000,\"transport_overwritten_samples\":%llu,\"transport_expired_samples\":%llu}\n",
     deviceId.c_str(),bootId.c_str(),(long long)esp_timer_get_time(),ready?"true":"false",initStatus,(unsigned long)errors,
-    (unsigned long)s.seq,s.deviceUs?(long long)(esp_timer_get_time()-s.deviceUs):-1LL);
+    (unsigned long)s.seq,s.deviceUs?(long long)(esp_timer_get_time()-s.deviceUs):-1LL,
+    (unsigned long long)historyOverwritten,(unsigned long long)historyExpired);
 }
 static void begin() {
   ready=initialize();
@@ -179,12 +189,14 @@ static void begin() {
   });
 }
 
-// Nonblocking2-client transport: one bounded pending packet per consumer. It
-// sends the newest completed sample after each packet, preserving seq gaps.
+// Nonblocking2-client transport: shared64-sample history and one immutable
+// pending packet per consumer. Brief send stalls retain intermediate samples;
+// stale/overwritten samples remain visible as raw seq gaps and status counters.
 // Sampling never waits for WiFi, a browser, a TCP client, or Serial output.
 struct Consumer {
   int socket=-1;char pending[1200]={};size_t length=0,offset=0;
-  uint32_t lastSeq=0,statusMs=0,progressMs=0;
+  uint32_t statusMs=0,progressMs=0;
+  SampleHistory::Cursor cursor;
 };
 static Consumer clients[2];static int listener=-1;
 static void closeConsumer(Consumer& c) { if(c.socket>=0)close(c.socket);c=Consumer(); }
@@ -212,6 +224,7 @@ static void loop() {
     else {
       slot->socket=incoming;fcntl(incoming,F_SETFL,O_NONBLOCK);
       int one=1;setsockopt(incoming,IPPROTO_TCP,TCP_NODELAY,&one,sizeof(one));
+      portENTER_CRITICAL(&sampleMux);history.startLatest(slot->cursor);portEXIT_CRITICAL(&sampleMux);
       queued(*slot,bootJson(slot->pending,sizeof(slot->pending)));
     }
   }
@@ -222,8 +235,15 @@ static void loop() {
     char discard[32];int received=recv(c.socket,discard,sizeof(discard),MSG_DONTWAIT);
     if(received==0 || (received<0 && errno!=EAGAIN && errno!=EWOULDBLOCK)){closeConsumer(c);continue;}
     if(!c.length) {
-      if(s.seq && s.seq!=c.lastSeq && nowUs-s.deviceUs<=50000) {
-        if(queued(c,frameJson(s,c.pending,sizeof(c.pending))))c.lastSeq=s.seq;
+      Sample next;
+      const uint64_t overwritten=c.cursor.overwritten,expired=c.cursor.expired;
+      portENTER_CRITICAL(&sampleMux);
+      bool available=history.take(c.cursor,nowUs,historyMaxAgeUs,next);
+      portEXIT_CRITICAL(&sampleMux);
+      historyOverwritten+=c.cursor.overwritten-overwritten;
+      historyExpired+=c.cursor.expired-expired;
+      if(available) {
+        queued(c,frameJson(next,c.pending,sizeof(c.pending)));
       } else if((!ready || !s.seq || nowUs-s.deviceUs>50000) && (uint32_t)(millis()-c.statusMs)>=1000) {
         c.statusMs=millis();queued(c,statusJson(c.pending,sizeof(c.pending)));
       }

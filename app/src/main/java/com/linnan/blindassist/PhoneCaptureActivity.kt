@@ -28,6 +28,7 @@ import com.linnan.blindassist.ui.compose.BlindAssistTheme
 import org.json.JSONObject
 import java.net.URI
 import java.util.concurrent.Executors
+import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -48,14 +49,18 @@ class PhoneCaptureActivity : ComponentActivity() {
     private val previewGeneration = AtomicLong()
     private val latestDecoded = AtomicReference<Pair<Long, AtomPreviewFrame>?>(null)
     private val previewPostQueued = AtomicBoolean()
+    private val previewDecodeQueued = AtomicBoolean()
+    private val previewDecodeRequested = AtomicBoolean()
+    // These two fields belong only to the single preview worker.
+    private var decodedReceiptNs = 0L
+    private var decodedGeneration = -1L
     private val handler = Handler(Looper.getMainLooper())
     private val io = Executors.newSingleThreadExecutor()
     private val controls = Executors.newSingleThreadExecutor { Thread(it, "capture-controls") }
-    private val previewWorker = Executors.newSingleThreadScheduledExecutor { Thread(it, "capture-preview") }
+    private val previewWorker = Executors.newSingleThreadExecutor { Thread(it, "capture-preview") }
     private val hudWorker = Executors.newSingleThreadScheduledExecutor { Thread(it, "capture-hud") }
     private val controlGeneration = AtomicLong()
     private val pendingControls = AtomicInteger()
-    private var previewTask: ScheduledFuture<*>? = null
     private var hudTask: ScheduledFuture<*>? = null
     private var state by mutableStateOf(PhoneCaptureState())
     private var sessions by mutableStateOf(emptyList<PhoneCaptureSummary>())
@@ -115,18 +120,25 @@ class PhoneCaptureActivity : ComponentActivity() {
             BlindAssistTheme {
                 PhoneCaptureScreen(state, previewProvider, onPreviewDraw, host, atomHost, note, sessions,
                     busy || controlBusy || discovering, exportMessage,
-                    onHostChange = { host = it }, onAtomHostChange = { atomHost = it }, onNoteChange = { note = it },
+                    onHostChange = { host = it; routeEdited() },
+                    onAtomHostChange = { atomHost = it; routeEdited() }, onNoteChange = { note = it },
                     onImuEnabledChange = { enabled ->
+                        capture.cancelReconnect()
                         runControl("IMU 设置失败") {
+                            capture.disconnect()
                             capture.setImuEnabled(enabled)
                             preferences.edit().putBoolean("imu_enabled", enabled).apply()
                         }
                     },
                     onConnect = ::connectDevices, onDiscover = ::discoverDevices,
-                    onDisconnect = { invalidatePreview(); runControl("断开失败") { capture.disconnect() } },
+                    onDisconnect = { capture.cancelReconnect(); invalidatePreview(); runControl("断开失败") { capture.disconnect() } },
                     onStart = {
-                        val sceneNote = note
-                        runControl("无法开始") { capture.startRecording(sceneNote) }
+                        // Reject a tap before Compose has disabled the old button after
+                        // an address edit/disconnect; do not supersede required cleanup.
+                        if (!busy && !controlBusy && !discovering) {
+                            val sceneNote = note
+                            runControl("无法开始") { capture.startRecording(sceneNote) }
+                        }
                     },
                     onStop = {
                         invalidatePreview()
@@ -147,9 +159,14 @@ class PhoneCaptureActivity : ComponentActivity() {
         foreground = true
         hudTask?.cancel(false)
         hudTask = hudWorker.scheduleWithFixedDelay({
+            // Clear an expired preview even when the camera has stopped delivering frames.
+            requestPreviewDecode()
             if (!foreground || pendingControls.get() != 0) return@scheduleWithFixedDelay
             val generation = controlGeneration.get()
             val next = runCatching { capture.snapshot() }.getOrNull() ?: return@scheduleWithFixedDelay
+            if (next.reconnectEnabled && !next.recording) enqueueControl {
+                if (isCurrent(generation)) capture.retryConnections()
+            }
             handler.post {
                 if (isCurrent(generation)) {
                     val wasRecording = state.recording
@@ -158,30 +175,57 @@ class PhoneCaptureActivity : ComponentActivity() {
                 }
             }
         }, 0, 200, TimeUnit.MILLISECONDS)
-        previewTask?.cancel(false)
-        var decodedReceiptNs = 0L
-        previewTask = previewWorker.scheduleAtFixedRate({
-            if (!foreground) return@scheduleAtFixedRate
-            val generation = previewGeneration.get()
-            val frame = capture.peekCameraFrame()
-            if (frame == null) {
-                if (previewState.value != null) handler.post {
-                    if (foreground && generation == previewGeneration.get()) previewState.value = null
+        capture.setCameraPreviewListener(::requestPreviewDecode)
+        requestPreviewDecode()
+    }
+
+    private fun requestPreviewDecode() {
+        if (!foreground) return
+        previewDecodeRequested.set(true)
+        if (!previewDecodeQueued.compareAndSet(false, true)) return
+        try {
+            previewWorker.execute {
+                try {
+                    // A burst requests one worker, not one queued decode per source frame.
+                    // Recording retains every raw frame independently of this latest-only view.
+                    do {
+                        previewDecodeRequested.set(false)
+                        decodeLatestPreview()
+                    } while (foreground && previewDecodeRequested.get())
+                } finally {
+                    previewDecodeQueued.set(false)
+                    // Covers a frame arriving between the loop check and releasing the worker.
+                    if (previewDecodeRequested.get()) requestPreviewDecode()
                 }
-                return@scheduleAtFixedRate
             }
-            if (frame.receivedElapsedNs == decodedReceiptNs) return@scheduleAtFixedRate
-            decodedReceiptNs = frame.receivedElapsedNs
-            val decodeStart = SystemClock.elapsedRealtimeNanos()
-            val image = runCatching { BitmapFactory.decodeByteArray(frame.jpeg, 0, frame.jpeg.size)?.asImageBitmap() }.getOrNull()
-            previewMetrics.decoded(SystemClock.elapsedRealtimeNanos() - decodeStart)
-            if (image != null && foreground && generation == previewGeneration.get()) {
-                latestDecoded.set(generation to AtomPreviewFrame(image, frame.receivedElapsedNs, frame.sequence))
-                queuePreviewPost()
+        } catch (_: RejectedExecutionException) {
+            // A source callback can overlap activity destruction.
+            previewDecodeQueued.set(false)
+        }
+    }
+
+    private fun decodeLatestPreview() {
+        if (!foreground) return
+        val generation = previewGeneration.get()
+        val frame = capture.peekCameraFrame()
+        if (frame == null) {
+            if (previewState.value != null) handler.post {
+                if (foreground && generation == previewGeneration.get() && capture.peekCameraFrame() == null) {
+                    previewState.value = null
+                }
             }
-        // Check at display cadence, but decode only a new receipt. A 33ms poll
-        // can skip a source frame when JPEG decode and Wi-Fi delivery take a slot.
-        }, 0, 16, TimeUnit.MILLISECONDS)
+            return
+        }
+        if (generation == decodedGeneration && frame.receivedElapsedNs == decodedReceiptNs) return
+        decodedGeneration = generation
+        decodedReceiptNs = frame.receivedElapsedNs
+        val decodeStart = SystemClock.elapsedRealtimeNanos()
+        val image = runCatching { BitmapFactory.decodeByteArray(frame.jpeg, 0, frame.jpeg.size)?.asImageBitmap() }.getOrNull()
+        previewMetrics.decoded(SystemClock.elapsedRealtimeNanos() - decodeStart)
+        if (image != null && foreground && generation == previewGeneration.get()) {
+            latestDecoded.set(generation to AtomPreviewFrame(image, frame.receivedElapsedNs, frame.sequence))
+            queuePreviewPost()
+        }
     }
 
     private fun queuePreviewPost() {
@@ -204,11 +248,12 @@ class PhoneCaptureActivity : ComponentActivity() {
 
     override fun onStop() {
         foreground = false
+        capture.cancelReconnect()
         controlGeneration.incrementAndGet()
         discovering = false
         controlBusy = false
         hudTask?.cancel(false)
-        previewTask?.cancel(false)
+        capture.setCameraPreviewListener(null)
         invalidatePreview()
         enqueueControl { capture.stopForeground() }
         refreshSessions()
@@ -217,6 +262,7 @@ class PhoneCaptureActivity : ComponentActivity() {
 
     override fun onDestroy() {
         foreground = false
+        capture.cancelReconnect()
         controlGeneration.incrementAndGet()
         enqueueControl { capture.shutdown() }
         controls.shutdown()
@@ -237,6 +283,7 @@ class PhoneCaptureActivity : ComponentActivity() {
 
     private fun runControl(message: String, onComplete: () -> Unit = {}, action: (Long) -> Unit) {
         val generation = controlGeneration.incrementAndGet()
+        discovering = false
         controlBusy = true
         enqueueControl {
             if (!isCurrent(generation)) return@enqueueControl
@@ -253,7 +300,14 @@ class PhoneCaptureActivity : ComponentActivity() {
         }
     }
 
+    private fun routeEdited() {
+        capture.cancelReconnect()
+        invalidatePreview()
+        runControl("断开旧设备失败") { capture.disconnect() }
+    }
+
     private fun discoverDevices() {
+        capture.cancelReconnect()
         val generation = controlGeneration.incrementAndGet()
         discovering = true
         invalidatePreview()
@@ -287,6 +341,7 @@ class PhoneCaptureActivity : ComponentActivity() {
     }
 
     private fun connectDevices() {
+        capture.cancelReconnect()
         val tofAddress = host.trim(); val atomAddress = atomHost.trim(); val imuEnabled = state.imuEnabled
         invalidatePreview()
         runControl("连接失败") { generation -> connectSources(generation, tofAddress, atomAddress, imuEnabled) }
@@ -298,10 +353,11 @@ class PhoneCaptureActivity : ComponentActivity() {
             if (!isCurrent(generation)) return
             getSharedPreferences("phone_capture", MODE_PRIVATE).edit().putString("host", tofAddress)
                 .putString("atom_host", atomAddress).putString("imu_host", atomAddress).apply()
-            capture.connectCamera(AtomMjpegCaptureSource(atomAddress))
-            if (!isCurrent(generation)) return
-            capture.connect(TcpCnhCaptureSource(tofAddress))
-            if (imuEnabled && isCurrent(generation)) capture.connectImu(TcpImuCaptureSource(atomAddress))
+            capture.connectAutomatically(
+                cameraFactory = { AtomMjpegCaptureSource(atomAddress) },
+                tofFactory = { TcpCnhCaptureSource(tofAddress) },
+                imuFactory = if (imuEnabled) ({ TcpImuCaptureSource(atomAddress) }) else null,
+            )
         } finally {
             if (!isCurrent(generation)) capture.disconnect()
         }
