@@ -33,3 +33,5 @@
 | 2026-10-12 | `host/tof_histogram_anchor_dev_20261012.py`、`real_hist_anchor_eval_dev_20261012.py` | EXPLORE；DAV2-S尺度按CNH前向渲染一致性拟合（24×20假设），两版（第二版加近bin扣3σ与负证据）；RGB报警的ToF证实率 | 直方图锚定空通道BODY误报22–47%、竖杆44/69%，劣于固件＋地面61/92%；大厅尺度比1.04–1.25；证实率墙柱75–80%、细杆12–35% | 不采用锚定；证实率留作可信度；[报告](REAL_HIST_ANCHOR_CONFIRM_DEV_20261012.md) |
 
 | 2026-10-13 | `host/thin_structure_*_dev_20261013.py`：RGB边线/全提议/空间方向配额/自主深度脊 | EXPLORE；18段1677帧，36固定时间抽样，22可评价助手弱标签＋2不可评价＋12无目标杆 | 定位12→17/22（救9损4），旧融合未报警命中3→9/11；低头大厅6张候选0、电视6张142；侧杆持续0/6 | 保留深度脊候选，不升报警；排序配额无益，原始越界失败保留；合成/几何/1677唯一帧/坐标/语法检查通过；CPU保守340/1200command-wall秒、GPU0。[报告](REAL_THIN_STRUCTURE_DEV_20261013.md) |
+
+| 2026-10-13 | `thin_structure_local_track/geometry/local_evaluate_dev_20261013.py` | EXPLORE；固定1677帧18483候选，仅改关联及描述几何；22弱标签 | 局部flow9→9/22；0.5s三观测窗口6/22；独立RGB链13/22（救4损0）、侧杆3/6；干扰持续87→116/12张；盒内稳定仍3/22，台阶误入BODY1帧 | 保留RGB链开发机制，不升报警；UNKNOWN/近域外单列，旧失败保留；几何/重复计数/逐候选一致检查通过；CPU保守165/900command-wall秒、GPU0。[报告](REAL_THIN_LOCAL_GEOMETRY_DEV_20261013.md) |

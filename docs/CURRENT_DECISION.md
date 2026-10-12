@@ -2,7 +2,7 @@
 
 ## 2026-10-13 工程接入状态
 
-[细结构试验](../research/active/hardware-bringup/REAL_THIN_STRUCTURE_DEV_20261013.md)：自主深度脊在22张弱标注定位命中12→17，旧融合未报警11张中3→9；保留为细结构候选，尚未解决稳定跟踪/身体区域判定（侧杆持续0/6、电视场景仍有候选），不据此升级报警。
+[细结构试验](../research/active/hardware-bringup/REAL_THIN_STRUCTURE_DEV_20261013.md)定位17/22；[局部跟踪与几何](../research/active/hardware-bringup/REAL_THIN_LOCAL_GEOMETRY_DEV_20261013.md)的独立RGB链使持续目标9→13/22、侧杆0→3/6，但干扰候选87→116，盒内稳定目标仍3/22且台阶可误入BODY。保留候选跟踪，不升级报警；下一优先候选距离可信度/固定安装几何。
 
 同日[真实开发尺度/时序比较](../research/active/hardware-bringup/REAL_FUSION_REFINEMENT_DEV_20261013.md)完成：18段1677帧，稳健拟合成功才替换尺度的小候选使低头细杆any65→67/79、首报提前0.568秒，18段any未损；BODY另少15个query帧、无逐query真值，不能判为去误报。[第二轮](../research/active/hardware-bringup/REAL_FUSION_REFINEMENT_V2_DEV_20261013.md)的同质/双mode锚点、运动尺度搬运与地面软回退均未超过旧候选；保留其开发身份，不改变冻结v1/v2或手机默认。下一优先固定安装几何/去杆参考，新头戴确认仍待完成。
 
