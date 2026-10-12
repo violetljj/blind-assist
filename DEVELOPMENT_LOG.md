@@ -4,6 +4,16 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-12 — v10.16.4 foreground capture disconnect tolerance
+
+- Scope: repair reported foreground disconnects with bounded Android/H3 changes and focused controller, transport and live-capture checks. Preserve raw payloads and interrupted sessions; no model/quality changes. Evidence: `artifacts.local/evidence/phone-capture-disconnect-20261012/`.
+- Historical phone session `capture-20261012T023621339Z-8776f21b` ended with truncated ToF line then EOF; camera/IMU stopped as a consequence. This identifies the first failed stream, not a definitive WiFi/power cause.
+- Separate 2s preview freshness from 8s recording liveness, persist per-stream stall/recovery events and retain the first failure through teardown. Camera read deadline10s. H3 send stall2s/row5s replaces200/400ms and exposes failure diagnostics on `/api/cnh`.
+- H3 COM5 identity98:a3:16:f7:88:1c verified; backed up app region1,572,864bytes then wrote app0 only with hash verification. Binary SHA256 `75c0150946ea287f043b8326d5e4a55b270353ef8f05a95c0c929bf9ea811c51`. Warm reset left sensor uninitialized; user power cycle restored config/frames, preserved in status receipts. No NVS/partition-table rewrite.
+- Controlled host receiver:1s read pause survived;10s pause caused EOF with stall_timeout at2.053265s,7280/14628bytes sent; reconnect received frames. This checks bounded backpressure behavior, not proof of the historical disconnection cause or guaranteed field reliability.
+- Android40 focused JVM tests,4 injected-clock controller device tests, final debug/androidTest build and lint, APK identity/signature/16KB checks passed. Installed v10.16.4/50, SHA256 `358DFC1B03FBE51AAC3306E47369AFE688317C1AB188AB30E0D9454DEE17A2BE`.
+- Real120s capture `capture-20261012T062001614Z-4f00ab7c` saved COMPLETED/user_stop:3324RGB,607ToF,12020IMU. No stalled/timeout/disconnected events; a partial ToF tail during manual stop is preserved. USB debugging disconnected during subsequent ZIP benchmark/verification, so the instrumentation run has no final PASS receipt yet; capture completion is independently evidenced by the pulled manifest/events.
+
 ## 2026-10-12 — v10.16.3 capture preview, transport and export
 
 - Goal/scope: improve foreground phone collector stability, smoothness, frame handling and export speed; scoped code/build/device checks, no model or firmware work. Preserve original payloads, independent timestamps and per-record fsync. All evidence stays under `artifacts.local/evidence/phone-capture-opt-20261012/`.

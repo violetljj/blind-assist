@@ -33,7 +33,11 @@ data class PhoneCaptureState(
 )
 
 /** Owns only the foreground acquisition page; saved buffers never enter the assist algorithm. */
-class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lifecycleOwner: LifecycleOwner? = null) {
+class PhoneCaptureController(
+    context: Context,
+    @Suppress("UNUSED_PARAMETER") lifecycleOwner: LifecycleOwner? = null,
+    private val monotonicClock: () -> Long = SystemClock::elapsedRealtimeNanos,
+) {
     private val context = context.applicationContext
     private val lock = Any()
     private var cameraSource: AtomCameraCaptureSource? = null
@@ -63,11 +67,16 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
     private var connected = false
     private var message = "连接 ToF 后开始采集"
     private var lastSummary: PhoneCaptureSummary? = null
+    // First failure wins: closing the other sources emits STOPPED callbacks too.
+    private var terminalCause: String? = null
+    private val stalledStreams = mutableMapOf<String, Long>()
+    private var stallWarning: String? = null
 
     fun connectCamera(next: AtomCameraCaptureSource) {
         whenConnectable(next) { }
         disconnectCamera()
         val generation = whenConnectable(next) {
+            terminalCause = null
             cameraSource = next
             ++cameraGeneration
         }
@@ -84,8 +93,10 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
                         frame.receivedElapsedNs, frame.width, frame.height, 90,
                         "ATOM_DEVICE_MONOTONIC_UNMAPPED", frame.sequence, frame.sourceId,
                         sourceHeaders = frame.headers, displayMirrorHorizontal = true)
+                    recordRecovery("camera", "相机", frame.receivedElapsedNs)
                 } catch (error: Exception) {
                     message = "Atom RGB 保存失败：${error.message}"
+                    if (terminalCause == null) terminalCause = message
                     failed = true
                 }
             }
@@ -99,7 +110,8 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
                 runCatching { store?.recordEvent("camera_${status.state.name.lowercase()}", status.message, nowNs()) }
                 if (status.state in setOf(CnhConnectionState.ERROR, CnhConnectionState.DISCONNECTED)) {
                     cameraSeenNs = 0L
-                    message = status.message
+                    message = "相机连接中断：${status.message}"
+                    if (store != null && terminalCause == null) terminalCause = message
                     interrupted = store != null
                 }
             }
@@ -111,6 +123,7 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
         whenConnectable(next) { }
         disconnectTof()
         val generation = whenConnectable(next) {
+            terminalCause = null
             source = next
             sourceGeneration += 1
             preamble.clear()
@@ -138,8 +151,10 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
                 val active = store ?: return@start
                 try {
                     saveTof(active, record)
+                    if (record.frame != null) recordRecovery("tof", "ToF", record.hostReceivedMonotonicNs)
                 } catch (error: Exception) {
                     message = "ToF 保存失败：${error.message}"
+                    if (terminalCause == null) terminalCause = message
                     failed = true
                 }
             }
@@ -155,6 +170,7 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
                 } catch (error: Exception) { message = "状态记录失败：${error.message}" }
                 if (status.state in setOf(CnhConnectionState.ERROR, CnhConnectionState.DISCONNECTED)) {
                     tofSeenNs = 0L
+                    if (store != null && terminalCause == null) terminalCause = "ToF 连接中断：${status.message}"
                     interrupted = store != null
                 }
             }
@@ -175,6 +191,7 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
         whenConnectable(next) { }
         disconnectImu()
         val generation = whenConnectable(next) {
+            terminalCause = null
             imuSource = next
             imuGeneration += 1
             imuPreamble.clear()
@@ -201,12 +218,14 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
                 try {
                     val index = saveImu(active, record)
                     if (record.frame != null) {
+                        recordRecovery("imu", "IMU", record.hostReceivedMonotonicNs)
                         latestImuIndex = index
                         imuRecent.removeLast()
                         imuRecent.addLast(record to index)
                     }
                 } catch (error: Exception) {
                     message = "IMU 保存失败：${error.message}"
+                    if (terminalCause == null) terminalCause = message
                     failed = true
                 }
             }
@@ -220,6 +239,7 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
                 if (status.state in setOf(CnhConnectionState.ERROR, CnhConnectionState.DISCONNECTED)) {
                     message = "IMU ${status.message}"
                     imuSeenNs = 0L
+                    if (store != null && terminalCause == null) terminalCause = "IMU 连接中断：${status.message}"
                     interrupted = store != null
                 }
                 runCatching { store?.recordEvent("imu_${status.state.name.lowercase()}", status.message, nowNs()) }
@@ -279,7 +299,19 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
     }
 
     private fun endRecording(reason: String, status: String) {
-        if (!synchronized(lock) { if (ending) false else { ending = true; true } }) return
+        if (!synchronized(lock) {
+            if (ending) false else {
+                ending = true
+                if (store != null && status == "INTERRUPTED" && terminalCause == null) {
+                    terminalCause = when (reason) {
+                        "page_backgrounded" -> "采集页面进入后台，已停止采集"
+                        "disconnect" -> "已断开采集连接"
+                        else -> message
+                    }
+                }
+                true
+            }
+        }) return
         try {
             disconnectCamera()
             disconnectTof()
@@ -316,6 +348,9 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
         store = next
         startedNs = now
         lastSummary = null
+        terminalCause = null
+        stalledStreams.clear()
+        stallWarning = null
         latestImuIndex = null
         imuRecent.clear()
         try {
@@ -331,6 +366,7 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
             message = "正在采集；保持此页面打开"
         } catch (error: Exception) {
             message = "创建采集失败：${error.message}"
+            terminalCause = message
             finishLocked("start_write_error", "INTERRUPTED")
             throw error
         }
@@ -350,15 +386,46 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
     }
 
     fun snapshot(): PhoneCaptureState {
-        val stale = synchronized(lock) {
-            val now = nowNs()
-            store != null && (!fresh(cameraSeenNs, now) || !fresh(tofSeenNs, now) ||
-                imuEnabled && !fresh(imuSeenNs, now))
+        val timeout = synchronized(lock) {
+            val active = store
+            if (active == null || ending) null else {
+                val now = nowNs()
+                val streams = buildList {
+                    add(Triple("camera", "相机", cameraSeenNs))
+                    add(Triple("tof", "ToF", tofSeenNs))
+                    if (imuEnabled) add(Triple("imu", "IMU", imuSeenNs))
+                }
+                try {
+                    streams.forEach { (key, label, seen) ->
+                        val age = ageMs(seen, now)
+                        if (!fresh(seen, now) && key !in stalledStreams) {
+                            active.recordEvent("${key}_stalled", "$label 暂无新数据；age_ms=$age", now)
+                            stalledStreams[key] = seen
+                        }
+                    }
+                    val delayed = streams.filter { it.first in stalledStreams }
+                    stallWarning = delayed.takeIf { it.isNotEmpty() }?.joinToString("；") { (_, label, seen) ->
+                        "$label 暂无新数据（${ageMs(seen, now)} 毫秒）"
+                    }?.plus("；继续等待，缺失区间会保留记录")
+                    val expired = streams.filter { (_, _, seen) ->
+                        seen <= 0L || now - seen > RECORDING_STALL_NS
+                    }
+                    if (expired.isEmpty()) null else {
+                        val details = expired.joinToString("；") { (_, label, seen) ->
+                            "$label 超过 8 秒无新数据（${ageMs(seen, now)} 毫秒）"
+                        }
+                        if (terminalCause == null) terminalCause = details
+                        active.recordEvent("input_timeout", details, now)
+                        "input_stale_" + expired.joinToString("_") { it.first }
+                    }
+                } catch (error: Exception) {
+                    val writeFailure = "状态记录失败：${error.message}"
+                    terminalCause = terminalCause?.let { "$it；$writeFailure" } ?: writeFailure
+                    "status_write_error"
+                }
+            }
         }
-        if (stale) {
-            endRecording("input_stale", "INTERRUPTED")
-            synchronized(lock) { if (lastSummary != null) message = "数据中断，已有内容已保留" }
-        }
+        if (timeout != null) endRecording(timeout, "INTERRUPTED")
         return synchronized(lock) {
             val now = nowNs()
             val active = store
@@ -373,7 +440,8 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
                 rgbCount = active?.rgbCount ?: lastSummary?.rgbCount ?: 0L,
                 tofCount = active?.tofCount ?: lastSummary?.tofCount ?: 0L,
                 elapsedMs = if (active != null) (now - startedNs) / 1_000_000L else 0L,
-                message = message,
+                message = terminalCause?.let { "$it；已有内容已保留，请重新连接后开始新一段" }
+                    ?: stallWarning.takeIf { active != null } ?: message,
                 sessionId = active?.id ?: lastSummary?.id,
                 imuEnabled = imuEnabled,
                 imuReady = imuReady,
@@ -440,14 +508,29 @@ class PhoneCaptureController(context: Context, @Suppress("UNUSED_PARAMETER") lif
         return index
     }
 
+    /** Called under lock on the first saved valid frame after a reported stall. */
+    private fun recordRecovery(key: String, label: String, receiptNs: Long) {
+        val previous = stalledStreams[key] ?: return
+        val active = store ?: return
+        active.recordEvent("${key}_recovered",
+            "$label 数据恢复；receipt_gap_ms=${(receiptNs - previous) / 1_000_000L}；缺失区间未补采", receiptNs)
+        stalledStreams.remove(key)
+    }
+
     private fun finishLocked(reason: String, status: String) {
         val active = store ?: return
         store = null
         try { lastSummary = active.finish(reason, status) }
-        catch (error: Exception) { message = "保存中断，目录已保留：${error.message}" }
+        catch (error: Exception) {
+            message = "保存中断，目录已保留：${error.message}"
+            terminalCause = terminalCause?.let { "$it；$message" } ?: message
+        }
     }
 
-    private fun nowNs() = SystemClock.elapsedRealtimeNanos()
+    private fun nowNs() = monotonicClock()
+    private companion object {
+        const val RECORDING_STALL_NS = 8_000_000_000L
+    }
     private fun fresh(time: Long, now: Long) = time > 0L && now - time in 0L..2_000_000_000L
     private fun ageMs(time: Long, now: Long): Long? = if (time > 0L && now >= time) (now - time) / 1_000_000L else null
 }

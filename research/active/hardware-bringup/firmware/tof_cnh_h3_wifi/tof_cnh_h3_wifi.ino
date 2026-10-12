@@ -27,30 +27,51 @@ static WiFiClient cnhClient;
 
 // One complete NDJSON line at a time; the histogram/calibration is unchanged.
 // No sample backlog. A stalled/partial TCP consumer is disconnected visibly.
-// A phone received only 5744 bytes of its first CNH frame before EOF under the
-// old 30 ms budget. Allow delayed ACK/backpressure for
-// up to two 5 Hz periods, but stop after one period without any byte progress.
-static constexpr uint32_t CNH_TCP_ROW_DEADLINE_US = 400000;
-static constexpr uint32_t CNH_TCP_STALL_DEADLINE_US = 200000;
+// WiFi/phone storage can briefly pause reads. Retain only the current line and
+// tolerate a bounded pause; timestamps/sequence gaps still expose the delay.
+static constexpr uint32_t CNH_TCP_ROW_DEADLINE_US = 5000000;
+static constexpr uint32_t CNH_TCP_STALL_DEADLINE_US = 2000000;
+static uint32_t cnhSendDisconnects = 0, cnhSendTimeouts = 0;
+static const char* cnhLastDisconnectReason = "none";
+static uint32_t cnhLastDisconnectSent = 0, cnhLastDisconnectTotal = 0;
+static uint32_t cnhLastDisconnectElapsedUs = 0;
+static int cnhLastDisconnectErrno = 0;
 static bool sendCnhClient(const String& text) {
   if (!cnhClient.connected()) return false;
   const uint8_t* data = (const uint8_t*)text.c_str();
   size_t sent = 0;
   const uint32_t started = micros();
   uint32_t lastProgress = started;
+  const char* failure = nullptr;
+  int failureErrno = 0;
   while (sent < text.length()) {
     const uint32_t now = micros();
-    if ((uint32_t)(now-started) >= CNH_TCP_ROW_DEADLINE_US ||
-        (uint32_t)(now-lastProgress) >= CNH_TCP_STALL_DEADLINE_US) break;
+    if ((uint32_t)(now-started) >= CNH_TCP_ROW_DEADLINE_US) {
+      failure = "row_timeout"; ++cnhSendTimeouts; break;
+    }
+    if ((uint32_t)(now-lastProgress) >= CNH_TCP_STALL_DEADLINE_US) {
+      failure = "stall_timeout"; ++cnhSendTimeouts; break;
+    }
     int count = send(cnhClient.fd(), data+sent, text.length()-sent, MSG_DONTWAIT);
     if (count > 0) {
       sent += count;
       lastProgress = micros();
     }
-    else if (count < 0 && errno != EAGAIN && errno != EWOULDBLOCK && errno != EINTR) break;
+    else if (count < 0 && errno != EAGAIN && errno != EWOULDBLOCK && errno != EINTR) {
+      failure = "send_error"; failureErrno = errno; break;
+    }
     else delay(1);
   }
-  if (sent != text.length()) { cnhClient.stop(); return false; }
+  if (sent != text.length()) {
+    ++cnhSendDisconnects;
+    cnhLastDisconnectReason = failure ? failure : "incomplete_send";
+    cnhLastDisconnectSent = sent;
+    cnhLastDisconnectTotal = text.length();
+    cnhLastDisconnectElapsedUs = (uint32_t)(micros()-started);
+    cnhLastDisconnectErrno = failureErrno;
+    cnhClient.stop();
+    return false;
+  }
   return true;
 }
 
@@ -141,6 +162,15 @@ void setup() {
     String identity=demoIdentity(); identity.remove(identity.length()-1);
     String payload=identity+",\"transport\":\"tcp_ndjson\",\"tcp_port\":3335,\"firmware_config\":";
     payload+=cnhOutput.configRecord.isEmpty()?"null":cnhOutput.configRecord;
+    payload+=",\"tcp_diagnostics\":{\"row_deadline_ms\":"+String(CNH_TCP_ROW_DEADLINE_US/1000)+
+        ",\"stall_deadline_ms\":"+String(CNH_TCP_STALL_DEADLINE_US/1000)+
+        ",\"send_disconnect_count\":"+String(cnhSendDisconnects)+
+        ",\"send_timeout_count\":"+String(cnhSendTimeouts)+
+        ",\"last_disconnect_reason\":\""+cnhLastDisconnectReason+
+        "\",\"last_sent_bytes\":"+String(cnhLastDisconnectSent)+
+        ",\"last_total_bytes\":"+String(cnhLastDisconnectTotal)+
+        ",\"last_elapsed_us\":"+String(cnhLastDisconnectElapsedUs)+
+        ",\"last_errno\":"+String(cnhLastDisconnectErrno)+"}";
     payload+="}";
     api.sendHeader("Cache-Control","no-store");api.send(200,"application/json",payload);
   });

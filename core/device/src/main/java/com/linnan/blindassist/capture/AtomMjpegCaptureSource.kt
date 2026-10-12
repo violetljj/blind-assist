@@ -95,7 +95,9 @@ class AtomMjpegCaptureSource(host: String, private val port: Int = 81) : AtomCam
                 onStatus(CnhCaptureStatus(CnhConnectionState.CONNECTING, "连接 Atom 相机 $host:$port"))
                 val http = (URL(transport).openConnection() as HttpURLConnection).apply {
                     connectTimeout = 2500
-                    readTimeout = 2000
+                    // Preview freshness is not a transport deadline. Allow a short
+                    // network stall; the controller records/limits missing input.
+                    readTimeout = 10000
                     useCaches = false
                     instanceFollowRedirects = false
                     setRequestProperty("Connection", "close")
