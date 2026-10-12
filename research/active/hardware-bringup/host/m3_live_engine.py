@@ -16,6 +16,7 @@ import time
 import numpy as np
 
 from cnh_zone_orientation import MAPPING_ID, check_mounting, to_model
+from pose_envelope import GATE_ID, in_envelope
 
 ROOT = Path(__file__).resolve().parents[4]
 NEAR = ROOT / 'research/active/dtr-r0/nearfield'
@@ -275,10 +276,13 @@ class Engine:
         weights = 2. ** np.arange(len(self.logits))
         smoothed = (np.asarray(self.logits) * weights[:, None]).sum(axis=0) / weights.sum()
         ready = len(self.history) == 8
+        # Measured pose outside the trained envelope: alerts suppressed (UNKNOWN, not clear).
+        pose_ok = not pose.get('measured') or bool(in_envelope(pose['pitch_deg'], pose['roll_deg']))
         result.update(status='READY' if ready else 'WARMING_UP', ready=ready, history=len(self.history),
                       feature_precision=self.feature_precision,
                       raw=[float(v) for v in raw], smoothed=[float(v) for v in smoothed],
-                      reference_crossing=[bool(v >= THRESHOLD) for v in smoothed] if ready else None,
+                      reference_crossing=[bool(v >= THRESHOLD) and pose_ok for v in smoothed] if ready else None,
+                      pose_gate=GATE_ID if pose_ok else 'POSE_OUT_OF_ENVELOPE',
                       maxz=float(z.max()), max_abs_residual=float(np.abs(z).max()),
                       zone_max_residual=z.max(axis=-1).tolist(),
                       compute_ms=(time.perf_counter()-started)*1000)

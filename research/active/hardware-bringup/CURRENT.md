@@ -18,6 +18,8 @@ Atom人工零参考与名义光轴仍未完成独立标定。Android接收匹配
 
 瓶颈：轻提醒可持续100%，可选阈值也未整体解决；近竖杆强档仍弱。下一优先按[固定安装配对采集单](REAL_NEAR_GEOMETRY_DEV_20261012.md)记录空/内杆/外杆及去杆差分，实测高度/位置并排查近距遮挡。本轮18段为新录制冻结Development描述，不是接触或安全确认。
 
+[姿态门控＋RGB可行性](REAL_POSE_GATE_RGB_FEASIBILITY_DEV_20261012.md)：俯角>+10°或|横滚|>25°不出提醒（仅去掉两段抬头天花板的98/98轻档，障碍段不变，已接入live引擎）；UniDepth无内参即可清楚看到ToF漏掉的细竖杆，但尺度/视场不可靠（地面估计1.05–1.84m），先用屏幕棋盘格标定Atom相机再做RGB读出与融合。
+
 ## 默认、使用与历史入口
 
 模拟Development默认仍由[候选指针](../dtr-r0/nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)和[合同加载器](host/local_signed_bias_default.py)管理；[v4零证据修复](LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)与原M3/5格及失败保持。实机候选不自动替换模拟或App。
