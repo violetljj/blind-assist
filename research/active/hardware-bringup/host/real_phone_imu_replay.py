@@ -126,12 +126,12 @@ def summarize(result, distance):
     return out
 
 
-def main(only):
+def main(only, manifest=MANIFEST, tag=''):
     mounting = load_mounting(MOUNTING)
     rotation = np.array(mounting['tof_from_imu_rotation'])
     arrays = np.load(P.OUT / 'instrument_arrays.npz'); bias = arrays['bias'].reshape(64, 16)
     noise = P.read('instrument_parameters.json')['noise']
-    engine = ContractReplay(str(MANIFEST))
+    engine = ContractReplay(str(manifest))
     report = {}
     try:
         for directory in sorted(RAW.iterdir()):
@@ -162,10 +162,11 @@ def main(only):
             report[key] = entry
     finally:
         engine.close()
-    name = 'robust_replay.json' if not only else f"robust_replay_{'_'.join(only)}.json"
+    name = f'replay{tag or "_robust"}.json' if not only else f"replay{tag}_{'_'.join(only)}.json"
     (OUT / name).write_text(json.dumps(report, indent=1), encoding='utf8')
 
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(); ap.add_argument('--only', nargs='*', default=[])
-    main(ap.parse_args().only)
+    ap.add_argument('--manifest', default=str(MANIFEST)); ap.add_argument('--tag', default='')
+    a = ap.parse_args(); main(a.only, a.manifest, a.tag)
