@@ -26,6 +26,8 @@ Atom人工零参考与名义光轴仍未完成独立标定。Android接收匹配
 
 [冻结检验v1/v2](FROZEN_FUSION_EVAL_V1_PROTOCOL.md)：2026-10-12在新头戴录制前冻结（ToF强档或DAV2-S RGB，v2加2/3帧时序确认），明日录制后只跑脚本；蒸馏版DAV2-S使竖杆变差（67→33%），未采用。
 
+[RGB读出门槛旁证](REAL_RGB_READOUT_CALIBRATION_DEV_20261012.md)：ARKitScenes真实帧（LiDAR仿真ToF锚定DAV2-S）上，事先门槛150px≈8.3e-4sr的eval检出92.2%/误报4.8%，cal 98.9/3.0%，AUC0.96–0.999；无细杆，不改冻结门槛。
+
 ## 默认、使用与历史入口
 
 模拟Development默认仍由[候选指针](../dtr-r0/nearfield/CNH_SIM_DEFAULT_CANDIDATE.json)和[合同加载器](host/local_signed_bias_default.py)管理；[v4零证据修复](LOCAL_SIGNED_BIAS_CONTRACT_DEV_20261011.md)与原M3/5格及失败保持。实机候选不自动替换模拟或App。
