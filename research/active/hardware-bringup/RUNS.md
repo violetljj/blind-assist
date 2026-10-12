@@ -35,3 +35,5 @@
 | 2026-10-13 | `host/thin_structure_*_dev_20261013.py`：RGB边线/全提议/空间方向配额/自主深度脊 | EXPLORE；18段1677帧，36固定时间抽样，22可评价助手弱标签＋2不可评价＋12无目标杆 | 定位12→17/22（救9损4），旧融合未报警命中3→9/11；低头大厅6张候选0、电视6张142；侧杆持续0/6 | 保留深度脊候选，不升报警；排序配额无益，原始越界失败保留；合成/几何/1677唯一帧/坐标/语法检查通过；CPU保守340/1200command-wall秒、GPU0。[报告](REAL_THIN_STRUCTURE_DEV_20261013.md) |
 
 | 2026-10-13 | `thin_structure_local_track/geometry/local_evaluate_dev_20261013.py` | EXPLORE；固定1677帧18483候选，仅改关联及描述几何；22弱标签 | 局部flow9→9/22；0.5s三观测窗口6/22；独立RGB链13/22（救4损0）、侧杆3/6；干扰持续87→116/12张；盒内稳定仍3/22，台阶误入BODY1帧 | 保留RGB链开发机制，不升报警；UNKNOWN/近域外单列，旧失败保留；几何/重复计数/逐候选一致检查通过；CPU保守165/900command-wall秒、GPU0。[报告](REAL_THIN_LOCAL_GEOMETRY_DEV_20261013.md) |
+
+| 2026-10-13 | `thin_structure_confidence/thin_scale_sensitivity/thin_confidence_evaluate/thin_distance_states_dev_20261013.py` | EXPLORE；固定1677帧18483候选；范围/拟合/ToF/局部/外推诊断 | 22张定位17，range15、fit3、ToF0、local15、支撑2；local挡台阶也挡额外H8真杆4帧；近距异常强外推 | 不采用硬门槛；全部候选保留并单列未验证距离状态，候选原字段/逆投影/合成/状态核对通过；CPU保守140/650command-wall秒，GPU0。[报告](REAL_THIN_CONFIDENCE_DEV_20261013.md) |
