@@ -14,6 +14,12 @@
 
 本轮没有训练或新模型推理，尚无检测/测距提升结果。完成的是数据可用性诊断、可复用索引和公开样本接入；下一实验可以直接消费这些产物。
 
+### 用户追加的扩展检索（已完成）
+
+用户随后明确要求“多开几个子代理一起”“挖掘更多潜在有用的数据”“可以是现有和更多网上的”。按此扩大为五条并行支线：原始ToF/传感器域、材质失效、地面正负障碍、连续RGB-D/位姿/IMU、更多现有本地资产。去重后按具体可解决问题排序，继续核实小样本，不以论文名或列表数当可用数据证明。
+
+扩展范围：五支线本地库存/元数据累计≤780 command-wall秒，主线程公开样本与整合≤300 command-wall秒；GPU0、训练0、付费0。扩展下载总payload≤150MB（各支线元数据及获准小样≤5MB），实际读取SP-TransientBench一个hist+参考点云，以及ClearGrasp、GMRPD公开小样；原阶段7.36MB与220/600秒保守成本单列。扩展产物仍在同一根目录`expansion/`。已形成9项本地资产卡和27项公开来源卡，详见[扩展数据机会目录](DATA_OPPORTUNITY_CATALOG_20261013.md)。以下编号章节保留首轮结果；扩展样本与成本单独记账，无全量数据下载或训练。
+
 ## 1. 已有头戴数据：5407张图像尚未进入当前深度缓存
 
 读取已消费18段的原始RGB/ToF索引和现有cache manifest，按source＋boot＋frame ID去重，同时核对既有图像SHA。**6746张原RGB全部独立，当前1677个ready ToF行只有1344个深度缓存，对应1339张独立RGB；另有5407/6746=80.15%未缓存。** 其中5154张未被ready ToF最近帧选择，253张被选中但没有缓存。
@@ -52,7 +58,7 @@
 | 优先级与来源 | 能补什么 | 获取/规模与边界 |
 | --- | --- | --- |
 | **1 [VisTa3D](https://huggingface.co/datasets/shaniaguo/VisTa3D)** · [作者论文](https://arxiv.org/html/2608.20740v1) | 真实细结构RGB、raw depth、对象扫描重投影GT、mask、K、pose，直接检查细物的绝对尺度与深度缺失 | 真实225序列/52物体/8环境，另162合成；HF标MIT、可逐文件取。**本轮已下载12图对应模态，7.36MB**。物体GT来自扫描配准重投影；背景不是同精度真值，pose是ORB-SLAM3估计，非外部测量。排除透明/高反光物 |
-| **2 [SP-TransientBench](https://huggingface.co/datasets/shuinb/SP-TransientBench)** · [实时说明](https://huggingface.co/datasets/shuinb/SP-TransientBench/raw/main/README.md) | 真实全直方图的弱峰/强背景/多返回、IRF与域差异诊断 | ADS6311 Hawk，256×192×672，750ps bin，CC BY-NC-SA 4.0；1对深度hist+Livox参考约101MB，全量约168.7GB。本轮未下载，约101MB已超过本轮100MB上限。没有核验配对RGB，降成8×8不等于ST CNH |
+| **2 [SP-TransientBench](https://huggingface.co/datasets/shuinb/SP-TransientBench)** · [实时说明](https://huggingface.co/datasets/shuinb/SP-TransientBench/raw/main/README.md) | 真实全直方图的弱峰/强背景/多返回、IRF与域差异诊断 | ADS6311 Hawk，256×192×672，750ps bin，CC BY-NC-SA 4.0；1对深度hist+Livox参考约101MB，全量约168.7GB。首轮因100MB上限未取；用户追加扩展后已读通一个样本，见扩展目录。没有核验配对RGB，降成8×8不等于ST CNH |
 | **3 [Middlebury 2014](https://vision.middlebury.edu/stereo/data/scenes2014/)** | Cable/Sticks/Pipes等真实高分辨率细物，检查缩放、边界混合和深度分辨率损失 | 静态双目、结构光disparity、K及毫米基线，可恢复尺度；Cable-perfect完整包89.7MiB。未下载，独立数据许可本轮未核实；Staircase为隐藏GT测试场景，不当现成真值 |
 | **4 [Booster](https://amsacta.unibo.it/id/eprint/6876)** | 玻璃/镜面等材料导致的伪远距、错误空域；补VisTa排除的材料 | 公开train38场景/228图，4112×3008，GT disparity、材质/遮挡mask，CC BY-NC 4.0；静态源，未核验包大小/下载，不当连续头戴数据 |
 | **5 [Diffuse LiDAR calibration](https://github.com/NikhilBehari/diffuselidar_calibrate)** | 研究zone的非均匀宽空间响应，改变现有模拟中的混合机制，而非只增加噪声 | 随仓库4个NPZ约490KB，`responses(3,3,K), xs, ys`；TMF8828校准，不是ST标定或完整CNH。顶层数据许可未核实，仅作机制/候选资料 |
@@ -79,7 +85,7 @@
 
 1. **先用已有073821完整RGB流与旧ToF抽样流做同片段持续跟踪对照**。共享现有候选检测点，中间帧只做图像跟踪；不把传播位置计为新检出，比较真实独立观测链、断链和背景候选成本。机制假设是跳帧造成关联损失；若额外流不能减少真杆断链就停止这个方向，不能把301额外图像直接说成增益。
 2. **用VisTa3D对象区域检验距离机制**。先在固定Development切片上比较原尺度/距离状态与对象参考；分别报告定位、可测覆盖、距离误差及拒绝代价。禁止用逐图GT scale/shift使绝对尺度成绩虚好。需要时用UE同视点四状态精确几何分解失败。
-3. **用现有SANPO-real全图实例掩膜扩展形状评价**，区分杆、台阶、门框等背景边；保持旧近场通道失败结论。只有这些切口显示明确缺口，才按需取SP-TransientBench真实波形或Booster材料样本。
+3. **用现有SANPO-real全图实例掩膜扩展形状评价**，区分杆、台阶、门框等背景边；保持旧近场通道失败结论。首轮将真实波形和材质放在后续；用户追加范围后SP-TransientBench及ClearGrasp小样已经落地，当前排序见扩展目录。
 
 以上是执行优先级和可直接消费的输入，不是已经取得的算法收益。本轮的数据发现工作在索引、来源、样本合同与证据边界可复核后结束；真实独立头戴检验和固定几何采集仍有各自价值，但不再把新采集当作继续数据研究的前提。
 
