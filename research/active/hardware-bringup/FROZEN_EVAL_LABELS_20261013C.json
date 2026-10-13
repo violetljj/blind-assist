@@ -1,0 +1,50 @@
+{
+ "capture-20261013T063141690Z-d18cc51a": {
+  "class": "unknown",
+  "scene": "device resting on a desk, not worn"
+ },
+ "capture-20261013T085949273Z-1e69115d": {
+  "class": "unknown",
+  "scene": "look-down at matte wood-pattern floor, short (INTERRUPTED)"
+ },
+ "capture-20261013T085956239Z-376544a1": {
+  "class": "calibration",
+  "scene": "standing look-down at matte wood-pattern floor"
+ },
+ "capture-20261013T090030044Z-3d0ff333": {
+  "class": "unknown",
+  "scene": "look-down at glossy stone floor with feet visible (second calibration-type segment, not used for height)"
+ },
+ "capture-20261013T094919005Z-0b00dc6d": {
+  "class": "unknown",
+  "scene": "dark room, look-down at floor with feet (INTERRUPTED, sparse RGB)"
+ },
+ "capture-20261013T094934805Z-9c01d6e0": {
+  "class": "unknown",
+  "scene": "dark room, look-down at floor with feet (INTERRUPTED, sparse RGB)"
+ },
+ "capture-20261013T094944085Z-5853b082": {
+  "class": "unknown",
+  "scene": "dark room, look-down, 5 RGB frames (INTERRUPTED)"
+ },
+ "capture-20261013T094948894Z-33aebe35": {
+  "class": "unknown",
+  "scene": "dark room, look-down at floor with feet (INTERRUPTED, sparse RGB)"
+ },
+ "capture-20261013T095048047Z-f87eda42": {
+  "class": "unknown",
+  "scene": "corridor, single RGB frame (INTERRUPTED)"
+ },
+ "capture-20261013T095055955Z-006937ea": {
+  "class": "quiet",
+  "scene": "narrow glossy-tile corridor, walking toward far end window, nothing in path within 3 m (INTERRUPTED, sparse RGB)"
+ },
+ "capture-20261013T095129379Z-176d089d": {
+  "class": "unknown",
+  "scene": "no RGB recorded (INTERRUPTED)"
+ },
+ "capture-20261013T095133836Z-936fb9c1": {
+  "class": "quiet",
+  "scene": "long narrow corridor, walking, nothing in path within 3 m (INTERRUPTED, sparse RGB)"
+ }
+}
