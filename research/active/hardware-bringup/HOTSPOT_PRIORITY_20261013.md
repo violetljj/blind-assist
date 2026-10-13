@@ -165,4 +165,24 @@ DMA候选恢复TCP_NODELAY=1，在相机初始化后、IMU初始化前调用 `es
 
 两段合计1679张640×480图均只有一个完整JPEG、无尾随字节，Pillow解码、逐张SHA及ToF/IMU原字节连续覆盖通过；有效ToF155/154、IMU3037/3028，IMU无sample_gap或序号缺口，dt P95 12.326/12.091ms。首段主动停止边界保留了一条ToF truncated_line及原始尾字节，未伪装成完整有效帧。两段均COMPLETED/user_stop，无新增异常重连，保存队列背压0，客户端均关闭。记录见 `vsync-final-analysis.json`、两个 `*-summary.json`、`*-decode.json`、`*-imu-summary.json`。
 
-最终实机二进制 `vsync_selected_firmware/atom_wifi.ino.bin`，1142512字节，SHA256 `e5d31a52979ca5648c54bd78268c15c63cb1449a6afe4817622b23c69f7ae289`。完整Arduino构建及单库map校验通过；刷前读回、仅app0写入和hash核验通过，未写NVS。相机库1f015d…、lwIP库3d0eb0…来自正式重建入口，与诊断快速链接的构建路径区分留证。当前读回模式2、质量12、行宽1024，Atom boot `da5ca9dddda7b5cd`；H3 boot `de7d912579610d3c`、App61/10.19.3保持。原a59ead二进制保留作回退。客户端与串口已释放，手机返回MainActivity；固定场景短测支持保留本次设置，不承诺移动、弱网或长期无卡顿。
+最终实机二进制 `vsync_selected_firmware/atom_wifi.ino.bin`，1142512字节，SHA256 `e5d31a52979ca5648c54bd78268c15c63cb1449a6afe4817622b23c69f7ae289`。完整Arduino构建及单库map校验通过；刷前读回、仅app0写入和hash核验通过，未写NVS。相机库1f015d…、lwIP库3d0eb0…来自正式重建入口，与诊断快速链接的构建路径区分留证。该轮读回模式2、质量12、行宽1024，Atom boot `da5ca9dddda7b5cd`；H3 boot `de7d912579610d3c`、App61/10.19.3保持。原a59ead二进制保留作回退。客户端与串口已释放，手机返回MainActivity；固定场景短测支持保留本次设置，不承诺移动、弱网或长期无卡顿。
+
+## 后续：手机收流调度与 Wi-Fi QoS 排查
+
+用户继续授权优化。证据目录 `artifacts.local/evidence/receive-tail-20261013/`，保留原始轨迹、三路索引、部署回执和失败候选。保持VGA、原生JPEG质量12、同步模式2、32KiB TCP发送缓冲、App61/10.19.3和H3。没有更改手机全局设置或重连逻辑。
+
+一次45秒Perfetto轨迹覆盖30秒录制（`receive_trace`录制载荷仍在上一轮camera-cadence目录）。16个大于70ms的RGB接收间隔，收流线程至少95.68%时间处于S等待状态，Runnable总时长最大1.221ms。最大96.013ms间隔对应S92.226ms、Running2.565ms、Runnable1.221ms，IMU线程同步等待约90.711ms；设备收帧间隔36.039ms、前一TCP写入2.547ms，没有对应GC停顿。这支持网络/接收等待而非CPU调度优先级是主要方向；没有采集系统调用栈，不能仅凭S状态证明具体阻塞点。轨迹CPU2两处数据丢失定位在启动阶段，最后一处距分析窗口至少6.12秒，16个分析窗口线程状态覆盖完整；丢失记录及分析脚本均保留。
+
+依据[Espressif Wi-Fi MAC协议文档](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-guides/wifi-driver/wifi-mac-protocols.html)，临时候选仅对RGB socket设置IP_TOS：0默认队列、128视频队列（支持AMPDU）、192语音队列（不支持AMPDU）。每次连接均setsockopt后getsockopt核对；读取值正确，但这不是空口抓包证明。临时接口只允许空闲时修改下一连接，未进入正式源码。候选二进制SHA256 `d64fb93a6fb110c7b905f0c79670a09659fc5be95a0ce9884de720b765fadeba`。
+
+| 顺序30秒工程段 | Canvas fps | 接收P95 / 最大 ms | >100ms / 间隔数 | JPEG平均字节 | IMU接收P95 ms | ToF接收P95 ms |
+|---|---:|---:|---:|---:|---:|---:|
+| `qos_base` TOS0 | 26.071 | 54.130 / 115.593 | 1/839 | 15019 | 21.207 | 239.012 |
+| `qos_vi` TOS128 | 25.727 | 53.447 / 99.235 | 0/839 | 15069 | 21.779 | 261.271 |
+| `qos_vo` TOS192 | 25.775 | 57.489 / 123.687 | 1/836 | 15098 | 22.141 | 249.963 |
+
+视频队列P95改善不足1ms，P99由67.05升到69.42ms，帧率没有提升；语音队列P95更差。IMU大于100ms接收间隔依次1、2、2个，ToF约5.1Hz保持，不能以RGB单次零长尾宣称整体改善。三段2517张JPEG均640×480完整解码、单SOI/EOI、无尾随字节，逐张哈希及ToF/IMU原始字节连续覆盖通过。短段不足以估计低频卡顿概率；未选出值得推广的QoS配置，恢复原e5d31正式固件，保留失败结果而不加入额外运行时复杂度。
+
+ToF自身设备间隔也发生变化，不能把接收尾部变化直接归因为QoS抢占。恢复仅写app0并核验hash、未写NVS，读回模式2/质量12/行宽1024，Atom boot `90277465ccf04650`。恢复后 `qos_restored` 30秒录制840张，Canvas25.758fps、接收P95 51.849ms/最大93.908ms、0/839间隔超过100ms；IMU接收P95 18.682ms且无超过100ms间隔，ToF约5.103Hz。840张解码、边界、哈希及三路原始覆盖通过，三路序号无缺口，客户端关闭、手机返回MainActivity。此恢复段负载均值15306字节，属于部署回归而非QoS因果复验。
+
+本轮没有新增正式运行时代码。下一项有决策价值的证据是空口/接入点侧时间线，以区分无线重传、聚合与热点侧排队；现有手机调度轨迹不够细分这些机制，不据此承诺换协议一定解决。
