@@ -28,4 +28,34 @@ class CaptureReconnectPolicyTest {
         assertFalse(policy.beginIfDue(10_000_000_001L))
         assertTrue(policy.beginIfDue(11_000_000_001L))
     }
+
+    @Test fun drainingOldFramesCannotShortenNewAttemptFirstFrameWindow() {
+        val policy = CaptureReconnectPolicy(1_000_000_000L)
+        assertTrue(policy.beginIfDue(1_000_000_000L))
+        policy.received(2_000_000_000L)
+        assertFalse(policy.beginIfDue(11_000_000_000L))
+        assertTrue(policy.beginIfDue(12_000_000_000L))
+
+        // Starting a replacement closes the old source, which drains accepted
+        // frames before its generation is invalidated. These receipts are old.
+        policy.received(2_500_000_000L)
+        assertFalse(policy.beginIfDue(12_200_000_000L))
+        assertFalse(policy.beginIfDue(13_200_000_000L))
+        assertFalse(policy.beginIfDue(20_000_000_000L))
+
+        // The replacement still gets its first frame inside the normal window.
+        policy.received(20_000_000_000L)
+        assertFalse(policy.beginIfDue(21_200_000_000L))
+    }
+
+    @Test fun oldDrainedFramesDoNotResetReplacementFailureBackoff() {
+        val policy = CaptureReconnectPolicy(1_000_000_000L)
+        assertTrue(policy.beginIfDue(1_000_000_000L))
+        policy.failed(2_000_000_000L)
+        assertTrue(policy.beginIfDue(3_000_000_000L))
+        policy.received(1_500_000_000L)
+        policy.failed(4_000_000_000L)
+        assertFalse(policy.beginIfDue(5_000_000_000L))
+        assertTrue(policy.beginIfDue(6_000_000_000L))
+    }
 }

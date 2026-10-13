@@ -340,7 +340,7 @@ void setup() {
 }
 void loop() {
   const uint32_t networkStarted = micros();
-  demoNetworkLoop(false);
+  demoNetworkLoop(false,cnhClient.connected());
   networkLoopLastUs = (uint32_t)(micros()-networkStarted);
   networkLoopMaxUs = max(networkLoopMaxUs, networkLoopLastUs);
   serviceCnhHttp();

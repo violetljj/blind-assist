@@ -116,9 +116,10 @@ std::map<std::string,uint8_t> Preferences::numbers;
 bool Preferences::rejectWrite=false;
 #include "../firmware/demo_wifi.h"
 
-static void tick(uint32_t delta=0){fakeNow+=delta;demoNetworkLoop();}
+static bool transportBusy=false;
+static void tick(uint32_t delta=0){fakeNow+=delta;demoNetworkLoop(true,transportBusy);}
 static void resetRuntime(bool clearStored=true){
-  fakeNow=0;Serial={};WiFi={};clockUdp={};discoveryUdp={};api=WebServer(80);
+  fakeNow=0;transportBusy=false;Serial={};WiFi={};clockUdp={};discoveryUdp={};api=WebServer(80);
   provisioningUsed=0;provisioningOverflow=false;memset(provisioning,0,sizeof(provisioning));
   networkWasReady=false;wifiProfiles[0]={};wifiProfiles[1]={};
   wifiActiveProfile=-1;wifiNextProfile=1;wifiAttemptStarted=0;
@@ -157,8 +158,18 @@ int main(){
   assert(api.handled==handled+1 && WiFi.connected);
   WiFi.completeScan({});tick();
   assert(!wifiHotspotScanning && WiFi.starts==connectedStarts && WiFi.connected);
+  // A live preview/recording must not even start a preference scan.
+  transportBusy=true;tick(30000);tick(120000);
+  assert(WiFi.scans==1 && WiFi.disconnects==connectedDisconnects && WiFi.connected);
+  transportBusy=false;
   tick(29999);assert(WiFi.scans==1);tick(1);
   assert(WiFi.scans==2 && wifiHotspotScanning && WiFi.connected);
+  // A stream starting during a scan cancels even a completed positive result.
+  WiFi.completeScan({"synthetic-hotspot"});transportBusy=true;tick();
+  assert(!wifiHotspotScanning && WiFi.connected && WiFi.starts==connectedStarts);
+  assert(WiFi.disconnects==connectedDisconnects && WiFi.scanStops==1);
+  transportBusy=false;tick(29999);assert(WiFi.scans==2);tick(1);
+  assert(wifiHotspotScanning && WiFi.scans==3);
   // A visible hotspot migrates a still-connected LAN without changing physical boot identity.
   WiFi.completeScan({"synthetic-hotspot"});tick();
   assert(WiFi.attempted=="synthetic-hotspot" && wifiActiveProfile==1);
@@ -178,9 +189,10 @@ int main(){
   Serial.command("WIFI_SLOT\t1\tsynthetic-lan\tsecret-new-password\n");tick();
   assert(wifiProfiles[1].ssid=="synthetic-hotspot");
   // Hotspot loss first retries the preferred slot, then falls back after its bounded timeout.
-  WiFi.connected=false;tick();tick(1000);
+  transportBusy=true;WiFi.connected=false;tick();tick(1000);
   assert(WiFi.attempted=="synthetic-hotspot");tick(12000);tick(1000);
   assert(WiFi.attempted=="synthetic-lan");
+  transportBusy=false;
   WiFi.connected=true;tick();
   assert(networkGeneration==3 && wifiHotspotCheckDelayMs==30000);
   const unsigned normalScans=WiFi.scans;
@@ -239,5 +251,5 @@ int main(){
   assert(WiFi.attempted=="legacy-camera-lan");WiFi.connected=true;tick();tick(120000);
   assert(WiFi.scans==0 && networkWasReady);
   assert(Serial.output.find("secret-")==std::string::npos);
-  std::puts("PASS: hotspot-first boot, async LAN migration, fallback, scan failure/cancel/cooldown, legacy migration, persistence, capped retry, uint32 wrap, no credentials");
+  std::puts("PASS: active-stream scan/migration suppression, idle grace, real-link-loss recovery, hotspot-first boot, async LAN migration, fallback, scan failure/cancel/cooldown, legacy migration, persistence, capped retry, uint32 wrap, no credentials");
 }

@@ -18,6 +18,10 @@ internal class CaptureReconnectPolicy(private val startedNs: Long) {
     }
 
     fun received(nowNs: Long) {
+        // Closing a replaced source drains buffered frames before invalidating
+        // its callbacks. An old receipt must not age the new attempt or reset
+        // its failure backoff; the frame can still be preserved by the writer.
+        if (nowNs < lastProgressNs) return
         failures = 0
         dueNs = null
         awaitingData = true

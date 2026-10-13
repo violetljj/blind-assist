@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <atomic>
 #include "demo_wifi.h"
 #include "esp_camera.h"
 #include "esp_http_server.h"
@@ -8,8 +9,15 @@
 static bool cameraReady=false;
 static uint32_t sequence=0;
 static httpd_handle_t streamServer=nullptr;
+// HTTP callbacks run on another task; release on every return/error path.
+static std::atomic<unsigned> cameraStreamClients{0};
+struct CameraStreamLease {
+  CameraStreamLease(){cameraStreamClients.fetch_add(1);}
+  ~CameraStreamLease(){cameraStreamClients.fetch_sub(1);}
+};
 static esp_err_t stream(httpd_req_t* req) {
   if(!cameraReady){httpd_resp_set_status(req,"503 Service Unavailable");return httpd_resp_send(req,"camera_not_ready",HTTPD_RESP_USE_STRLEN);}
+  CameraStreamLease lease;
   int one=1;setsockopt(httpd_req_to_sockfd(req),IPPROTO_TCP,TCP_NODELAY,&one,sizeof(one));
   httpd_resp_set_type(req,"multipart/x-mixed-replace;boundary=BAFRAME");
   httpd_resp_set_hdr(req,"Cache-Control","no-store");
@@ -49,4 +57,7 @@ void setup() {
     httpd_uri_t uri={};uri.uri="/stream";uri.method=HTTP_GET;uri.handler=stream;httpd_register_uri_handler(streamServer,&uri);
   }
 }
-void loop(){demoNetworkLoop();AtomImu::loop();delay(1);}
+void loop(){
+  demoNetworkLoop(true,cameraStreamClients.load()>0 || AtomImu::hasTransportClients());
+  AtomImu::loop();delay(1);
+}

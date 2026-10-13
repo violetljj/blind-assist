@@ -60,7 +60,7 @@ static String demoNetworkMetadata() {
     ",\"generation\":"+String(networkGeneration)+
     ",\"attempt_timeout_ms\":12000,\"physical_boot\":false"+
     ",\"policy\":\"hotspot_first\",\"preferred_profile\":"+String(nextDemoProfile(1))+
-    ",\"hotspot_scan_interval_ms\":30000,\"hotspot_retry_ms\":120000}";
+    ",\"hotspot_scan_interval_ms\":30000,\"hotspot_retry_ms\":120000,\"hotspot_switch\":\"idle_only\"}";
 }
 static void cancelDemoHotspotScan() {
   if(!wifiHotspotScanning)return;
@@ -178,11 +178,15 @@ static void acceptDemoWifiCommand() {
   startDemoWifiAttempt(1);
 }
 
-// Connected LAN stays usable while a low-frequency, SSID-filtered async scan runs.
-// A failed hotspot connection gets a longer cooldown before another migration.
-static bool checkDemoPreferredHotspot() {
+// Active sensor transports keep their network. Scanning also waits until idle:
+// an asynchronous Wi-Fi scan still shares the radio with the TCP streams.
+// After transport use, wait a full check interval before considering migration.
+static bool checkDemoPreferredHotspot(bool transportBusy) {
   if(wifiActiveProfile!=0 || wifiProfiles[1].ssid.isEmpty())return false;
   uint32_t now=millis();
+  if(transportBusy) {
+    cancelDemoHotspotScan();wifiHotspotCheckStarted=now;return false;
+  }
   if(wifiHotspotScanning) {
     int found=WiFi.scanComplete();
     if(found==WIFI_SCAN_RUNNING) {
@@ -237,7 +241,7 @@ static void beginDemoNetwork(const char* role, const char* firmware) {
 }
 // H3 uses bounded HTTP polling so partial requests cannot stall ranging.
 // Other sketches retain the existing single-task behavior by default.
-static void demoNetworkLoop(bool serviceHttp = true) {
+static void demoNetworkLoop(bool serviceHttp = true, bool transportBusy = false) {
   // USB-only WIFI, WIFI_SLOT and WIFI2 provisioning; never echo credential fields.
   while(Serial.available()) {
     char c=Serial.read();
@@ -282,7 +286,7 @@ static void demoNetworkLoop(bool serviceHttp = true) {
       startDemoWifiAttempt(wifiNextProfile);
     return;
   }
-  if(checkDemoPreferredHotspot())return;
+  if(checkDemoPreferredHotspot(transportBusy))return;
   int n=clockUdp.parsePacket();
   if(n) {
     int64_t received=esp_timer_get_time(); uint8_t req[16];

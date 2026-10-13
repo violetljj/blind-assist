@@ -199,6 +199,11 @@ struct Consumer {
   SampleHistory::Cursor cursor;
 };
 static Consumer clients[2];static int listener=-1;
+// Called only by the Arduino loop, which also owns these client sockets.
+static bool hasTransportClients() {
+  for(const auto& c:clients)if(c.socket>=0)return true;
+  return false;
+}
 static void closeConsumer(Consumer& c) { if(c.socket>=0)close(c.socket);c=Consumer(); }
 static void closeTransport() {
   for(auto& c:clients)closeConsumer(c);
