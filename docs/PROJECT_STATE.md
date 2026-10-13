@@ -10,6 +10,8 @@
 
 构建、lint（0 errors / 88 warnings）、APK 签名与 16 KB 检查通过，4 项模型/数值设备检查和默认入口检查通过。DAV2 三次模型推理 121–156 ms，不是整机延迟；首次真实流 8 帧均超出姿态范围，未执行 RGB 分支，因此端到端融合仍待验证。[本轮记录](../research/active/hardware-bringup/MOBILE_FUSION_INTEGRATION_20261012.md)
 
+10月13日后续[工程修复](../research/active/hardware-bringup/REAL_FUSION_ENGINEERING_DEV_20261013.md)完成源码交付：手机因果RGB配对、输入代次/失败重试，及标签前输入预检；7项JVM与11项预检检查通过。尚未覆盖安装，以上58 / 10.19.0设备证据不包含本次修复。
+
 ## 研究结论与关键缺口
 
 - **ToF**：保留原 M3/5 格基线。模拟默认候选与实机俯角/地面/噪声联合栈分别记录；已消费真实回放中墙、柱、家具响应较明显，细竖杆和持续轻提醒仍是瓶颈。[实机联合栈](../research/active/hardware-bringup/REAL_POSE_FLOOR_NOISE_DR_DEV_20261012.md)

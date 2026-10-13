@@ -1,0 +1,112 @@
+<div id="thin-candidate-review">
+  <style>
+    #thin-candidate-review .review-layout { display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); gap:20px; align-items:start; margin-top:16px; }
+    #thin-candidate-review .review-image { width:100%; height:auto; display:block; }
+    #thin-candidate-review .review-legend { display:flex; flex-wrap:wrap; gap:14px; margin-top:8px; }
+    #thin-candidate-review .review-key { display:inline-block; width:18px; height:3px; vertical-align:middle; margin-right:5px; background:var(--viz-series-1); }
+    #thin-candidate-review .review-key.weak { background:var(--viz-series-2); }
+    #thin-candidate-review .review-key.other { background:var(--border); }
+    #thin-candidate-review .review-other { stroke:var(--border); stroke-width:1.2; opacity:.8; }
+    #thin-candidate-review .review-selected { stroke:var(--viz-series-1); stroke-width:4; }
+    #thin-candidate-review .review-weak { stroke:var(--viz-series-2); stroke-width:3; stroke-dasharray:7 5; }
+    #thin-candidate-review .review-status { margin:12px 0; }
+    #thin-candidate-review td,#thin-candidate-review th { overflow-wrap:anywhere; }
+    @media(max-width:600px) { #thin-candidate-review .review-layout { grid-template-columns:minmax(0,1fr); } }
+  </style>
+  <h3>细结构候选：看见与测距分开</h3>
+  <div class="viz-controls">
+    <label class="form-label">已消费样例<select class="form-select" data-case></select></label>
+    <label class="form-label">候选线<select class="form-select" data-candidate></select></label>
+  </div>
+  <div class="review-layout">
+    <div>
+      <svg class="review-image" viewBox="0 0 480 640" role="img" aria-label="原RGB图像、候选线与已有弱标注">
+        <title>原图中的细结构候选</title>
+        <image width="480" height="640" data-photo></image>
+        <g data-lines></g>
+        <line class="review-weak" data-weak></line>
+        <line class="review-selected" data-selected></line>
+      </svg>
+      <div class="review-legend text-small">
+        <span><i class="review-key"></i>当前候选</span>
+        <span><i class="review-key weak"></i>已有弱标注</span>
+        <span><i class="review-key other"></i>其余候选</span>
+      </div>
+    </div>
+    <div aria-live="polite">
+      <div class="review-status" data-state></div>
+      <table class="table table-sm"><tbody data-detail></tbody></table>
+      <div class="text-small text-muted" data-provenance></div>
+    </div>
+  </div>
+  <script type="application/json" data-pack>__THIN_REVIEW_DATA__</script>
+  <script>
+    (() => {
+      const root = document.getElementById('thin-candidate-review');
+      const data = JSON.parse(root.querySelector('[data-pack]').textContent);
+      const caseSelect = root.querySelector('[data-case]');
+      const candidateSelect = root.querySelector('[data-candidate]');
+      const lineGroup = root.querySelector('[data-lines]');
+      const names = {
+        UNKNOWN_GEOMETRY:'几何未知', BELOW_MODEL_RANGE:'估计低于模型距离范围',
+        LOCAL_DEPTH_SPREAD:'局部深度跨度异常', UNVERIFIED_ANCHOR:'尺度来源未验证',
+        FIT_REJECTED:'尺度拟合未通过', OUTSIDE_ANCHOR_SUPPORT:'超出锚点支撑范围',
+        ANCHOR_SUPPORTED_UNVALIDATED:'锚点支持，尚无独立测距验证'
+      };
+      const number = (value, digits=3) => typeof value === 'number' && Number.isFinite(value) ? value.toFixed(digits) : '未知';
+      const range = values => values ? `${number(values[0])} – ${number(values.at(-1))}` : '不适用';
+      const position = (line, coords) => ['x1','y1','x2','y2'].forEach((name,index) => line.setAttribute(name,coords[index]));
+      const saved = window.openai?.widgetState;
+      let caseIndex = 0;
+      function restore(value) {
+        const content = value?.modelContent ?? value;
+        const index = data.cases.findIndex(c => c.id === content?.caseId);
+        if(index >= 0) caseIndex=index;
+        caseSelect.value=String(caseIndex);
+        populate(content?.candidateIndex);
+      }
+      function remember() {
+        if(window.openai?.setWidgetState) window.openai.setWidgetState({modelContent:{caseId:data.cases[caseIndex].id,candidateIndex:Number(candidateSelect.value)},privateContent:null}).catch(()=>{});
+      }
+      function populate(selected) {
+        const current = data.cases[caseIndex];
+        root.querySelector('[data-photo]').setAttribute('href',current.image);
+        candidateSelect.replaceChildren(); lineGroup.replaceChildren();
+        current.candidates.forEach((candidate,index) => {
+          candidateSelect.add(new Option(`#${index+1} · ${candidate.stable ? '已持续' : '未持续'}`,String(index)));
+          const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+          line.setAttribute('class','review-other'); position(line,candidate.segment); lineGroup.appendChild(line);
+        });
+        const weak=root.querySelector('[data-weak]');
+        weak.style.display=current.weakSegment?'':'none'; if(current.weakSegment) position(weak,current.weakSegment);
+        const index=Number.isInteger(selected)&&selected>=0&&selected<current.candidates.length?selected:current.focus;
+        candidateSelect.value=String(index);
+        render();
+      }
+      function render() {
+        const current=data.cases[caseIndex], candidate=current.candidates[Number(candidateSelect.value)];
+        root.querySelector('[data-provenance]').textContent=current.provenance;
+        const selected=root.querySelector('[data-selected]'); selected.style.display=candidate?'':'none';
+        const body=root.querySelector('[data-detail]'); body.replaceChildren();
+        if(!candidate){root.querySelector('[data-state]').textContent='本帧无候选；不代表没有障碍';return;}
+        position(selected,candidate.segment);
+        root.querySelector('[data-state]').textContent=names[candidate.state] ?? candidate.state;
+        const rows=[
+          ['独立观测链',`${candidate.hits} 次 · ${candidate.stable?'达到持续条件':'尚未达到持续条件'}`],
+          ['旧光轴距离估计（未验证）',`${number(candidate.z)} m`],
+          ['相对视差范围 / 锚点范围',`${range(candidate.disparity)} / ${range(candidate.anchors)}`],
+          ['锚点范围内采样点',candidate.support===null?'不适用':`${candidate.support} / 40`],
+          ['尺度来源 / 拟合检查',`${candidate.anchor??'未知'} / ${candidate.fitAccepted?'通过内部检查':'未通过或不适用'}`],
+          ['独立公制参照','缺失']
+        ];
+        if(candidate.groundUpper!==null && candidate.groundUpper!==undefined) rows.push(['同水平地面、线段等前距假设：前向距离上界 / 高度',`${number(candidate.groundUpper)} · 脚点未确认`]);
+        rows.forEach(([name,value])=>{const row=document.createElement('tr');const key=document.createElement('th');key.scope='row';key.textContent=name;const cell=document.createElement('td');cell.className='tabular-nums';cell.textContent=value;row.append(key,cell);body.appendChild(row);});
+      }
+      data.cases.forEach((current,index)=>caseSelect.add(new Option(current.title,String(index))));
+      caseSelect.addEventListener('change',()=>{caseIndex=Number(caseSelect.value);populate();remember();});
+      candidateSelect.addEventListener('change',()=>{render();remember();});
+      window.addEventListener('openai:set_globals',event=>{if(event.detail?.globals?.widgetState)restore(event.detail.globals.widgetState);});
+      restore(saved);
+    })();
+  </script>
+</div>

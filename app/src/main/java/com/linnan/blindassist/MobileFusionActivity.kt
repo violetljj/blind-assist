@@ -30,6 +30,7 @@ class MobileFusionActivity : ComponentActivity() {
     private var view by mutableStateOf(MobileFusionView(message="连接前，请先结束其他采集或辅助"))
     private var active by mutableStateOf(false)
     private var now by mutableLongStateOf(0L)
+    private var leaseBusy by mutableStateOf(MobileFusionLease.busy)
     internal fun diagnosticSnapshot()=view
     internal fun isExperimentActive()=active
 
@@ -54,9 +55,9 @@ class MobileFusionActivity : ComponentActivity() {
                                 modifier=Modifier.testTag("fusion_status"))
                         }
                     }
-                    if(!active) Button(onClick=::startExperiment,enabled=!MobileFusionLease.busy,
+                    if(!active) Button(onClick=::startExperiment,enabled=!leaseBusy,
                         modifier=Modifier.fillMaxWidth().heightIn(min=56.dp).testTag("fusion_start")) {
-                        Text(if(MobileFusionLease.busy) "正在释放上一实验…" else "开始实验")
+                        Text(if(leaseBusy) "正在释放上一实验…" else "开始实验")
                     } else OutlinedButton(onClick=::stopExperiment,modifier=Modifier.fillMaxWidth().heightIn(min=56.dp).testTag("fusion_stop")) {
                         Text("停止实验")
                     }
@@ -72,7 +73,13 @@ class MobileFusionActivity : ComponentActivity() {
                 }
             }
         } }
-        lifecycleScope.launch { while(true) { now=SystemClock.elapsedRealtimeNanos(); delay(100) } }
+        lifecycleScope.launch { while(true) {
+            now=SystemClock.elapsedRealtimeNanos()
+            // Inactive UI no longer reads `now` because the freshness condition short-circuits.
+            // Observe lease changes explicitly so asynchronous cleanup re-enables the button.
+            leaseBusy=MobileFusionLease.busy
+            delay(100)
+        } }
     }
 
     internal fun startExperiment() {
@@ -89,7 +96,10 @@ class MobileFusionActivity : ComponentActivity() {
         active=true; view=MobileFusionView()
         session=MobileFusionSession(application,root,atom,tof) { value ->
             runOnUiThread {
-                if(active && generation.get()==token && (session?.accepts(value)==true || !value.ready)) view=value
+                if(active && generation.get()==token && session?.accepts(value)==true) {
+                    view=value
+                    if(value.terminal) { active=false; session=null }
+                }
             }
         }.also { it.start() }
     }

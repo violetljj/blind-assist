@@ -2,6 +2,8 @@
 
 ## 2026-10-13 工程接入状态
 
+[实机融合工程/几何开发](../research/active/hardware-bringup/REAL_FUSION_ENGINEERING_DEV_20261013.md)完成：修复手机因果RGB配对/epoch/重试及预检假完整，7项JVM、11项预检与编译通过，源码未安装。地面射线仅给条件上界；SIFT/KLT两臂各0/12图像对可采用地面解，不升级测距。下一优先20cm已量横移＋哑光地面标记与实测杆位置，而非继续调既有一致性门槛。
+
 [细结构试验](../research/active/hardware-bringup/REAL_THIN_STRUCTURE_DEV_20261013.md)定位17/22；[局部跟踪与几何](../research/active/hardware-bringup/REAL_THIN_LOCAL_GEOMETRY_DEV_20261013.md)的独立RGB链使持续目标9→13/22、侧杆0→3/6，但干扰候选87→116，盒内稳定目标仍3/22且台阶可误入BODY。保留候选跟踪，不升级报警；[距离可信度](../research/active/hardware-bringup/REAL_THIN_CONFIDENCE_DEV_20261013.md)已查明近距锚点外推，硬互证/局部跨度误删细杆，采用独立距离状态记录而不否定视觉候选；仍需候选公制参照。
 
 同日[真实开发尺度/时序比较](../research/active/hardware-bringup/REAL_FUSION_REFINEMENT_DEV_20261013.md)完成：18段1677帧，稳健拟合成功才替换尺度的小候选使低头细杆any65→67/79、首报提前0.568秒，18段any未损；BODY另少15个query帧、无逐query真值，不能判为去误报。[第二轮](../research/active/hardware-bringup/REAL_FUSION_REFINEMENT_V2_DEV_20261013.md)的同质/双mode锚点、运动尺度搬运与地面软回退均未超过旧候选；保留其开发身份，不改变冻结v1/v2或手机默认。下一优先固定安装几何/去杆参考，新头戴确认仍待完成。

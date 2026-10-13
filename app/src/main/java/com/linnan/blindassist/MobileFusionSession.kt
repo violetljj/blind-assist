@@ -23,6 +23,7 @@ internal data class MobileFusionView(
     val receiptNs: Long = 0, val sequence: Long = -1, val image: Bitmap? = null,
     val processed: Long = 0, val skipped: Long = 0,
     val inputEpoch: Long = -1,
+    val terminal: Boolean = false,
 )
 
 /** Foreground, opt-in engineering path. It has no speaker/haptic side effects and never records
@@ -34,15 +35,12 @@ internal class MobileFusionSession(
 ) : AutoCloseable {
     private val lease = MobileFusionLease.acquire()
     private val closed = AtomicBoolean()
-    private val epoch = AtomicLong()
+    private val inputs = MobileFusionInputBuffer()
     private val tofWork = ThreadPoolExecutor(1,1,0,TimeUnit.MILLISECONDS,ArrayBlockingQueue(2),
         { r -> Thread(r,"fusion-tof") },ThreadPoolExecutor.AbortPolicy())
     private val rgbWork = Executors.newSingleThreadExecutor { Thread(it,"fusion-rgb") }
     private val rgbPending = AtomicReference<RgbJob?>()
     private val rgbBusy = AtomicBoolean()
-    private val latestCamera = AtomicReference<AtomCameraCaptureFrame?>()
-    private val imuLock = Any()
-    private val imuHistory = ArrayDeque<ImuCaptureRecord>()
     private var cameraSource: AtomMjpegCaptureSource? = null
     private var tofSource: TcpCnhCaptureSource? = null
     private var imuSource: TcpImuCaptureSource? = null
@@ -62,7 +60,7 @@ internal class MobileFusionSession(
     private val processed = AtomicLong()
     private val receipt = File(directory,"live-${System.currentTimeMillis()}.jsonl")
     private data class RgbJob(val frame: CnhCaptureFrame, val receiptNs: Long, val image: AtomCameraCaptureFrame?,
-        val pitch: Double, val roll: Double, val tof: CnhStrongResult, val epoch: Long)
+        val imuReceiptNs: Long, val pitch: Double, val roll: Double, val tof: CnhStrongResult, val epoch: Long)
 
     fun start() {
         rgbWork.execute {
@@ -75,14 +73,17 @@ internal class MobileFusionSession(
                 emit(MobileFusionView(message="模型已就绪，正在连接三路传感器"))
                 openSources()
             } catch (error: Exception) {
-                emit(MobileFusionView(message="实验不可用：${error.cause?.message ?: error.message}"))
                 close()
+                // Close advances the epoch first. The final status can then pass the same
+                // generation check as every other view, and the Activity can offer retry.
+                publish(MobileFusionView(message="实验不可用：${error.cause?.message ?: error.message}",
+                    inputEpoch=inputs.epoch,terminal=true))
             }
         }
     }
 
     fun calibrateHeight() { calibrateRequested.set(true) }
-    fun accepts(value:MobileFusionView) = value.inputEpoch == epoch.get()
+    fun accepts(value:MobileFusionView) = value.inputEpoch == inputs.epoch
 
     private fun openSources() {
         val cs = AtomMjpegCaptureSource(atomHost)
@@ -91,43 +92,39 @@ internal class MobileFusionSession(
         cameraSource=cs; tofSource=ts; imuSource=ims
         if (closed.get()) { cs.close(); ts.close(); ims.close(); return }
         fun unavailable(label: String, status: CnhCaptureStatus) {
-            if (status.state in listOf(CnhConnectionState.ERROR,CnhConnectionState.DISCONNECTED)) {
-                epoch.incrementAndGet(); rgbPending.set(null)
-                latestCamera.set(null)
-                synchronized(imuLock) { imuHistory.clear() }
-                emit(MobileFusionView(message="$label 暂无数据，请停止后重新连接"))
+            if (!closed.get() && status.state in listOf(CnhConnectionState.ERROR,CnhConnectionState.DISCONNECTED)) {
+                inputs.invalidate(clearInputs=true)?.let {
+                    rgbPending.set(null)
+                    emit(MobileFusionView(message="$label 暂无数据，请停止后重新连接"),it)
+                }
             }
         }
-        cs.start({ if(!closed.get()) latestCamera.set(it) }, { unavailable("相机",it) })
+        cs.start({ if(!closed.get()) inputs.addCamera(it) }, { unavailable("相机",it) })
         ims.start(onRecord={ r ->
-            val frame=r.frame
-            if(frame!=null && !closed.get()) synchronized(imuLock) {
-                if(imuHistory.lastOrNull()?.frame?.bootId != frame.bootId && imuHistory.isNotEmpty()) {
-                    imuHistory.clear(); epoch.incrementAndGet()
-                }
-                imuHistory.addLast(r)
-                while(imuHistory.size>64) imuHistory.removeFirst()
-            }
+            if(!closed.get()) inputs.addImu(r)
         },onStatus={ unavailable("IMU",it) })
         ts.start(onRecord={ r ->
             val f=r.frame ?: return@start
             if(closed.get()) return@start
-            val im=synchronized(imuLock) { imuHistory.lastOrNull { it.hostReceivedMonotonicNs <= r.hostReceivedMonotonicNs } }
-            val pose=im?.takeIf { r.hostReceivedMonotonicNs-it.hostReceivedMonotonicNs in 0..100_000_000L }
-                ?.frame?.let { camera?.attitude(it) }
+            val match=inputs.match(r.hostReceivedMonotonicNs)
+            val pose=match.imu?.frame?.let { camera?.attitude(it) }
             if(pose==null) {
-                epoch.incrementAndGet(); emit(MobileFusionView(message="等待匹配的 IMU 姿态")); return@start
+                inputs.invalidate(expectedEpoch=match.epoch)?.let {
+                    emit(MobileFusionView(message="等待匹配的 IMU 姿态"),it)
+                }
+                return@start
             }
-            val image=latestCamera.get()?.takeIf { r.hostReceivedMonotonicNs-it.receivedElapsedNs in 0..100_000_000L }
-            val e=epoch.get()
-            try { tofWork.execute { processTof(f,r.hostReceivedMonotonicNs,image,pose,e) } }
-            catch (_:RejectedExecutionException) { skipped.incrementAndGet(); epoch.incrementAndGet() }
+            try { tofWork.execute { processTof(f,r.hostReceivedMonotonicNs,match,pose) } }
+            catch (_:RejectedExecutionException) { skipped.incrementAndGet(); inputs.invalidate(expectedEpoch=match.epoch) }
         },onStatus={ unavailable("ToF",it) })
     }
 
-    private fun processTof(f:CnhCaptureFrame,t:Long,image:AtomCameraCaptureFrame?,pose:Pair<Double,Double>,e:Long) {
-        if(closed.get() || e!=epoch.get()) return
-        if(SystemClock.elapsedRealtimeNanos()-t>750_000_000L) { skipped.incrementAndGet(); epoch.incrementAndGet(); return }
+    private fun processTof(f:CnhCaptureFrame,t:Long,match:MobileFusionInputBuffer.Match,pose:Pair<Double,Double>) {
+        val e=match.epoch
+        if(closed.get() || e!=inputs.epoch) return
+        if(SystemClock.elapsedRealtimeNanos()-t>750_000_000L) {
+            skipped.incrementAndGet(); inputs.invalidate(expectedEpoch=e); return
+        }
         try {
             if(tofEpoch!=e) { tofEngine!!.reset(); floor=null; tofEpoch=e }
             if(calibrateRequested.getAndSet(false)) { floor=MobileFloorHeight(); heightSource="低头标定中，请看空地" }
@@ -135,22 +132,30 @@ internal class MobileFusionSession(
                 val p=estimator.add(f.distanceMm.map(Int::toDouble).toDoubleArray(),f.targetStatus.toIntArray())
                 heightSource="低头标定 ${p.frameCount}/${p.targetFrames} 帧"
                 if(p.frameCount>=p.targetFrames) {
+                    if(closed.get() || e!=inputs.epoch) return
                     p.calibration?.let { height=it.heightM; heightSource="本次低头标定 %.2f m".format(height) }
                         ?: run { heightSource="未找到稳定地面，仍用 %.2f m；可重试".format(height) }
-                    floor=null; epoch.incrementAndGet(); return
+                    floor=null
+                    inputs.invalidate(expectedEpoch=e)?.let {
+                        emit(MobileFusionView(message="高度标定结束，重新积累历史",heightM=height,heightSource=heightSource),it)
+                    }
+                    return
                 }
             }
             val hist=FloatArray(1024) { i -> Math.scalb(f.histRaw[i/16][i%16].toDouble(),-f.histScaler[i/16][i%16]).toFloat() }
             val ambient=FloatArray(64) { i -> Math.scalb(f.ambientRaw[i].toDouble(),-f.ambientScaler[i]).toFloat() }
             val result=tofEngine!!.process(hist,ambient,f.sequence,f.deviceMs,pose.first,pose.second)
             if(!result.ready) {
-                emit(MobileFusionView(message="积累 ToF 历史 ${result.historyLength}/8",heightM=height,heightSource=heightSource)); return
+                emit(MobileFusionView(message="积累 ToF 历史 ${result.historyLength}/8",heightM=height,heightSource=heightSource),e); return
             }
-            if(closed.get() || e!=epoch.get()) return
-            if(rgbPending.getAndSet(RgbJob(f,t,image,pose.first,pose.second,result,e))!=null) skipped.incrementAndGet()
+            if(closed.get() || e!=inputs.epoch) return
+            if(rgbPending.getAndSet(RgbJob(f,t,match.image,match.imu!!.hostReceivedMonotonicNs,
+                    pose.first,pose.second,result,e))!=null) skipped.incrementAndGet()
             scheduleRgb()
         } catch(error:Exception) {
-            epoch.incrementAndGet(); emit(MobileFusionView(message="推理暂停：${error.message}"))
+            inputs.invalidate(expectedEpoch=e)?.let {
+                emit(MobileFusionView(message="推理暂停：${error.message}"),it)
+            }
         }
     }
 
@@ -167,7 +172,7 @@ internal class MobileFusionSession(
     }
 
     private fun processRgb(job:RgbJob) {
-        if(closed.get() || job.epoch!=epoch.get()) return
+        if(closed.get() || job.epoch!=inputs.epoch) return
         try {
             val g=geometry!!
             if(rgbEpoch!=job.epoch || (rgbPreviousSequence>=0 && job.frame.sequence!=rgbPreviousSequence+1)) {
@@ -186,7 +191,7 @@ internal class MobileFusionSession(
                 rgb=g.process(disparity,upright.valid,job.frame.distanceMm.map(Int::toDouble).toDoubleArray(),
                     job.frame.targetStatus.toIntArray(),job.pitch,job.roll,height)
             }
-            if(closed.get() || job.epoch!=epoch.get()) return
+            if(closed.get() || job.epoch!=inputs.epoch) return
             val tofHead=job.tof.headStrong && poseOk; val tofBody=job.tof.bodyStrong && poseOk
             val confirmed=votes.push(tofHead || rgb?.head?.alarm==true,tofBody || rgb?.body?.alarm==true)
             if(!poseOk) votes.reset()
@@ -194,7 +199,7 @@ internal class MobileFusionSession(
             if(elapsed>750) {
                 votes.reset(); skipped.incrementAndGet()
                 emit(MobileFusionView(message="处理超过 750 ms，当前结果已过期",latencyMs=elapsed,
-                    heightM=height,heightSource=heightSource,skipped=skipped.get())); return
+                    heightM=height,heightSource=heightSource,skipped=skipped.get()),job.epoch); return
             }
             val count=processed.incrementAndGet()
             val result=MobileFusionView(message=when {
@@ -207,20 +212,27 @@ internal class MobileFusionSession(
                 anchor=rgb?.anchor?.name ?: "NONE",heightM=height,heightSource=heightSource,latencyMs=elapsed,
                 receiptNs=job.receiptNs,sequence=job.frame.sequence,image=image,processed=count,skipped=skipped.get())
             receipt.appendText(JSONObject().put("sequence",job.frame.sequence).put("receipt_ns",job.receiptNs)
+                .put("input_epoch",job.epoch).put("imu_receipt_ns",job.imuReceiptNs)
+                .put("rgb_receipt_ns",job.image?.receivedElapsedNs ?: JSONObject.NULL)
+                .put("imu_pair_age_ms",(job.receiptNs-job.imuReceiptNs)/1_000_000.0)
+                .put("rgb_pair_age_ms",job.image?.let { (job.receiptNs-it.receivedElapsedNs)/1_000_000.0 } ?: JSONObject.NULL)
                 .put("processing_receipt_age_ms",elapsed).put("head",result.head).put("body",result.body)
                 .put("tof_head",tofHead).put("tof_body",tofBody).put("rgb_head",result.rgbHead).put("rgb_body",result.rgbBody)
                 .put("anchor",result.anchor).put("pose_ok",poseOk).put("height_m",height).put("skipped",skipped.get()).toString()+"\n")
             emit(result,job.epoch)
-        } catch(error:Exception) { votes.reset(); emit(MobileFusionView(message="RGB 推理暂停：${error.cause?.message ?: error.message}")) }
+        } catch(error:Exception) {
+            votes.reset()
+            emit(MobileFusionView(message="RGB 推理暂停：${error.cause?.message ?: error.message}"),job.epoch)
+        }
     }
 
-    private fun emit(value:MobileFusionView, inputEpoch:Long=epoch.get()) {
-        if(!closed.get()) publish(value.copy(inputEpoch=inputEpoch))
+    private fun emit(value:MobileFusionView, inputEpoch:Long=inputs.epoch) {
+        if(!closed.get() && inputEpoch==inputs.epoch) publish(value.copy(inputEpoch=inputEpoch))
     }
 
     override fun close() {
         if(!closed.compareAndSet(false,true)) return
-        epoch.incrementAndGet(); rgbPending.set(null); latestCamera.set(null)
+        inputs.retire(); rgbPending.set(null)
         // Never block the Android lifecycle thread on socket or accelerator shutdown.
         Thread({
             try {
