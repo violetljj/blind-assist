@@ -2,6 +2,8 @@
 
 ## 2026-10-13 工程接入状态
 
+[数据再利用与公开参考](../research/active/hardware-bringup/DATA_POTENTIAL_DEV_20261013.md)：已整理5407张未进入当前深度缓存的独立RGB，优先低头杆完整流；VisTa3D两线缆场景12帧/7.36MB实际检查通过，可作细结构距离机制Development参照。下一数据研究优先完整RGB时序＋VisTa距离＋已有SANPO形状/UE配对几何；尚无新算法收益，既有独立实机检验与冻结规则保持。
+
 [实机融合工程/几何开发](../research/active/hardware-bringup/REAL_FUSION_ENGINEERING_DEV_20261013.md)完成：修复手机因果RGB配对/epoch/重试及预检假完整，7项JVM、11项预检与编译通过，源码未安装。地面射线仅给条件上界；SIFT/KLT两臂各0/12图像对可采用地面解，不升级测距。下一优先20cm已量横移＋哑光地面标记与实测杆位置，而非继续调既有一致性门槛。
 
 [细结构试验](../research/active/hardware-bringup/REAL_THIN_STRUCTURE_DEV_20261013.md)定位17/22；[局部跟踪与几何](../research/active/hardware-bringup/REAL_THIN_LOCAL_GEOMETRY_DEV_20261013.md)的独立RGB链使持续目标9→13/22、侧杆0→3/6，但干扰候选87→116，盒内稳定目标仍3/22且台阶可误入BODY。保留候选跟踪，不升级报警；[距离可信度](../research/active/hardware-bringup/REAL_THIN_CONFIDENCE_DEV_20261013.md)已查明近距锚点外推，硬互证/局部跨度误删细杆，采用独立距离状态记录而不否定视觉候选；仍需候选公制参照。

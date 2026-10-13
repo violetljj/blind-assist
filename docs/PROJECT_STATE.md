@@ -20,6 +20,8 @@
 
 ## 接下来
 
+数据研究可先复用现有素材：[已整理5407张未缓存RGB，并实际读通VisTa3D细结构参考小切片](../research/active/hardware-bringup/DATA_POTENTIAL_DEV_20261013.md)。优先完整RGB时序与细结构距离检查；不以新采集为这些Development工作的前提。
+
 1. 用户佩戴设备，低头空地标定安装高度，再在有效姿态下检查实时融合；软件工程检查不能替代这一步。
 2. 用户佩戴设备录制新片段并导出；按已冻结规则只看 RGB 写标签，提交后运行 v1/v2。[执行说明](../research/active/hardware-bringup/FROZEN_FUSION_EVAL_RUNBOOK.md) · [冻结协议](../research/active/hardware-bringup/FROZEN_FUSION_EVAL_V1_PROTOCOL.md)。模型、阈值、标签与判据不据结果调整；所有片段和分母完整报告。
 3. 根据独立数据决定下一步融合取舍，再验证完整响应时间、持续使用与提醒体验。

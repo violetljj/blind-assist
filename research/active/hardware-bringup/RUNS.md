@@ -39,3 +39,5 @@
 | 2026-10-13 | `thin_structure_confidence/thin_scale_sensitivity/thin_confidence_evaluate/thin_distance_states_dev_20261013.py` | EXPLORE；固定1677帧18483候选；范围/拟合/ToF/局部/外推诊断 | 22张定位17，range15、fit3、ToF0、local15、支撑2；local挡台阶也挡额外H8真杆4帧；近距异常强外推 | 不采用硬门槛；全部候选保留并单列未验证距离状态，候选原字段/逆投影/合成/状态核对通过；CPU保守140/650command-wall秒，GPU0。[报告](REAL_THIN_CONFIDENCE_DEV_20261013.md) |
 
 | 2026-10-13 | 手机融合因果缓冲/代次；预检；`thin_metric_geometry*`与交互审查 | Engineering / EXPLORE；既有资源；几何CPU保守30/900 command-wall秒，GPU训练0/付费0；冻结v1/v2保持 | 手机7JVM＋编译、预检11测试；18段1818CNH/6746RGB检查通过；17944/18483候选仅条件上界；两多视图臂各0/12可采用，6例可视检查通过 | 源码修复未安装；几何未升级，下一20cm已量横移＋哑光地面/真值。不执行新eval；旧smoke18数据/9标签不完整被正确报出。[报告](REAL_FUSION_ENGINEERING_DEV_20261013.md) |
+
+| 2026-10-13 | `mine_existing_rgb_coverage_dev_20261013.py`、`vista3d_source_pilot_dev_20261013.py` | EXPLORE；已消费18段索引挖掘、公共资产/来源核查；CPU≤600command-wall秒，GPU0、下载≤100MB | 6746独立RGB=1339缓存+5407未缓存；低头杆额外301张；54切片；VisTa两场景12帧7.36MB、raw缺失14597/63631对象GT像素 | 索引/缓存/集合/54图hash与公开样本尺寸/K/时间戳/pose/LFS检查通过；优先完整RGB时序＋细结构距离/形状参照，无算法增益宣称。[报告](DATA_POTENTIAL_DEV_20261013.md) |
