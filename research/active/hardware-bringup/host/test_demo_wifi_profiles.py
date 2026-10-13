@@ -26,7 +26,7 @@ class SharedFirmwareTests(unittest.TestCase):
         scratch.mkdir(parents=True, exist_ok=True)
         with tempfile.TemporaryDirectory(prefix="dual-wifi-", dir=scratch) as temporary:
             directory = Path(temporary)
-            for header in ("Arduino.h", "WiFi.h", "WiFiUdp.h", "WebServer.h", "Preferences.h", "esp_timer.h", "esp_mac.h"):
+            for header in ("Arduino.h", "WiFi.h", "WiFiUdp.h", "WebServer.h", "Preferences.h", "esp_timer.h", "esp_mac.h", "esp_wifi.h"):
                 (directory / header).write_text("#pragma once\n", encoding="utf-8")
             binary = directory / "wifi-profile-test.exe"
             result = subprocess.run([str(compiler), "-std=c++17", "-I", str(directory),

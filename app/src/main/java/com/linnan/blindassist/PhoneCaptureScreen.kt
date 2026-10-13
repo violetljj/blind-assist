@@ -59,20 +59,20 @@ internal fun PhoneCaptureScreen(
                 }
                 TextButton(onClick = onBack) { Text("返回首页") }
             }
-            CapturePanel {
-                Text(if (state.recording) "正在记录 · ${state.elapsedMs / 1000} 秒" else "准备采集",
-                    style = MaterialTheme.typography.titleMedium, color = colors.primary)
-                Text("RGB ${if (state.cameraReady) "已就绪" else "等待画面"}  ·  ToF ${if (state.tofReady) "已就绪" else "等待数据"}",
-                    style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("capture_readiness"))
-                if (state.imuEnabled) Text("IMU ${if (state.imuReady) "已就绪" else "等待数据"}",
-                    style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant,
-                    modifier = Modifier.testTag("capture_imu_readiness"))
-                if (!state.recording) Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedButton(onClick = onDiscover, enabled = !busy,
-                        modifier = Modifier.weight(1f).heightIn(min = 48.dp).testTag("capture_discover")) { Text("自动寻找设备") }
-                    OutlinedButton(onClick = onConnect, enabled = !busy,
-                        modifier = Modifier.heightIn(min = 48.dp).testTag("capture_connect")) { Text("连接 / 重连") }
+            Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("实时预览 · " + if (state.recording) "正在记录 ${state.elapsedMs / 1000} 秒" else "准备采集",
+                    style = MaterialTheme.typography.titleMedium, color = colors.primary,
+                    modifier = Modifier.semantics { heading() })
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically) {
+                    Text("RGB ${if (state.cameraReady) "已就绪" else "等待画面"}  ·  ToF ${if (state.tofReady) "已就绪" else "等待数据"}",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.weight(1f).testTag("capture_readiness"))
+                    if (state.imuEnabled) Text("IMU ${if (state.imuReady) "已就绪" else "等待数据"}",
+                        style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant,
+                        modifier = Modifier.testTag("capture_imu_readiness"))
                 }
+                CapturePreviews(state, preview, onPreviewDraw)
                 if (state.recording) {
                     Button(onClick = onStop, enabled = !busy,
                         modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("capture_stop")) { Text("停止并保存") }
@@ -85,15 +85,18 @@ internal fun PhoneCaptureScreen(
                     modifier = Modifier.testTag("capture_counts"))
                 Text(state.message, style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant,
                     modifier = Modifier.testTag("capture_status"))
+                if (state.imuEnabled) Text(state.imuMessage, style = MaterialTheme.typography.bodySmall,
+                    color = colors.onSurfaceVariant,
+                    modifier = Modifier.testTag("capture_imu_status"))
+                if (!state.recording) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(onClick = onDiscover, enabled = !busy,
+                        modifier = Modifier.weight(1f).heightIn(min = 48.dp).testTag("capture_discover")) { Text("自动寻找设备") }
+                    OutlinedButton(onClick = onConnect, enabled = !busy,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag("capture_connect")) { Text("连接 / 重连") }
+                }
             }
             exportTask?.let { CaptureExportTaskCard(it, onCancelExport, onRetryExport, retryEnabled = !state.recording && !busy) }
             CaptureConnectionCard(state.connectionDiagnostics)
-            Text("实时预览", style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.semantics { heading() })
-            CapturePreviews(state, preview, onPreviewDraw)
-            if (state.imuEnabled) Text(state.imuMessage, style = MaterialTheme.typography.bodySmall,
-                color = colors.onSurfaceVariant,
-                modifier = Modifier.testTag("capture_imu_status"))
             if (exportMessage.isNotBlank()) Surface(color = colors.primaryContainer, shape = RoundedCornerShape(18.dp)) {
                 Text(exportMessage, modifier = Modifier.fillMaxWidth().padding(14.dp),
                     style = MaterialTheme.typography.bodyMedium, color = colors.onPrimaryContainer)

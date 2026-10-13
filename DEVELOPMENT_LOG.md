@@ -4,6 +4,13 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-13 — v10.19.2 hotspot priority and capture layout
+
+- User requested phone-hotspot priority after Wi-Fi-off connection trouble, then requested preview and start/stop controls adjacent. Shared two-board firmware now starts/reconnects on slot1, falls back to slot0, and asynchronously checks the configured hotspot every30seconds while on LAN; a visible-but-failed hotspot migration cools down120seconds.
+- Capture page puts original-size RGB/ToF/IMU previews directly above start/stop; export and connection history move below. Recording lifecycle, testTags, raw payloads, clocks and model thresholds retain their existing meaning.
+- Firmware host-mock check and both native builds passed; old apps read back and matched retained binaries before app0-only flashing. Wi-Fi-disabled product capture saved626RGB/130CNH/4140IMU over41.404seconds; input-only byte/index checks passed. Existing Compose live checks timed out despite all three RECOVERED receipts; ordinary product UI and preserved capture verify the connection, while those UI-test failures remain recorded.
+- Final Android build/install, layout inspection and hotspot-return checks are recorded in [the delivery record](research/active/hardware-bringup/HOTSPOT_PRIORITY_20261013.md). No new frozen evaluation or model change.
+
 ## 2026-10-13 — v10.19.1 capture throughput and numeric parity
 
 - Fixed the user's recording-preview slowdown with an 8-frame JPEG FIFO and preview publication independent of durable callbacks; kept raw bytes, per-record fsync and close-time draining. Fixed stale camera readiness after drain and rejected pre-Start queued RGB. Added bounded read/callback/queue telemetry. 14 focused capture JVM checks passed; lifecycle review's one freshness finding was fixed before final integration.

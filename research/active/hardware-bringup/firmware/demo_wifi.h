@@ -6,6 +6,7 @@
 #include <Preferences.h>
 #include "esp_timer.h"
 #include "esp_mac.h"
+#include "esp_wifi.h"
 
 // Shared local-network transport. Credentials are accepted over physical USB only.
 static WebServer api(80);
@@ -23,12 +24,17 @@ struct DemoWifiStoredProfiles {
   uint32_t schema;
   char ssid[2][33], password[2][64];
 };
-static int wifiActiveProfile=-1, wifiPreferredProfile=0, wifiNextProfile=0;
+// Slot 1 is the phone hotspot; slot 0 remains the original LAN fallback.
+static int wifiActiveProfile=-1, wifiNextProfile=1;
 static uint32_t wifiAttemptStarted=0, wifiBackoffStarted=0, wifiBackoffMs=0;
+static uint32_t wifiHotspotCheckStarted=0, wifiHotspotScanStarted=0;
 static uint32_t networkGeneration=0;
 static uint8_t wifiFailures=0;
-static bool wifiAttempting=false;
+static bool wifiAttempting=false, wifiHotspotScanning=false;
 static const uint32_t wifiAttemptTimeoutMs=12000;
+static const uint32_t wifiHotspotScanIntervalMs=30000, wifiHotspotRetryMs=120000;
+static const uint32_t wifiHotspotScanTimeoutMs=5000;
+static uint32_t wifiHotspotCheckDelayMs=wifiHotspotScanIntervalMs;
 
 static bool validDemoCredential(const char* ssid, const char* password) {
   size_t s=strlen(ssid), p=strlen(password);
@@ -52,7 +58,13 @@ static String demoNetworkMetadata() {
     "\",\"profile_count\":"+String(demoProfileCount())+
     ",\"profile_index\":"+String(wifiActiveProfile)+
     ",\"generation\":"+String(networkGeneration)+
-    ",\"attempt_timeout_ms\":12000,\"physical_boot\":false}";
+    ",\"attempt_timeout_ms\":12000,\"physical_boot\":false"+
+    ",\"policy\":\"hotspot_first\",\"preferred_profile\":"+String(nextDemoProfile(1))+
+    ",\"hotspot_scan_interval_ms\":30000,\"hotspot_retry_ms\":120000}";
+}
+static void cancelDemoHotspotScan() {
+  if(!wifiHotspotScanning)return;
+  esp_wifi_scan_stop();WiFi.scanDelete();wifiHotspotScanning=false;
 }
 static void demoNetworkDown(const char* reason) {
   if(!networkWasReady)return;
@@ -63,6 +75,7 @@ static void demoNetworkDown(const char* reason) {
 static void startDemoWifiAttempt(int profile) {
   profile=nextDemoProfile(profile);
   if(profile<0)return;
+  cancelDemoHotspotScan();
   wifiActiveProfile=profile;wifiNextProfile=1-profile;
   WiFi.disconnect(false,false);
   WiFi.begin(wifiProfiles[profile].ssid.c_str(),wifiProfiles[profile].password.c_str());
@@ -71,8 +84,9 @@ static void startDemoWifiAttempt(int profile) {
     "\","+demoNetworkMetadata()+"}");
 }
 static void retryDemoWifi(const char* reason) {
+  cancelDemoHotspotScan();
   demoNetworkDown(reason);WiFi.disconnect(false,false);wifiAttempting=false;
-  wifiNextProfile=nextDemoProfile(1-wifiActiveProfile);
+  wifiNextProfile=nextDemoProfile(1);
   wifiBackoffStarted=millis();wifiBackoffMs=1000;
 }
 static bool saveDemoProfiles() {
@@ -103,7 +117,7 @@ static void loadDemoProfiles(const char* role) {
     wifiProfiles[0].ssid=prefs.getString("ssid","");
     wifiProfiles[0].password=prefs.getString("pass","");
   }
-  wifiPreferredProfile=prefs.getUChar("last_profile",0);prefs.end();
+  prefs.end();
   // Existing Atom credentials are reused; no readout of their values or NVS erase.
   if(wifiProfiles[0].ssid.isEmpty() && String(role)=="camera") {
     prefs.begin("tof4m_wifi",true);wifiProfiles[0].ssid=prefs.getString("ssid","");
@@ -152,13 +166,44 @@ static void acceptDemoWifiCommand() {
     previous[wifiActiveProfile].ssid==wifiProfiles[wifiActiveProfile].ssid &&
     previous[wifiActiveProfile].password==wifiProfiles[wifiActiveProfile].password;
   if(keepCurrent) {
-    // Adding the hotspot does not disturb a live LAN capture. A receipt confirms its current IP.
+    // Check the newly configured hotspot asynchronously before disturbing a live LAN link.
+    cancelDemoHotspotScan();wifiHotspotCheckDelayMs=wifiHotspotScanIntervalMs;
+    wifiHotspotCheckStarted=millis()-wifiHotspotScanIntervalMs;
     Serial.println(String("{\"type\":\"network_ready\",\"ip\":\"")+WiFi.localIP().toString()+
       "\",\"role\":\""+demoRole+"\",\"boot_id\":\""+bootId+"\","+demoNetworkMetadata()+"}");
     return;
   }
   demoNetworkDown("configuration_changed");wifiFailures=0;
-  startDemoWifiAttempt(requested>=0?requested:wifiPreferredProfile);
+  wifiHotspotCheckDelayMs=wifiHotspotScanIntervalMs;
+  startDemoWifiAttempt(1);
+}
+
+// Connected LAN stays usable while a low-frequency, SSID-filtered async scan runs.
+// A failed hotspot connection gets a longer cooldown before another migration.
+static bool checkDemoPreferredHotspot() {
+  if(wifiActiveProfile!=0 || wifiProfiles[1].ssid.isEmpty())return false;
+  uint32_t now=millis();
+  if(wifiHotspotScanning) {
+    int found=WiFi.scanComplete();
+    if(found==WIFI_SCAN_RUNNING) {
+      if((uint32_t)(now-wifiHotspotScanStarted)<wifiHotspotScanTimeoutMs)return false;
+      cancelDemoHotspotScan();wifiHotspotCheckStarted=now;return false;
+    }
+    bool available=false;
+    for(int i=0;i<found;++i)if(WiFi.SSID(i)==wifiProfiles[1].ssid){available=true;break;}
+    WiFi.scanDelete();wifiHotspotScanning=false;wifiHotspotCheckStarted=now;
+    if(!available)return false;
+    // Cool down only a migration to a hotspot that was actually visible.
+    wifiHotspotCheckDelayMs=wifiHotspotRetryMs;
+    demoNetworkDown("preferred_hotspot_available");startDemoWifiAttempt(1);return true;
+  }
+  if((uint32_t)(now-wifiHotspotCheckStarted)<wifiHotspotCheckDelayMs)return false;
+  wifiHotspotCheckStarted=now;wifiHotspotScanStarted=now;
+  WiFi.setScanTimeout(wifiHotspotScanTimeoutMs);
+  int result=WiFi.scanNetworks(true,false,false,120,0,wifiProfiles[1].ssid.c_str());
+  wifiHotspotScanning=result==WIFI_SCAN_RUNNING || result>=0;
+  if(!wifiHotspotScanning)WiFi.scanDelete();
+  return false;
 }
 
 static String demoIdentity() {
@@ -186,7 +231,7 @@ static void beginDemoNetwork(const char* role, const char* firmware) {
   loadDemoProfiles(role);
   Serial.printf("{\"type\":\"network_config\",\"configured\":%s,\"profile_count\":%u}\n",
     demoProfileCount()?"true":"false",demoProfileCount());
-  startDemoWifiAttempt(wifiPreferredProfile);
+  startDemoWifiAttempt(1);
   api.on("/api/status",HTTP_GET,[]{api.sendHeader("Cache-Control","no-store");api.send(200,"application/json",demoIdentity());});
   api.begin();
 }
@@ -209,11 +254,13 @@ static void demoNetworkLoop(bool serviceHttp = true) {
   bool connected=WiFi.status()==WL_CONNECTED;
   if(connected && !networkWasReady) {
     wifiAttempting=false;wifiFailures=0;++networkGeneration;
-    wifiPreferredProfile=wifiActiveProfile;
     Preferences prefs;if(prefs.begin("ba_demo_wifi",false)) {
-      if(prefs.getUChar("last_profile",255)!=wifiPreferredProfile)prefs.putUChar("last_profile",wifiPreferredProfile);
+      // Retain the old success receipt for rollback, but never use it to choose priority.
+      if(prefs.getUChar("last_profile",255)!=wifiActiveProfile)prefs.putUChar("last_profile",wifiActiveProfile);
       prefs.end();
     }
+    wifiHotspotCheckStarted=millis();
+    if(wifiActiveProfile==1)wifiHotspotCheckDelayMs=wifiHotspotScanIntervalMs;
     clockUdp.begin(3333);discoveryUdp.begin(3334);
     networkWasReady=true;
     Serial.println(String("{\"type\":\"network_ready\",\"ip\":\"")+WiFi.localIP().toString()+
@@ -235,6 +282,7 @@ static void demoNetworkLoop(bool serviceHttp = true) {
       startDemoWifiAttempt(wifiNextProfile);
     return;
   }
+  if(checkDemoPreferredHotspot())return;
   int n=clockUdp.parsePacket();
   if(n) {
     int64_t received=esp_timer_get_time(); uint8_t req[16];
