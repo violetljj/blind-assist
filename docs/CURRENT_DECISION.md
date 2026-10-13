@@ -14,6 +14,8 @@
 
 新头戴冻结检验仍需用户佩戴录制；已准备[标签与 v1/v2 执行入口](../research/active/hardware-bringup/FROZEN_FUSION_EVAL_RUNBOOK.md)，完整性预检不会运行推理或产生新评价成绩。下方研究数字与历史判读保留原文。
 
+**10-13 晚冻结 v6**：v3＋RGB 像素团深度规则，针对强光窄走廊开头误报（已用数据上 0.96→0.39，无回退，事后选择）；下次录制四版同跑。[阶段总结](../research/active/hardware-bringup/STAGE_SUMMARY_20261013.md)。
+
 **10-13 下午细杆补录**：4 段细杆 ahead 全过且杆由 RGB 看到，但标定失败时窄走廊开头对墙/吊牌误报，quiet 样本尚不足以排除。[结果](../research/active/hardware-bringup/FROZEN_EVAL_RESULT_20261013B.md)。
 
 **10-13 冻结检验已跑**：用户头戴新录 4 段，v1/v2/v3 全部满足总体主张（quiet 1 段 2.7–5.4%，柱/墙 ahead 2 段末段 100%），但样本小、无细杆和标定段。[结果](../research/active/hardware-bringup/FROZEN_EVAL_RESULT_20261013.md)。

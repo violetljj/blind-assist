@@ -243,6 +243,7 @@ def check(raw, labels_path, reports=None):
     summaries = {}
     if reports:
         versions = (1, 2, 3) if (reports / 'frozen_fusion_eval_v3.json').exists() else (1, 2)
+        versions += (6,) if (reports / 'frozen_fusion_eval_v6.json').exists() else ()
         if 3 not in versions:
             warnings.append('v3 report absent: frozen v3 (registered 2026-10-13) was not run on this batch')
         for version in versions:
