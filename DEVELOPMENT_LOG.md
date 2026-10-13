@@ -4,6 +4,12 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-13 — v10.19.3 reconnect regression deployed
+
+- Deployed the active-transport hotspot-scan/migration guard to Atom/H3 after matching each preflash app0 readback to the previous binary. App-only writes passed esptool hash verification; network profiles retained. Installed61/10.19.3 with base.apk hash verification and all102 pre-existing session directories retained.
+- Actual three-stream LAN readers survived65.156seconds with the phone hotspot enabled mid-window, unchanged network generations/boots and no read failure. The first phone readiness check timed out while endpoints were unavailable; failure retained. After actual hotspot identity/discovery confirmation, the30second instrumented recording passed:596RGB/152ToF/3026IMU, no sequence gaps, JPEG hashes and raw/index coverage verified, clients closed.
+- Build/test APK/lint and version/signature/16KB checks passed; focused policy4/4 and firmware mocks/builds were already verified. Details, hashes, failed-first-run boundary and task cleanup: [deployment record](research/active/hardware-bringup/HOTSPOT_PRIORITY_20261013.md). The new recording is engineering evidence, not frozen evaluation.
+
 ## 2026-10-13 — v10.19.2 hotspot priority and capture layout
 
 - User requested phone-hotspot priority after Wi-Fi-off connection trouble, then requested preview and start/stop controls adjacent. Shared two-board firmware now starts/reconnects on slot1, falls back to slot0, and asynchronously checks the configured hotspot every30seconds while on LAN; a visible-but-failed hotspot migration cools down120seconds.
