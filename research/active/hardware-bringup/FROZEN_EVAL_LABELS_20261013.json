@@ -1,0 +1,18 @@
+{
+ "capture-20261013T032738225Z-68270c74": {
+  "class": "quiet",
+  "scene": "corridor walk toward end wall with window; stops about 3 m from wall (boundary, estimated from extinguisher size); no obstacle in path"
+ },
+ "capture-20261013T032822629Z-efddeb0c": {
+  "class": "unknown",
+  "scene": "mixed: corridor walk, stands at window ledge ~0.5 m, turns, walks to elevator corridor"
+ },
+ "capture-20261013T032907796Z-217860ec": {
+  "class": "ahead",
+  "scene": "approach white pillar head-on, stops about 1 m (recording INTERRUPTED)"
+ },
+ "capture-20261013T032940526Z-3f10f41b": {
+  "class": "ahead",
+  "scene": "approach pillar/white wall head-on until the wall fills the view (~0.5 m)"
+ }
+}
