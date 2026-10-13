@@ -58,9 +58,16 @@ internal class MobileFusionSession(
     private var floor: MobileFloorHeight? = null
     private val skipped = AtomicLong()
     private val processed = AtomicLong()
+    private val cameraFrames = AtomicLong()
+    private val cameraFirstReceiptNs = AtomicLong()
+    private val cameraLastReceiptNs = AtomicLong()
+    private val tofQueueRejected = AtomicLong()
+    private val rgbPendingReplaced = AtomicLong()
+    private var previousLogMs = 0.0
     private val receipt = File(directory,"live-${System.currentTimeMillis()}.jsonl")
     private data class RgbJob(val frame: CnhCaptureFrame, val receiptNs: Long, val image: AtomCameraCaptureFrame?,
-        val imuReceiptNs: Long, val pitch: Double, val roll: Double, val tof: CnhStrongResult, val epoch: Long)
+        val imuReceiptNs: Long, val pitch: Double, val roll: Double, val tof: CnhStrongResult, val epoch: Long,
+        val tofQueueMs: Double, val tofWorkMs: Double)
 
     fun start() {
         rgbWork.execute {
@@ -99,7 +106,12 @@ internal class MobileFusionSession(
                 }
             }
         }
-        cs.start({ if(!closed.get()) inputs.addCamera(it) }, { unavailable("相机",it) })
+        cs.start({ if(!closed.get()) {
+            cameraFirstReceiptNs.compareAndSet(0,it.receivedElapsedNs)
+            cameraLastReceiptNs.set(it.receivedElapsedNs)
+            cameraFrames.incrementAndGet()
+            inputs.addCamera(it)
+        } }, { unavailable("相机",it) })
         ims.start(onRecord={ r ->
             if(!closed.get()) inputs.addImu(r)
         },onStatus={ unavailable("IMU",it) })
@@ -115,14 +127,18 @@ internal class MobileFusionSession(
                 return@start
             }
             try { tofWork.execute { processTof(f,r.hostReceivedMonotonicNs,match,pose) } }
-            catch (_:RejectedExecutionException) { skipped.incrementAndGet(); inputs.invalidate(expectedEpoch=match.epoch) }
+            catch (_:RejectedExecutionException) {
+                tofQueueRejected.incrementAndGet(); skipped.incrementAndGet()
+                inputs.invalidate(expectedEpoch=match.epoch)
+            }
         },onStatus={ unavailable("ToF",it) })
     }
 
     private fun processTof(f:CnhCaptureFrame,t:Long,match:MobileFusionInputBuffer.Match,pose:Pair<Double,Double>) {
         val e=match.epoch
         if(closed.get() || e!=inputs.epoch) return
-        if(SystemClock.elapsedRealtimeNanos()-t>750_000_000L) {
+        val tofStartedNs=SystemClock.elapsedRealtimeNanos()
+        if(tofStartedNs-t>750_000_000L) {
             skipped.incrementAndGet(); inputs.invalidate(expectedEpoch=e); return
         }
         try {
@@ -150,7 +166,10 @@ internal class MobileFusionSession(
             }
             if(closed.get() || e!=inputs.epoch) return
             if(rgbPending.getAndSet(RgbJob(f,t,match.image,match.imu!!.hostReceivedMonotonicNs,
-                    pose.first,pose.second,result,e))!=null) skipped.incrementAndGet()
+                    pose.first,pose.second,result,e,(tofStartedNs-t)/1e6,
+                    (SystemClock.elapsedRealtimeNanos()-tofStartedNs)/1e6))!=null) {
+                rgbPendingReplaced.incrementAndGet(); skipped.incrementAndGet()
+            }
             scheduleRgb()
         } catch(error:Exception) {
             inputs.invalidate(expectedEpoch=e)?.let {
@@ -174,6 +193,11 @@ internal class MobileFusionSession(
     private fun processRgb(job:RgbJob) {
         if(closed.get() || job.epoch!=inputs.epoch) return
         try {
+            val rgbStartedNs=SystemClock.elapsedRealtimeNanos()
+            var jpegDecodeMs:Double?=null
+            var undistortMs:Double?=null
+            var depthMs:Double?=null
+            var geometryMs:Double?=null
             val g=geometry!!
             if(rgbEpoch!=job.epoch || (rgbPreviousSequence>=0 && job.frame.sequence!=rgbPreviousSequence+1)) {
                 g.reset(); votes.reset(); rgbEpoch=job.epoch
@@ -183,13 +207,21 @@ internal class MobileFusionSession(
             var rgb:AtomRgbGeometry.Result?=null
             var image:Bitmap?=null
             if(job.image!=null && poseOk && SystemClock.elapsedRealtimeNanos()-job.receiptNs<=750_000_000L) {
+                var stageNs=SystemClock.elapsedRealtimeNanos()
                 val raw=BitmapFactory.decodeByteArray(job.image.jpeg,0,job.image.jpeg.size)
                     ?: error("JPEG decode failed")
+                jpegDecodeMs=(SystemClock.elapsedRealtimeNanos()-stageNs)/1e6
+                stageNs=SystemClock.elapsedRealtimeNanos()
                 val upright=try { camera!!.undistort(raw) } finally { raw.recycle() }
+                undistortMs=(SystemClock.elapsedRealtimeNanos()-stageNs)/1e6
                 image=upright.bitmap
+                stageNs=SystemClock.elapsedRealtimeNanos()
                 val disparity=depth!!.estimate(upright.bitmap)
+                depthMs=(SystemClock.elapsedRealtimeNanos()-stageNs)/1e6
+                stageNs=SystemClock.elapsedRealtimeNanos()
                 rgb=g.process(disparity,upright.valid,job.frame.distanceMm.map(Int::toDouble).toDoubleArray(),
                     job.frame.targetStatus.toIntArray(),job.pitch,job.roll,height)
+                geometryMs=(SystemClock.elapsedRealtimeNanos()-stageNs)/1e6
             }
             if(closed.get() || job.epoch!=inputs.epoch) return
             val tofHead=job.tof.headStrong && poseOk; val tofBody=job.tof.bodyStrong && poseOk
@@ -211,14 +243,28 @@ internal class MobileFusionSession(
                 tofHead=tofHead,tofBody=tofBody,rgbHead=rgb?.head?.alarm==true,rgbBody=rgb?.body?.alarm==true,
                 anchor=rgb?.anchor?.name ?: "NONE",heightM=height,heightSource=heightSource,latencyMs=elapsed,
                 receiptNs=job.receiptNs,sequence=job.frame.sequence,image=image,processed=count,skipped=skipped.get())
+            val logStartedNs=SystemClock.elapsedRealtimeNanos()
+            val receivedCameraFrames=cameraFrames.get()
+            val cameraIntervalNs=cameraLastReceiptNs.get()-cameraFirstReceiptNs.get()
             receipt.appendText(JSONObject().put("sequence",job.frame.sequence).put("receipt_ns",job.receiptNs)
                 .put("input_epoch",job.epoch).put("imu_receipt_ns",job.imuReceiptNs)
                 .put("rgb_receipt_ns",job.image?.receivedElapsedNs ?: JSONObject.NULL)
                 .put("imu_pair_age_ms",(job.receiptNs-job.imuReceiptNs)/1_000_000.0)
                 .put("rgb_pair_age_ms",job.image?.let { (job.receiptNs-it.receivedElapsedNs)/1_000_000.0 } ?: JSONObject.NULL)
+                .put("rgb_sequence",job.image?.sequence ?: JSONObject.NULL)
+                .put("camera_received_frames",receivedCameraFrames)
+                .put("camera_received_fps",if(cameraIntervalNs>0) (receivedCameraFrames-1)*1e9/cameraIntervalNs else JSONObject.NULL)
+                .put("tof_queue_ms",job.tofQueueMs).put("tof_work_ms",job.tofWorkMs)
+                .put("rgb_start_receipt_age_ms",(rgbStartedNs-job.receiptNs)/1e6)
+                .put("jpeg_decode_ms",jpegDecodeMs ?: JSONObject.NULL)
+                .put("undistort_ms",undistortMs ?: JSONObject.NULL)
+                .put("depth_ms",depthMs ?: JSONObject.NULL).put("geometry_ms",geometryMs ?: JSONObject.NULL)
+                .put("previous_log_ms",previousLogMs)
+                .put("tof_queue_rejected",tofQueueRejected.get()).put("rgb_pending_replaced",rgbPendingReplaced.get())
                 .put("processing_receipt_age_ms",elapsed).put("head",result.head).put("body",result.body)
                 .put("tof_head",tofHead).put("tof_body",tofBody).put("rgb_head",result.rgbHead).put("rgb_body",result.rgbBody)
                 .put("anchor",result.anchor).put("pose_ok",poseOk).put("height_m",height).put("skipped",skipped.get()).toString()+"\n")
+            previousLogMs=(SystemClock.elapsedRealtimeNanos()-logStartedNs)/1e6
             emit(result,job.epoch)
         } catch(error:Exception) {
             votes.reset()

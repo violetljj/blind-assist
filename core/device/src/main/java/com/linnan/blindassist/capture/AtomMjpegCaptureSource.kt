@@ -1,6 +1,8 @@
 package com.linnan.blindassist.capture
 
+import android.os.SystemClock
 import com.linnan.blindassist.camera.AtomS3rMjpegFrameSource
+import org.json.JSONObject
 import java.io.BufferedInputStream
 import java.io.EOFException
 import java.net.HttpURLConnection
@@ -12,7 +14,19 @@ import java.util.concurrent.atomic.AtomicBoolean
 interface AtomCameraCaptureSource : AutoCloseable {
     val transport: String
     fun start(onFrame: (AtomCameraCaptureFrame) -> Unit, onStatus: (CnhCaptureStatus) -> Unit)
+    /** Latest-only preview signal; implementation must not decode, write storage or block. */
+    fun setPreviewFrameListener(listener: ((AtomCameraCaptureFrame) -> Unit)?) = Unit
+    fun capturePerformanceReceipt(): JSONObject = JSONObject().put("supported", false)
+    fun resetCapturePerformance() = Unit
 }
+
+/** Android body-read phases only; BufferedInputStream may already contain some bytes. */
+data class AtomJpegReadTiming(
+    val bodyReadStartNs: Long,
+    val firstByteNs: Long,
+    val bodyReadCalls: Int,
+    val maxBodyReadGapNs: Long,
+)
 
 /** Original JPEG and reported Atom timestamps. Receipt is not a synthetic exposure timestamp. */
 data class AtomCameraCaptureFrame(
@@ -26,6 +40,7 @@ data class AtomCameraCaptureFrame(
     val deviceJpegReadyTimestampUs: Long?,
     val headers: Map<String, String>,
     val sourceId: String,
+    val readTiming: AtomJpegReadTiming? = null,
 )
 
 /** Reuses the existing bounded Content-Length reader without starting its clock synchronizer. */
@@ -38,7 +53,9 @@ internal object AtomCameraCaptureReader {
         return AtomCameraCaptureFrame(packet.jpeg, packet.jpegCompleteNs, width, height,
             timestamp("x-frame-sequence"), boot, timestamp("x-capture-timestamp-us"),
             timestamp("x-jpeg-ready-timestamp-us"), packet.headers.toMap(),
-            "atom-mjpeg:$endpoint:boot:${boot ?: "unknown"}")
+            "atom-mjpeg:$endpoint:boot:${boot ?: "unknown"}",
+            AtomJpegReadTiming(packet.readStartNs, packet.firstByteNs,
+                packet.bodyReadCalls, packet.maxBodyReadGapNs))
     }
 
     /** Read native JPEG SOF dimensions; pixels are decoded only by the preview UI. */
@@ -78,6 +95,7 @@ class AtomMjpegCaptureSource internal constructor(
     private val readFrame: (BufferedInputStream, String) -> AtomCameraCaptureFrame = { input, endpoint ->
         AtomCameraCaptureReader.read(input, endpoint)
     },
+    private val monotonicClock: () -> Long = SystemClock::elapsedRealtimeNanos,
 ) : AtomCameraCaptureSource {
     constructor(host: String, port: Int = 81) : this(host, port, { it.openConnection() as HttpURLConnection })
     private val host = try { captureHost(host) } catch (error: IllegalArgumentException) {
@@ -92,8 +110,17 @@ class AtomMjpegCaptureSource internal constructor(
     @Volatile private var workerThread: Thread? = null
     @Volatile private var connection: HttpURLConnection? = null
     @Volatile private var input: BufferedInputStream? = null
+    @Volatile private var previewFrameListener: ((AtomCameraCaptureFrame) -> Unit)? = null
+    @Volatile private var drainFrames: (() -> Unit)? = null
+    private val performance = CaptureCameraPerformance()
 
     init { require(port in 1..65535) }
+
+    override fun capturePerformanceReceipt(): JSONObject = performance.receipt()
+    override fun resetCapturePerformance() = performance.reset()
+    override fun setPreviewFrameListener(listener: ((AtomCameraCaptureFrame) -> Unit)?) {
+        previewFrameListener = listener
+    }
 
     override fun start(onFrame: (AtomCameraCaptureFrame) -> Unit, onStatus: (CnhCaptureStatus) -> Unit) {
         check(!closed.get() && started.compareAndSet(false, true)) { "Atom camera source already started or closed" }
@@ -117,7 +144,31 @@ class AtomMjpegCaptureSource internal constructor(
                     BufferedInputStream(http.inputStream, 64 * 1024).use { stream ->
                         input = stream
                         onStatus(CnhCaptureStatus(CnhConnectionState.CONNECTED, "Atom 相机已连接"))
-                        while (!closed.get()) onFrame(readFrame(stream, transport))
+                        val readAhead = CaptureMjpegReadAhead(
+                            readFrame = { readFrame(stream, transport) }, shouldStop = closed::get,
+                            preview = { frame -> runCatching { previewFrameListener?.invoke(frame) }; Unit },
+                            clock = monotonicClock, performance = performance)
+                        try {
+                            val drain = {
+                                while (true) {
+                                    val frame = try { readAhead.next() } catch (error: Exception) {
+                                        if (closed.get()) null else throw error
+                                    } ?: break
+                                    val callbackStartedNs = monotonicClock()
+                                    performance.delivering(frame, callbackStartedNs)
+                                    try { onFrame(frame) }
+                                    finally { performance.callback(callbackStartedNs, monotonicClock()) }
+                                }
+                            }
+                            drainFrames = drain
+                            drain()
+                        } finally {
+                            drainFrames = null
+                            // A callback error must not leave the producer blocked on input or queue.
+                            runCatching { http.disconnect() }
+                            runCatching { stream.close() }
+                            readAhead.close()
+                        }
                     }
                 }
             } catch (error: Exception) {
@@ -144,9 +195,10 @@ class AtomMjpegCaptureSource internal constructor(
         // Closing the input cancels its read. A terminal callback may close other
         // sources on this worker, so do not interrupt that callback with shutdownNow.
         worker.shutdown()
-        // A fully read JPEG may still be waiting for the controller's storage
-        // lock. Drain its callback before the controller advances generation and
-        // finalizes the session, even when another stream's fsync takes > 1.5 s.
-        if (Thread.currentThread() != workerThread) worker.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS)
+        // Drain every fully read JPEG before the controller advances generation
+        // and finalizes storage. A failure callback may stop its own source;
+        // that worker drains reentrantly instead of waiting for itself.
+        if (Thread.currentThread() == workerThread) drainFrames?.invoke()
+        else worker.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS)
     }
 }

@@ -1,4 +1,6 @@
 #include <jni.h>
+#include <array>
+#include <cstdint>
 #include <cstdlib>
 #include <memory>
 #include <stdexcept>
@@ -117,4 +119,68 @@ Java_com_linnan_blindassist_vision_Dav2SnpeDepthEstimator_nativeExecute(JNIEnv* 
 extern "C" JNIEXPORT void JNICALL
 Java_com_linnan_blindassist_vision_Dav2SnpeDepthEstimator_nativeDestroy(JNIEnv*, jobject, jlong handle) {
     delete reinterpret_cast<Engine*>(handle);
+}
+
+// The Kotlin plan supplies the exact Float weights and clamped tap indices.
+// Keep row/value accumulation order and disable contraction/reassociation in CMake.
+// Ordinary array copies let Android's GC run while this CPU kernel executes.
+extern "C" JNIEXPORT jfloatArray JNICALL
+Java_com_linnan_blindassist_vision_Dav2NativePreprocess_apply(
+        JNIEnv* env, jobject, jintArray pixels, jintArray x_indices, jfloatArray x_weights,
+        jintArray y_offsets, jfloatArray y_weights) {
+    try {
+        constexpr int source_width = 480, source_height = 640, width = 518, height = 686;
+        constexpr int source_size = source_width * source_height, plane = width * height;
+        if (!pixels || !x_indices || !x_weights || !y_offsets || !y_weights ||
+                env->GetArrayLength(pixels) != source_size ||
+                env->GetArrayLength(x_indices) != width * 4 || env->GetArrayLength(x_weights) != width * 4 ||
+                env->GetArrayLength(y_offsets) != height * 4 || env->GetArrayLength(y_weights) != height * 4) {
+            throw std::invalid_argument("Fixed 480x640 to 518x686 cubic input required");
+        }
+        std::vector<jint> source(source_size);
+        std::array<jint, width * 4> xi;
+        std::array<jint, height * 4> yi;
+        std::array<float, width * 4> wx;
+        std::array<float, height * 4> wy;
+        env->GetIntArrayRegion(pixels, 0, source_size, source.data());
+        if (env->ExceptionCheck()) return nullptr;
+        env->GetIntArrayRegion(x_indices, 0, width * 4, xi.data());
+        env->GetIntArrayRegion(y_offsets, 0, height * 4, yi.data());
+        env->GetFloatArrayRegion(x_weights, 0, width * 4, wx.data());
+        env->GetFloatArrayRegion(y_weights, 0, height * 4, wy.data());
+        if (env->ExceptionCheck()) return nullptr;
+        for (const auto x : xi) if (x < 0 || x >= source_width)
+            throw std::invalid_argument("Cubic x index outside source");
+        for (const auto y : yi) if (y < 0 || y > source_size - source_width || y % source_width != 0)
+            throw std::invalid_argument("Cubic y offset outside source");
+
+        static const std::array<float, 256> normalized = [] {
+            std::array<float, 256> values{};
+            for (int i = 0; i < 256; ++i) values[i] = static_cast<float>(i) / 255.0f;
+            return values;
+        }();
+        constexpr std::array<float, 3> mean{.485f, .456f, .406f};
+        constexpr std::array<float, 3> stddev{.229f, .224f, .225f};
+        std::vector<float> result(plane * 3);
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                for (int c = 0; c < 3; ++c) {
+                    float value = 0.0f;
+                    for (int dy = 0; dy < 4; ++dy) {
+                        float row = 0.0f;
+                        const int offset = yi[y * 4 + dy];
+                        for (int dx = 0; dx < 4; ++dx) {
+                            const auto pixel = static_cast<uint32_t>(source[offset + xi[x * 4 + dx]]);
+                            row += normalized[(pixel >> (16 - 8 * c)) & 255u] * wx[x * 4 + dx];
+                        }
+                        value += row * wy[y * 4 + dy];
+                    }
+                    result[c * plane + y * width + x] = (value - mean[c]) / stddev[c];
+                }
+            }
+        }
+        auto output = env->NewFloatArray(plane * 3);
+        if (output) env->SetFloatArrayRegion(output, 0, plane * 3, result.data());
+        return output;
+    } catch (const std::exception& error) { fail(env, error); return nullptr; }
 }

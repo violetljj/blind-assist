@@ -4,6 +4,14 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-13 — v10.19.1 capture throughput and numeric parity
+
+- Fixed the user's recording-preview slowdown with an 8-frame JPEG FIFO and preview publication independent of durable callbacks; kept raw bytes, per-record fsync and close-time draining. Fixed stale camera readiness after drain and rejected pre-Start queued RGB. Added bounded read/callback/queue telemetry. 14 focused capture JVM checks passed; lifecycle review's one freshness finding was fixed before final integration.
+- Same-device 12-second recording windows: Canvas12.58→23.74fps, saved RGB13.33→25.36Hz, IMU84.174→99.961Hz with sequence gaps201→0. Additional30-second recording:23.66fps,768RGB/157ToF/3072IMU, no sequence gaps, queue high watermark1/8 and no full-queue stalls. All1264 JPEGs across three sessions, exact raw/index coverage and manifest counts were verified; clients closed. These are short engineering observations, not exposure latency or long-run guarantees.
+- Independent Python oracle exposed float32 depth-boundary and rank-deficient least-squares migration defects; oracle6/6 and portable7/7 passed after repair. Frozen thresholds/models/evaluators were not modified. Added18-session causal pairing diagnostics and measured three-view geometry/annotation tools; synthetic and browser checks do not establish physical distance accuracy.
+- Initial Kotlin interpolation cache reduced Android preprocessing298.926→270.675ms. The remaining cost motivated an existing-JNI native kernel with identical tap weights, Float accumulation order and fast-math/FMA disabled: final same-run old296.670→native12.688ms over7 alternating pairs,3198132 Float rawBits equal plus official cubic/align-corners pass. Scope includes Bitmap extraction/JNI/NCHW only, excluding HTP and full fusion. Intermediate D522 APK and failures preserved.
+- Installed59/10.19.1 with app data/settings/model files preserved; SNPE-enabled build/lint and APK version/signature/16KB checks passed. User deferred wearing, so no pose-gated substitute run or live RGB-fusion claim. Full receipts, versions, final HTP verification and cleanup: [engineering record](research/active/hardware-bringup/FUSION_INPUT_AND_MEASURED_GEOMETRY_DEV_20261013.md).
+
 ## 2026-10-13 — v10.19.0 opt-in mobile fusion experiment
 
 - Added explicit capture-to-experiment entry, causal RGB/IMU matching, five-seed strong ToF ONNX, DAV2-S DSP runtime, calibrated RGB geometry, per-query2/3 confirmation and20-frame floor-height calibration. No voice/haptics or default-assist replacement. Models, thresholds and frozen evaluation remain unchanged.

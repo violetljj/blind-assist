@@ -1,0 +1,67 @@
+{
+  "schema_version": "measured-pole-geometry-v1",
+  "evidence_role": "MEASURED_INPUT",
+  "coordinate_frame": {
+    "world_handedness": "right",
+    "world_vertical_unit": [0, 1, 0],
+    "world_origin_note": null,
+    "units": "metre",
+    "camera_axes": "opencv_x_right_y_down_z_forward"
+  },
+  "measurement": {
+    "measurement_id": null,
+    "measured_by": null,
+    "note": null,
+    "position_error_scenario_m": null,
+    "rotation_error_scenario_deg": null,
+    "endpoint_error_scenario_px": null
+  },
+  "criteria": {
+    "max_vertical_line_residual_px": null,
+    "max_third_view_residual_px": null
+  },
+  "views": [
+    {
+      "view_id": "baseline_0cm",
+      "role": "FIT",
+      "image": {
+        "path": null, "width": null, "height": null,
+        "pixel_domain": "undistorted_upright",
+        "calibration_ref": null, "undistortion_note": null
+      },
+      "K": null, "camera_to_world_R": null, "camera_center_m": null,
+      "image_ray_to_camera": null,
+      "line_endpoints_px": null,
+      "correspondence": {"physical_line_id": null, "edge_definition": null},
+      "measurement_note": null
+    },
+    {
+      "view_id": "baseline_20cm",
+      "role": "FIT",
+      "image": {
+        "path": null, "width": null, "height": null,
+        "pixel_domain": "undistorted_upright",
+        "calibration_ref": null, "undistortion_note": null
+      },
+      "K": null, "camera_to_world_R": null, "camera_center_m": null,
+      "image_ray_to_camera": null,
+      "line_endpoints_px": null,
+      "correspondence": {"physical_line_id": null, "edge_definition": null},
+      "measurement_note": null
+    },
+    {
+      "view_id": "validation_10cm",
+      "role": "VALIDATION",
+      "image": {
+        "path": null, "width": null, "height": null,
+        "pixel_domain": "undistorted_upright",
+        "calibration_ref": null, "undistortion_note": null
+      },
+      "K": null, "camera_to_world_R": null, "camera_center_m": null,
+      "image_ray_to_camera": null,
+      "line_endpoints_px": null,
+      "correspondence": {"physical_line_id": null, "edge_definition": null},
+      "measurement_note": null
+    }
+  ]
+}

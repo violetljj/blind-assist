@@ -4,13 +4,13 @@
 
 ## 当前可用与本轮接入
 
-当前 Android v10.19.0 支持 Atom RGB、H3 完整 8×8×16 CNH 与 BMI270 IMU 三路采集、原始数据保存、连接异常记录和后台 ZIP 导出。首页“开始辅助”在当前 H3 固件上运行基础 ToF 提醒；旧 UDP 时序协议保留 A+LOCAL 实验模式。[采集说明](PHONE_DATA_CAPTURE.md) · [辅助入口](HARDWARE_OBSTACLE_DEMO.md)
+当前 Android v10.19.1 支持 Atom RGB、H3 完整 8×8×16 CNH 与 BMI270 IMU 三路采集、原始数据保存、连接异常记录和后台 ZIP 导出。首页“开始辅助”在当前 H3 固件上运行基础 ToF 提醒；旧 UDP 时序协议保留 A+LOCAL 实验模式。[采集说明](PHONE_DATA_CAPTURE.md) · [辅助入口](HARDWARE_OBSTACLE_DEMO.md)
 
-本轮 **58 / 10.19.0 已安装，工程实验待佩戴验证**：从“数据采集 → 打开融合实验”进入独立页面，再点“开始实验”才连接和推理；显示 HEAD/BODY 的 ToF 强档或 RGB 融合，并作最近 3 帧至少 2 帧确认。提供低头空地高度标定，离开页面停止；实验页无语音震动，不替换默认辅助。
+本轮 **59 / 10.19.1 已保留数据覆盖安装，融合实验待佩戴验证**。数据采集页相机有界预读和预览不再等待持久写盘，同样12秒录制窗口预览12.58→23.74fps，RGB保存13.33→25.36Hz，IMU84.17→99.96Hz、缺序号201→0。队列高水位1/8，无满队列或异常丢弃；原始文件与索引一致。[完整性能与数值记录](../research/active/hardware-bringup/FUSION_INPUT_AND_MEASURED_GEOMETRY_DEV_20261013.md)
 
-构建、lint（0 errors / 88 warnings）、APK 签名与 16 KB 检查通过，4 项模型/数值设备检查和默认入口检查通过。DAV2 三次模型推理 121–156 ms，不是整机延迟；首次真实流 8 帧均超出姿态范围，未执行 RGB 分支，因此端到端融合仍待验证。[本轮记录](../research/active/hardware-bringup/MOBILE_FUSION_INTEGRATION_20261012.md)
+融合入口仍显式开始、HEAD/BODY独立2/3确认，可低头空地标定高度；静音、离页停止。原始模型接入检查见[10.19.0记录](../research/active/hardware-bringup/MOBILE_FUSION_INTEGRATION_20261012.md)。用户本轮不便佩戴，故未执行有效姿态下的实时RGB/完整融合，也未打开新冻结eval。
 
-10月13日后续[工程修复](../research/active/hardware-bringup/REAL_FUSION_ENGINEERING_DEV_20261013.md)完成源码交付：手机因果RGB配对、输入代次/失败重试，及标签前输入预检；7项JVM与11项预检检查通过。尚未覆盖安装，以上58 / 10.19.0设备证据不包含本次修复。
+此前[因果输入/代次修复](../research/active/hardware-bringup/REAL_FUSION_ENGINEERING_DEV_20261013.md)本版已纳入安装；新增float32边界与退化拟合修复，oracle6/6、常规回归7/7通过。三视图已量横移几何与离线标线工具可用，真实位姿/距离仍需测量；合成自洽不算实测精度。
 
 ## 研究结论与关键缺口
 

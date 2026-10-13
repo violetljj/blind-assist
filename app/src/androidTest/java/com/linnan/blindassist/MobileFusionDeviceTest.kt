@@ -40,6 +40,12 @@ class MobileFusionDeviceTest {
         val instrumentation=InstrumentationRegistry.getInstrumentation()
         val context=instrumentation.targetContext
         val samples=mutableListOf<MobileFusionView>()
+        val root=File(context.noBackupFilesDir,"fusion-experiment")
+        val evidenceTime=System.currentTimeMillis()
+        val receipt=File(root,"live-device-check.json")
+        if(receipt.exists()) receipt.copyTo(File(root,"live-device-check-before-$evidenceTime.json"))
+        val report=JSONObject().put("started_wall_clock_ms",evidenceTime)
+            .put("version_code",BuildConfig.VERSION_CODE).put("version_name",BuildConfig.VERSION_NAME)
         val scenario=ActivityScenario.launch<MobileFusionActivity>(Intent(context,MobileFusionActivity::class.java))
         try {
             scenario.onActivity { it.startExperiment() }
@@ -57,11 +63,7 @@ class MobileFusionDeviceTest {
             }
             val final= arrayOfNulls<MobileFusionView>(1)
             scenario.onActivity { final[0]=it.diagnosticSnapshot() }
-            val root=File(context.noBackupFilesDir,"fusion-experiment")
-            val evidenceTime=System.currentTimeMillis()
-            val receipt=File(root,"live-device-check.json")
-            if(receipt.exists()) receipt.copyTo(File(root,"live-device-check-before-$evidenceTime.json"))
-            receipt.writeText(JSONObject()
+            receipt.writeText(report
                 .put("samples",samples.size).put("last_message",final[0]?.message)
                 .put("live_status",when {
                     poseGated() -> "POSE_GATED_RGB_NOT_EXERCISED"
@@ -73,6 +75,9 @@ class MobileFusionDeviceTest {
                 .put("head",org.json.JSONArray(samples.map { it.head }))
                 .put("body",org.json.JSONArray(samples.map { it.body }))
                 .put("receipt_to_result_ms",org.json.JSONArray(samples.map { it.latencyMs }))
+                .put("input_epochs",org.json.JSONArray(samples.map { it.inputEpoch }))
+                .put("tof_sequences",org.json.JSONArray(samples.map { it.sequence }))
+                .put("rgb_exercised_samples",samples.count { it.ready && it.anchor!="NONE" && it.image!=null })
                 .put("anchors",org.json.JSONArray(samples.map { it.anchor })).put("skipped",final[0]?.skipped)
                 .put("scope","stationary engineering runtime, not obstacle accuracy or exposure latency").toString(2))
             val screenshot=instrumentation.uiAutomation.takeScreenshot()
@@ -92,10 +97,18 @@ class MobileFusionDeviceTest {
             }
         } finally {
             try {
+                val stopStartedMs=SystemClock.elapsedRealtime()
                 scenario.moveToState(Lifecycle.State.CREATED)
                 val stopDeadline=SystemClock.elapsedRealtime()+12_000
-                while(SystemClock.elapsedRealtime()<stopDeadline && fusionWorkers().isNotEmpty()) SystemClock.sleep(100)
-                assertTrue("Task workers still alive: ${fusionWorkers()}",fusionWorkers().isEmpty())
+                while(SystemClock.elapsedRealtime()<stopDeadline &&
+                    (fusionWorkers().isNotEmpty() || MobileFusionLease.busy)) SystemClock.sleep(100)
+                val workers=fusionWorkers()
+                report.put("stop_cleanup_ms",SystemClock.elapsedRealtime()-stopStartedMs)
+                    .put("workers_after_stop",org.json.JSONArray(workers))
+                    .put("lease_released",!MobileFusionLease.busy)
+                receipt.writeText(report.toString(2))
+                assertTrue("Task workers still alive: $workers",workers.isEmpty())
+                assertFalse("Fusion lease not released",MobileFusionLease.busy)
             } finally { scenario.close() }
         }
     }

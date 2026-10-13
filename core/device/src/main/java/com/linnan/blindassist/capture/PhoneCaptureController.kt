@@ -43,8 +43,10 @@ class PhoneCaptureController(
 ) {
     private val context = context.applicationContext
     private val lock = Any()
-    private var cameraSource: AtomCameraCaptureSource? = null
-    private var cameraGeneration = 0L
+    private val previewLock = Any()
+    @Volatile private var cameraSource: AtomCameraCaptureSource? = null
+    @Volatile private var lastCameraPerformance: JSONObject? = null
+    @Volatile private var cameraGeneration = 0L
     @Volatile private var cameraConnected = false
     private var cameraMessage = "连接 Atom 后读取画面"
     @Volatile private var latestCamera: AtomCameraCaptureFrame? = null
@@ -75,7 +77,7 @@ class PhoneCaptureController(
         runCatching { store?.recordEvent("connection_diagnostic", diagnosticJson(event), event.elapsedRealtimeNs) }
     }
     private val preamble = ArrayDeque<CnhCaptureRecord>()
-    private var cameraSeenNs = 0L
+    @Volatile private var cameraSeenNs = 0L
     private var tofSeenNs = 0L
     private var startedNs = 0L
     private var connected = false
@@ -105,6 +107,26 @@ class PhoneCaptureController(
 
     /** Listener must only signal a latest-frame worker, never decode or block. */
     fun setCameraPreviewListener(listener: (() -> Unit)?) { cameraPreviewListener = listener }
+
+    /** Source diagnostics can be sampled while another stream is waiting for durable storage. */
+    fun capturePerformanceReceipt(): JSONObject = JSONObject().put("camera",
+        cameraSource?.capturePerformanceReceipt() ?: lastCameraPerformance ?: JSONObject().put("supported", false))
+
+    fun resetCapturePerformance() {
+        lastCameraPerformance = null
+        cameraSource?.resetCapturePerformance()
+    }
+
+    private fun publishCameraPreview(frame: AtomCameraCaptureFrame, generation: Long) {
+        synchronized(previewLock) {
+            if (generation != cameraGeneration) return
+            // Durable callbacks can be older than the reader's newest complete JPEG.
+            if (latestCamera?.receivedElapsedNs?.let { it >= frame.receivedElapsedNs } == true) return
+            cameraSeenNs = frame.receivedElapsedNs
+            latestCamera = frame
+            runCatching { cameraPreviewListener?.invoke() }
+        }
+    }
 
     /** Called on the page's serialized control executor; reconnect never starts a recording. */
     fun connectAutomatically(
@@ -198,17 +220,18 @@ class PhoneCaptureController(
             connectionTracker.attempt("camera", next.transport, nowNs())
             ++cameraGeneration
         }
+        next.setPreviewFrameListener { frame -> publishCameraPreview(frame, generation) }
         next.start({ frame ->
             var failed = false
             synchronized(lock) {
                 if (generation != cameraGeneration) return@start
                 connectionTracker.frame("camera", nowNs(), frame.bootId)
-                cameraSeenNs = frame.receivedElapsedNs
-                latestCamera = frame
+                publishCameraPreview(frame, generation)
                 reconnectPlan?.cameraRetry?.received(frame.receivedElapsedNs)
-                runCatching { cameraPreviewListener?.invoke() }
                 cameraMessage = "Atom 画面已就绪"
                 try {
+                    // Read-ahead may deliver a pre-Start JPEG after a store has been created.
+                    if (store != null && frame.receivedElapsedNs < startedNs) return@start
                     store?.recordRgb(frame.jpeg,
                         frame.deviceCaptureTimestampUs?.takeIf { it <= Long.MAX_VALUE / 1000L }?.times(1000L),
                         frame.receivedElapsedNs, frame.width, frame.height, 90,
@@ -422,8 +445,10 @@ class PhoneCaptureController(
             cameraSource.also { cameraSource = null }
         }
         old?.close()
+        if (old != null) lastCameraPerformance = old.capturePerformanceReceipt()
         synchronized(lock) {
-            cameraGeneration++; latestCamera = null
+            // Close drains accepted frames, which can publish freshness again.
+            cameraGeneration++; latestCamera = null; cameraSeenNs = 0L
             connectionTracker.status("camera", CnhCaptureStatus(CnhConnectionState.STOPPED, ""), nowNs())
         }
     }

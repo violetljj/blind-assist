@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>三视图杆线标注 · 离线</title>
+<style>
+:root{font-family:system-ui,"Microsoft YaHei",sans-serif;color:#17302d;background:#f4f6f3;font-size:15px}*{box-sizing:border-box}body{margin:0}main{max-width:1480px;margin:auto;padding:24px}h1{font-size:25px;margin:0 0 8px}h2{font-size:17px;margin:0 0 12px}p{line-height:1.55;margin:7px 0}.muted{color:#5f716d;font-size:13px}.panel,.view{background:white;border:1px solid #d9e1dc;border-radius:12px;padding:17px}.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:18px 0}.toolbar .panel{flex:1;min-width:260px}label{font-weight:600;font-size:13px;display:block;margin-bottom:6px}input[type=text],textarea{width:100%;font:inherit;padding:9px;border:1px solid #b8c9c1;border-radius:6px}textarea{font-family:ui-monospace,monospace;font-size:12px;min-height:260px;line-height:1.4}input[type=file]{max-width:100%;font-size:13px}button{font:inherit;font-size:13px;border:1px solid #8da99b;border-radius:7px;background:#fff;color:#21493b;padding:9px 13px;cursor:pointer}button.primary{background:#1e6549;color:white;border-color:#1e6549}button:disabled{opacity:.4;cursor:not-allowed}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.row>*{flex:1;min-width:140px}.badge{display:inline-block;border-radius:99px;background:#e7f2ec;color:#1e6549;padding:4px 10px;font-size:12px;font-weight:700}.badge.synthetic{background:#fff1d6;color:#815216}.badge.warn{background:#fce9e4;color:#9b3926}.views{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:16px 0}.view.validation{border-color:#b8bed9}.view-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.view-head h2{margin:0}.stage{margin-top:12px;min-height:250px;max-height:660px;overflow:auto;background:#edf0ed;border-radius:6px;display:block;position:relative}.empty{padding:70px 20px;text-align:center;color:#64716b}canvas{display:block;width:100%;height:auto;cursor:crosshair;touch-action:none}canvas.zoom{width:200%;max-width:none}.image-status{font-size:12px;line-height:1.45;margin:8px 0;min-height:36px;word-break:break-word}.ok{color:#226349}.bad{color:#a13827}.endpoints{font:12px ui-monospace,monospace;padding:9px 0;min-height:35px}.small-actions{display:flex;gap:6px;flex-wrap:wrap}.small-actions button{padding:6px 10px}.metadata{font-size:12px;line-height:1.55;word-break:break-word;background:#f4f7f4;padding:9px;border-radius:5px;margin-top:10px}.export{display:grid;grid-template-columns:1fr auto;gap:15px;align-items:start}.problems{font-size:13px;color:#9b3926;line-height:1.65;margin:8px 0;padding-left:22px;max-height:200px;overflow:auto}.export-buttons{display:flex;gap:9px;flex-wrap:wrap}details{margin-top:16px}summary{cursor:pointer;font-size:13px;color:#385b4b}#message{padding:10px 12px;border-radius:7px;background:#e9f0eb;font-size:13px;margin-top:12px;white-space:pre-wrap}#message.error{background:#fce9e4;color:#9b3926}#templateInfo{word-break:break-word}.instructions{max-width:1050px}@media(max-width:950px){.views{grid-template-columns:1fr}.stage{max-height:630px}.view{max-width:620px;width:100%;margin:auto}.export{grid-template-columns:1fr}main{padding:16px}}
+</style>
+</head>
+<body><main>
+<h1>三视图杆线标注 <span class="badge">本地离线</span> <span id="evidenceBadge" class="badge warn">未载入模板</span></h1>
+<p class="instructions">按 <strong>0 / 20 / 10 cm</strong> 的拍摄顺序，每图点选同一根杆、同一条可辨直边的两个端点。前两图用于重建，第三图只验证。编号是建议位置标签；实际位置、旋转和误差范围以测量模板为准。</p>
+<p class="muted">图片需由配套 prepare 脚本绑定为已校正坐标域，导出前核对 SHA256。原始 JPEG 不能直接作为几何输入；所有文件只在当前浏览器处理。真实 Atom 转置图还需单列图像射线→物理相机映射 Q；缺失时可标线、保存草稿。</p>
+<div class="toolbar">
+  <section class="panel"><label for="templateFile">1. 导入准备好的 JSON 模板或标线草稿</label><input id="templateFile" type="file" accept=".json,application/json"><p id="templateInfo" class="muted">模板携带 K、相机位置/旋转、测量来源和预先约定的判据。空值会保留为空。</p></section>
+  <section class="panel"><div class="row"><div><label for="annotatedBy">标线人 / 工具来源</label><input id="annotatedBy" type="text" placeholder="填写实际操作者或来源"></div><div><label for="annotationNote">标线备注</label><input id="annotationNote" type="text" placeholder="例如：同一条贴带竖边"></div></div></section>
+</div>
+<section class="panel"><div class="row"><div><label for="lineId">同一物理杆线 ID（三图一致）</label><input id="lineId" type="text" placeholder="例如 pole_01，待实际确认"></div><div><label for="edgeDefinition">直边 / 中心线定义（三图一致）</label><input id="edgeDefinition" type="text" placeholder="填写实际同一条直边，或明确中心线近似"></div></div><p class="muted">圆柱轮廓边缘会随视角变化；需明确选的是可辨物理直边，还是中心线近似。上、下端点可以截取同一直线的不同可见部分。</p></section>
+<div id="views" class="views"></div>
+<section class="panel export"><div><h2>3. 导出</h2><p id="readiness">先导入模板。</p><ul id="problems" class="problems"></ul></div><div class="export-buttons"><button id="saveDraft" disabled>保存标线草稿</button><button id="exportGeometry" class="primary" disabled>导出几何输入 JSON</button></div></section>
+<div id="message" role="status" aria-live="polite">等待导入模板。图像点坐标使用原始像素尺寸，不受显示缩放影响。</div>
+<details class="panel"><summary>查看或补充测量模板 JSON</summary><p class="muted">可在此填写实测位置、相对旋转、误差来源和采集前判据，再点“应用模板”。不会把空白补成 0，也不会从 0/20/10cm 标签生成实测值。应用前可先保存当前草稿。</p><textarea id="jsonEditor" spellcheck="false" aria-label="测量模板 JSON"></textarea><div class="toolbar"><button id="applyJson">应用模板</button><button id="refreshJson">将当前标线同步到编辑框</button></div></details>
+<details class="panel"><summary>使用步骤与坐标合同</summary><p>先运行 <code>prepare_measured_pole_review.py --help</code>。真实采集使用 <code>--template … --raw 图0 图20 图10 --out 新目录</code>；合成示例使用 <code>--synthetic-images</code> 并保留 SYNTHETIC_EXAMPLE 身份。</p><p>导入输出目录中的 <code>review-template.json</code>，再为三图选择对应 PNG。点两点形成直线；继续点击会移动距离最近的端点。可放大、撤销或重置。保存草稿保留未完成字段；几何输入导出要求来源、测量数值与全部标线完整。</p><p>世界坐标、图像坐标域和相机矩阵由模板提供。相机到世界 R 必须是 proper rotation（det=+1）；图像射线→物理相机 Q 允许正交反射（det=±1），同时保持物理光轴 +Z（Qe3=e3），必须单独给出。prepare 不会把真实 Atom 的未知 Q 猜成单位矩阵。本工具不估计、修改或确认位姿，也不计算测距结果。</p></details>
+</main>
+<script>
+'use strict';
+const TOOL_VERSION='measured-pole-review-1.0';
+const ORDER=[['baseline_0cm','FIT','01 · 重建 · 0 cm'],['baseline_20cm','FIT','02 · 重建 · 20 cm'],['validation_10cm','VALIDATION','03 · 验证 · 10 cm']];
+const PIXEL_DOMAINS=['undistorted_upright','atom_undistorted_upright_transpose','synthetic_pinhole'];
+let model=null, states=[], templateName='';
+const byId=id=>document.getElementById(id);
+const clone=x=>JSON.parse(JSON.stringify(x));
+const finite=x=>typeof x==='number'&&Number.isFinite(x);
+const vector=(x,n)=>Array.isArray(x)&&x.length===n&&x.every(finite);
+const matrix=x=>Array.isArray(x)&&x.length===3&&x.every(r=>vector(r,3));
+const nonempty=x=>typeof x==='string'&&x.trim().length>0;
+const nonnegative=x=>finite(x)&&x>=0;
+function message(text,error=false){byId('message').textContent=text;byId('message').className=error?'error':'';}
+function determinant(r){return r[0][0]*(r[1][1]*r[2][2]-r[1][2]*r[2][1])-r[0][1]*(r[1][0]*r[2][2]-r[1][2]*r[2][0])+r[0][2]*(r[1][0]*r[2][1]-r[1][1]*r[2][0]);}
+function properRotation(r){if(!matrix(r)||Math.abs(determinant(r)-1)>1e-3)return false;for(let i=0;i<3;i++)for(let j=0;j<3;j++){let d=0;for(let k=0;k<3;k++)d+=r[k][i]*r[k][j];if(Math.abs(d-(i===j?1:0))>1e-3)return false;}return true;}
+function rayMapping(q){if(!matrix(q)||Math.abs(Math.abs(determinant(q))-1)>1e-3||Math.abs(q[0][2])>1e-3||Math.abs(q[1][2])>1e-3||Math.abs(q[2][2]-1)>1e-3)return false;for(let i=0;i<3;i++)for(let j=0;j<3;j++){let d=0;for(let k=0;k<3;k++)d+=q[k][i]*q[k][j];if(Math.abs(d-(i===j?1:0))>1e-3)return false;}return true;}
+function make(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;}
+async function sha256(buffer){if(!globalThis.crypto?.subtle)throw new Error('当前浏览器无法核对 SHA256，请用现代 Chrome 或 Edge 打开本地文件。');return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',buffer)),b=>b.toString(16).padStart(2,'0')).join('');}
+function pointsOkay(p,w,h){return Array.isArray(p)&&p.length===2&&p.every(q=>vector(q,2)&&q[0]>=0&&q[0]<w&&q[1]>=0&&q[1]<h)&&Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1])>0;}
+function applyModel(input,name){
+ if(input?.schema_version!=='measured-pole-geometry-v1')throw new Error('schema_version 必须是 measured-pole-geometry-v1。');
+ if(!['MEASURED_INPUT','SYNTHETIC_EXAMPLE'].includes(input.evidence_role))throw new Error('evidence_role 必须明确是 MEASURED_INPUT 或 SYNTHETIC_EXAMPLE。');
+ if(!Array.isArray(input.views)||input.views.length!==3)throw new Error('需要且仅需要三张视图。');
+ ORDER.forEach(([id,role],i)=>{if(input.views[i].view_id!==id||input.views[i].role!==role)throw new Error(`视图顺序/角色不符：第 ${i+1} 图应为 ${id} / ${role}。`);});
+ input.views.forEach((v,i)=>{const p=v.line_endpoints_px;if(p!==null&&p!==undefined&&(!Array.isArray(p)||p.length>2||!p.every(q=>vector(q,2))))throw new Error(`第 ${i+1} 图端点须为空，或最多两个有限数值像素坐标。`);});
+ const previous=states;model=clone(input);templateName=name||'pasted-template.json';states=[];
+ model.views.forEach((view,i)=>{const old=previous[i];const canKeep=old?.digest&&old.digest===view.image?.processed_sha256&&old.image?.naturalWidth===view.image?.width&&old.image?.naturalHeight===view.image?.height&&PIXEL_DOMAINS.includes(view.image?.pixel_domain);states.push({image:canKeep?old.image:null,digest:canKeep?old.digest:null,bound:!!canKeep,filename:canKeep?old.filename:'',points:Array.isArray(view.line_endpoints_px)?clone(view.line_endpoints_px):[],error:'',canvas:null});});
+ byId('annotatedBy').value=model.annotation?.annotated_by||'';byId('annotationNote').value=model.annotation?.note||'';
+ const ids=model.views.map(v=>v.correspondence?.physical_line_id||'');const edges=model.views.map(v=>v.correspondence?.edge_definition||'');
+ byId('lineId').value=ids.every(v=>v===ids[0])?ids[0]:'';byId('edgeDefinition').value=edges.every(v=>v===edges[0])?edges[0]:'';
+ byId('evidenceBadge').textContent=model.evidence_role;byId('evidenceBadge').className='badge'+(model.evidence_role==='SYNTHETIC_EXAMPLE'?' synthetic':'');
+ byId('templateInfo').textContent=`${templateName} · ${model.measurement?.measurement_id||'尚未填写测量 ID'} · 图像像素域与测量矩阵由本模板提供`;
+ renderViews();byId('jsonEditor').value=JSON.stringify(model,null,2);refresh();message('模板已载入。选择三张与预处理记录匹配的图片，再点选端点。');
+}
+function renderViews(){
+ const container=byId('views');container.replaceChildren();
+ ORDER.forEach(([id,role,title],i)=>{
+  const view=model.views[i],state=states[i],card=make('section',undefined,'view'+(role==='VALIDATION'?' validation':''));
+  const head=make('div',undefined,'view-head');head.append(make('h2',title),make('span',role==='VALIDATION'?'只作验证':'FIT','badge'));card.append(head);
+  const label=make('label',`2.${i+1} 选择 ${view.image?.path?.split(/[\\/]/).pop()||'预处理图片'}`);label.htmlFor=`image-${i}`;card.append(label);
+  const file=make('input');file.type='file';file.id=`image-${i}`;file.accept='.png,.jpg,.jpeg,.webp';file.addEventListener('change',()=>file.files[0]&&loadImage(i,file.files[0]));card.append(file);
+  const status=make('div',undefined,'image-status');status.id=`image-status-${i}`;card.append(status);
+  const stage=make('div',undefined,'stage');const canvas=make('canvas');canvas.id=`canvas-${i}`;canvas.tabIndex=0;canvas.setAttribute('aria-label',`${title}图像，点击同一杆线的两个端点`);state.canvas=canvas;
+  canvas.addEventListener('click',event=>{if(!state.bound||!state.image)return;const r=canvas.getBoundingClientRect();const p=[Math.max(0,Math.min(canvas.width-1,(event.clientX-r.left)/r.width*canvas.width)),Math.max(0,Math.min(canvas.height-1,(event.clientY-r.top)/r.height*canvas.height))].map(x=>Math.round(x*100)/100);if(state.points.length<2)state.points.push(p);else{const distance=q=>Math.hypot(q[0]-p[0],q[1]-p[1]);state.points[distance(state.points[0])<=distance(state.points[1])?0:1]=p;}draw(i);refresh();});
+  stage.append(canvas);card.append(stage);const endpoint=make('div',undefined,'endpoints');endpoint.id=`endpoints-${i}`;card.append(endpoint);
+  const actions=make('div',undefined,'small-actions');const zoom=make('button','放大 2×');zoom.addEventListener('click',()=>{canvas.classList.toggle('zoom');zoom.textContent=canvas.classList.contains('zoom')?'恢复适配':'放大 2×';});const undo=make('button','撤销末点');undo.addEventListener('click',()=>{state.points.pop();draw(i);refresh();});const reset=make('button','重置本图端点');reset.addEventListener('click',()=>{state.points=[];draw(i);refresh();});actions.append(zoom,undo,reset);card.append(actions);
+  const meta=make('div',undefined,'metadata');meta.textContent=`相机中心(m)：${JSON.stringify(view.camera_center_m)}\n相机→世界 R：${JSON.stringify(view.camera_to_world_R)}\n图像射线→物理相机 Q：${JSON.stringify(view.image_ray_to_camera)}\n像素域：${view.image?.pixel_domain||'待填写'}\n图像变换：${view.image?.undistortion_note||'待填写'}\n位姿来源：${view.measurement_note||'待实测填写'}`;meta.style.whiteSpace='pre-wrap';card.append(meta);container.append(card);draw(i);
+ });
+}
+async function loadImage(i,file){
+ const state=states[i],expected=model.views[i].image||{};state.bound=false;state.error='';
+ try{
+  const data=await file.arrayBuffer(),digest=await sha256(data),url=URL.createObjectURL(new Blob([data],{type:file.type}));
+  let image;try{image=await new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(new Error('无法解码图片。'));img.src=url;});}finally{URL.revokeObjectURL(url);}
+  state.image=image;state.digest=digest;state.filename=file.name;
+  if(!nonempty(expected.processed_sha256))throw new Error('模板缺少 processed_sha256；请先运行 prepare 绑定校正后的图片。');
+  if(digest!==expected.processed_sha256)throw new Error('SHA256 与模板不符。可能选错图片，或使用了未经校正的 raw JPEG。');
+  if(image.naturalWidth!==expected.width||image.naturalHeight!==expected.height)throw new Error('图片尺寸与模板不符。');
+  if(!PIXEL_DOMAINS.includes(expected.pixel_domain))throw new Error('模板像素域不受支持，不能把原始图当作校正图。');
+  if(expected.pixel_domain==='synthetic_pinhole'&&model.evidence_role!=='SYNTHETIC_EXAMPLE')throw new Error('合成图片必须保持 SYNTHETIC_EXAMPLE 身份。');
+  state.bound=true;message(`${ORDER[i][2]}：图片哈希与尺寸匹配，可点选端点。`);
+ }catch(error){state.error=error.message;message(`${ORDER[i][2]}：${error.message}`,true);}draw(i);refresh();
+}
+function draw(i){
+ const s=states[i],c=s.canvas;if(!c)return;const ctx=c.getContext('2d');
+ if(!s.image){c.width=480;c.height=310;ctx.fillStyle='#edf0ed';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#65736c';ctx.font='18px system-ui';ctx.textAlign='center';ctx.fillText('选择与模板匹配的图片',240,155);}
+ else{c.width=s.image.naturalWidth;c.height=s.image.naturalHeight;ctx.drawImage(s.image,0,0);ctx.lineWidth=2;ctx.strokeStyle=s.bound?'#e2512c':'#858585';ctx.fillStyle='#e2512c';if(s.points.length===2&&s.points.every(p=>vector(p,2))){ctx.beginPath();ctx.moveTo(...s.points[0]);ctx.lineTo(...s.points[1]);ctx.stroke();}s.points.forEach((p,j)=>{if(!vector(p,2))return;ctx.beginPath();ctx.arc(p[0],p[1],5,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#fff';ctx.stroke();ctx.font='bold 16px system-ui';ctx.fillStyle='#fff';ctx.strokeStyle='#17302d';ctx.lineWidth=3;ctx.strokeText(String(j+1),p[0]+9,p[1]-8);ctx.fillText(String(j+1),p[0]+9,p[1]-8);ctx.fillStyle='#e2512c';});}
+ const st=byId(`image-status-${i}`);st.className='image-status '+(s.bound?'ok':s.error?'bad':'muted');st.textContent=s.error|| (s.bound?`${s.filename} · ${c.width}×${c.height}px · SHA256 已匹配`:'尚未选择图片；模板图像不会自动上传或联网读取。');
+ byId(`endpoints-${i}`).textContent=s.points.length?s.points.map((p,j)=>`${j+1}: [${p.map(x=>finite(x)?x.toFixed(2):'?').join(', ')}]`).join('  '):'端点：尚未标注';
+}
+function snapshot(kind='DRAFT'){
+ const result=clone(model);result.views.forEach((v,i)=>{v.line_endpoints_px=states[i].points.length?clone(states[i].points):null;v.correspondence={...(v.correspondence||{}),physical_line_id:byId('lineId').value.trim()||null,edge_definition:byId('edgeDefinition').value.trim()||null};if(states[i].bound)v.image={...v.image,annotation_loaded_sha256:states[i].digest};});
+ result.annotation={...(result.annotation||{}),tool_version:TOOL_VERSION,completed_at:new Date().toISOString(),annotated_by:byId('annotatedBy').value.trim()||null,note:byId('annotationNote').value.trim()||null,export_kind:kind};return result;
+}
+function validate(){
+ if(!model)return ['尚未载入模板'];const data=snapshot(),errors=[],m=data.measurement||{},f=data.coordinate_frame||{},criteria=data.criteria||{};
+ if(!nonempty(m.measurement_id)||!nonempty(m.measured_by)||!nonempty(m.note))errors.push('measurement 的 ID、测量人、误差来源 note 尚未填齐。');
+ for(const k of ['position_error_scenario_m','rotation_error_scenario_deg','endpoint_error_scenario_px'])if(!nonnegative(m[k]))errors.push(`${k} 需填写非负有限数值，不能留空。`);
+ if(f.world_handedness!=='right'||f.units!=='metre'||f.camera_axes!=='opencv_x_right_y_down_z_forward'||!nonempty(f.world_origin_note)||!vector(f.world_vertical_unit,3)||Math.abs(Math.hypot(...(f.world_vertical_unit||[]))-1)>1e-3)errors.push('世界坐标/原点/单位/重力方向合同未完整填写。');
+ for(const k of ['max_vertical_line_residual_px','max_third_view_residual_px'])if(!nonnegative(criteria[k]))errors.push(`${k} 需填写采集前约定的判据。`);
+ if(!nonempty(data.annotation.annotated_by))errors.push('请填写标线人或实际工具来源。');
+ if(!nonempty(byId('lineId').value)||!nonempty(byId('edgeDefinition').value))errors.push('请确认三图同一杆线 ID 与直边定义。');
+ data.views.forEach((v,i)=>{const p=ORDER[i][2],im=v.image||{};if(!states[i].bound)errors.push(`${p}：请载入哈希匹配的预处理图片。`);if(!PIXEL_DOMAINS.includes(im.pixel_domain)||(im.pixel_domain==='synthetic_pinhole'&&data.evidence_role!=='SYNTHETIC_EXAMPLE'))errors.push(`${p}：像素域/合成身份不符。`);if(!pointsOkay(v.line_endpoints_px,im.width,im.height))errors.push(`${p}：需图内两个不同端点。`);if(!matrix(v.K)||v.K[0][0]<=0||v.K[1][1]<=0||Math.abs(determinant(v.K))<1e-12)errors.push(`${p}：缺有效 K。`);if(!properRotation(v.camera_to_world_R))errors.push(`${p}：缺 proper rotation（正交且 det=+1）。`);if(!rayMapping(v.image_ray_to_camera))errors.push(`${p}：缺已确认的 Q（正交、det=±1，保持光轴 +Z）。`);if(!vector(v.camera_center_m,3)||!nonempty(v.measurement_note))errors.push(`${p}：缺实测相机中心或位姿来源。`);if(!nonempty(im.calibration_ref)||!nonempty(im.undistortion_note))errors.push(`${p}：缺标定或图像校正来源。`);});return errors;
+}
+function refresh(){const errors=validate();byId('saveDraft').disabled=!model;byId('exportGeometry').disabled=errors.length>0;byId('readiness').textContent=errors.length?`尚有 ${errors.length} 项待完成；可保存草稿，空值不会自动填充。`:`三图与测量字段完整。${model.evidence_role==='SYNTHETIC_EXAMPLE'?'导出仍标为 SYNTHETIC_EXAMPLE。':'可导出 MEASURED_INPUT。'}`;const ul=byId('problems');ul.replaceChildren(...errors.map(e=>make('li',e)));}
+function download(kind){if(!model)return;if(kind!=='DRAFT'&&validate().length){message('尚有必填项或图像合同未通过，只能保存草稿。',true);return;}const output=snapshot(kind),blob=new Blob([JSON.stringify(output,null,2)+'\n'],{type:'application/json'}),url=URL.createObjectURL(blob),a=make('a');const id=(output.measurement?.measurement_id||'pole').replace(/[^a-zA-Z0-9_-]/g,'_');a.href=url;a.download=`${id}-${kind==='DRAFT'?'annotation-draft':'annotated-input'}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);byId('jsonEditor').value=JSON.stringify(output,null,2);message(`已生成 ${a.download}；身份 ${output.evidence_role}，导出类型 ${kind}。`);}
+byId('templateFile').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{applyModel(JSON.parse(await file.text()),file.name);}catch(error){message(error.message,true);}});
+byId('applyJson').addEventListener('click',()=>{try{applyModel(JSON.parse(byId('jsonEditor').value),'edited-template.json');}catch(error){message(error.message,true);}});
+byId('refreshJson').addEventListener('click',()=>{if(model)byId('jsonEditor').value=JSON.stringify(snapshot(),null,2);});
+['annotatedBy','annotationNote','lineId','edgeDefinition'].forEach(id=>byId(id).addEventListener('input',refresh));
+byId('saveDraft').addEventListener('click',()=>download('DRAFT'));
+byId('exportGeometry').addEventListener('click',()=>download(model.evidence_role));
+</script></body></html>

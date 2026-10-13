@@ -5,6 +5,6 @@ set_target_properties(SNPE PROPERTIES IMPORTED_LOCATION "${QAIRT_ROOT}/lib/aarch
 add_library(dav2_snpe_jni SHARED dav2_snpe_jni.cpp)
 target_include_directories(dav2_snpe_jni PRIVATE "${QAIRT_ROOT}/include/SNPE")
 target_compile_features(dav2_snpe_jni PRIVATE cxx_std_17)
-target_compile_options(dav2_snpe_jni PRIVATE -O3)
+target_compile_options(dav2_snpe_jni PRIVATE -O3 -fno-fast-math -ffp-contract=off)
 target_link_libraries(dav2_snpe_jni SNPE)
 target_link_options(dav2_snpe_jni PRIVATE "-Wl,-z,max-page-size=16384" "-Wl,-z,common-page-size=16384")

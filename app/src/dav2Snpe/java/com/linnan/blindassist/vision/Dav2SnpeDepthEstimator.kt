@@ -77,8 +77,27 @@ class Dav2SnpeDepthEstimator(
     companion object {
         const val WIDTH = 518
         const val HEIGHT = 686
-        private val MEAN = floatArrayOf(.485f, .456f, .406f)
-        private val STD = floatArrayOf(.229f, .224f, .225f)
+        private data class CubicAxis(val indices: IntArray, val weights: FloatArray)
+
+        // This runtime admits only 480x640 -> 518x686. The interpolation geometry is
+        // immutable; rebuilding wx inside the pixel loop created 355,348 arrays/frame.
+        private val horizontal = cubicAxis(480, WIDTH)
+        private val vertical = cubicAxis(640, HEIGHT, 480)
+
+        private fun cubicAxis(sourceSize: Int, targetSize: Int, stride: Int = 1): CubicAxis {
+            val indices = IntArray(targetSize * 4)
+            val weights = FloatArray(targetSize * 4)
+            for (i in 0 until targetSize) {
+                val source = (i + .5) * sourceSize / targetSize - .5
+                val base = floor(source).toInt()
+                val taps = cubic((source - base).toFloat())
+                for (tap in 0..3) {
+                    indices[i * 4 + tap] = (base + tap - 1).coerceIn(0, sourceSize - 1) * stride
+                    weights[i * 4 + tap] = taps[tap]
+                }
+            }
+            return CubicAxis(indices, weights)
+        }
 
         // FastRPC needs an actual skeleton file even when Android loads arm64 libs from the APK.
         @Synchronized
@@ -123,31 +142,8 @@ class Dav2SnpeDepthEstimator(
             require(bitmap.width == 480 && bitmap.height == 640)
             val src = IntArray(bitmap.width * bitmap.height)
             bitmap.getPixels(src, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
-            val result = FloatArray(WIDTH * HEIGHT * 3)
-            for (y in 0 until HEIGHT) {
-                val sy = (y + .5) * bitmap.height / HEIGHT - .5
-                val iy = floor(sy).toInt()
-                val wy = cubic((sy - iy).toFloat())
-                for (x in 0 until WIDTH) {
-                    val sx = (x + .5) * bitmap.width / WIDTH - .5
-                    val ix = floor(sx).toInt()
-                    val wx = cubic((sx - ix).toFloat())
-                    for (c in 0..2) {
-                        var value = 0f
-                        for (dy in 0..3) {
-                            var row = 0f
-                            val offset = (iy + dy - 1).coerceIn(0, bitmap.height - 1) * bitmap.width
-                            for (dx in 0..3) {
-                                val pixel = src[offset + (ix + dx - 1).coerceIn(0, bitmap.width - 1)]
-                                row += ((pixel ushr (16 - 8 * c)) and 255) / 255f * wx[dx]
-                            }
-                            value += row * wy[dy]
-                        }
-                        result[c * WIDTH * HEIGHT + y * WIDTH + x] = (value - MEAN[c]) / STD[c]
-                    }
-                }
-            }
-            return result
+            return Dav2NativePreprocess.apply(src, horizontal.indices, horizontal.weights,
+                vertical.indices, vertical.weights)
         }
 
         private fun cubic(x: Float): FloatArray {
@@ -174,4 +170,11 @@ class Dav2SnpeDepthEstimator(
             }
         }
     }
+}
+
+/** Loads only the existing packaged bridge; preprocessing does not initialize a model or HTP. */
+internal object Dav2NativePreprocess {
+    init { System.loadLibrary("dav2_snpe_jni") }
+    external fun apply(pixels: IntArray, xIndices: IntArray, xWeights: FloatArray,
+        yOffsets: IntArray, yWeights: FloatArray): FloatArray
 }

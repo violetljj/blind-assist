@@ -21,6 +21,14 @@ class AtomRgbGeometryTest {
         assertNull(AtomRgbGeometry.fitAffine(DoubleArray(20) { -x[it] }, x))
     }
 
+    @Test fun constantInverseDepthUsesNumpyRankOneSolutionDespiteMeanRounding() {
+        // Frozen Python fit_affine oracle: lstsq's rank-one minimum norm, six identical x.
+        // The old xx == 0 check returned null because the computed mean was not exactly .7.
+        val fit = AtomRgbGeometry.fitAffine(DoubleArray(6) { 1.8 + it * .08 }, DoubleArray(6) { .7 })!!
+        assertEquals(.939597315436242, fit.a, 1e-12)
+        assertEquals(1.34228187919463, fit.b, 1e-12)
+    }
+
     @Test fun rawZoneRotationAndOpticalDepthFactorsMatchAnchoringContract() {
         val g = geometry()
         val disparity = FloatArray(6400) { i -> (1 + (i % 80) * .04 + (i / 80) * .02).toFloat() }
@@ -46,6 +54,21 @@ class AtomRgbGeometryTest {
         val edge = AtomRgbGeometry(2, 2, AtomRgbGeometry.Calibration(100.0, 100.0, 0.0, -42.0, identity))
         val shared = edge.readout(FloatArray(4) { 1f }, BooleanArray(4) { true }, AtomRgbGeometry.Fit(1.0, 0.0), 0.0, 0.0)
         assertEquals(2, shared.first.pixels); assertEquals(4, shared.second.pixels)
+    }
+
+    @Test fun float32DepthKeepsTheTwoMetreFaceAndThe150PixelThreshold() {
+        val g = AtomRgbGeometry(20, 20, AtomRgbGeometry.Calibration(1000.0, 1000.0, 10.0, 0.0, identity))
+        // Original frozen NumPy float32 arithmetic gives optical z == 2, inside the far face.
+        // All rays are safely within HEAD's x/y bounds; only the visible-pixel count varies.
+        val disparity = FloatArray(400) { .8f }
+        val fit = AtomRgbGeometry.Fit(1.20000003, .2)
+        for (pixels in listOf(149, 150)) {
+            val (head, body) = g.readout(disparity, BooleanArray(400) { it < pixels }, fit, 0.0, 0.0)
+            assertEquals(pixels, head.pixels)
+            assertEquals(pixels == 150, head.alarm)
+            assertEquals(0, body.pixels)
+            assertFalse(body.alarm)
+        }
     }
 
     @Test fun floorRansacRecoversKnownPlaneAndPreviousFitResets() {

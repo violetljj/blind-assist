@@ -4,13 +4,13 @@
 
 [数据再利用](../research/active/hardware-bringup/DATA_POTENTIAL_DEV_20261013.md)及[五支线扩展目录](../research/active/hardware-bringup/DATA_OPPORTUNITY_CATALOG_20261013.md)：首两轮9项本地/27项公开来源，第三轮将5407未缓存RGB整理成54复核入口；Hypersim固定4帧确认旧单点降采样丢失近表面支持，ZJU32train找出3个区内混合复核例。新增OctoNet实样232帧64×18 ST直方图、LLRGBD真实照明配对。数据支线优先原生几何支持与ST bin合同，其次完整RGB时序/细结构距离；无新模型收益，既有实机检验和冻结规则保持。
 
-[实机融合工程/几何开发](../research/active/hardware-bringup/REAL_FUSION_ENGINEERING_DEV_20261013.md)完成：修复手机因果RGB配对/epoch/重试及预检假完整，7项JVM、11项预检与编译通过，源码未安装。地面射线仅给条件上界；SIFT/KLT两臂各0/12图像对可采用地面解，不升级测距。下一优先20cm已量横移＋哑光地面标记与实测杆位置，而非继续调既有一致性门槛。
+[实机融合工程/几何开发](../research/active/hardware-bringup/REAL_FUSION_ENGINEERING_DEV_20261013.md)完成：手机因果RGB配对/epoch/重试及预检修复现已纳入59/10.19.1安装，原7项JVM、11项预检保持。地面射线仅给条件上界；SIFT/KLT两臂各0/12图像对可采用地面解，不升级测距。[后续工具与数值修复](../research/active/hardware-bringup/FUSION_INPUT_AND_MEASURED_GEOMETRY_DEV_20261013.md)已提供0/20/10cm三视图几何及标线工具，前两图拟合、第三图检验；下一仍需已量横移、物理轴映射与实测杆位置。
 
 [细结构试验](../research/active/hardware-bringup/REAL_THIN_STRUCTURE_DEV_20261013.md)定位17/22；[局部跟踪与几何](../research/active/hardware-bringup/REAL_THIN_LOCAL_GEOMETRY_DEV_20261013.md)的独立RGB链使持续目标9→13/22、侧杆0→3/6，但干扰候选87→116，盒内稳定目标仍3/22且台阶可误入BODY。保留候选跟踪，不升级报警；[距离可信度](../research/active/hardware-bringup/REAL_THIN_CONFIDENCE_DEV_20261013.md)已查明近距锚点外推，硬互证/局部跨度误删细杆，采用独立距离状态记录而不否定视觉候选；仍需候选公制参照。
 
 同日[真实开发尺度/时序比较](../research/active/hardware-bringup/REAL_FUSION_REFINEMENT_DEV_20261013.md)完成：18段1677帧，稳健拟合成功才替换尺度的小候选使低头细杆any65→67/79、首报提前0.568秒，18段any未损；BODY另少15个query帧、无逐query真值，不能判为去误报。[第二轮](../research/active/hardware-bringup/REAL_FUSION_REFINEMENT_V2_DEV_20261013.md)的同质/双mode锚点、运动尺度搬运与地面软回退均未超过旧候选；保留其开发身份，不改变冻结v1/v2或手机默认。下一优先固定安装几何/去杆参考，新头戴确认仍待完成。
 
-本轮 **58 / 10.19.0 已安装，工程实验待佩戴验证**：独立“数据采集 → 打开融合实验”页面，显式开始后显示 HEAD/BODY 的 ToF 强档或 RGB 融合，并作 2/3 帧确认；提供低头高度标定，无语音或震动，不替换首页 H3 基础 ToF 辅助。构建、APK 检查和 4 项模型/数值设备检查通过；首次真实流 8 帧全部超出姿态范围，RGB 分支尚未执行，不能宣称端到端融合已通过。工程接入不改变下方研究结论、模拟默认或冻结判据。[工程记录](../research/active/hardware-bringup/MOBILE_FUSION_INTEGRATION_20261012.md) · [项目状态](PROJECT_STATE.md) · [入口说明](HARDWARE_OBSTACLE_DEMO.md)。
+本轮 **59 / 10.19.1 已安装，融合实验待佩戴验证**：采集页收流/预览与写盘脱耦，同12秒录制预览12.58→23.74fps、IMU缺序号201→0；另修复float32读出边界与退化拟合。原始数据持久性、模型和阈值保持，完整文件/索引检查通过。用户暂不佩戴，实时RGB分支未验证，不宣称端到端融合或新冻结eval通过。[本轮工程记录](../research/active/hardware-bringup/FUSION_INPUT_AND_MEASURED_GEOMETRY_DEV_20261013.md) · [项目状态](PROJECT_STATE.md) · [入口说明](HARDWARE_OBSTACLE_DEMO.md)。
 
 新头戴冻结检验仍需用户佩戴录制；已准备[标签与 v1/v2 执行入口](../research/active/hardware-bringup/FROZEN_FUSION_EVAL_RUNBOOK.md)，完整性预检不会运行推理或产生新评价成绩。下方研究数字与历史判读保留原文。
 

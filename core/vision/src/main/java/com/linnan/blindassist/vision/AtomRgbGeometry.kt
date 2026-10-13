@@ -157,15 +157,20 @@ class AtomRgbGeometry(val width: Int, val height: Int, val calibration: Calibrat
                 pitchDeg: Double, rollDeg: Double): Pair<Query, Query> {
         require(disparity.size == width * height && validPixels.size == disparity.size)
         val matrix = corridorFromCamera(pitchDeg, rollDeg)
+        // Frozen NumPy operates on a float32 disparity array: Python scalar a/b and the
+        // reciprocal are rounded to float32 before the float64 camera-ray projection.
+        // Promoting this division to Double can move an inclusive 2 m face outside the box.
+        val a = fit.a.toFloat(); val b = fit.b.toFloat()
         var head = 0; var body = 0
         for (i in disparity.indices) {
             if (!validPixels[i]) continue
-            val inv = (disparity[i] - fit.b) / fit.a
-            if (!inv.isFinite() || inv <= 1e-3) continue
+            val inv = (disparity[i] - b) / a
+            if (!inv.isFinite() || inv <= 1e-3f) continue
+            val depth = (1f / inv).toDouble()
             val d = directions[i]
-            val x = (matrix[0] * d[0] + matrix[1] * d[1] + matrix[2]) / inv
-            val y = (matrix[3] * d[0] + matrix[4] * d[1] + matrix[5]) / inv
-            val z = (matrix[6] * d[0] + matrix[7] * d[1] + matrix[8]) / inv
+            val x = (matrix[0] * d[0] + matrix[1] * d[1] + matrix[2]) * depth
+            val y = (matrix[3] * d[0] + matrix[4] * d[1] + matrix[5]) * depth
+            val z = (matrix[6] * d[0] + matrix[7] * d[1] + matrix[8]) * depth
             if (abs(x) <= .30 && z >= .30 && z <= 2.0) {
                 if (y >= -.20 && y <= .42) head++
                 if (y >= .42 && y <= .90) body++
@@ -214,10 +219,16 @@ class AtomRgbGeometry(val width: Int, val height: Int, val calibration: Calibrat
             if (x.isEmpty()) return null
             val mx = x.average(); val my = y.average()
             val xx = x.sumOf { (it - mx) * (it - mx) }
-            // numpy lstsq's rank-one minimum norm for constant x, not a fabricated denominator.
-            val a = if (xx == 0.0) mx * my / (mx * mx + 1.0)
+            // lstsq(rcond=None) tests singular values against eps * max(rows, columns).
+            // Even identical x can have nonzero xx after the mean is rounded; xx == 0 then
+            // invents a full-rank solve. For A=[x,1], det(A'A)=n*xx and sMax^2 is below.
+            val n = x.size.toDouble()
+            val sumSquares = xx + n * mx * mx
+            val sMaxSquared = .5 * (sumSquares + n + kotlin.math.hypot(sumSquares - n, 2 * n * mx))
+            val rankOne = sqrt(n * xx) <= Math.ulp(1.0) * maxOf(x.size, 2) * sMaxSquared
+            val a = if (rankOne) mx * my / (mx * mx + 1.0)
                     else x.indices.sumOf { (x[it] - mx) * (y[it] - my) } / xx
-            val b = if (xx == 0.0) my / (mx * mx + 1.0) else my - a * mx
+            val b = if (rankOne) my / (mx * mx + 1.0) else my - a * mx
             return if (a.isFinite() && b.isFinite()) Fit(a, b) else null
         }
 
