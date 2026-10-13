@@ -1,4 +1,7 @@
-param([ValidateSet('i2c_probe','tof_reader','tof_cnh','tof_cnh_h3','tof_cnh_h3_wifi','tof_cnh_diag','atom_camera','tof_wifi','atom_wifi')][string]$Sketch = 'tof_reader')
+param(
+    [ValidateSet('i2c_probe','tof_reader','tof_cnh','tof_cnh_h3','tof_cnh_h3_wifi','tof_cnh_diag','atom_camera','tof_wifi','atom_wifi')][string]$Sketch = 'tof_reader',
+    [ValidateSet(0,32768)][int]$AtomTcpSendBufferBytes = 0
+)
 $ErrorActionPreference = 'Stop'
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $configPath = Join-Path $repo 'artifacts.local/hardware-bringup/local-config.json'
@@ -36,13 +39,33 @@ $fqbn = $cfg.fqbn
 if ($Sketch -in @('atom_camera','atom_wifi')) {
     $fqbn = 'm5stack:esp32:m5stack_atoms3r:PSRAM=opi,FlashMode=qio,FlashSize=8M,PartitionScheme=default_8MB,USBMode=default,CDCOnBoot=cdc'
 }
-& $cfg.arduino_cli compile --config-file $cliConfig --fqbn $fqbn --build-path $build $src 2>&1 |
+$extraBuildArgs = @()
+$lwipBuild = $null
+if ($AtomTcpSendBufferBytes -ne 0) {
+    if ($Sketch -ne 'atom_wifi') { throw 'AtomTcpSendBufferBytes applies only to atom_wifi.' }
+    $lwipOutput = Join-Path $cfg.artifact_root "build/atom_lwip_snd$AtomTcpSendBufferBytes"
+    & $cfg.python (Join-Path $PSScriptRoot 'host/rebuild_atom_lwip.py') --output-dir $lwipOutput --send-buffer $AtomTcpSendBufferBytes
+    if ($LASTEXITCODE) { throw 'Isolated lwIP rebuild failed.' }
+    $lwipLibrary = [IO.Path]::GetFullPath((Join-Path $lwipOutput 'liblwip.a')).Replace('\','/')
+    $extraBuildArgs = @('--build-property', "build.extra_libs=-Wl,--whole-archive `"$lwipLibrary`" -Wl,--no-whole-archive")
+    $lwipBuild = @{ send_buffer_bytes=$AtomTcpSendBufferBytes; library=$lwipLibrary;
+        library_sha256=(Get-FileHash -LiteralPath $lwipLibrary).Hash.ToLowerInvariant() }
+}
+& $cfg.arduino_cli compile --config-file $cliConfig --fqbn $fqbn --build-path $build @extraBuildArgs $src 2>&1 |
     Tee-Object -FilePath (Join-Path $build 'compile.log')
 if ($LASTEXITCODE) { throw "Compilation failed: $Sketch" }
+if ($lwipBuild) {
+    $map = Get-Content -LiteralPath (Join-Path $build "$Sketch.ino.map") -Raw
+    $linkedLibraries = @([regex]::Matches($map, '([^\s()]*liblwip\.a)\(') |
+        ForEach-Object { $_.Groups[1].Value.Replace('\','/') } | Sort-Object -Unique)
+    if ($linkedLibraries.Count -ne 1 -or $linkedLibraries[0] -ne $lwipLibrary) {
+        throw "Unexpected or mixed lwIP link: $linkedLibraries"
+    }
+}
 $binary = Join-Path $build "$Sketch.ino.bin"
 $sourceHashes = @{}
 Get-ChildItem -LiteralPath $src -File | ForEach-Object { $sourceHashes[$_.Name]=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant() }
-@{ sketch=$Sketch; fqbn=$fqbn; source_sha256=$sourceHashes; vendor_sha256=$hashes;
+@{ sketch=$Sketch; fqbn=$fqbn; source_sha256=$sourceHashes; vendor_sha256=$hashes; lwip_override=$lwipBuild;
    app_sha256=(Get-FileHash -LiteralPath $binary).Hash.ToLowerInvariant(); app_bytes=(Get-Item -LiteralPath $binary).Length;
    compiled_utc=[DateTime]::UtcNow.ToString('o'); device_operation='none'; binary=$binary } |
     ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $build 'build-manifest.json') -Encoding utf8

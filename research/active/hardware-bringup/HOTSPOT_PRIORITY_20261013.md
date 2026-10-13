@@ -100,3 +100,21 @@ TCP候选只将相机socket的 `TCP_NODELAY` 从1改为0。刷写后首次出现
 DMA候选恢复TCP_NODELAY=1，在相机初始化后、IMU初始化前调用 `esp_camera_set_psram_mode(true)`；编译及刷写通过，但HTTP图像流持续没有响应字节，手机20秒就绪检查失败，未产生有效性能段。网络状态仍可读取；串口未获得有效诊断，不能判定DMA内部根因，也未确认运行时DMA状态。不采用此候选，没有把未测出的吞吐作为性能结论。
 
 最终刷回原选定SHA256 `195cc5c131a670e45029334f3e2e65c4d6ddf969ef27bd06d5f9bb968cc745bb`，读回上一候选与hash核验通过，仅写app0。恢复段 `capture-20261013T113456330Z-0e7d3fd7` 的800张JPEG哈希及ToF/IMU原字节连续覆盖通过，RGB发送序号缺口0，`COMPLETED/user_stop`，所有采集客户端关闭，手机返回首页。本轮没有新的可保留性能改动；源码维持上一版，失败与恢复证据均保留。下一有针对性的机制是重建SDK增大发送缓冲或独立验证允许迟到帧过期的预览传输，本轮均未实施。
+
+### 无线第三轮：32KiB TCP发送缓冲工程候选
+
+用户随后授权尝试扩大底层发送缓冲。证据与本轮计划位于 `artifacts.local/evidence/tcp-buffer-20261013/`。固定现有M5Stack3.3.8的IDF `735507283d`、esp-lwIP `fd432e4ee2cfb7f7f1c7eb7227e0173412e7b84e`，完整重编93个lwIP库成员，仅将 `CONFIG_LWIP_TCP_SND_BUF_DEFAULT` 从5744改为32768。队列16→92、发送低水位2873→16384随默认公式变化；接收窗口与Wi-Fi配置不变。692个对外符号一致，`tcp_pcb` 大小240、snd_buf偏移176及2字节字段不变。空间按需占用，每条TCP连接的发送缓冲上限增加27024字节，不是预分配同等静态内存。
+
+初次构建遇下载SSL错误、Windows命令过长，采用参数文件后通过；初次固件链接混入原库对象，改为完整装入候选archive后，map确认只用候选lwIP库。这些失败均保留，未刷入混合库版本。共享SDK未修改，App61/10.19.3、H3、VGA、JPEG质量12及idle_only切网保持。
+
+| 30秒工程段 | Canvas fps | 接收间隔P95 / 最大 ms | >100ms / 间隔数 | 同步发送P95 ms | JPEG平均字节 |
+|---|---:|---:|---:|---:|---:|
+| `tcp_baseline` | 23.896 | 70.56 / 124.02 | 6 / 784 | 59.710 | 12697 |
+| `tcp32_first` | 24.692 | 60.98 / 156.17 | 1 / 813 | 2.435 | 12630 |
+| `tcp32_repeat` | 23.252 | 77.73 / 387.42 | 19 / 745 | 4.215 | 16120 |
+
+发送等待在两次候选中均减少，但第二段JPEG负载增大约27%，帧时间戳到发送开始P95达到72.911ms、最大364.985ms；同步发送最大仅29.653ms。支持发送端等待改善，同时说明取帧/发送前仍有长尾，不能宣称整体流畅度稳定提升，也不能把跨时钟差作为端到端时延。第一段814 RGB/154有效ToF/3028有效IMU，复测746/155/3032；两段原JPEG哈希、ToF/IMU原字节连续覆盖、RGB发送序号连续均通过，`COMPLETED/user_stop`，客户端已关闭。
+
+本机保留此工程候选，实测部署二进制1140128字节、SHA256 `ccb17bba4bdb886a1f2f2566c1e1ae7a029b6d8a80b0f1868dab039885f04e3a`；刷前stock读回核对，只写app0并通过hash验证。原版仍保存为 `stock.bin`。构建入口提供显式选项，常规构建默认保持原SDK：`pwsh -NoProfile -File research/active/hardware-bringup/build.ps1 -Sketch atom_wifi -AtomTcpSendBufferBytes 32768`。`host/rebuild_atom_lwip.py` 固定源码、核验配置/ABI/符号与缓存指纹，在artifact目录输出独立库；build入口强制完整链接并检查map，记录库哈希。这个候选不改变原始采集规则，也未验证长时间功耗/内存余量或所有无线环境。
+
+正式构建入口的独立库重建、缓存校验复用、完整Atom固件编译及单库map检查均通过，日志 `reproducible-build.log`。该复现构建输出在 `artifacts.local/hardware-bringup/build/atom_wifi/`，未再次刷机；实测和设备当前状态仍对应上面的ccb17二进制，不混淆不同构建路径的产物哈希。文档链接与作用域diff检查通过，手机返回首页，最终两板boot不变。
