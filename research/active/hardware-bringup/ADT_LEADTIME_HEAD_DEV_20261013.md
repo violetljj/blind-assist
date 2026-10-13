@@ -36,3 +36,16 @@ GT 走廊距离 d(t)：横向 |x| ≤0.3 m、HEAD+BODY 高度层内 GT 点深度
 ## 复现
 
 [adt_corridor_distance_dev_20261013.py](host/adt_corridor_distance_dev_20261013.py)、[adt_leadtime_dev_20261013.py](host/adt_leadtime_dev_20261013.py)、[adt_head_features_dev_20261013.py](host/adt_head_features_dev_20261013.py)、[adt_head_train_dev_20261013.py](host/adt_head_train_dev_20261013.py)；产物在 `adt-eval-20261013/` 下：`corridor_d.json`、`head_features/`、`head_cv.json`。
+
+## 3. 判定头改用 ASE 合成场景训练、在 ADT 真实数据上检验（不达标）
+
+方案写在 `PLAN_ASE_HEAD.md`。ASE 训练包 0–1 共 20 个场景，每隔一帧取一帧（5 Hz），共 3500 帧，重投影到同样的针孔画面（射线深度转为 z）。只在 ASE 上训练并选阈值，然后在全部 13 段真实 ADT 上检验。数据为 Aria Synthetic Environments Dataset, Meta Reality Labs-R。
+
+| ADT 13 段 | 误报 | 检出 z ≤1.5 m |
+|---|---|---|
+| v6，变体 a | 5.93% | 80.6% |
+| 判定头，变体 a | 9.40% | 55.8% |
+| v6，变体 b | 5.02% | 39.7% |
+| 判定头，变体 b | 6.99% | 34.6% |
+
+**不达标**，误报更高，检出低了 25 个百分点。这和真实/合成配对检验中的保留一致：合成画面上锚定更容易，所以合成特征比真实特征“更干净”，判定头学到的门槛换到真实画面就失准。用合成场景训练读出头这条路到此关闭；ASE 只保留作 DAV2 形状误差的研究替代。耗时：ASE 预处理 1 分 49 秒（7 个进程），评测和特征约 15 分钟 GPU，训练约 1 分钟。
