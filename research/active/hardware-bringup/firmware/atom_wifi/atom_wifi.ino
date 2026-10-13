@@ -68,6 +68,21 @@ static esp_err_t stream(httpd_req_t* req) {
   }
   return httpd_resp_send_chunk(req,nullptr,0);
 }
+
+static bool configureCameraTiming() {
+  sensor_t* sensor=esp_camera_sensor_get();
+  if(!sensor || sensor->id.PID!=OV3660_PID){
+    Serial.println("{\"type\":\"error\",\"message\":\"camera_timing_sensor_mismatch\"}");
+    return false;
+  }
+  // OV3660 0x471D[1:0]=2 emits VSYNC at field start, independent of JPEG EOF.
+  // The camera driver still timestamps DMA acquisition start, not exposure.
+  const int result=sensor->set_reg(sensor,0x471d,0x03,0x02);
+  const int actual=sensor->get_reg(sensor,0x471d,0x03);
+  Serial.printf("{\"type\":\"camera_timing\",\"sensor_pid\":%u,\"vsync_mode\":%d,\"status\":%d}\n",(unsigned)sensor->id.PID,actual,result);
+  return result==0 && actual==2;
+}
+
 void setup() {
   Serial.begin(115200);delay(1500);
   beginDemoNetwork("camera","atom-camera-wifi-v1");
@@ -82,8 +97,20 @@ void setup() {
   c.fb_location=CAMERA_FB_IN_PSRAM;c.grab_mode=CAMERA_GRAB_LATEST;c.sccb_i2c_port=AtomImu::cameraSccbPort;
   esp_err_t result=esp_camera_init(&c);cameraReady=result==ESP_OK;
   Serial.printf("{\"type\":\"camera_init\",\"status\":%d}\n",(int)result);
-  // Camera bus allocation must finish before BMI270 starts publishing samples.
+  if(cameraReady)cameraReady=configureCameraTiming();
+  // Camera bus allocation and sensor configuration precede BMI270 samples.
   AtomImu::begin();
+
+  api.on("/api/camera-timing",HTTP_GET,[]{
+    sensor_t* sensor=esp_camera_sensor_get();
+    if(!sensor){api.send(503,"text/plain","no_sensor");return;}
+    const int mode=sensor->id.PID==OV3660_PID?sensor->get_reg(sensor,0x471d,0x03):-1;
+    const int quality=sensor->id.PID==OV3660_PID?sensor->get_reg(sensor,0x4407,0x3f):-1;
+    const int width=sensor->id.PID==OV3660_PID?sensor->get_reg(sensor,0x4602,0xffff):-1;
+    char body[320];snprintf(body,sizeof(body),"{\"boot_id\":\"%s\",\"camera_ready\":%s,\"sensor_pid\":%u,\"vsync_mode\":%d,\"jpeg_quality\":%d,\"jpeg_line_width\":%d,\"timestamp_semantics\":\"driver_frame_start;exposure_unverified\"}",bootId.c_str(),cameraReady?"true":"false",(unsigned)sensor->id.PID,mode,quality,width);
+    api.send(cameraReady && mode==2 && quality>=0 && width>=0?200:503,"application/json",body);
+  });
+
   httpd_config_t config=HTTPD_DEFAULT_CONFIG();config.server_port=81;config.ctrl_port=32769;
   config.send_wait_timeout=1;config.recv_wait_timeout=1;config.max_open_sockets=2;config.lru_purge_enable=true;
   if(httpd_start(&streamServer,&config)==ESP_OK){
