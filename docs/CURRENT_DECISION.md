@@ -14,6 +14,8 @@
 
 新头戴冻结检验仍需用户佩戴录制；已准备[标签与 v1/v2 执行入口](../research/active/hardware-bringup/FROZEN_FUSION_EVAL_RUNBOOK.md)，完整性预检不会运行推理或产生新评价成绩。下方研究数字与历史判读保留原文。
 
+**ADT 真值评测支持 v6**：独立的头戴数据上，误报相对下降 23%，近距检出基本不变（81.2%→80.6%），代价是 1.5–2 m 起报变晚。[结果](../research/active/hardware-bringup/ADT_EVAL_RESULT_20261013.md)。
+
 **10-13 晚冻结 v6**：v3＋RGB 像素团深度规则，针对强光窄走廊开头误报（已用数据上 0.96→0.39，无回退，事后选择）；下次录制四版同跑。[阶段总结](../research/active/hardware-bringup/STAGE_SUMMARY_20261013.md)。
 
 **10-13 下午细杆补录**：4 段细杆 ahead 全过且杆由 RGB 看到，但标定失败时窄走廊开头对墙/吊牌误报，quiet 样本尚不足以排除。[结果](../research/active/hardware-bringup/FROZEN_EVAL_RESULT_20261013B.md)。
