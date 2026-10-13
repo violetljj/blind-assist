@@ -20,7 +20,7 @@
 
 ## 接下来
 
-数据研究可先复用现有素材：[首轮RGB与VisTa小样](../research/active/hardware-bringup/DATA_POTENTIAL_DEV_20261013.md)、[扩展及第三轮实读](../research/active/hardware-bringup/DATA_OPPORTUNITY_CATALOG_20261013.md)已落地。第三轮整理54个额外RGB复核入口，确认Hypersim原生几何采样损失/ZJU区内混合，并读通OctoNet的232帧ST直方图与LLRGBD照明配对。优先原生几何支持、ST bin合同及完整RGB时序；未训练或改变模型。
+数据研究可先复用现有素材：[首轮RGB与VisTa小样](../research/active/hardware-bringup/DATA_POTENTIAL_DEV_20261013.md)、[四轮扩展及实读](../research/active/hardware-bringup/DATA_OPPORTUNITY_CATALOG_20261013.md)已落地。第四轮新增393216格原生几何分布、50帧人工来源索引/6组五关键帧pole及GW-Depth玻璃配对小样；可先检查细形状与采样损失。OctoNet仍缺bin标定；人工平面补全与过滤深度不作为独立距离真值，未训练或改变模型。
 
 1. 用户佩戴设备，低头空地标定安装高度，再在有效姿态下检查实时融合；软件工程检查不能替代这一步。
 2. 用户佩戴设备录制新片段并导出；按已冻结规则只看 RGB 写标签，提交后运行 v1/v2。[执行说明](../research/active/hardware-bringup/FROZEN_FUSION_EVAL_RUNBOOK.md) · [冻结协议](../research/active/hardware-bringup/FROZEN_FUSION_EVAL_V1_PROTOCOL.md)。模型、阈值、标签与判据不据结果调整；所有片段和分母完整报告。

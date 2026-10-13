@@ -2,7 +2,7 @@
 
 ## 2026-10-13 工程接入状态
 
-[数据再利用](../research/active/hardware-bringup/DATA_POTENTIAL_DEV_20261013.md)及[五支线扩展目录](../research/active/hardware-bringup/DATA_OPPORTUNITY_CATALOG_20261013.md)：首两轮9项本地/27项公开来源，第三轮将5407未缓存RGB整理成54复核入口；Hypersim固定4帧确认旧单点降采样丢失近表面支持，ZJU32train找出3个区内混合复核例。新增OctoNet实样232帧64×18 ST直方图、LLRGBD真实照明配对。数据支线优先原生几何支持与ST bin合同，其次完整RGB时序/细结构距离；无新模型收益，既有实机检验和冻结规则保持。
+[数据再利用](../research/active/hardware-bringup/DATA_POTENTIAL_DEV_20261013.md)及[四轮扩展目录](../research/active/hardware-bringup/DATA_OPPORTUNITY_CATALOG_20261013.md)：第四轮导出8个Hypersim family的393216格原生分布，恢复SANPO50帧人工来源及6条五关键帧pole掩码索引，并实际读取GW-Depth玻璃门raw/人工平面修正配对。优先人工形状与原生几何的表示损失检查；OctoNet18→16的物理合同仍缺，LLRGBD配套深度为尺度未知的8位过滤图。首两轮9本地/27公开来源及第三轮54额外RGB入口保留；没有模型收益或默认升级。
 
 [实机融合工程/几何开发](../research/active/hardware-bringup/REAL_FUSION_ENGINEERING_DEV_20261013.md)完成：手机因果RGB配对/epoch/重试及预检修复现已纳入59/10.19.1安装，原7项JVM、11项预检保持。地面射线仅给条件上界；SIFT/KLT两臂各0/12图像对可采用地面解，不升级测距。[后续工具与数值修复](../research/active/hardware-bringup/FUSION_INPUT_AND_MEASURED_GEOMETRY_DEV_20261013.md)已提供0/20/10cm三视图几何及标线工具，前两图拟合、第三图检验；下一仍需已量横移、物理轴映射与实测杆位置。
 

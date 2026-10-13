@@ -10,7 +10,9 @@
 
 第二轮扩展形成**9项本地资产卡、27项公开来源卡**（ToF5、材质7、连续序列7、地面8）。公开来源之间仍可能共享原始场景，特别是同作者坑洼集、Matterport派生标注；27不是27个独立验证域。另有待获取/低优先线索保留在各JSON，不混入这27项。
 
-**第三轮已进一步读通OctoNet的232帧真实ST 64×18直方图与LLRGBD真实照明配对，确认现有Hypersim原生几何的采样损失，并生成54个额外RGB复核入口。** 最新具体结果、来源缺口和优先级见本页后半“第三轮”；所有变化都是数据开发证据，没有模型增益宣称。
+**第三轮已进一步读通OctoNet的232帧真实ST 64×18直方图与LLRGBD真实照明配对，确认现有Hypersim原生几何的采样损失，并生成54个额外RGB复核入口。** 该轮具体结果、来源缺口和优先级见本页后半“第三轮”；所有变化都是数据开发证据，没有模型增益宣称。
+
+**第四轮新增可直接使用的产物：8个Hypersim family的393216格原生几何分布、SANPO现存50帧人工来源索引及6条五关键帧pole掩码组。** 同时补查ST原始字段和真实低照配对深度的编码；具体来源、支持范围和未取得的资产见末尾“第四轮”。优先用已有的人工细形状和原生几何开展表示损失检查，再补新的材料/场景。
 
 ## 新确认的九项本地入口
 
@@ -212,3 +214,72 @@ LLRGBD明确的数据许可尚未在已读入口找到，论文许可不代替�
 `deeper/INDEX.json`汇总六支工作目录、已读取样本、条件候选和可复用入口；各目录保留选择、来源、脚本、摘要及必要原始小样。第三轮已知样本/官方源码传输至少13717470字节（地面10008559＋ToF及源码2757906＋LLRGBD Range951005）；搜索/API元数据未全程逐字节计量，不把落盘大小当网络流量。所有支线的下载限额合计32MB，未下载整库。
 
 支线command-wall保守上界333/900秒（30＋20＋70＋33＋按全部180秒计的照明支线），主线程≤120/300秒；仅RGB两次解码实测65.859秒。GPU/推理/训练0，任务进程全部结束。各实读分母/字段/来源哈希与相关图像检查已完成，新增RGB脚本/热文档/diff作范围内核验；交付SHA及检查记录见`deeper/delivery_receipt.json`。
+
+## 第四轮：原始字段、几何旁路与更具体的新源
+
+用户再次要求继续挖掘。本轮五支线分别追OctoNet采集合同、ST真实回归向量、跨family原生几何支持导出、现有SANPO人工/传播mask身份、新的近场几何来源；主线程补LLRGBD已有照明样本的深度/采集字段。支线各≤180 command-wall秒、主线程≤300秒；GPU/推理/训练0；新增下载≤32MB（5＋5＋0＋2＋8＋主线程12MB），派生几何≤30MB。仅已有Development/train/明确公共格式回归示例，不打开保护480或新冻结eval。输出同根`round4/`，先选固定小样，合同缺口不靠猜测填补；可复用数据产物和可判定来源交付后收敛。
+
+### 已有Hypersim：把原生分布保存成可读数据
+
+固定从已有8000项train的39个family中取字典序前8个，每family取首scene/id，生成8份NPZ、**393216格**原生4×4块，共8041699字节。与第三轮只有ai_001的一帧重叠。每格保留`valid_count、z_min/max、q10/q50/q90、near_support_count、old_nearest_z`，并附原标定矩阵、raw pose与米制pose；空块和部分有效块显式保留。旧prepared的RGB/depth/raw/mixed/boxes/values六字段在8/8帧逐元素复现。
+
+沿用原固定条件：仅16像素全有效且块内跨度>10cm，近表面指距块内最小Z≤2cm。近表面支持1/16的6188格中，**4157/6188=67.18%**旧采样比块内最近Z远>10cm；支持2–4/16为23216/42168=55.06%，5–16/16为6493/14208=45.70%。这是采样描述，斜面/遮挡边界/物体细部尚未分开，各family也不呈完全相同趋势，不能称细杆漏检率。
+
+这轮实际解决的是不再只留下每格一个数：后续可直接区分“没有近几何”与“近几何存在但支持稀少”。发现姿态asset尺度跨family不同：ai_003/ai_007约0.01m/unit，其余六个约0.0254；不能把第三轮ai_001尺度推广。深度本身已经米制，不再乘pose尺度。NPZ重新读取、来源SHA、分位数与空值检查通过，公式和读取示例见`round4/native_support/notes.md`；min不作为部署替代或安全深度。
+
+### 已有SANPO：人工来源和杆状物时序索引恢复完整
+
+固定已有50帧、10个官方train段，逐项核对[官方人工/传播字段与读取代码](https://github.com/google-research-datasets/sanpo_dataset)：**50/50均HUMAN_ANNOTATED**，10份本地cache/副本/本次在线JSON一致。旧prepare本来已按人工字段选择，本轮新增的是显式来源链及可用索引；没有把它说成新发现的50张人工标签。全部220份现货大小/SHA复核，50张native mask实际解码。
+
+实例数字不能独立跨帧关联：[官方编码](https://github.com/google-research-datasets/sanpo_dataset/blob/main/sanpo_dataset/lib/tensorflow_dataset.py)需`session/camera/semantic_class/instance`组合键，44/50帧存在跨语义数字复用。pole共82组帧，其中20组instance=0保留身份UNKNOWN；62个正ID组帧对应23个组合键，14个重复出现，**6组在全部5个人工关键帧出现**，已提供直接mask路径。它们来自4段胸前采集；4组各5/5 pose READY，2组各0/5 READY，后两组仍能作2D形状检查。
+
+整体pose为32/50 READY、18 NOT_READY；使用已存fixed_camera_poses和官方frame_num行号合同。实际曝光timestamp仍UNKNOWN，名义15fps不能替代曝光时间。CRES/ZED都是双目估计而非独立距离真值。旧1–2m通道零覆盖及停止结论保留，本轮索引支持人工细形状/标签身份的开发用途。`round4/sanpo_provenance/summary.json`中的`human_frame_index`及`five_anchor_human_pole_mask_groups`可直接读取。
+
+六组30组帧/20张唯一RGB的叠图已经实际查看，未见明显组合键串位；G3具体杆/树干身份仍UNKNOWN，另有贴边、运动模糊及包括灯头/附着物的mask，不能把整组面积直接当杆身宽度。native mask保持原样，逐组判读和拼图均已保存。
+
+### LLRGBD深度：小样取得，但不能反推米制尺度
+
+沿用第三轮train文件名10，通过[官方depth ZIP](https://surfdrive.surf.nl/public.php/dav/files/xmSGFhn8gleXcaX)精确HTTP Range补读同名深度，元数据55534＋字段/局部header16319，共**71853字节**，CRC32/SHA及Content-Range通过。实际为640×480的L/uint8 PNG，307200像素，值16–74、59个不同值、零值0。包内415个train深度文件，只有train_depth_filter/val_depth_filter，未读val图像。
+
+[原论文](https://isprs-archives.copernicus.org/articles/XLIII-B2-2021/427/2021/isprs-archives-XLIII-B2-2021-427-2021.pdf)描述D435i对齐后colorization refinement。已读包/loader未提供当前PNG米制比例、K、raw/validity；零缺失值不等于全像素可靠。实际查看同构图RGB/语义/depth，椅背细边模糊。因此该新增字段只作结构提示，照明配对仍是最强用途，不能当独立测距或细杆监督。脚本`host/llrgbd_depth_contract_dev_20261013.py`，样本/收据/拼图见`round4/llrgbd_depth/`。
+
+### DEPZ：实际拿到格式向量，真实录制仍缺件
+
+[当前官方SDK](https://github.com/depz-ai/depz-sensor-sdk) revision `cd8f2477ec2d91df319b9c076f2c6394eea496f1`的源码引用2026-09-25真实30帧CH回放和live golden JSON；完整公开树、最近5个release以及实际读取的Rust0.4.0/Python0.4.1/npm0.4.1发行包均没有这些资产。[CH指南](https://depz.ai/developers/sensors/docs/c/vl53l8ch/guide)所述原始聚合为16×20，亦不是本机64×16。本轮真实场景新增数为0，不把引用当可取数据。
+
+实际提取并用标准库解析作者明确标为synthetic的72字节CNH向量与156字节配置向量。前者2×3 bins含负raw和有符号scaler，ambient解码200/−6400，reference residual=4096/2048=2；后者独立配置为64zones→16aggregates、24bins、sub_sample4。两向量不是同一真实录制。可补格式回归、ambient/scaler/配置保留检查；不验证外层帧CRC、场景分布或检测性能。缺件面、版本/hash、合成身份及独立解码结果见`round4/st_raw_vectors/`。
+
+### OctoNet：补齐合同对照，也找回本机可用字段
+
+进一步查[作者loader](https://github.com/aiot-lab/OctoNet)及ST CNH源码，已整理26项OctoNet/本机字段对照：现有232帧只含timestamp、tof_bins、tof_depth，作者loader只堆叠/reshape/cast。OctoNet的start_bin/sub_sample、幅值单位、预处理、ref_residual、depth单位和时钟来源仍未补齐；没有做18→16重映射，也未从峰位和未知单位的depth回归反推配置。关联作者的另一份ESP32/L7CX固件不能证明OctoNet STM32/L8CH的设置。
+
+有价值的新闭合发生在本机合同：[ST官方插件](https://github.com/stm32duino/VL53L8CH/blob/336cf87de8a653a60165ad429bd75a167e645b9f/src/vl53lmz_plugin_cnh.c)直接以CNH word[2]给出ref_residual，头文件说明11位小数；本机保存cnh_header[0..4]，因而该项可按**cnh_header[2]/2048**解码。这是代码/格式证据，未重标定硬件。OctoNet没有header，无法同法恢复。
+
+18 bins只说明长度：ST内存公式64×18需6108B、64×19需6428B，而默认容量6160B，所以18与该容量相容；这不证明作者采用了默认start/sub_sample或18是选择原因。官方可视化的等比例索引对齐也不是曝光同步证明。逐字段状态、源码/hash和最小缺件清单见`round4/octonet_contract/mapping.json`；当前保留为外部波形形态入口，跨设备米制合并暂不具备合同。
+
+### 新取得GW-Depth：玻璃门/墙的原始与修正深度配对
+
+[GW-Depth官方仓库](https://github.com/ViktorLiang/GW-Depth)提供玻璃门/墙/护栏RGB、原始相机深度、人工分割/多边形及修正深度。本轮利用官方约1.802GB整包的HTTP Range，只读中央目录、train.txt并固定其第一条`20210927_164622-angle1-origin_0`后取得五件小样。实际train.txt为**993条**，与论文1018张不同，保留版本/划分差异；不把它们混作同一分母。
+
+五件同1149×691，深度uint16，分割uint8。官方loader将正分割ID合并为glass-like；本例多边形核对ID1对应玻璃墙、ID3对应玻璃门，原始ID保留。正类576638像素中，原相机深度**230216像素为0**，修正深度仅5像素为0。这是本样本的缺失/补全过程描述，不是修正精度证据。修正深度按作者loader除1000转米；其有效正类中位数3.276m，0.8–3m仅55704/576633=9.66%，不称已覆盖近距离玻璃。
+
+已经实际查看RGB、分割、raw及修正深度拼图。修正目标由人工多边形和共面锚点插值得到，必要时使用不透明角点，不是独立逐像素激光测距；论文忽略小门把手，不能用其平面目标监督突起。原相机PNG的逐帧depth_scale/K未另行闭合，不用raw-target数值差冒充米制误差。当前最适合诊断透明区域缺失、读到背景及平面补全的区别；来源、固定选择、CRC/SHA和逐ID分母在`round4/new_geometry/`。
+
+另两项去重新源保留为候选：
+
+| 来源 | 明确增量 | 尚不能直接接入的原因 |
+| --- | --- | --- |
+| [ISOD](https://www.kaggle.com/datasets/yuchen66/indoor-small-object-dataset) | D455+IMU、2000张，通常≤3cm的电线/积木/布料等地面小物，人工可通行mask | 原论文全套仅作validation、无明确train，本轮不读像素；0.2–1m手持低机位，非头戴；CC BY-NC-SA4.0 |
+| [MJU-Glass](https://github.com/weduake/MJU_Glass) | Orbbec双高度/视角的玻璃RGB-D，补传感器差异 | README称3430train/1470test，但未给逐项split；已核depth/mask各4900文件名，只读目录不猜train；单位/许可/标签过程未闭合 |
+
+GW-Depth已读入口也未发现明确数据许可，三类来源的获取状态分别记录，不将公开下载与可再分发混同。HumanoidOcc公共数据尚未定位、Humanoid-OmniOcc需要申请、OCID标签来自同一深度差分，均仅保留排除原因。最缺的仍是头戴近场细杆/悬垂物的独立几何，以及公共CNH与本机之间完整的物理配置对应。
+
+### 第四轮优先级、核验与成本
+
+优先**SANPO原生人工形状索引＋Hypersim原生分布**：前者提供细形状与连续关键帧参照，后者定位缩放/单值表示损失；不足是两者不是同一真实设备/场景，不能合并成真实测距提升。最小后续检验可固定候选表示，分别比较形状保留与近表面支持保留，不更改冻结模型或把min直接部署。其次用GW-Depth单列透明区域缺失诊断。OctoNet先保留原18bin形态用途，缺采集配置时继续增加动作样本不能补足距离轴。
+
+`round4/INDEX.json`汇总六支主产物及SHA，`integration_check.json`记录整合核验：8份NPZ重读与哈希/计数/分位数/pose尺度、8帧旧六字段复现收据、50人工及6组索引、LLRGBD PNG哈希与UNKNOWN单位、DEPZ合成身份、26项OctoNet对照、GW逐ID分母和train身份均通过。已实际查看LLRGBD配对、SANPO六组叠图和GW固定例；新增helper通过AST检查。没有以数据读取验证替代模型效果检验。
+
+本轮已知成功响应体至少**7123697字节**（GW及其元数据4825103＋ST格式来源1727110＋SANPO329697＋OctoNet源码169934＋LL深度71853）；GW超时未完成请求按上限再计70001字节。OctoNet另保存218327字节序列化树元数据，不将落盘大小等同网络传输；搜索/connector元数据未逐字节计量。各支下载均在原分配限额内；新增派生几何8.04MB，低于30MB。
+
+支线command-wall合计保守约220/900秒（15＋55＋9.919＋40＋100），主线程保守≤120/300秒；GPU/训练/推理0。只提交任务所属文档段落与LLRGBD helper，保留并发工程工作；相关文档入口/diff核验与交付SHA另存`round4/delivery_receipt.json`。六支均已交付，无本轮后台进程需保留。
