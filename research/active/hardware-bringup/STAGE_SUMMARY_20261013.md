@@ -48,4 +48,21 @@
 - **还需录制**：白天强光下的同一条窄走廊空通道 2–3 段，同时低头标定；更多细杆；录前确认 Atom 预览流畅。
 - 尚未做：手机 App 接入 v3/v6；真实导航和听感验收。
 
+## 6. ADT/ASE 公开数据上的探索（10-13 夜）
+
+数据为 Aria Digital Twin Dataset, Meta Reality Labs Research 和 Aria Synthetic Environments Dataset, Meta Reality Labs-R，仅报告汇总数字。
+
+| 方向 | 结果 | 判定 |
+|---|---|---|
+| v6 独立检验（13 段 5825 帧，GT 真值） | 误报 7.74%→5.93%，1.5 m 内检出 81.2%→80.6% | 支持 v6 |
+| 理想尺度对照 | 检出升到 93%，误报不降 | 误报来自 DAV2 的形状，不是尺度 |
+| 事件级提前量 | v6 误报段 0.62→0.41 次/分钟 | ADT 中转头太多，量不准步行提前量 |
+| 学习式读出头（ADT 4 折） | 误报 3.9%，但检出低 9.8 个百分点 | 不达标；ToF 失效时检出 +17 个百分点（线索） |
+| 用 ADT 微调 DAV2-S | 检出 +11、误报为原来的 1.52 倍 | 不达标（工作点移动） |
+| 真实与合成配对 | 理想尺度下误报和检出接近 | 合成可替代研究形状误差；锚定偏乐观 |
+| ASE 训练读出头 | ADT 上检出 55.8%（v6 80.6%） | 不达标，合成训练路线关闭 |
+| 头部朝向与行进方向 | ADT 中位偏离 24°、55% 超过 20°；自录直走 p90 约 3° | 取决于任务；日常使用需宽视角或行进方向估计 |
+
+细节见 [ADT 结果](ADT_EVAL_RESULT_20261013.md)、[提前量和读出头](ADT_LEADTIME_HEAD_DEV_20261013.md)、[微调](ADT_FINETUNE_DEV_20261013.md)、[真实与合成](ADT_SYNTH_REAL_DEV_20261013.md)、[朝向不一致](ADT_HEADING_MISMATCH_DEV_20261013.md)。
+
 详细记录：[运行记录](RUNS.md) · 冻结结果 [上午](FROZEN_EVAL_RESULT_20261013.md) / [下午](FROZEN_EVAL_RESULT_20261013B.md) / [晚间](FROZEN_EVAL_RESULT_20261013C.md) · [v3 开发](FUSION_V3_DEV_20261013.md) · [v4/v5](FUSION_V4_HEIGHT_DEV_20261013.md) · [学习式尺度](LEARNED_ANCHOR_PILOT_DEV_20261013.md) · [锚定来源](ANCHOR_SOURCE_RULE_DEV_20261013.md)
