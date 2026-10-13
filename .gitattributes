@@ -6,6 +6,8 @@
 /tools/** text eol=lf
 /scripts/*.ps1 text eol=lf
 /research/active/** text eol=lf
+# Unified patch context includes a required leading space on empty source lines.
+/research/active/hardware-bringup/host/camera_early_eoi.patch whitespace=-blank-at-eol
 /data/*.csv text eol=lf
 /data/*.json text eol=lf
 /experiments/*.jsonl text eol=lf

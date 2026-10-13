@@ -1,6 +1,7 @@
 param(
     [ValidateSet('i2c_probe','tof_reader','tof_cnh','tof_cnh_h3','tof_cnh_h3_wifi','tof_cnh_diag','atom_camera','tof_wifi','atom_wifi')][string]$Sketch = 'tof_reader',
-    [ValidateSet(0,32768)][int]$AtomTcpSendBufferBytes = 0
+    [ValidateSet(0,32768)][int]$AtomTcpSendBufferBytes = 0,
+    [switch]$AtomCameraEarlyEoi
 )
 $ErrorActionPreference = 'Stop'
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
@@ -41,15 +42,31 @@ if ($Sketch -in @('atom_camera','atom_wifi')) {
 }
 $extraBuildArgs = @()
 $lwipBuild = $null
+$cameraBuild = $null
+$overrideLibraries = @()
 if ($AtomTcpSendBufferBytes -ne 0) {
     if ($Sketch -ne 'atom_wifi') { throw 'AtomTcpSendBufferBytes applies only to atom_wifi.' }
     $lwipOutput = Join-Path $cfg.artifact_root "build/atom_lwip_snd$AtomTcpSendBufferBytes"
     & $cfg.python (Join-Path $PSScriptRoot 'host/rebuild_atom_lwip.py') --output-dir $lwipOutput --send-buffer $AtomTcpSendBufferBytes
     if ($LASTEXITCODE) { throw 'Isolated lwIP rebuild failed.' }
     $lwipLibrary = [IO.Path]::GetFullPath((Join-Path $lwipOutput 'liblwip.a')).Replace('\','/')
-    $extraBuildArgs = @('--build-property', "build.extra_libs=-Wl,--whole-archive `"$lwipLibrary`" -Wl,--no-whole-archive")
+    $overrideLibraries += $lwipLibrary
     $lwipBuild = @{ send_buffer_bytes=$AtomTcpSendBufferBytes; library=$lwipLibrary;
         library_sha256=(Get-FileHash -LiteralPath $lwipLibrary).Hash.ToLowerInvariant() }
+}
+if ($AtomCameraEarlyEoi) {
+    if ($Sketch -ne 'atom_wifi') { throw 'AtomCameraEarlyEoi applies only to atom_wifi.' }
+    $cameraOutput = Join-Path $cfg.artifact_root 'build/atom_camera_early_eoi'
+    & $cfg.python (Join-Path $PSScriptRoot 'host/rebuild_atom_camera.py') --output-dir $cameraOutput
+    if ($LASTEXITCODE) { throw 'Isolated camera rebuild failed.' }
+    $cameraLibrary = [IO.Path]::GetFullPath((Join-Path $cameraOutput 'libespressif__esp32-camera.a')).Replace('\','/')
+    $overrideLibraries += $cameraLibrary
+    $cameraBuild = @{ native_first_eoi=$true; library=$cameraLibrary;
+        library_sha256=(Get-FileHash -LiteralPath $cameraLibrary).Hash.ToLowerInvariant() }
+}
+if ($overrideLibraries.Count) {
+    $quotedLibraries = ($overrideLibraries | ForEach-Object { '"' + $_ + '"' }) -join ' '
+    $extraBuildArgs = @('--build-property', "build.extra_libs=-Wl,--whole-archive $quotedLibraries -Wl,--no-whole-archive")
 }
 & $cfg.arduino_cli compile --config-file $cliConfig --fqbn $fqbn --build-path $build @extraBuildArgs $src 2>&1 |
     Tee-Object -FilePath (Join-Path $build 'compile.log')
@@ -62,10 +79,18 @@ if ($lwipBuild) {
         throw "Unexpected or mixed lwIP link: $linkedLibraries"
     }
 }
+if ($cameraBuild) {
+    $map = Get-Content -LiteralPath (Join-Path $build "$Sketch.ino.map") -Raw
+    $linkedLibraries = @([regex]::Matches($map, '([^\s()]*libespressif__esp32-camera\.a)\(') |
+        ForEach-Object { $_.Groups[1].Value.Replace('\','/') } | Sort-Object -Unique)
+    if ($linkedLibraries.Count -ne 1 -or $linkedLibraries[0] -ne $cameraLibrary) {
+        throw "Unexpected or mixed camera link: $linkedLibraries"
+    }
+}
 $binary = Join-Path $build "$Sketch.ino.bin"
 $sourceHashes = @{}
 Get-ChildItem -LiteralPath $src -File | ForEach-Object { $sourceHashes[$_.Name]=(Get-FileHash -LiteralPath $_.FullName).Hash.ToLowerInvariant() }
-@{ sketch=$Sketch; fqbn=$fqbn; source_sha256=$sourceHashes; vendor_sha256=$hashes; lwip_override=$lwipBuild;
+@{ sketch=$Sketch; fqbn=$fqbn; source_sha256=$sourceHashes; vendor_sha256=$hashes; lwip_override=$lwipBuild; camera_override=$cameraBuild;
    app_sha256=(Get-FileHash -LiteralPath $binary).Hash.ToLowerInvariant(); app_bytes=(Get-Item -LiteralPath $binary).Length;
    compiled_utc=[DateTime]::UtcNow.ToString('o'); device_operation='none'; binary=$binary } |
     ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $build 'build-manifest.json') -Encoding utf8

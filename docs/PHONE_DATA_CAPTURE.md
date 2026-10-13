@@ -34,7 +34,7 @@ v10.19.1 为相机增加8个完整JPEG的有界预读，最新预览直接从收
 
 2026-10-13 配套Atom固件将multipart头与原JPEG合成一次HTTP chunk发送，先复制到自有PSRAM包再归还相机帧，减少发送期间占用相机缓冲。无线、VGA及JPEG质量保持；App61/10.19.3三路30秒复测预览约23.5→24.8fps，三路保存完整性检查通过，仍有约121ms到帧间隔。[固件优化与完整测量记录](../research/active/hardware-bringup/HOTSPOT_PRIORITY_20261013.md#后续mjpeg-预览节奏优化)
 
-同日进一步实测独立重建的32KiB TCP发送缓冲候选，板端同步发送P95由约60ms降到2.4–4.2ms；两次三路保存检查通过，第二段仍有发送前长停顿，整体预览未稳定提升。本机Atom已保留候选，构建时需显式传入 `-AtomTcpSendBufferBytes 32768`；默认仍是原SDK。详细记录及回退二进制见上方固件测量记录。
+同日独立重建32KiB TCP发送缓冲，板端同步发送P95由约60ms降到2.4–4.2ms，但仍有发送前长停顿。继续检查发现一份相机buffer可能合并多张完整JPEG；现已采用驱动收到首张原生JPEG结束标记即完成收帧的修复，保留原图字节与时间戳。两段30秒三路测试中合并帧为0/797、0/814，预览24.6–25.4fps，对照为21.8fps；三路保存完整性通过，仍有约151ms长间隔。本机Atom已更新，复现构建需 `-Sketch atom_wifi -AtomTcpSendBufferBytes 32768 -AtomCameraEarlyEoi`，默认仍是原SDK。详情、限制及回退二进制见[相机驱动修复记录](../research/active/hardware-bringup/HOTSPOT_PRIORITY_20261013.md#后续相机合并帧定位与原生-jpeg-完成条件修复)。
 
 ## 打开融合实验（59 / 10.19.1）
 

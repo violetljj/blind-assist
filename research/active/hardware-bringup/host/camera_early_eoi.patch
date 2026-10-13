@@ -1,0 +1,105 @@
+--- baseline/driver/cam_hal.c
++++ candidate/driver/cam_hal.c
+@@ -20,6 +20,7 @@
+ #include "freertos/task.h"
+ #include "ll_cam.h"
+ #include "cam_hal.h"
++#include "jpeg_first_eoi.h"
+ 
+ #if (ESP_IDF_VERSION_MAJOR == 3) && (ESP_IDF_VERSION_MINOR == 3)
+ #include "rom/ets_sys.h"
+@@ -262,11 +263,31 @@
+     }
+ }
+ 
++// Publish ownership exactly as the upstream VSYNC path does. Never copy or
++// reinterpret timestamps; the native SOI belongs to cam_start_frame's stamp.
++static void ba_publish_frame(int frame_pos, camera_fb_t *frame)
++{
++    cam_obj->frames[frame_pos].en = 0;
++    if (xQueueSend(cam_obj->frame_buffer_queue, &frame, 0) != pdTRUE) {
++        camera_fb_t *old_frame = NULL;
++        if (xQueueReceive(cam_obj->frame_buffer_queue, &old_frame, 0) == pdTRUE) {
++            if (xQueueSend(cam_obj->frame_buffer_queue, &frame, 0) != pdTRUE) {
++                cam_obj->frames[frame_pos].en = 1;
++            }
++            cam_give(old_frame);
++        } else {
++            cam_obj->frames[frame_pos].en = 1;
++        }
++    }
++}
++
+ //Copy frame from DMA dma_buffer to frame dma_buffer
+ static void cam_task(void *arg)
+ {
+     int cnt = 0;
+     int frame_pos = 0;
++    jpeg_first_eoi_t jpeg_boundary;
++    jpeg_first_eoi_reset(&jpeg_boundary);
+     cam_obj->state = CAM_STATE_IDLE;
+     cam_event_t cam_event = 0;
+ 
+@@ -282,6 +303,7 @@
+                     //DBG_PIN_SET(1);
+                     if(cam_start_frame(&frame_pos)){
+                         cam_obj->frames[frame_pos].fb.len = 0;
++                        jpeg_first_eoi_reset(&jpeg_boundary);
+                         cam_obj->state = CAM_STATE_READ_BUF;
+                     }
+                     cnt = 0;
+@@ -365,6 +387,24 @@
+                     }
+ 
+                     cnt++;
++                    // Complete at the first native EOI while DMA is still
++                    // receiving this image. A missing VSYNC must not append
++                    // subsequent JPEGs or delay the already complete first one.
++                    if (cam_obj->jpeg_mode && !cam_obj->psram_mode) {
++                        size_t end = jpeg_first_eoi_feed(&jpeg_boundary,
++                            frame_buffer_event->buf, frame_buffer_event->len);
++                        if (end || jpeg_boundary.invalid) {
++                            ll_cam_stop(cam_obj);
++                            cam_obj->state = CAM_STATE_IDLE;
++                            cnt = 0;
++                            if (end) {
++                                frame_buffer_event->len = end;
++                                ba_publish_frame(frame_pos, frame_buffer_event);
++                            } else {
++                                cam_obj->frames[frame_pos].en = 1;
++                            }
++                        }
++                    }
+ 
+                 } else if (cam_event == CAM_VSYNC_EVENT) {
+                     //DBG_PIN_SET(1);
+@@ -386,6 +426,16 @@
+                             cnt++;
+                         }
+ 
++                        if (cam_obj->jpeg_mode && !cam_obj->psram_mode) {
++                            size_t end = jpeg_first_eoi_feed(&jpeg_boundary,
++                                frame_buffer_event->buf, frame_buffer_event->len);
++                            if (!end) {
++                                // No fake EOI, and no malformed partial JPEG.
++                                cam_obj->frames[frame_pos].en = 1;
++                                goto ba_start_next_frame;
++                            }
++                            frame_buffer_event->len = end;
++                        }
+                         cam_obj->frames[frame_pos].en = 0;
+ 
+                         if (cam_obj->psram_mode) {
+@@ -420,10 +470,12 @@
+                         }
+                     }
+ 
++                    ba_start_next_frame:
+                     if(!cam_start_frame(&frame_pos)){
+                         cam_obj->state = CAM_STATE_IDLE;
+                     } else {
+                         cam_obj->frames[frame_pos].fb.len = 0;
++                        jpeg_first_eoi_reset(&jpeg_boundary);
+                     }
+                     cnt = 0;
+                 }

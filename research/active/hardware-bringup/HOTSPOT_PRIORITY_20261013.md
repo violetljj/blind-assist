@@ -95,7 +95,7 @@ v10.19.2（60）将页头后的主要区域调整为紧凑就绪状态、原尺�
 | `wireless2_nagle_ready` | 19.663 | 97.96 / 423.65 | 30 / 629 | 16606 |
 | `wireless2_restored` | 24.162 | 68.03 / 166.44 | 1 / 799 | 12567 |
 
-TCP候选只将相机socket的 `TCP_NODELAY` 从1改为0。刷写后首次出现 `camera_not_ready`，20秒就绪检查失败；只复位相机板后HTTP200并收到图像，再测三路通过。候选未展示流畅度收益，不采用。JPEG负载比基线增加约26%，场景/自动曝光未严格控制，不能把全部退化归因于Nagle。初次失败日志保留为 `wireless2_nagle-test.log`。
+TCP候选只将相机socket的 `TCP_NODELAY` 从1改为0。刷写后首次出现 `camera_not_ready`，20秒就绪检查失败；只复位相机板后HTTP200并收到图像，再测三路通过。候选未展示流畅度收益，不采用。JPEG负载比基线增加约26%，不能把全部退化归因于Nagle。后续发现相机buffer可能包含多张完整JPEG，因此先前用场景/自动曝光解释负载变化并不充分；该旧段未逐张重审，不能直接认定其增量由哪种原因造成。初次失败日志保留为 `wireless2_nagle-test.log`。
 
 DMA候选恢复TCP_NODELAY=1，在相机初始化后、IMU初始化前调用 `esp_camera_set_psram_mode(true)`；编译及刷写通过，但HTTP图像流持续没有响应字节，手机20秒就绪检查失败，未产生有效性能段。网络状态仍可读取；串口未获得有效诊断，不能判定DMA内部根因，也未确认运行时DMA状态。不采用此候选，没有把未测出的吞吐作为性能结论。
 
@@ -118,3 +118,25 @@ DMA候选恢复TCP_NODELAY=1，在相机初始化后、IMU初始化前调用 `es
 本机保留此工程候选，实测部署二进制1140128字节、SHA256 `ccb17bba4bdb886a1f2f2566c1e1ae7a029b6d8a80b0f1868dab039885f04e3a`；刷前stock读回核对，只写app0并通过hash验证。原版仍保存为 `stock.bin`。构建入口提供显式选项，常规构建默认保持原SDK：`pwsh -NoProfile -File research/active/hardware-bringup/build.ps1 -Sketch atom_wifi -AtomTcpSendBufferBytes 32768`。`host/rebuild_atom_lwip.py` 固定源码、核验配置/ABI/符号与缓存指纹，在artifact目录输出独立库；build入口强制完整链接并检查map，记录库哈希。这个候选不改变原始采集规则，也未验证长时间功耗/内存余量或所有无线环境。
 
 正式构建入口的独立库重建、缓存校验复用、完整Atom固件编译及单库map检查均通过，日志 `reproducible-build.log`。该复现构建输出在 `artifacts.local/hardware-bringup/build/atom_wifi/`，未再次刷机；实测和设备当前状态仍对应上面的ccb17二进制，不混淆不同构建路径的产物哈希。文档链接与作用域diff检查通过，手机返回首页，最终两板boot不变。
+
+## 后续：相机合并帧定位与原生 JPEG 完成条件修复
+
+用户确认相机与光照基本不变后，进一步检查原始buffer，确认先前部分“大JPEG”其实包含多张完整JPEG。新30秒stock32K段 `cam_baseline` 为5/817个合并buffer；仅把cam_task从core0移到core1的候选为111/611（77个双图、34个三图），预览25.33→18.46fps，不采用。全部116个合并buffer的266个子图均可独立解码为640×480；子图SHA在本段没有重复，图间填充1632–1972字节。两图buffer到ready约72ms、三图约108ms，支持收帧跨越了多个图像边界，具体中断丢失原因尚未确认。原记录的哈希完整性仍成立，但记录数不能解释为全部传感器曝光数，负载增加不能直接解释为场景变复杂。
+
+另测core0下OV3660 PCLK分频10→20，保留XCLK20MHz/VGA/质量12；该候选两次流探测均无图，状态接口仍存活。因为寄存器回读字段随图像头发送，未观测到回读结果，不能声称硬件分频配置已验证。保留失败，恢复stock32K后正常出图；未用补EOI或改时间戳规避。
+
+采用机制：非PSRAM DMA路径每复制一块数据后增量解析JPEG，收到第一张图像的合法原生EOI即停止DMA、移交buffer，等待下一VSYNC；VSYNC末块路径也按首图结构验证。跳过APP等长度段，正确处理FF00/restart/跨块，拒绝未完整结束的图像。保留首图原字节和cam_start_frame时间戳，无补写EOI、重编码或以最后图冒充首图。PSRAM DMA及非JPEG路径不变。它直接修改驱动完成条件，不是手机收到延迟大包后再裁剪。
+
+安装SDK的camera精确源码revision不可追溯，因此没有盲目替换最新版。固定官方 `espressif/esp32-camera` 提交 `202df95d7b1dc72e9303ad78f47b8dc9f339e6a1`，两份公开头与SDK逐字节相同；重编全部28成员，符号集合一致，camera_config/camera_fb/sensor大小104/40/212字节及关键偏移一致。先测这份源码的未修改基线，再测只加EOI修复的版本；二者都完整链接相同32K lwIP，map确认没有混入SDK旧库。
+
+| 30秒三路工程段 | Canvas fps | RGB接收P95 / 最大 ms | >100ms / 间隔数 | 合并JPEG / 保存RGB | 帧时间戳到发送P95 ms |
+|---|---:|---:|---:|---:|---:|
+| 同源码未改驱动 `driver_baseline` | 21.758 | 81.225 / 246.201 | 27/709 | 70/710 | 73.011 |
+| 原生EOI完成 `driver_candidate` | 24.561 | 67.401 / 149.474 | 8/796 | 0/797 | 36.263 |
+| 同固件复测 `driver_selected` | 25.359 | 65.587 / 150.877 | 4/813 | 0/814 | 36.264 |
+
+两段修复版共1611张均只有一个完整JPEG、零尾随字节，Pillow实际解码与原文件SHA检查通过；ToF/IMU原始字节连续覆盖、RGB发送序号连续及客户端关闭检查通过，均COMPLETED/user_stop。IMU有效3024/3037样本，dt P95为11.597/11.891ms，无sample_gap或序号缺口。合成解析器2469项断言及旧1428个实采buffer的分块/截断/首图哈希检查通过。标记解析器不是熵解码器；到发送的时间差来自板端同一时钟，不是曝光至手机显示延迟。
+
+实机保留 `driver-eoi/firmware-candidate/atom_wifi.ino.bin`，SHA256 `a59ead8a6038076f4f67268599b8612faae4b96f211c077d452869525b69bd99`，刷前读回对照版本、仅app0写入及hash核验通过；App61/10.19.3与H3保持。证据含失败、源码、解析器、逐帧原文件和刷写回执，位于 `artifacts.local/evidence/camera-cadence-20261013/`。构建选项为 `-Sketch atom_wifi -AtomTcpSendBufferBytes 32768 -AtomCameraEarlyEoi`，默认仍保留原SDK。改善支持保留该工程修复，但仍有约151ms长间隔；两段固定场景短测不证明移动、弱网或长期稳定性。
+
+正式入口的完整固件编译、单库map校验及2469项解析测试通过。复现产物SHA256 `1c77084d9f18c755b0b342744d78c7d2a90d9ad7cfdf9fb64e6cf8eb56814bb0`，未刷机，不与实测a59ead混淆。补丁按LF规范化校验以兼容Git检出；修复校验方式后重建camera库与完整编译使用的库SHA完全一致，缓存复用通过。源码/补丁/SDK指纹与ABI证据由helper保存，SDK本体未改。文档索引与作用域diff检查通过，采集客户端关闭，手机返回MainActivity；最终Atom boot `63537b9d808968c1`、H3 boot `de7d912579610d3c` 均与最后采集一致。
