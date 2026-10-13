@@ -2,7 +2,7 @@
 
 ## 2026-10-13 工程接入状态
 
-[数据再利用与公开参考](../research/active/hardware-bringup/DATA_POTENTIAL_DEV_20261013.md)：已整理5407张未缓存RGB，VisTa3D两线缆场景12帧已读通。[五支线扩展目录](../research/active/hardware-bringup/DATA_OPPORTUNITY_CATALOG_20261013.md)新增核查9项本地资产、27项公开来源，确认27段8710RGB/46430IMU及8000对Hypersim原生train可复用；SP-TransientBench/ClearGrasp/GMRPD小样落地。优先完整RGB时序、细结构距离、ToF区内混合机制；尚无新算法收益，既有独立实机检验与冻结规则保持。
+[数据再利用](../research/active/hardware-bringup/DATA_POTENTIAL_DEV_20261013.md)及[五支线扩展目录](../research/active/hardware-bringup/DATA_OPPORTUNITY_CATALOG_20261013.md)：首两轮9项本地/27项公开来源，第三轮将5407未缓存RGB整理成54复核入口；Hypersim固定4帧确认旧单点降采样丢失近表面支持，ZJU32train找出3个区内混合复核例。新增OctoNet实样232帧64×18 ST直方图、LLRGBD真实照明配对。数据支线优先原生几何支持与ST bin合同，其次完整RGB时序/细结构距离；无新模型收益，既有实机检验和冻结规则保持。
 
 [实机融合工程/几何开发](../research/active/hardware-bringup/REAL_FUSION_ENGINEERING_DEV_20261013.md)完成：修复手机因果RGB配对/epoch/重试及预检假完整，7项JVM、11项预检与编译通过，源码未安装。地面射线仅给条件上界；SIFT/KLT两臂各0/12图像对可采用地面解，不升级测距。下一优先20cm已量横移＋哑光地面标记与实测杆位置，而非继续调既有一致性门槛。
 
