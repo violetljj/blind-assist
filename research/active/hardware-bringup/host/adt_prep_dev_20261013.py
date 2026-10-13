@@ -16,7 +16,9 @@ from pathlib import Path
 
 import numpy as np
 
+import os
 STRIDE, F, W_RAW, H_RAW = 6, 425.0, 640, 480
+SYNTH = os.environ.get('ADT_SYNTH') == '1'          # use ADT synthetic renderings instead of real RGB
 
 
 def corridor_from_scene(R_sc):
@@ -40,7 +42,7 @@ def prep(args):
     ts = [t for t in dp.get_aria_device_capture_timestamps_ns(sid) if t0 <= t <= t1][::STRIDE]
     rgbs, deps, Rs, hs, tt = [], [], [], [], []
     for t in ts:
-        img = dp.get_aria_image_by_timestamp_ns(t, sid); dep = dp.get_depth_image_by_timestamp_ns(t, sid)
+        img = (dp.get_synthetic_image_by_timestamp_ns(t, sid) if SYNTH else dp.get_aria_image_by_timestamp_ns(t, sid)); dep = dp.get_depth_image_by_timestamp_ns(t, sid)
         pose = dp.get_aria_3d_pose_by_timestamp_ns(t)
         if not (img.is_valid() and dep.is_valid() and pose.is_valid()):
             continue
