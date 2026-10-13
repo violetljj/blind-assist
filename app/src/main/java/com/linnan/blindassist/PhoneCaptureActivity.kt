@@ -30,6 +30,7 @@ import com.linnan.blindassist.capture.TcpImuCaptureSource
 import com.linnan.blindassist.device.glasses.HardwareWifiDiscovery
 import com.linnan.blindassist.ui.compose.BlindAssistTheme
 import org.json.JSONObject
+import org.json.JSONArray
 import java.net.URI
 import java.util.concurrent.Executors
 import java.util.concurrent.RejectedExecutionException
@@ -396,15 +397,17 @@ class PhoneCaptureActivity : ComponentActivity() {
 }
 
 private class CapturePreviewMetrics {
+    private data class DrawSample(val receiptNs: Long, val drawNs: Long)
     private var startedNs = SystemClock.elapsedRealtimeNanos()
     private var decodedCount = 0L
     private var drawnCount = 0L
     private var previousReceiptNs = 0L
     private val ages = ArrayDeque<Long>()
     private val decodeTimes = ArrayDeque<Long>()
+    private val drawSamples = ArrayDeque<DrawSample>()
     @Synchronized fun reset() {
         startedNs = SystemClock.elapsedRealtimeNanos(); decodedCount = 0; drawnCount = 0; previousReceiptNs = 0
-        ages.clear(); decodeTimes.clear()
+        ages.clear(); decodeTimes.clear(); drawSamples.clear()
     }
     @Synchronized fun decoded(durationNs: Long) {
         decodedCount++
@@ -416,13 +419,30 @@ private class CapturePreviewMetrics {
         previousReceiptNs = receiptNs; drawnCount++
         if (ages.size == 1024) ages.removeFirst()
         ages.addLast((nowNs - receiptNs).coerceAtLeast(0))
+        if (drawSamples.size == 2048) drawSamples.removeFirst()
+        drawSamples.addLast(DrawSample(receiptNs, nowNs))
     }
     @Synchronized fun receipt(): JSONObject {
-        val elapsedNs = SystemClock.elapsedRealtimeNanos() - startedNs
+        val snapshotNs = SystemClock.elapsedRealtimeNanos()
+        val elapsedNs = snapshotNs - startedNs
+        val samples = drawSamples.toList()
+        val intervals = samples.zipWithNext { a, b -> b.drawNs - a.drawNs }
+        // Age immediately before replacement includes the time the previous image was held.
+        // Both clocks are Android elapsed realtime; this is not sensor/exposure age.
+        val heldAges = samples.zipWithNext { a, b -> (b.drawNs - a.receiptNs).coerceAtLeast(0) }
         return JSONObject().put("schema", "blindassist-atom-preview-performance-v1")
             .put("elapsed_ns", elapsedNs).put("decoded_frames", decodedCount).put("drawn_unique_frames", drawnCount)
             .put("drawn_fps", drawnCount * 1e9 / elapsedNs.coerceAtLeast(1))
             .put("receipt_to_canvas_draw_ms", distribution(ages)).put("decode_ms", distribution(decodeTimes))
+            .put("unique_canvas_interval_ms", distribution(intervals))
+            .put("receipt_age_before_replacement_ms", distribution(heldAges))
+            .put("canvas_timeline", JSONArray().apply {
+                samples.forEach { put(JSONObject().put("receipt_ns", it.receiptNs).put("draw_ns", it.drawNs)) }
+            })
+            .put("canvas_timeline_dropped", (drawnCount - samples.size).coerceAtLeast(0))
+            .put("snapshot_ns", snapshotNs)
+            .put("last_canvas_receipt_age_ms", samples.lastOrNull()?.let { (snapshotNs - it.receiptNs) / 1e6 } ?: JSONObject.NULL)
+            .put("last_canvas_hold_ms", samples.lastOrNull()?.let { (snapshotNs - it.drawNs) / 1e6 } ?: JSONObject.NULL)
             .put("boundary", "Latest-only UI preview; Android receipt to Canvas submission, not exposure or physical display latency; recording stream unchanged")
     }
     private fun distribution(values: Collection<Long>): Any {
