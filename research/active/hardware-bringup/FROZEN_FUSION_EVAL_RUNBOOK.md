@@ -1,6 +1,6 @@
-# 新头戴录制：冻结 v1/v2 执行入口
+# 新头戴录制：冻结 v1/v2/v3 执行入口
 
-2026-10-12 工程准备。目标是消除输入遗漏与结果遗漏；不开展新评价、不调整科学逻辑。以[冻结协议](FROZEN_FUSION_EVAL_V1_PROTOCOL.md)为唯一模型、标签与判据依据。
+2026-10-12 工程准备；2026-10-13 录制前加入[冻结 v3](FROZEN_FUSION_EVAL_V3_PROTOCOL.md)，同一批 raw/labels 三版都跑、并列报告。目标是消除输入遗漏与结果遗漏；不开展新评价、不调整科学逻辑。以[冻结协议](FROZEN_FUSION_EVAL_V1_PROTOCOL.md)为唯一模型、标签与判据依据。
 
 ## 录制与标签
 
@@ -34,6 +34,8 @@ if (Test-Path -LiteralPath $out) { throw '输出路径已存在；保留原结�
 if ($LASTEXITCODE -ne 0) { throw 'v1 执行失败；保留日志和部分输出，先查失败原因' }
 & $py "$hostTools\frozen_fusion_eval_v2.py" $out
 if ($LASTEXITCODE -ne 0) { throw 'v2 执行失败；保留 v1 结果，先查失败原因' }
+& $py "$hostTools\frozen_fusion_eval_v3.py" --raw $raw --labels $labels --out $out
+if ($LASTEXITCODE -ne 0) { throw 'v3 执行失败；保留 v1/v2 结果，先查失败原因' }
 & $py "$hostTools\check_frozen_fusion_inputs.py" --raw $raw --labels $labels --reports $out
 if ($LASTEXITCODE -ne 0) { throw '结果覆盖不完整，不作总体通过结论' }
 ```

@@ -242,7 +242,10 @@ def check(raw, labels_path, reports=None):
         warnings.append('no calibration segment: frozen evaluator uses default head height 1.35 m')
     summaries = {}
     if reports:
-        for version in (1, 2):
+        versions = (1, 2, 3) if (reports / 'frozen_fusion_eval_v3.json').exists() else (1, 2)
+        if 3 not in versions:
+            warnings.append('v3 report absent: frozen v3 (registered 2026-10-13) was not run on this batch')
+        for version in versions:
             report = read_json(reports / f'frozen_fusion_eval_v{version}.json')
             rows = report['sessions']
             if set(rows) != set(labels):
@@ -267,7 +270,7 @@ def main():
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--labels', type=Path, help='Check labels and input compatibility before frozen evaluation')
     mode.add_argument('--input-only', action='store_true', help='Check an imported capture batch before labeling; never checks scientific criteria')
-    parser.add_argument('--reports', type=Path, help='Also check existing v1 AND v2 outputs; never runs inference')
+    parser.add_argument('--reports', type=Path, help='Also check existing v1 AND v2 outputs (and v3 when present); never runs inference')
     args = parser.parse_args()
     if args.input_only and args.reports:
         parser.error('--reports requires --labels; --input-only cannot verify evaluation completeness')

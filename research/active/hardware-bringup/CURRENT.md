@@ -36,6 +36,8 @@ Atom人工零参考与名义光轴仍未完成独立标定。Android接收匹配
 
 [小深度模型对比](REAL_RGB_SMALL_MODEL_DEV_20261012.md)：手机候选为DAV2-Small相对（官方Apache-2.0，与DEPTHOR内嵌逐值一致）＋ToF/地面锚定518px：正前杆BODY67%/92%（UniDepth-L 72/95），空通道0–3%，笔记本56ms；横杆HEAD仅约11%需ToF补；DAV2-S公制Hypersim淘汰（0/18%），UniDepth-S 33/77%。手机实测（8 Gen 3）686×518 HTP 120ms/GPU 190ms，HTP输出与FP32相关0.99999；在线头高不可靠，改开机低头ToF标定。现已接入独立手机融合实验；下一步新录制冻结检验。
 
+[冻结检验v3](FROZEN_FUSION_EVAL_V3_PROTOCOL.md)：2026-10-13录制前冻结，= v2＋稳健ToF锚定替换（原拟合未过质量合同、且共识拟合通过才替换）。[开发依据](FUSION_V3_DEV_20261013.md)：已消费上午19＋下午18段中，上午低头大厅RGB报警96%→0%（原仿射退化把地面算到头高），其余段判定不变；上午平视空大厅末段ToF近距回波（RGB无目标）v2/v3都未通过，原因未明。新录制v1/v2/v3同跑并列报告。
+
 [冻结检验v1/v2](FROZEN_FUSION_EVAL_V1_PROTOCOL.md)：2026-10-12在新头戴录制前冻结（ToF强档或DAV2-S RGB，v2加2/3帧时序确认），明日录制后只跑脚本；蒸馏版DAV2-S使竖杆变差（67→33%），未采用。
 
 [RGB读出门槛旁证](REAL_RGB_READOUT_CALIBRATION_DEV_20261012.md)：ARKitScenes真实帧（LiDAR仿真ToF锚定DAV2-S）上，事先门槛150px≈8.3e-4sr的eval检出92.2%/误报4.8%，cal 98.9/3.0%，AUC0.96–0.999；无细杆，不改冻结门槛。

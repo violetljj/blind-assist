@@ -67,6 +67,18 @@ class CompletenessTests(unittest.TestCase):
         (self.root / 'frozen_fusion_eval_v2.json').write_text(json.dumps({'sessions': rows}), encoding='utf8')
         self.assertEqual(self.result(self.root)['status'], 'INCOMPLETE')
 
+    def test_v3_report_checked_when_present(self):
+        rows = {name: dict(cls=label['class'], ready_frames=3, **{'pass': True}) for name, label in self.labels.items()}
+        for version in (1, 2):
+            (self.root / f'frozen_fusion_eval_v{version}.json').write_text(json.dumps({'sessions': rows}), encoding='utf8')
+        result = self.result(self.root)
+        self.assertEqual(result['status'], 'COMPLETE')
+        self.assertTrue(any('v3 report absent' in w for w in result['warnings']))
+        bad = {name: dict(row) for name, row in rows.items()}
+        bad['capture-a'].update(ready_frames=0, **{'pass': None})
+        (self.root / 'frozen_fusion_eval_v3.json').write_text(json.dumps({'sessions': bad}), encoding='utf8')
+        self.assertEqual(self.result(self.root)['status'], 'INCOMPLETE')
+
     def test_duplicate_labels_rejected(self):
         self.label_file.write_text('{"capture-a": {}, "capture-a": {}}', encoding='utf8')
         with self.assertRaisesRegex(ValueError, 'duplicate'):
