@@ -1,0 +1,38 @@
+{
+ "capture-20261013T054058171Z-a9367b50": {
+  "class": "calibration",
+  "scene": "standing look-down at corridor floor"
+ },
+ "capture-20261013T054111563Z-bef93532": {
+  "class": "unknown",
+  "scene": "look-down at floor, then looking down while walking to the corridor-end window wall"
+ },
+ "capture-20261013T054159756Z-bb3dab41": {
+  "class": "ahead",
+  "scene": "corridor, broom standing mid-corridor; approach head-on until the handle is ~0.5 m (thin pole)"
+ },
+ "capture-20261013T054233908Z-d8f8554f": {
+  "class": "side",
+  "scene": "corridor, broom by the left wall near the extinguisher; walk past it on the left side"
+ },
+ "capture-20261013T054301564Z-98ec3dc8": {
+  "class": "ahead",
+  "scene": "corridor, broom mid-corridor; approach head-on until close (thin pole)"
+ },
+ "capture-20261013T054334462Z-bb1496f0": {
+  "class": "ahead",
+  "scene": "long corridor, broom mid-corridor far ahead; approach head-on until close (thin pole)"
+ },
+ "capture-20261013T054405085Z-eee17d38": {
+  "class": "ahead",
+  "scene": "broom ~1 m in front of a white end wall; approach head-on until the handle is close (thin pole; wall behind may also alert)"
+ },
+ "capture-20261013T054437553Z-ab6915b1": {
+  "class": "unknown",
+  "scene": "approach broom in front of white wall until close, then back away (end window is the retreat)"
+ },
+ "capture-20261013T054511486Z-bd3e6967": {
+  "class": "unknown",
+  "scene": "approach broom until very close, then back away and turn toward a door (end window is the retreat)"
+ }
+}
