@@ -154,7 +154,7 @@ static VL53LMZ_Configuration dev;
 static VL53LMZ_ResultsData result;
 static VL53LMZ_Motion_Configuration cfg;
 static cnh_data_buffer_t cnh;
-static uint32_t bytes=0, seq=0, lastFrame=0, lastNote=0, readUs=0;
+static uint32_t bytes=0, seq=0, lastFrame=0, lastNote=0, readUs=0, i2cReadUs=0;
 static bool running=false;
 static const char* lastOp="none";
 static unsigned lastStatus=0;
@@ -196,6 +196,7 @@ static bool probeSensorAtStartup() {
     startupFirstStatus,startupFirstAlive,startupSdaBefore,startupSdaAfter,startupSclAfter);
   if (!Wire.begin(5,6,CNH_I2C_HZ)) return ok("wire_reopen",1);
   Wire.setTimeOut(100);
+  if (!ok("i2c_read_backend_reopen",UseEsp32HalRead(0))) return false;
   alive=0; startupProbeAttempts=2;
   return ok("is_alive_retry",vl53lmz_is_alive(&dev,&alive)) && alive;
 }
@@ -317,6 +318,7 @@ void setup() {
   cnhOutput.printf("{\"type\":\"boot\",\"firmware\":\"xiao-cnh-h3-wifi-v1\",\"startup_kind\":\"physical_boot\",\"boot_id\":\"%s\",\"device_id\":\"%s\"}\n",bootId.c_str(),deviceId.c_str());
   if (!Wire.begin(5,6,CNH_I2C_HZ)) { ok("wire_begin",1); return; }
   Wire.setTimeOut(100);
+  if (!ok("i2c_read_backend",UseEsp32HalRead(0))) return;
   dev.platform.address=0x52;
   if(!probeSensorAtStartup()) return;
   if(!ok("init",vl53lmz_init(&dev))) return;
@@ -334,7 +336,7 @@ void setup() {
   bh.idx=VL53LMZ_CNH_DATA_IDX; bh.type=4; bh.size=bytes/4;
   if(!ok("cnh_block",vl53lmz_add_output_block(&dev,bh.bytes))) return;
   if(!ok("start",vl53lmz_send_output_config_and_start(&dev))) return;
-  cnhOutput.printf("{\"type\":\"config\",\"zones\":%d,\"bins\":%d,\"start_bin\":0,\"sub_sample\":8,\"base_bin_mm\":37.5348,\"i2c_hz\":%lu,\"cnh_bytes\":%lu,\"read_bytes\":%lu,\"frequency_hz\":5,\"integration_ms\":20,\"ranging_mode\":\"autonomous\",\"transport\":\"tcp_ndjson\",\"tcp_port\":3335}\n",
+  cnhOutput.printf("{\"type\":\"config\",\"zones\":%d,\"bins\":%d,\"start_bin\":0,\"sub_sample\":8,\"base_bin_mm\":37.5348,\"i2c_hz\":%lu,\"read_backend\":\"esp32_hal_direct\",\"read_timeout_policy\":\"max_100ms_2x_wire_ceil_ms_plus_25ms\",\"cnh_bytes\":%lu,\"read_bytes\":%lu,\"frequency_hz\":5,\"integration_ms\":20,\"ranging_mode\":\"autonomous\",\"transport\":\"tcp_ndjson\",\"tcp_port\":3335}\n",
                 Z,NB,(unsigned long)CNH_I2C_HZ,bytes,dev.data_read_size);
   running=true; lastFrame=millis();
 }
@@ -355,9 +357,11 @@ void loop() {
   uint8_t ready=0, s=vl53lmz_check_data_ready(&dev,&ready);
   if(s) {ok("ready",s);delay(500);return;}
   if(ready) {
+    const uint32_t transferBefore = ReadTransferUs();
     uint32_t t0=micros();
     s=vl53lmz_get_ranging_data(&dev,&result);
     readUs=micros()-t0;
+    i2cReadUs=(uint32_t)(ReadTransferUs()-transferBefore);
     if(s) {ok("read",s);delay(100);return;}
     s=vl53lmz_results_extract_block(&dev,VL53LMZ_CNH_DATA_IDX,(uint8_t*)cnh,bytes);
     if(s) {ok("extract",s);delay(100);return;}
@@ -380,7 +384,7 @@ void loop() {
     if (seq) sensorMaxIntervalUs = max(sensorMaxIntervalUs, (uint32_t)(frameUs-sensorLastFrameUs));
     sensorLastFrameUs = frameUs;
     lastFrame=millis(); ++seq;
-    cnhOutput.printf("{\"type\":\"cnh_frame\",\"seq\":%lu,\"ms\":%lu,\"read_us\":%lu,\"stream\":%u,\"rows\":8,\"cols\":8,\"bins\":%d,\"distance_mm\":[",seq,lastFrame,readUs,dev.streamcount,NB);
+    cnhOutput.printf("{\"type\":\"cnh_frame\",\"seq\":%lu,\"ms\":%lu,\"read_us\":%lu,\"i2c_read_us\":%lu,\"stream\":%u,\"rows\":8,\"cols\":8,\"bins\":%d,\"distance_mm\":[",seq,lastFrame,readUs,i2cReadUs,dev.streamcount,NB);
     for(int i=0;i<Z;++i){if(i)cnhOutput.print(',');cnhOutput.print(result.distance_mm[i]);}
     cnhOutput.print("],\"target_status\":[");
     for(int i=0;i<Z;++i){if(i)cnhOutput.print(',');cnhOutput.print(result.target_status[i]);}
