@@ -1,6 +1,6 @@
 # 实机接入：当前状态
 
-更新：2026-10-13。本页已收拢旧过程；完整整理前正文保留在Git `cd227114`，旧结果与失败沿用各报告。总研究决定见[CURRENT_DECISION](../../../docs/CURRENT_DECISION.md)。
+更新：2026-10-14。本页已收拢旧过程；完整整理前正文保留在Git `cd227114`，旧结果与失败沿用各报告。总研究决定见[CURRENT_DECISION](../../../docs/CURRENT_DECISION.md)。
 
 ## 手机融合实验已安装
 
@@ -20,7 +20,7 @@ Atom人工零参考与名义光轴仍未完成独立标定。Android接收匹配
 
 [数据潜力检查](DATA_POTENTIAL_DEV_20261013.md)及[四轮扩展](DATA_OPPORTUNITY_CATALOG_20261013.md)：现有完整RGB新增54复核入口；第四轮导出8-family/393216格原生深度分布，核实SANPO50帧人工身份及6组五关键帧pole，读通GW-Depth玻璃门raw/人工平面修正配对。优先已有人工形状与原生几何；OctoNet18-bin物理合同仍未闭合，LLRGBD深度编码无米制比例。数据成果不等于检测增益。
 
-[现有细杆信息与接近诊断](THIN_INFORMATION_AND_APPROACH_DEV_20261014.md)（10-14）完成：22张旧弱线中19张native/缓存配对，细脊正→负0/19；未定位到输入缩放或输出回采样为主损失。3张旧深度缺失对应nearest-receipt超±100ms，2张横柄缺自主候选，4张有候选但不稳；10张稳定而几何盒外不能算漏报。运动处理278帧/2065候选，目标局部尺度与名义IMU同可读11/22，迎面/侧杆短扩张重叠、长轨迹碎片化，三类分类NOT_EVALUABLE；真实ADT转头背景仅官方位姿oracle支持去旋转。优先保视觉观测与长程身份、核对曝光/gyro合同并补公制参照，不升级报警。既有[定位17/22](REAL_THIN_STRUCTURE_DEV_20261013.md)、[稳定13/22](REAL_THIN_LOCAL_GEOMETRY_DEV_20261013.md)及[距离UNKNOWN/硬互证失败](REAL_THIN_CONFIDENCE_DEV_20261013.md)保留。
+[RGB时序与连续细杆身份](THIN_RGB_CONTINUITY_DEV_20261014.md)（10-14）完成：4段654张原RGB独立于ToF/metric ready推进，设备capture时钟主线、到达停顿单列；原模型/候选参数保持。旧22弱锚点定位17→20/22，收益来自补齐RGB；连续线/像素支持令侧杆最长目标关联观测3.242→4.610秒，仅22/58图、可见区间12.390秒，仍无同ID覆盖全部15去重弱点。迎面两段15.272/13.723秒更连贯；碎片family仅一次局部回认且使迎面一段缩至8.392秒，不推广。疑似杆→背景漂移、未观测缺口与短片段限制保留，回认首图episode hits=1/stable=false已修；不接报警、不宣称稳定分类或安全。下一重点为杆身/背景身份外观证据。此前[信息丢失/接近诊断](THIN_INFORMATION_AND_APPROACH_DEV_20261014.md)未发现native/缓存细脊正→负（0/19）；既有[稳定13/22](REAL_THIN_LOCAL_GEOMETRY_DEV_20261013.md)与[距离UNKNOWN/硬互证失败](REAL_THIN_CONFIDENCE_DEV_20261013.md)沿用原口径。
 
 [10月13日尺度/时序开发比较](REAL_FUSION_REFINEMENT_DEV_20261013.md)：已消费18段1677就绪帧，保留稳健ToF拟合成功时才替换尺度的开发候选。低头细杆any65→67/79、首报提前0.568秒；18段any计数未损，但桌/横杆BODY少15个query帧，未知是否正确。[第二轮锚点/运动/地面比较](REAL_FUSION_REFINEMENT_V2_DEV_20261013.md)未超过该候选：双mode增地面报警、运动搬运无any收益、地面回退增柱但损横杆，均不采用。冻结v1/v2及App保持；下一优先补固定安装位置/距离与去杆配对参考，独立头戴检验仍待录制。
 
