@@ -7,6 +7,7 @@ import android.os.SystemClock
 import com.linnan.blindassist.capture.*
 import com.linnan.blindassist.vision.*
 import org.json.JSONObject
+import androidx.compose.ui.graphics.asImageBitmap
 import java.io.File
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicBoolean
@@ -27,7 +28,7 @@ internal data class MobileFusionView(
     // Demo presentation and v7w gating; NaN distances mean "not measured in that box".
     val demoRules: Boolean = true, val walking: Boolean = false, val limitM: Double = Double.NaN,
     val headDistanceM: Double = Double.NaN, val bodyDistanceM: Double = Double.NaN,
-    val pitchDeg: Double = Double.NaN, val poseOk: Boolean = false,
+    val pitchDeg: Double = Double.NaN, val rollDeg: Double = Double.NaN, val poseOk: Boolean = false,
     val boxes: List<List<Pair<Float, Float>?>> = emptyList(), val tofGrid: FloatArray? = null,
     val extrinsicPitchDeg: Double = Double.NaN,
 ) {
@@ -42,6 +43,7 @@ internal class MobileFusionSession(
     private val application: Application, private val directory: File,
     private val atomHost: String, private val tofHost: String,
     private val demoRules: Boolean = true,
+    private val publishFrame: (androidx.compose.ui.graphics.ImageBitmap, Long) -> Unit = { _, _ -> },
     private val publish: (MobileFusionView) -> Unit,
 ) : AutoCloseable {
     private val lease = MobileFusionLease.acquire()
@@ -50,12 +52,25 @@ internal class MobileFusionSession(
     private val tofWork = ThreadPoolExecutor(1,1,0,TimeUnit.MILLISECONDS,ArrayBlockingQueue(2),
         { r -> Thread(r,"fusion-tof") },ThreadPoolExecutor.AbortPolicy())
     private val rgbWork = Executors.newSingleThreadExecutor { Thread(it,"fusion-rgb") }
+    // Display-only preview, decoupled from inference, as in the capture page: one worker always
+    // decodes the newest camera frame and older ones are skipped.
+    // Low priority and at most ~15 fps so preview work never starves ToF/RGB inference.
+    private val displayWork = Executors.newSingleThreadExecutor { r ->
+        Thread({ android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND); r.run() },"fusion-display")
+    }
+    @Volatile private var displayLastNs = 0L
+    private val displayLatest = AtomicReference<AtomCameraCaptureFrame?>()
+    private val displayQueued = AtomicBoolean()
+    private var displayPixels = IntArray(0)
+    private val displayProcessor by lazy {
+        runCatching { AtomPreviewPixels.fromRemap(File(directory,"atom_remap.bin").readBytes()) }.getOrElse { AtomPreviewPixels() }
+    }
     private val rgbPending = AtomicReference<RgbJob?>()
     private val rgbBusy = AtomicBoolean()
     private var cameraSource: AtomMjpegCaptureSource? = null
     private var tofSource: TcpCnhCaptureSource? = null
     private var imuSource: TcpImuCaptureSource? = null
-    private var camera: MobileFusionCamera? = null
+    @Volatile private var camera: MobileFusionCamera? = null
     private var tofEngine: CnhStrongEngine? = null
     private var depth: Dav2DepthRuntime? = null
     private var geometry: AtomRgbGeometry? = null
@@ -127,6 +142,7 @@ internal class MobileFusionSession(
             cameraLastReceiptNs.set(it.receivedElapsedNs)
             cameraFrames.incrementAndGet()
             inputs.addCamera(it)
+            showPreview(it)
         } }, { unavailable("相机",it) })
         ims.start(onRecord={ r ->
             if(!closed.get()) { inputs.addImu(r); r.frame?.let { gait.add(r.hostReceivedMonotonicNs,it.accelG) } }
@@ -148,6 +164,36 @@ internal class MobileFusionSession(
                 inputs.invalidate(expectedEpoch=match.epoch)
             }
         },onStatus={ unavailable("ToF",it) })
+    }
+
+    private fun showPreview(frame: AtomCameraCaptureFrame) {
+        displayLatest.set(frame)
+        if(!displayQueued.compareAndSet(false,true)) return
+        try { displayWork.execute {
+            try {
+                while(!closed.get()) {
+                    val wait=66_000_000L-(SystemClock.elapsedRealtimeNanos()-displayLastNs)
+                    if(wait>0) Thread.sleep(wait/1_000_000,(wait%1_000_000).toInt())
+                    val next=displayLatest.getAndSet(null) ?: break
+                    displayLastNs=SystemClock.elapsedRealtimeNanos()
+                    // Undistort only, no tone enhancement. Without a usable remap the raw frame is
+                    // published and its orientation is fixed when drawing.
+                    val raw=BitmapFactory.decodeByteArray(next.jpeg,0,next.jpeg.size) ?: continue
+                    val processor=displayProcessor
+                    if(!processor.supportsUndistort || raw.width!=640 || raw.height!=480) {
+                        if(!closed.get()) publishFrame(raw.asImageBitmap(),next.receivedElapsedNs); continue
+                    }
+                    try {
+                        if(displayPixels.size!=raw.width*raw.height) displayPixels=IntArray(raw.width*raw.height)
+                        raw.getPixels(displayPixels,0,raw.width,0,0,raw.width,raw.height)
+                        val out=processor.apply(displayPixels,raw.width,raw.height,true,false)
+                        val bitmap=Bitmap.createBitmap(out.pixels,out.width,out.height,Bitmap.Config.ARGB_8888)
+                        if(!closed.get()) publishFrame(bitmap.asImageBitmap(),next.receivedElapsedNs)
+                    } finally { raw.recycle() }
+                }
+            } catch(error:Exception) { android.util.Log.w("FusionDisplay","preview failed",error) }
+            finally { displayQueued.set(false); if(displayLatest.get()!=null && !closed.get()) showPreview(displayLatest.get()!!) }
+        } } catch(_:RejectedExecutionException) { displayQueued.set(false) }
     }
 
     private fun processTof(f:CnhCaptureFrame,t:Long,match:MobileFusionInputBuffer.Match,pose:Pair<Double,Double>) {
@@ -276,7 +322,7 @@ internal class MobileFusionSession(
             },ready=poseOk,head=confirmed.first && poseOk,body=confirmed.second && poseOk,
                 tofHead=tofHead,tofBody=tofBody,rgbHead=rgbHead,rgbBody=rgbBody,
                 demoRules=demoRules,walking=walking,limitM=limit,headDistanceM=headM,bodyDistanceM=bodyM,
-                pitchDeg=job.pitch,poseOk=poseOk,boxes=if(poseOk && image!=null) g.boxOutlines(job.pitch,job.roll) else emptyList(),
+                pitchDeg=job.pitch,rollDeg=job.roll,poseOk=poseOk,boxes=if(poseOk && image!=null) g.boxOutlines(job.pitch,job.roll) else emptyList(),
                 tofGrid=grid,extrinsicPitchDeg=extrinsicPitch,
                 anchor=rgb?.anchor?.name ?: "NONE",heightM=height,heightSource=heightSource,latencyMs=elapsed,
                 receiptNs=job.receiptNs,sequence=job.frame.sequence,image=image,processed=count,skipped=skipped.get())
@@ -300,7 +346,7 @@ internal class MobileFusionSession(
                 .put("tof_queue_rejected",tofQueueRejected.get()).put("rgb_pending_replaced",rgbPendingReplaced.get())
                 .put("processing_receipt_age_ms",elapsed).put("head",result.head).put("body",result.body)
                 .put("tof_head",tofHead).put("tof_body",tofBody).put("rgb_head",result.rgbHead).put("rgb_body",result.rgbBody)
-                .put("anchor",result.anchor).put("pose_ok",poseOk)
+                .put("anchor",result.anchor).put("pose_ok",poseOk).put("pitch_deg",job.pitch).put("roll_deg",job.roll)
                 .put("demo_rules",demoRules).put("walking",walking).put("limit_m",limit)
                 .put("tof_head_depth_m",tofDepth.first.takeIf { it.isFinite() } ?: JSONObject.NULL)
                 .put("tof_body_depth_m",tofDepth.second.takeIf { it.isFinite() } ?: JSONObject.NULL)
@@ -325,6 +371,7 @@ internal class MobileFusionSession(
         Thread({
             try {
             listOf(tofSource,imuSource,cameraSource).forEach { runCatching { it?.close() } }
+            displayWork.shutdown(); displayWork.awaitTermination(5,TimeUnit.SECONDS)
             tofWork.shutdown(); tofWork.awaitTermination(10,TimeUnit.SECONDS)
             rgbWork.shutdown(); rgbWork.awaitTermination(30,TimeUnit.SECONDS)
             // If a native call is still running, its serialized cleanup follows it.

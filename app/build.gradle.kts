@@ -59,8 +59,8 @@ android {
         applicationId = "com.linnan.blindassist"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 63
-        versionName = "10.20.0"
+        versionCode = 64
+        versionName = "10.20.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "USTRF_EXPERIMENT", "false")
@@ -100,6 +100,15 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        // Demo install: same id and debug key as `debug` (updates in place, keeps data) but not
+        // debuggable, so ART AOT-compiles the app instead of running hot Kotlin loops under JIT.
+        create("demo") {
+            initWith(getByName("debug"))
+            isDebuggable = false
+            isJniDebuggable = false
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("debug")
         }
         create("ustrfExperiment") {
             initWith(getByName("debug"))
