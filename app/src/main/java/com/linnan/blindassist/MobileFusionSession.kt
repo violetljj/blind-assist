@@ -24,13 +24,24 @@ internal data class MobileFusionView(
     val processed: Long = 0, val skipped: Long = 0,
     val inputEpoch: Long = -1,
     val terminal: Boolean = false,
-)
+    // Demo presentation and v7w gating; NaN distances mean "not measured in that box".
+    val demoRules: Boolean = true, val walking: Boolean = false, val limitM: Double = Double.NaN,
+    val headDistanceM: Double = Double.NaN, val bodyDistanceM: Double = Double.NaN,
+    val pitchDeg: Double = Double.NaN, val poseOk: Boolean = false,
+    val boxes: List<List<Pair<Float, Float>?>> = emptyList(), val tofGrid: FloatArray? = null,
+    val extrinsicPitchDeg: Double = Double.NaN,
+) {
+    val nearestM: Double get() = listOf(headDistanceM, bodyDistanceM).filter { it.isFinite() }.minOrNull() ?: Double.NaN
+}
 
-/** Foreground, opt-in engineering path. It has no speaker/haptic side effects and never records
- * evaluation labels. There is one H3 consumer and bounded latest-only RGB work. */
+/** Foreground, opt-in engineering path. Speech/vibration belong to the Activity; this session never
+ * records evaluation labels. There is one H3 consumer and bounded latest-only RGB work.
+ * [demoRules] applies the EXPLORE pitch-0 extrinsic and v7w walk/still gate ([MobileFusionDemoRules]);
+ * off reproduces the frozen v2 path. */
 internal class MobileFusionSession(
     private val application: Application, private val directory: File,
     private val atomHost: String, private val tofHost: String,
+    private val demoRules: Boolean = true,
     private val publish: (MobileFusionView) -> Unit,
 ) : AutoCloseable {
     private val lease = MobileFusionLease.acquire()
@@ -49,6 +60,8 @@ internal class MobileFusionSession(
     private var depth: Dav2DepthRuntime? = null
     private var geometry: AtomRgbGeometry? = null
     private val votes = AtomRgbTwoOfThree()
+    private val gait = MobileGaitDetector()
+    @Volatile private var extrinsicPitch = Double.NaN
     private var rgbEpoch = -1L
     private var tofEpoch = -1L
     private var rgbPreviousSequence = -1L
@@ -73,7 +86,10 @@ internal class MobileFusionSession(
         rgbWork.execute {
             try {
                 camera = MobileFusionCamera(directory)
-                geometry = AtomRgbGeometry(480,640,camera!!.calibration)
+                val calibration=camera!!.calibration
+                geometry = AtomRgbGeometry(480,640,if(demoRules) calibration.copy(
+                    cameraFromTof=MobileFusionDemoRules.withoutPitch(calibration.cameraFromTof)) else calibration)
+                extrinsicPitch=MobileFusionDemoRules.pitchDeg(geometry!!.calibration.cameraFromTof)
                 tofEngine = CnhStrongEngine(File(directory,"cnh_strong_m3.onnx"),File(directory,"cnh_strong_calibration.bin"))
                 depth = Dav2DepthRuntimeFactory.create(application,File(directory,"dav2s_686x518_fp32.dlc"))
                 if (closed.get()) return@execute
@@ -113,7 +129,7 @@ internal class MobileFusionSession(
             inputs.addCamera(it)
         } }, { unavailable("相机",it) })
         ims.start(onRecord={ r ->
-            if(!closed.get()) inputs.addImu(r)
+            if(!closed.get()) { inputs.addImu(r); r.frame?.let { gait.add(r.hostReceivedMonotonicNs,it.accelG) } }
         },onStatus={ unavailable("IMU",it) })
         ts.start(onRecord={ r ->
             val f=r.frame ?: return@start
@@ -224,8 +240,26 @@ internal class MobileFusionSession(
                 geometryMs=(SystemClock.elapsedRealtimeNanos()-stageNs)/1e6
             }
             if(closed.get() || job.epoch!=inputs.epoch) return
-            val tofHead=job.tof.headStrong && poseOk; val tofBody=job.tof.bodyStrong && poseOk
-            val confirmed=votes.push(tofHead || rgb?.head?.alarm==true,tofBody || rgb?.body?.alarm==true)
+            val rawDistance=job.frame.distanceMm.map(Int::toDouble).toDoubleArray()
+            val rawStatus=job.frame.targetStatus.toIntArray()
+            val walking=gait.walking(job.receiptNs)
+            val limit=if(demoRules) MobileFusionDemoRules.limitM(walking) else 2.0
+            val tofDepth=g.tofQueryDepth(rawDistance,rawStatus,job.pitch,job.roll)
+            var tofHead=job.tof.headStrong && poseOk; var tofBody=job.tof.bodyStrong && poseOk
+            var rgbHead=rgb?.head?.alarm==true; var rgbBody=rgb?.body?.alarm==true
+            if(demoRules) {
+                tofHead=MobileFusionDemoRules.keepTof(tofHead,tofDepth.first,limit)
+                tofBody=MobileFusionDemoRules.keepTof(tofBody,tofDepth.second,limit)
+                rgbHead=MobileFusionDemoRules.keepRgb(rgbHead,rgb?.head?.medianDepthM ?: Double.NaN,limit)
+                rgbBody=MobileFusionDemoRules.keepRgb(rgbBody,rgb?.body?.medianDepthM ?: Double.NaN,limit)
+            }
+            fun nearest(tofOn:Boolean,tofM:Double,rgbOn:Boolean,rgbM:Double)=
+                listOf(if(tofOn) tofM else Double.NaN,if(rgbOn) rgbM else Double.NaN).filter { it.isFinite() }.minOrNull() ?: Double.NaN
+            val headM=nearest(tofHead,tofDepth.first,rgbHead,rgb?.head?.medianDepthM ?: Double.NaN)
+            val bodyM=nearest(tofBody,tofDepth.second,rgbBody,rgb?.body?.medianDepthM ?: Double.NaN)
+            val grid=FloatArray(64) { zone -> val raw=63-zone
+                if(rawStatus[raw] in intArrayOf(5,6,9,10) && rawDistance[raw]>0) (rawDistance[raw]/1000).toFloat() else Float.NaN }
+            val confirmed=votes.push(tofHead || rgbHead,tofBody || rgbBody)
             if(!poseOk) votes.reset()
             val elapsed=(SystemClock.elapsedRealtimeNanos()-job.receiptNs)/1_000_000
             if(elapsed>750) {
@@ -240,7 +274,10 @@ internal class MobileFusionSession(
                 rgb?.fit==null -> "RGB 尺度暂不可用，仅 ToF 强档"
                 else -> "实时实验 · 两帧确认"
             },ready=poseOk,head=confirmed.first && poseOk,body=confirmed.second && poseOk,
-                tofHead=tofHead,tofBody=tofBody,rgbHead=rgb?.head?.alarm==true,rgbBody=rgb?.body?.alarm==true,
+                tofHead=tofHead,tofBody=tofBody,rgbHead=rgbHead,rgbBody=rgbBody,
+                demoRules=demoRules,walking=walking,limitM=limit,headDistanceM=headM,bodyDistanceM=bodyM,
+                pitchDeg=job.pitch,poseOk=poseOk,boxes=if(poseOk && image!=null) g.boxOutlines(job.pitch,job.roll) else emptyList(),
+                tofGrid=grid,extrinsicPitchDeg=extrinsicPitch,
                 anchor=rgb?.anchor?.name ?: "NONE",heightM=height,heightSource=heightSource,latencyMs=elapsed,
                 receiptNs=job.receiptNs,sequence=job.frame.sequence,image=image,processed=count,skipped=skipped.get())
             val logStartedNs=SystemClock.elapsedRealtimeNanos()
@@ -263,7 +300,12 @@ internal class MobileFusionSession(
                 .put("tof_queue_rejected",tofQueueRejected.get()).put("rgb_pending_replaced",rgbPendingReplaced.get())
                 .put("processing_receipt_age_ms",elapsed).put("head",result.head).put("body",result.body)
                 .put("tof_head",tofHead).put("tof_body",tofBody).put("rgb_head",result.rgbHead).put("rgb_body",result.rgbBody)
-                .put("anchor",result.anchor).put("pose_ok",poseOk).put("height_m",height).put("skipped",skipped.get()).toString()+"\n")
+                .put("anchor",result.anchor).put("pose_ok",poseOk)
+                .put("demo_rules",demoRules).put("walking",walking).put("limit_m",limit)
+                .put("tof_head_depth_m",tofDepth.first.takeIf { it.isFinite() } ?: JSONObject.NULL)
+                .put("tof_body_depth_m",tofDepth.second.takeIf { it.isFinite() } ?: JSONObject.NULL)
+                .put("rgb_head_depth_m",rgb?.head?.medianDepthM?.takeIf { it.isFinite() } ?: JSONObject.NULL)
+                .put("rgb_body_depth_m",rgb?.body?.medianDepthM?.takeIf { it.isFinite() } ?: JSONObject.NULL).put("height_m",height).put("skipped",skipped.get()).toString()+"\n")
             previousLogMs=(SystemClock.elapsedRealtimeNanos()-logStartedNs)/1e6
             emit(result,job.epoch)
         } catch(error:Exception) {

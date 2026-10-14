@@ -158,6 +158,10 @@ class MainActivity : ComponentActivity() {
                             onOpenDataCapture = {
                                 assistSession.dispatch(AssistRuntimeIntent.CloseCamera)
                                 startActivity(Intent(this@MainActivity, PhoneCaptureActivity::class.java))
+                            },
+                            onOpenFusionDemo = {
+                                assistSession.dispatch(AssistRuntimeIntent.CloseCamera)
+                                startActivity(Intent(this@MainActivity, MobileFusionActivity::class.java))
                             }
                         ),
                         glasses = GlassesSimulatorActions(

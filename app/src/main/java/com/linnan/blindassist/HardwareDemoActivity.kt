@@ -15,6 +15,20 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.BorderStroke
@@ -55,6 +69,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
@@ -627,19 +642,27 @@ private fun HardwareDemoScreen(
                     Text(label("结束辅助", "End assistance"), color = DemoMuted, fontSize = 12.sp)
                 }
             }
+            val bannerColor by animateColorAsState(if (alert) DemoAlertSurface else DemoPanel, tween(260), label = "banner")
+            val barColor by animateColorAsState(if (alert) DemoAmber else if (usable) DemoTeal else DemoMuted, tween(260), label = "banner-bar")
+            val pulse by rememberInfiniteTransition(label = "banner-pulse").animateFloat(1f, .35f,
+                infiniteRepeatable(tween(700, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "banner-pulse-alpha")
             Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp))
-                .background(if (alert) DemoAlertSurface else DemoPanel).padding(18.dp),
+                .background(bannerColor).animateContentSize(tween(220)).padding(18.dp),
                 horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                Box(Modifier.size(3.dp, 44.dp).background(if (alert) DemoAmber else DemoMuted))
+                Box(Modifier.size(4.dp, 44.dp).graphicsLayer { alpha = if (alert) pulse else 1f }
+                    .background(barColor, RoundedCornerShape(2.dp)))
                 Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                    Text(when {
+                    val headline = when {
                         !usable -> label("暂时无法判断", "Assessment unavailable")
                         alert && replay -> label("回放 · 前方可能有障碍", "Replay · Possible obstacle ahead")
                         alert -> label("前方可能有障碍", "Possible obstacle ahead")
                         else -> label("当前未触发提示", "No alert currently")
-                    }, fontSize = if (feedbackSettings.care) 28.sp else 20.sp,
-                        lineHeight = if (feedbackSettings.care) 36.sp else 27.sp, fontWeight = FontWeight.Medium,
-                        modifier = Modifier.testTag("hardware_demo_decision"))
+                    }
+                    Crossfade(headline, animationSpec = tween(180), label = "decision") { text ->
+                        Text(text, fontSize = if (feedbackSettings.care) 28.sp else 20.sp,
+                            lineHeight = if (feedbackSettings.care) 36.sp else 27.sp, fontWeight = FontWeight.Medium,
+                            modifier = Modifier.testTag("hardware_demo_decision"))
+                    }
                     Text(when {
                         replay && !usable -> label("此时未保存有效测距", "No valid range data saved at this point")
                         !usable -> label("请检查 ToF 供电与网络，点击下方重新连接", "Check ToF power and network, then reconnect below")
@@ -663,7 +686,8 @@ private fun HardwareDemoScreen(
                 Column {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 14.dp),
                         verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(7.dp).background(if (usable) accent else DemoMuted, RoundedCornerShape(4.dp)))
+                        val dotColor by animateColorAsState(if (usable) accent else DemoMuted, tween(240), label = "mode-dot")
+                        Box(Modifier.size(8.dp).background(dotColor, RoundedCornerShape(4.dp)))
                         Text(when { replay -> label("  回放 · 静音", "  Replay · Muted")
                             usable && cameraUsable -> label("  设备已连接", "  Devices connected")
                             usable -> label("  仅测距模式", "  Range only")
@@ -675,7 +699,9 @@ private fun HardwareDemoScreen(
                     }
                     Box(Modifier.fillMaxWidth().aspectRatio(4f / 3f).background(MaterialTheme.colorScheme.surfaceVariant)) {
                         val bitmap = snapshot?.image?.takeIf { cameraUsable }
-                        if (bitmap != null) {
+                        Crossfade(bitmap != null, animationSpec = tween(260), label = "camera-presence") { hasImage ->
+                        Box(Modifier.fillMaxSize()) {
+                        if (hasImage && bitmap != null) {
                             // Full field of view, without overlays or per-frame decorative gradients.
                             Image(bitmap.asImageBitmap(), label("实物相机视野", "Live camera view"),
                                 Modifier.fillMaxSize(), contentScale = ContentScale.Fit)
@@ -691,12 +717,15 @@ private fun HardwareDemoScreen(
                                     label("请连接相机与 ToF", "Connect the camera and ToF"), fontSize = 12.sp, color = DemoMuted)
                             }
                         }
+                        }
+                        }
                     }
                     Row(Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 14.dp),
                         verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(label("最近触发测距", "Nearest triggered range"), fontSize = 12.sp, color = DemoMuted)
-                            Text(rangeLabel,
+                            val rangeColor by animateColorAsState(if (alert) DemoAmber else DemoInk, tween(240), label = "range")
+                            Text(rangeLabel, color = rangeColor,
                                 fontSize = 28.sp, lineHeight = 36.sp, fontWeight = FontWeight.Medium)
                         }
                         Column(horizontalAlignment = Alignment.End) {
@@ -732,7 +761,9 @@ private fun HardwareDemoScreen(
             TextButton(onClick = { mountExpanded = !mountExpanded }, modifier = Modifier.testTag("hardware_mount_toggle")) {
                 Text(if (mountExpanded) "收起安装检查 −" else "安装朝向检查 ＋", color = DemoMuted)
             }
-            if (mountExpanded) HardwareMountCheckPanel(snapshot)
+            AnimatedVisibility(mountExpanded, enter = fadeIn() + expandVertically(), exit = fadeOut() + shrinkVertically()) {
+                HardwareMountCheckPanel(snapshot)
+            }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 TextButton(onClick = { detailsExpanded = !detailsExpanded },
                     modifier = Modifier.testTag("hardware_demo_detail_toggle")) {
@@ -742,7 +773,7 @@ private fun HardwareDemoScreen(
                     Text(if (connectionExpanded) "收起连接 −" else "设备连接 ＋", color = DemoMuted, fontSize = 12.sp)
                 }
             }
-            if (connectionExpanded) {
+            AnimatedVisibility(connectionExpanded, enter = fadeIn() + expandVertically(), exit = fadeOut() + shrinkVertically()) {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Wi-Fi 直连", modifier = Modifier.weight(1f))
@@ -762,7 +793,8 @@ private fun HardwareDemoScreen(
                     }
                 }
             }
-            if (detailsExpanded) {
+            AnimatedVisibility(detailsExpanded, enter = fadeIn() + expandVertically(), exit = fadeOut() + shrinkVertically()) {
+              Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
                         Text("A+LOCAL 实验模式", fontSize = 14.sp)
@@ -789,6 +821,7 @@ private fun HardwareDemoScreen(
                     Text("ToF 完整区域与前方走廊相交判定。相机提供现场画面；两路独立采样，尚未完成空间标定。",
                         color = DemoMuted, fontSize = 11.sp, lineHeight = 17.sp)
                 }
+              }
             }
             Text("研究演示  /  不可用于独立行走", color = DemoMuted.copy(alpha = 0.8f),
                 fontSize = 9.sp, letterSpacing = 1.sp, modifier = Modifier.padding(bottom = 8.dp))

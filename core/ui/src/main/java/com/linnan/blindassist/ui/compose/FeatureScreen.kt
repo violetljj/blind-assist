@@ -3,6 +3,8 @@ package com.linnan.blindassist.ui.compose
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.BorderStroke
@@ -35,6 +37,7 @@ import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Eco
+import androidx.compose.material.icons.outlined.Layers
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.Visibility
@@ -46,6 +49,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -66,6 +70,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.linnan.blindassist.alert.AlertProfile
 import com.linnan.blindassist.localization.AppLanguage
+import kotlinx.coroutines.delay
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
@@ -78,7 +83,8 @@ fun FeatureScreen(
     onProfileChange: (AlertProfile) -> Unit,
     modifier: Modifier = Modifier,
     glassesConnectionState: GlassesConnectionState = GlassesConnectionState.DISCONNECTED,
-    onOpenDataCapture: () -> Unit = {}
+    onOpenDataCapture: () -> Unit = {},
+    onOpenFusionDemo: () -> Unit = {}
 ) {
     val language = controls.appLanguage
     val selectedMode = when (controls.alertProfile) {
@@ -103,7 +109,7 @@ fun FeatureScreen(
                 .padding(horizontal = 22.dp)
                 .padding(top = 40.dp, bottom = 24.dp)
         ) {
-            HomeBrandHeader(language = language)
+            HomeBrandHeader(language = language, modifier = Modifier.staggerIn(0))
             Spacer(Modifier.height(44.dp))
 
             Text(
@@ -117,7 +123,7 @@ fun FeatureScreen(
                 lineHeight = 46.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = (-0.6).sp,
-                modifier = Modifier.semantics { heading() }
+                modifier = Modifier.staggerIn(1).semantics { heading() }
             )
             Spacer(Modifier.height(28.dp))
 
@@ -125,9 +131,16 @@ fun FeatureScreen(
                 subtitle = if (language == AppLanguage.EN) "Camera + ToF assistance\n$feedbackSummary"
                     else "相机与 ToF 辅助\n$feedbackSummary",
                 language = language,
-                onClick = onOpenCamera
+                onClick = onOpenCamera,
+                modifier = Modifier.staggerIn(2)
             )
-            Spacer(Modifier.height(38.dp))
+            Spacer(Modifier.height(14.dp))
+            FusionDemoAction(
+                language = language,
+                onClick = onOpenFusionDemo,
+                modifier = Modifier.staggerIn(3)
+            )
+            Spacer(Modifier.height(34.dp))
 
             Text(
                 text = if (language == AppLanguage.EN) "Choose reminder cadence" else "选择提醒频率",
@@ -135,7 +148,7 @@ fun FeatureScreen(
                 fontSize = 18.sp,
                 lineHeight = 24.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.semantics { heading() }
+                modifier = Modifier.staggerIn(4).semantics { heading() }
             )
             Spacer(Modifier.height(16.dp))
 
@@ -144,7 +157,8 @@ fun FeatureScreen(
                 language = language,
                 onDailyClick = { onProfileChange(AlertProfile.STANDARD) },
                 onQuietClick = { onProfileChange(AlertProfile.QUIET) },
-                onSensitiveClick = { onProfileChange(AlertProfile.SENSITIVE) }
+                onSensitiveClick = { onProfileChange(AlertProfile.SENSITIVE) },
+                modifier = Modifier.staggerIn(5)
             )
             Spacer(Modifier.height(28.dp))
 
@@ -154,7 +168,7 @@ fun FeatureScreen(
                 title = if (language == AppLanguage.EN) "Collect RGB + ToF + IMU" else "数据采集 · RGB / ToF / IMU",
                 onClick = onOpenDataCapture,
                 trailingIcon = Icons.Rounded.ChevronRight,
-                modifier = Modifier.testTag("home_capture_entry")
+                modifier = Modifier.staggerIn(6).testTag("home_capture_entry")
             )
             HomeInfoRow(
                 icon = Icons.Outlined.Visibility,
@@ -162,7 +176,7 @@ fun FeatureScreen(
                 title = glassesLabel(glassesConnectionState, language),
                 onClick = onShowGlassesCenter,
                 trailingIcon = Icons.Rounded.ChevronRight,
-                modifier = Modifier.testTag("home_glasses_entry")
+                modifier = Modifier.staggerIn(7).testTag("home_glasses_entry")
             )
             Box(
                 Modifier
@@ -310,6 +324,72 @@ private fun PrimaryAssistAction(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun FusionDemoAction(
+    language: AppLanguage,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val scale by animateFloatAsState(if (pressed) 0.985f else 1f, tween(120), label = "fusion-demo-press")
+    val shape = RoundedCornerShape(22.dp)
+    val title = if (language == AppLanguage.EN) "Fusion demo" else "融合演示"
+    val subtitle = if (language == AppLanguage.EN) "RGB depth + ToF · head/body zones"
+        else "RGB 深度 + ToF · 头部 / 身体两区"
+    Surface(
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = 84.dp)
+            .graphicsLayer { scaleX = scale; scaleY = scale },
+        shape = shape,
+        color = BaHomeSkySurface,
+        border = BorderStroke(1.dp, BaHomeCobalt.copy(alpha = 0.18f)),
+        shadowElevation = 2.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape)
+                .clickable(interactionSource = interactionSource, indication = LocalIndication.current,
+                    role = Role.Button, onClick = onClick)
+                .testTag("home_fusion_entry")
+                .semantics(mergeDescendants = true) { contentDescription = "$title。$subtitle" }
+                .padding(horizontal = 20.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                Modifier.size(46.dp).clip(CircleShape).background(BaHomeCobalt.copy(alpha = 0.12f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(Icons.Outlined.Layers, contentDescription = null, tint = BaHomeCobalt, modifier = Modifier.size(26.dp))
+            }
+            Spacer(Modifier.width(16.dp))
+            Column(Modifier.weight(1f)) {
+                Text(title, color = BaHomeInk, fontSize = 19.sp, lineHeight = 26.sp, fontWeight = FontWeight.Bold)
+                Spacer(Modifier.height(2.dp))
+                Text(subtitle, color = BaHomeTextMuted, fontSize = 13.sp, lineHeight = 18.sp,
+                    maxLines = 2, overflow = TextOverflow.Ellipsis)
+            }
+            Icon(Icons.Rounded.ChevronRight, contentDescription = null, tint = BaHomeCobalt, modifier = Modifier.size(26.dp))
+        }
+    }
+}
+
+/** One-shot entrance: fade and rise, staggered by [index]. Runs once per composition entry. */
+@Composable
+internal fun Modifier.staggerIn(index: Int): Modifier {
+    val progress = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        delay(index * 55L)
+        progress.animateTo(1f, tween(durationMillis = 420, easing = FastOutSlowInEasing))
+    }
+    return this.graphicsLayer {
+        alpha = progress.value
+        translationY = (1f - progress.value) * 18.dp.toPx()
     }
 }
 

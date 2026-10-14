@@ -17,6 +17,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -188,6 +189,7 @@ fun BlindAssistApp(
                         onOpenCamera = actions.runtime.onOpenCamera,
                         onShowGlassesCenter = actions.navigation.onShowGlassesCenter,
                         onOpenDataCapture = actions.navigation.onOpenDataCapture,
+                        onOpenFusionDemo = actions.navigation.onOpenFusionDemo,
                         onSpeechChange = actions.runtime.onSpeechChange,
                         onVibrationChange = actions.runtime.onVibrationChange,
                         onCareModeChange = actions.runtime.onCareModeChange,
@@ -247,6 +249,7 @@ private fun MainShell(
     onOpenCamera: () -> Unit,
     onShowGlassesCenter: () -> Unit,
     onOpenDataCapture: () -> Unit,
+    onOpenFusionDemo: () -> Unit,
     onSpeechChange: (Boolean) -> Unit,
     onVibrationChange: (Boolean) -> Unit,
     onCareModeChange: (Boolean) -> Unit,
@@ -339,7 +342,15 @@ private fun MainShell(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            when (currentTab) {
+            // Short cross-fade with a slight rise keeps tab switches from feeling like a hard cut.
+            AnimatedContent(
+                targetState = currentTab,
+                transitionSpec = {
+                    (fadeIn(tween(220, delayMillis = 60)) + slideInVertically(tween(260, easing = FastOutSlowInEasing)) { it / 24 })
+                        .togetherWith(fadeOut(tween(120)))
+                },
+                label = "bottom-tab"
+            ) { tab -> when (tab) {
                 BottomTab.Features -> FeatureScreen(
                     controls = controls,
                     modelStatus = modelStatus,
@@ -347,6 +358,7 @@ private fun MainShell(
                     onOpenCamera = onOpenCamera,
                     onShowGlassesCenter = onShowGlassesCenter,
                     onOpenDataCapture = onOpenDataCapture,
+                    onOpenFusionDemo = onOpenFusionDemo,
                     onProfileChange = onProfileChange,
                     glassesConnectionState = glassesState.connectionState
                 )
@@ -364,7 +376,7 @@ private fun MainShell(
                     onLanguageChange = onLanguageChange,
                     onShowOnboarding = onShowOnboarding
                 )
-            }
+            } }
         }
     }
 }

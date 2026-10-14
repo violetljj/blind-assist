@@ -67,7 +67,8 @@ data class AssistNavigationActions(
     val onShowOnboarding: () -> Unit,
     val onShowGlassesCenter: () -> Unit,
     val onDismissGlassesCenter: () -> Unit,
-    val onOpenDataCapture: () -> Unit = {}
+    val onOpenDataCapture: () -> Unit = {},
+    val onOpenFusionDemo: () -> Unit = {}
 )
 
 data class GlassesSimulatorActions(

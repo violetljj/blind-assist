@@ -26,7 +26,8 @@ class AtomRgbGeometry(val width: Int, val height: Int, val calibration: Calibrat
     }
     data class Fit(val a: Double, val b: Double)
     enum class Anchor { TOF, FLOOR, PREVIOUS, NONE }
-    data class Query(val pixels: Int, val alarm: Boolean)
+    /** [medianDepthM] is the in-box pixel median forward distance (NaN below the pixel gate). */
+    data class Query(val pixels: Int, val alarm: Boolean, val medianDepthM: Double = Double.NaN)
     data class Result(val anchor: Anchor, val fit: Fit?, val poseOk: Boolean,
                       val head: Query, val body: Query)
     data class ZoneSamples(val disparity: DoubleArray, val opticalDepthFactor: DoubleArray)
@@ -39,6 +40,9 @@ class AtomRgbGeometry(val width: Int, val height: Int, val calibration: Calibrat
     // [zone][sample]: rounded upright image index or -1 and optical-depth factor.
     private val zonePixels = Array(64) { IntArray(25) { -1 } }
     private val zoneFactors = Array(64) { DoubleArray(25) { Double.NaN } }
+    // Readout scratch for the in-box depth medians (demo distance gate); alarms never read it.
+    private val headDepths = FloatArray(width * height)
+    private val bodyDepths = FloatArray(width * height)
 
     init {
         require(width > 1 && height > 1)
@@ -172,12 +176,64 @@ class AtomRgbGeometry(val width: Int, val height: Int, val calibration: Calibrat
             val y = (matrix[3] * d[0] + matrix[4] * d[1] + matrix[5]) * depth
             val z = (matrix[6] * d[0] + matrix[7] * d[1] + matrix[8]) * depth
             if (abs(x) <= .30 && z >= .30 && z <= 2.0) {
-                if (y >= -.20 && y <= .42) head++
-                if (y >= .42 && y <= .90) body++
+                if (y >= -.20 && y <= .42) headDepths[head++] = z.toFloat()
+                if (y >= .42 && y <= .90) bodyDepths[body++] = z.toFloat()
             }
         }
         val poseOk = poseInEnvelope(pitchDeg, rollDeg)
-        return Query(head, head >= 150 && poseOk) to Query(body, body >= 150 && poseOk)
+        return Query(head, head >= 150 && poseOk, medianOf(headDepths, head)) to
+            Query(body, body >= 150 && poseOk, medianOf(bodyDepths, body))
+    }
+
+    private fun medianOf(values: FloatArray, count: Int): Double {
+        if (count < 150) return Double.NaN
+        java.util.Arrays.sort(values, 0, count)
+        return if (count % 2 == 1) values[count / 2].toDouble()
+               else (values[count / 2 - 1].toDouble() + values[count / 2]) / 2
+    }
+
+    /** Nearest forward distance of valid raw ToF zones whose radial hit lands in each query box
+     * (HEAD to BODY). NaN when no zone lands there. Camera and ToF are treated as co-located. */
+    fun tofQueryDepth(rawDistanceMm: DoubleArray, rawStatus: IntArray,
+                      pitchDeg: Double, rollDeg: Double): Pair<Double, Double> {
+        require(rawDistanceMm.size == 64 && rawStatus.size == 64)
+        if (!pitchDeg.isFinite() || !rollDeg.isFinite()) return Double.NaN to Double.NaN
+        val pose = poseRotation(pitchDeg, rollDeg)
+        val edge = tan(Math.PI / 8)
+        var head = Double.NaN; var body = Double.NaN
+        for (zone in 0 until 64) {
+            val raw = 63 - zone
+            val distance = rawDistanceMm[raw] / 1000.0
+            if (rawStatus[raw] !in VALID_STATUS || distance <= .3 || distance >= 4.0) continue
+            val rx = -edge + (zone % 8 + .5) * 2 * edge / 8
+            val ry = -edge + (zone / 8 + .5) * 2 * edge / 8
+            val scale = distance / sqrt(rx * rx + ry * ry + 1)
+            val p = multiply(pose, doubleArrayOf(rx * scale, ry * scale, scale))
+            if (abs(p[0]) > .30 || p[2] < .30 || p[2] > 2.0) continue
+            if (p[1] >= -.20 && p[1] <= .42 && !(p[2] >= head)) head = p[2]
+            if (p[1] >= .42 && p[1] <= .90 && !(p[2] >= body)) body = p[2]
+        }
+        return head to body
+    }
+
+    /** Image quads of the HEAD and BODY boxes at 1.0 m and 2.0 m (corners TL, TR, BR, BL; null
+     * when behind the camera), for display only. */
+    fun boxOutlines(pitchDeg: Double, rollDeg: Double): List<List<Pair<Float, Float>?>> {
+        if (!pitchDeg.isFinite() || !rollDeg.isFinite()) return emptyList()
+        val m = corridorFromCamera(pitchDeg, rollDeg)
+        fun project(x: Double, y: Double, z: Double): Pair<Float, Float>? {
+            // corridor = M · camera with orthonormal M, so camera = Mᵀ · corridor.
+            val cx = m[0] * x + m[3] * y + m[6] * z
+            val cy = m[1] * x + m[4] * y + m[7] * z
+            val cz = m[2] * x + m[5] * y + m[8] * z
+            if (cz < .05) return null
+            return (calibration.fx * cx / cz + calibration.cx).toFloat() to (calibration.fy * cy / cz + calibration.cy).toFloat()
+        }
+        return listOf(-.20 to .42, .42 to .90).flatMap { (top, bottom) ->
+            listOf(1.0, 2.0).map { z ->
+                listOf(project(-.30, top, z), project(.30, top, z), project(.30, bottom, z), project(-.30, bottom, z))
+            }
+        }
     }
 
     private fun corridorFromCamera(pitchDeg: Double, rollDeg: Double): DoubleArray {
