@@ -4,6 +4,12 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-14 — v10.19.4 Atom preview trial
+
+- Added independent, persistent undistortion/enhancement switches on the capture preview. Reuses the existing hash-bound Atom remap; absent/mismatched calibration falls back visibly to raw geometry. Upright results skip the old display rotation/mirror. A fixed endpoint-preserving LUT gives mild contrast/gamma enhancement; original JPEGs, recording/export and model inputs retain their prior behavior.
+- Six focused JVM checks passed with zero skips, including full OpenCV pixel/orientation parity and raw-input preservation. Debug/test APK builds, app lint and package/version/signature/16KB static checks passed. Two already-consumed real frames were rendered and inspected; this is replay display evidence, not a detection gain.
+- Trial62/10.19.4 is archived with SHA256 and receipts under the canonical F-backed artifacts tree. No online phone/AVD was available: not installed, no device FPS or UI/accessibility validation. [Implementation, outputs and limits](research/active/hardware-bringup/ATOM_PREVIEW_POSTPROCESS_DEV_20261014.md).
+
 ## 2026-10-13 — v10.19.3 reconnect regression deployed
 
 - Deployed the active-transport hotspot-scan/migration guard to Atom/H3 after matching each preflash app0 readback to the previous binary. App-only writes passed esptool hash verification; network profiles retained. Installed61/10.19.3 with base.apk hash verification and all102 pre-existing session directories retained.

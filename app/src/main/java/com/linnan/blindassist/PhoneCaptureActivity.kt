@@ -1,5 +1,6 @@
 package com.linnan.blindassist
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.Manifest
@@ -29,9 +30,11 @@ import com.linnan.blindassist.capture.TcpCnhCaptureSource
 import com.linnan.blindassist.capture.TcpImuCaptureSource
 import com.linnan.blindassist.device.glasses.HardwareWifiDiscovery
 import com.linnan.blindassist.ui.compose.BlindAssistTheme
+import com.linnan.blindassist.vision.AtomPreviewPixels
 import org.json.JSONObject
 import org.json.JSONArray
 import java.net.URI
+import java.io.File
 import java.util.concurrent.Executors
 import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.ScheduledFuture
@@ -43,7 +46,10 @@ import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.ceil
 
 @Immutable
-internal data class AtomPreviewFrame(val image: ImageBitmap, val receiptNs: Long, val sequence: Long?)
+internal data class AtomPreviewFrame(
+    val image: ImageBitmap, val receiptNs: Long, val sequence: Long?, val isUpright: Boolean = false,
+    val processingMessage: String = "",
+)
 
 class PhoneCaptureActivity : ComponentActivity() {
     private lateinit var capture: PhoneCaptureController
@@ -59,6 +65,18 @@ class PhoneCaptureActivity : ComponentActivity() {
     // These two fields belong only to the single preview worker.
     private var decodedReceiptNs = 0L
     private var decodedGeneration = -1L
+    private data class PreviewOptions(val undistort: Boolean = true, val enhance: Boolean = true)
+    @Volatile private var previewOptions = PreviewOptions()
+    private var previewUndistort by mutableStateOf(true)
+    private var previewEnhance by mutableStateOf(true)
+    private var previewProcessingMessage by mutableStateOf("")
+    // Loaded once on the preview worker; no model initialization or sensor controls.
+    private val previewProcessor by lazy {
+        runCatching {
+            AtomPreviewPixels.fromRemap(File(noBackupFilesDir, "fusion-experiment/atom_remap.bin").readBytes())
+        }.getOrElse { AtomPreviewPixels() }
+    }
+    private var previewSourcePixels = IntArray(0)
     private val handler = Handler(Looper.getMainLooper())
     private val io = Executors.newSingleThreadExecutor()
     private val controls = Executors.newSingleThreadExecutor { Thread(it, "capture-controls") }
@@ -110,6 +128,9 @@ class PhoneCaptureActivity : ComponentActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         capture = PhoneCaptureController(this)
         val preferences = getSharedPreferences("phone_capture", MODE_PRIVATE)
+        previewUndistort = preferences.getBoolean("preview_undistort", true)
+        previewEnhance = preferences.getBoolean("preview_enhance", true)
+        previewOptions = PreviewOptions(previewUndistort, previewEnhance)
         host = preferences.getString("host", "192.168.5.10")!!
         atomHost = preferences.getString("atom_host", preferences.getString("imu_host", "192.168.5.9"))!!
         note = savedInstanceState?.getString("capture_note") ?: ""
@@ -154,6 +175,10 @@ class PhoneCaptureActivity : ComponentActivity() {
                     onBack = { finish() }, exportTask = exportTask,
                     onCancelExport = { exportTasks.cancel() },
                     onRetryExport = { exportTask?.let { requestExport(it.sessionId) } },
+                    previewUndistort = previewUndistort, previewEnhance = previewEnhance,
+                    onPreviewUndistortChange = { previewUndistort = it; updatePreviewOptions() },
+                    onPreviewEnhanceChange = { previewEnhance = it; updatePreviewOptions() },
+                    previewProcessingMessage = previewProcessingMessage,
                     onFusionExperiment = {
                         capture.cancelReconnect()
                         invalidatePreview()
@@ -218,6 +243,7 @@ class PhoneCaptureActivity : ComponentActivity() {
     private fun decodeLatestPreview() {
         if (!foreground) return
         val generation = previewGeneration.get()
+        val options = previewOptions
         val frame = capture.peekCameraFrame()
         if (frame == null) {
             if (previewState.value != null) handler.post {
@@ -230,11 +256,30 @@ class PhoneCaptureActivity : ComponentActivity() {
         if (generation == decodedGeneration && frame.receivedElapsedNs == decodedReceiptNs) return
         decodedGeneration = generation
         decodedReceiptNs = frame.receivedElapsedNs
-        val decodeStart = SystemClock.elapsedRealtimeNanos()
-        val image = runCatching { BitmapFactory.decodeByteArray(frame.jpeg, 0, frame.jpeg.size)?.asImageBitmap() }.getOrNull()
-        previewMetrics.decoded(SystemClock.elapsedRealtimeNanos() - decodeStart)
+        var upright = false
+        var processingMessage = ""
+        val image = runCatching {
+            val decodeStart = SystemClock.elapsedRealtimeNanos()
+            val raw = BitmapFactory.decodeByteArray(frame.jpeg, 0, frame.jpeg.size) ?: return@runCatching null
+            previewMetrics.decoded(SystemClock.elapsedRealtimeNanos() - decodeStart)
+            if (!options.undistort && !options.enhance) return@runCatching raw.asImageBitmap()
+            val processingStart = SystemClock.elapsedRealtimeNanos()
+            try {
+                if (previewSourcePixels.size != raw.width * raw.height) previewSourcePixels = IntArray(raw.width * raw.height)
+                raw.getPixels(previewSourcePixels, 0, raw.width, 0, 0, raw.width, raw.height)
+                val result = previewProcessor.apply(previewSourcePixels, raw.width, raw.height, options.undistort, options.enhance)
+                upright = result.isUpright
+                if (options.undistort && !upright) processingMessage =
+                    if (previewProcessor.supportsUndistort) "当前画面尺寸不匹配标定，保留原始视场"
+                    else "去畸变标定未就绪，保留原始视场"
+                Bitmap.createBitmap(result.pixels, result.width, result.height, Bitmap.Config.ARGB_8888).asImageBitmap()
+            } finally {
+                previewMetrics.processed(SystemClock.elapsedRealtimeNanos() - processingStart)
+                raw.recycle()
+            }
+        }.getOrNull()
         if (image != null && foreground && generation == previewGeneration.get()) {
-            latestDecoded.set(generation to AtomPreviewFrame(image, frame.receivedElapsedNs, frame.sequence))
+            latestDecoded.set(generation to AtomPreviewFrame(image, frame.receivedElapsedNs, frame.sequence, upright, processingMessage))
             queuePreviewPost()
         }
     }
@@ -246,6 +291,7 @@ class PhoneCaptureActivity : ComponentActivity() {
             val latest = latestDecoded.getAndSet(null)
             if (latest != null && foreground && latest.first == previewGeneration.get() && !isDestroyed) {
                 previewState.value = latest.second
+                previewProcessingMessage = latest.second.processingMessage
             }
             if (latestDecoded.get() != null) queuePreviewPost()
         }
@@ -381,6 +427,15 @@ class PhoneCaptureActivity : ComponentActivity() {
         previewState.value = null
     }
 
+    private fun updatePreviewOptions() {
+        previewOptions = PreviewOptions(previewUndistort, previewEnhance)
+        getSharedPreferences("phone_capture", MODE_PRIVATE).edit()
+            .putBoolean("preview_undistort", previewUndistort).putBoolean("preview_enhance", previewEnhance).apply()
+        invalidatePreview()
+        previewProcessingMessage = ""
+        requestPreviewDecode()
+    }
+
     private fun refreshSessions() {
         if (io.isShutdown) return
         io.execute {
@@ -394,6 +449,8 @@ class PhoneCaptureActivity : ComponentActivity() {
 
     fun resetPreviewPerformance() = previewMetrics.reset()
     fun previewPerformanceReceipt(): JSONObject = previewMetrics.receipt()
+        .put("preview_undistort_requested", previewOptions.undistort)
+        .put("preview_enhance_requested", previewOptions.enhance)
 }
 
 private class CapturePreviewMetrics {
@@ -404,15 +461,20 @@ private class CapturePreviewMetrics {
     private var previousReceiptNs = 0L
     private val ages = ArrayDeque<Long>()
     private val decodeTimes = ArrayDeque<Long>()
+    private val processingTimes = ArrayDeque<Long>()
     private val drawSamples = ArrayDeque<DrawSample>()
     @Synchronized fun reset() {
         startedNs = SystemClock.elapsedRealtimeNanos(); decodedCount = 0; drawnCount = 0; previousReceiptNs = 0
-        ages.clear(); decodeTimes.clear(); drawSamples.clear()
+        ages.clear(); decodeTimes.clear(); processingTimes.clear(); drawSamples.clear()
     }
     @Synchronized fun decoded(durationNs: Long) {
         decodedCount++
         if (decodeTimes.size == 1024) decodeTimes.removeFirst()
         decodeTimes.addLast(durationNs)
+    }
+    @Synchronized fun processed(durationNs: Long) {
+        if (processingTimes.size == 1024) processingTimes.removeFirst()
+        processingTimes.addLast(durationNs)
     }
     @Synchronized fun drawn(receiptNs: Long, nowNs: Long) {
         if (receiptNs == previousReceiptNs) return
@@ -434,6 +496,7 @@ private class CapturePreviewMetrics {
             .put("elapsed_ns", elapsedNs).put("decoded_frames", decodedCount).put("drawn_unique_frames", drawnCount)
             .put("drawn_fps", drawnCount * 1e9 / elapsedNs.coerceAtLeast(1))
             .put("receipt_to_canvas_draw_ms", distribution(ages)).put("decode_ms", distribution(decodeTimes))
+            .put("preview_processing_ms", distribution(processingTimes))
             .put("unique_canvas_interval_ms", distribution(intervals))
             .put("receipt_age_before_replacement_ms", distribution(heldAges))
             .put("canvas_timeline", JSONArray().apply {

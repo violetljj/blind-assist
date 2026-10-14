@@ -42,6 +42,9 @@ internal fun PhoneCaptureScreen(
     onStart: () -> Unit, onStop: () -> Unit, onExport: (PhoneCaptureSummary) -> Unit, onBack: () -> Unit,
     exportTask: CaptureExportTask? = null, onCancelExport: () -> Unit = {}, onRetryExport: () -> Unit = {},
     onFusionExperiment: () -> Unit = {},
+    previewUndistort: Boolean = true, previewEnhance: Boolean = true,
+    onPreviewUndistortChange: (Boolean) -> Unit = {}, onPreviewEnhanceChange: (Boolean) -> Unit = {},
+    previewProcessingMessage: String = "",
 ) {
     var showSettings by rememberSaveable { mutableStateOf(false) }
     var showSessions by rememberSaveable { mutableStateOf(false) }
@@ -73,6 +76,11 @@ internal fun PhoneCaptureScreen(
                         modifier = Modifier.testTag("capture_imu_readiness"))
                 }
                 CapturePreviews(state, preview, onPreviewDraw)
+                CapturePreviewOptions(previewUndistort, previewEnhance,
+                    onPreviewUndistortChange, onPreviewEnhanceChange)
+                if (previewProcessingMessage.isNotBlank()) Text(previewProcessingMessage,
+                    style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant,
+                    modifier = Modifier.testTag("capture_preview_processing_status"))
                 if (state.recording) {
                     Button(onClick = onStop, enabled = !busy,
                         modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("capture_stop")) { Text("停止并保存") }
@@ -153,6 +161,48 @@ internal fun CaptureImuToggle(checked: Boolean, enabled: Boolean, onCheckedChang
         verticalAlignment = Alignment.CenterVertically) {
         Checkbox(checked = checked, onCheckedChange = null, enabled = enabled)
         Text("同时记录 IMU", modifier = Modifier.padding(start = 12.dp))
+    }
+}
+
+@Composable
+internal fun CapturePreviewOptions(
+    undistort: Boolean, enhance: Boolean,
+    onUndistortChange: (Boolean) -> Unit, onEnhanceChange: (Boolean) -> Unit,
+) {
+    val fontScale = LocalDensity.current.fontScale
+    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        BoxWithConstraints(Modifier.fillMaxWidth()) {
+            if (fontScale > 1.3f || maxWidth < 340.dp) {
+                Column(Modifier.fillMaxWidth()) {
+                    CapturePreviewToggle("去畸变", "capture_preview_undistort", undistort,
+                        onUndistortChange, Modifier.fillMaxWidth())
+                    CapturePreviewToggle("轻增强", "capture_preview_enhance", enhance,
+                        onEnhanceChange, Modifier.fillMaxWidth())
+                }
+            } else {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    CapturePreviewToggle("去畸变", "capture_preview_undistort", undistort,
+                        onUndistortChange, Modifier.weight(1f))
+                    CapturePreviewToggle("轻增强", "capture_preview_enhance", enhance,
+                        onEnhanceChange, Modifier.weight(1f))
+                }
+            }
+        }
+        Text(if (undistort) "原始录像保留 · 去畸变会裁剪边缘视场" else "原始录像保留",
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.testTag("capture_preview_processing_note"))
+    }
+}
+
+@Composable
+private fun CapturePreviewToggle(
+    label: String, tag: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier,
+) {
+    Row(modifier.heightIn(min = 48.dp).testTag(tag)
+        .toggleable(value = checked, role = Role.Checkbox, onValueChange = onCheckedChange),
+        verticalAlignment = Alignment.CenterVertically) {
+        Checkbox(checked = checked, onCheckedChange = null)
+        Text(label, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(start = 4.dp))
     }
 }
 
@@ -281,14 +331,16 @@ private fun AtomImagePreview(
     Canvas(Modifier.fillMaxSize().testTag("capture_atom_image").semantics { contentDescription = "Atom 实时 RGB 画面" }) {
         val frame = preview() ?: return@Canvas
         val image = frame.image
-        val rotated = rotation % 180 != 0
+        val displayRotation = if (frame.isUpright) 0 else rotation
+        val displayMirror = !frame.isUpright && mirror
+        val rotated = displayRotation % 180 != 0
         val width = if (rotated) image.height else image.width
         val height = if (rotated) image.width else image.height
         val fit = minOf(size.width / width, size.height / height)
         withTransform({
             translate(size.width / 2, size.height / 2)
-            if (mirror) scale(-1f, 1f, pivot = Offset.Zero)
-            rotate(rotation.toFloat(), pivot = Offset.Zero)
+            if (displayMirror) scale(-1f, 1f, pivot = Offset.Zero)
+            rotate(displayRotation.toFloat(), pivot = Offset.Zero)
             scale(fit, fit, pivot = Offset.Zero)
         }) {
             drawImage(image, topLeft = Offset(-image.width / 2f, -image.height / 2f))
