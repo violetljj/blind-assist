@@ -102,20 +102,14 @@ private val Tabular = TextStyle(fontFeatureSettings = "tnum")
 
 @Composable
 internal fun FusionScreen(
-    view:MobileFusionView, active:Boolean, now:Long, leaseBusy:Boolean, preview:()->androidx.compose.ui.graphics.ImageBitmap?,
+    view:MobileFusionView, active:Boolean, fresh:Boolean, shownHead:Boolean, shownBody:Boolean, leaseBusy:Boolean,
+    preview:()->androidx.compose.ui.graphics.ImageBitmap?, modelsReady:Boolean, thermal:Int, audioWarning:String?,
     speech:Boolean, vibration:Boolean, demoRules:Boolean, lastSpoken:String?,
     onStart:()->Unit, onStop:()->Unit, onCalibrate:()->Unit,
-    onSpeech:(Boolean)->Unit, onVibration:(Boolean)->Unit, onDemoRules:(Boolean)->Unit, onBack:()->Unit,
+    onSpeech:(Boolean)->Unit, onVibration:(Boolean)->Unit, onDemoRules:(Boolean)->Unit, onRaiseVolume:()->Unit, onBack:()->Unit,
 ) {
-    // Display smoothing only (speech uses the strict 750 ms rule in the Activity): results stay on
-    // screen for 1.5 s and an alarm is held for 0.7 s, so single late or dropped frames do not flicker.
-    val fresh=active && view.receiptNs>0 && now-view.receiptNs in 0..1_500_000_000L
-    val hold=remember { LongArray(2) }
-    if(fresh && view.ready && view.head) hold[0]=now
-    if(fresh && view.ready && view.body) hold[1]=now
-    if(!active) hold.fill(0L)
-    val held=view.copy(head=fresh && view.ready && (view.head || now-hold[0] in 0..700_000_000L),
-        body=fresh && view.ready && (view.body || now-hold[1] in 0..700_000_000L))
+    // Freshness and the short alarm hold are computed in the Activity loop (display smoothing only).
+    val held=view.copy(head=shownHead,body=shownBody)
     val verdict=when {
         !fresh || !view.ready -> Verdict.WAITING
         held.head && held.body -> Verdict.BOTH
@@ -127,6 +121,16 @@ internal fun FusionScreen(
     Column(Modifier.fillMaxSize().background(FxNight).verticalScroll(rememberScrollState())) {
         Viewfinder(held,preview,fresh,active,verdict,accent,onBack)
         Column(Modifier.padding(horizontal=18.dp).padding(top=18.dp,bottom=12.dp),verticalArrangement=Arrangement.spacedBy(14.dp)) {
+            ControlDock(active,leaseBusy,speech,vibration,onStart,onStop,onSpeech,onVibration)
+            AnimatedVisibility(audioWarning!=null,enter=fadeIn()+expandVertically(),exit=fadeOut()+shrinkVertically()) {
+                NoticeRow(audioWarning ?: "",if(audioWarning?.startsWith("媒体音量")==true) "调高音量" else null,onRaiseVolume)
+            }
+            AnimatedVisibility(!active && !modelsReady,enter=fadeIn(),exit=fadeOut()) {
+                NoticeRow("正在后台预加载模型，完成后开始会更快",null) {}
+            }
+            AnimatedVisibility(thermal>=3,enter=fadeIn()+expandVertically(),exit=fadeOut()+shrinkVertically()) {
+                NoticeRow("手机较热，画面已自动降帧；判决与提醒不受影响",null) {}
+            }
             ZoneFigureCard(held,fresh && view.ready)
             AnimatedVisibility(active,enter=fadeIn()+expandVertically(),exit=fadeOut()+shrinkVertically()) {
                 Column(verticalArrangement=Arrangement.spacedBy(14.dp)) {
@@ -134,7 +138,6 @@ internal fun FusionScreen(
                     SpokenLine(lastSpoken)
                 }
             }
-            ControlDock(active,leaseBusy,speech,vibration,onStart,onStop,onSpeech,onVibration)
             RulesCard(view,active,demoRules,onDemoRules,onCalibrate)
             DetailsCard(view,fresh,active)
             Text("研究原型演示：提示只表示头部 / 身体检测区内有障碍响应，不表示道路可通行。演示规则来自开发数据，尚未经新冻结检验。",
@@ -475,6 +478,17 @@ private fun DockToggle(icon:ImageVector, label:String, on:Boolean, enabled:Boole
         }
         Spacer(Modifier.height(6.dp))
         Text(label,color=fg,fontSize=12.sp)
+    }
+}
+
+@Composable
+private fun NoticeRow(text:String, action:String?, onAction:()->Unit) {
+    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(FxBody.copy(alpha=.10f))
+        .border(1.dp,FxBody.copy(alpha=.25f),RoundedCornerShape(16.dp)).padding(start=14.dp,end=6.dp,top=6.dp,bottom=6.dp)
+        .heightIn(min=44.dp),verticalAlignment=Alignment.CenterVertically) {
+        Text(text,color=FxText,fontSize=13.sp,lineHeight=18.sp,modifier=Modifier.weight(1f))
+        if(action!=null) Text(action,color=FxBody,fontSize=13.sp,fontWeight=FontWeight.Bold,
+            modifier=Modifier.clip(RoundedCornerShape(12.dp)).clickable(role=Role.Button,onClick=onAction).padding(horizontal=12.dp,vertical=10.dp))
     }
 }
 

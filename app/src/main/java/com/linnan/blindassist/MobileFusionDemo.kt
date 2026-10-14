@@ -79,11 +79,17 @@ internal class MobileGaitDetector(private val windowNs: Long = 2_000_000_000L, p
 internal class MobileFusionAnnouncer(context: Context) {
     private val appContext = context.applicationContext
     @Volatile private var ready = false
+    /** null while the engine initialises; false when Chinese speech cannot be produced. */
+    @Volatile var speechAvailable: Boolean? = null
+        private set
     private lateinit var tts: TextToSpeech
     init {
         tts = TextToSpeech(appContext) { status ->
-            ready = status == TextToSpeech.SUCCESS
-            if (ready) runCatching { tts.language = Locale.SIMPLIFIED_CHINESE }
+            val language = if (status == TextToSpeech.SUCCESS)
+                runCatching { tts.setLanguage(Locale.SIMPLIFIED_CHINESE) }.getOrDefault(TextToSpeech.LANG_NOT_SUPPORTED)
+            else TextToSpeech.LANG_NOT_SUPPORTED
+            ready = status == TextToSpeech.SUCCESS && language >= TextToSpeech.LANG_AVAILABLE
+            speechAvailable = ready
         }
     }
     private val vibrator: Vibrator? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)

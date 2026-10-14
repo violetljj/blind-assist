@@ -59,6 +59,8 @@ internal class MobileFusionSession(
         Thread({ android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND); r.run() },"fusion-display")
     }
     @Volatile private var displayLastNs = 0L
+    /** Preview frame interval; the Activity raises it when the phone heats up. */
+    @Volatile var previewIntervalNs = 66_000_000L
     private val displayLatest = AtomicReference<AtomCameraCaptureFrame?>()
     private val displayQueued = AtomicBoolean()
     private var displayPixels = IntArray(0)
@@ -67,9 +69,19 @@ internal class MobileFusionSession(
     }
     private val rgbPending = AtomicReference<RgbJob?>()
     private val rgbBusy = AtomicBoolean()
-    private var cameraSource: AtomMjpegCaptureSource? = null
-    private var tofSource: TcpCnhCaptureSource? = null
-    private var imuSource: TcpImuCaptureSource? = null
+    @Volatile private var cameraSource: AtomMjpegCaptureSource? = null
+    @Volatile private var tofSource: TcpCnhCaptureSource? = null
+    @Volatile private var imuSource: TcpImuCaptureSource? = null
+    // Per-stream reconnect without reloading models. A generation per stream ignores late callbacks
+    // from a source that has been replaced; a watchdog also restarts a stream that went silent.
+    private enum class Stream(val label:String) { CAMERA("相机"), TOF("ToF"), IMU("IMU") }
+    private val reconnects = Executors.newSingleThreadScheduledExecutor { Thread(it,"fusion-reconnect") }
+    private val streamGeneration = java.util.EnumMap<Stream,Long>(Stream::class.java).apply { Stream.values().forEach { put(it,0L) } }
+    private val streamLastNs = java.util.EnumMap<Stream,Long>(Stream::class.java)
+    private val streamPending = java.util.EnumSet.noneOf(Stream::class.java)
+    private val streamAttempts = java.util.EnumMap<Stream,Int>(Stream::class.java)
+    @Volatile private var reconnectNote = ""
+    val reconnectCount = AtomicLong()
     @Volatile private var camera: MobileFusionCamera? = null
     private var tofEngine: CnhStrongEngine? = null
     private var depth: Dav2DepthRuntime? = null
@@ -100,13 +112,14 @@ internal class MobileFusionSession(
     fun start() {
         rgbWork.execute {
             try {
-                camera = MobileFusionCamera(directory)
-                val calibration=camera!!.calibration
+                val models=MobileFusionModels.acquire(application,directory)
+                camera = models.camera
+                val calibration=models.camera.calibration
                 geometry = AtomRgbGeometry(480,640,if(demoRules) calibration.copy(
                     cameraFromTof=MobileFusionDemoRules.withoutPitch(calibration.cameraFromTof)) else calibration)
                 extrinsicPitch=MobileFusionDemoRules.pitchDeg(geometry!!.calibration.cameraFromTof)
-                tofEngine = CnhStrongEngine(File(directory,"cnh_strong_m3.onnx"),File(directory,"cnh_strong_calibration.bin"))
-                depth = Dav2DepthRuntimeFactory.create(application,File(directory,"dav2s_686x518_fp32.dlc"))
+                tofEngine = models.tof.also { it.reset() }
+                depth = models.depth
                 if (closed.get()) return@execute
                 emit(MobileFusionView(message="模型已就绪，正在连接三路传感器"))
                 openSources()
@@ -124,46 +137,86 @@ internal class MobileFusionSession(
     fun accepts(value:MobileFusionView) = value.inputEpoch == inputs.epoch
 
     private fun openSources() {
-        val cs = AtomMjpegCaptureSource(atomHost)
-        val ts = TcpCnhCaptureSource(tofHost)
-        val ims = TcpImuCaptureSource(atomHost)
-        cameraSource=cs; tofSource=ts; imuSource=ims
-        if (closed.get()) { cs.close(); ts.close(); ims.close(); return }
-        fun unavailable(label: String, status: CnhCaptureStatus) {
-            if (!closed.get() && status.state in listOf(CnhConnectionState.ERROR,CnhConnectionState.DISCONNECTED)) {
-                inputs.invalidate(clearInputs=true)?.let {
-                    rgbPending.set(null)
-                    emit(MobileFusionView(message="$label 暂无数据，请停止后重新连接"),it)
-                }
+        if (closed.get()) return
+        Stream.values().forEach(::openStream)
+        reconnects.scheduleWithFixedDelay({
+            val now=SystemClock.elapsedRealtimeNanos()
+            Stream.values().forEach { stream ->
+                val last=synchronized(streamLastNs) { streamLastNs[stream] }
+                if(last!=null && now-last>3_000_000_000L) scheduleReconnect(stream,"超过 3 秒无数据")
             }
+        },3,1,TimeUnit.SECONDS)
+    }
+
+    private fun openStream(stream:Stream) {
+        if(closed.get()) return
+        val generation=synchronized(streamGeneration) { (streamGeneration[stream]!!+1).also { streamGeneration[stream]=it } }
+        fun current()=!closed.get() && synchronized(streamGeneration) { streamGeneration[stream]==generation }
+        fun alive() { synchronized(streamLastNs) { streamLastNs[stream]=SystemClock.elapsedRealtimeNanos() }
+            if(synchronized(streamPending) { streamAttempts.remove(stream) }!=null) reconnectNote="" }
+        fun status(value:CnhCaptureStatus) {
+            if(current() && value.state in listOf(CnhConnectionState.ERROR,CnhConnectionState.DISCONNECTED))
+                scheduleReconnect(stream,value.message)
         }
-        cs.start({ if(!closed.get()) {
-            cameraFirstReceiptNs.compareAndSet(0,it.receivedElapsedNs)
-            cameraLastReceiptNs.set(it.receivedElapsedNs)
-            cameraFrames.incrementAndGet()
-            inputs.addCamera(it)
-            showPreview(it)
-        } }, { unavailable("相机",it) })
-        ims.start(onRecord={ r ->
-            if(!closed.get()) { inputs.addImu(r); r.frame?.let { gait.add(r.hostReceivedMonotonicNs,it.accelG) } }
-        },onStatus={ unavailable("IMU",it) })
-        ts.start(onRecord={ r ->
-            val f=r.frame ?: return@start
-            if(closed.get()) return@start
-            val match=inputs.match(r.hostReceivedMonotonicNs)
-            val pose=match.imu?.frame?.let { camera?.attitude(it) }
-            if(pose==null) {
-                inputs.invalidate(expectedEpoch=match.epoch)?.let {
-                    emit(MobileFusionView(message="等待匹配的 IMU 姿态"),it)
+        // Mark the stream as just started so the watchdog gives a fresh connection 3 s to deliver.
+        synchronized(streamLastNs) { streamLastNs[stream]=SystemClock.elapsedRealtimeNanos() }
+        try { when(stream) {
+            Stream.CAMERA -> AtomMjpegCaptureSource(atomHost).also { cameraSource=it }.start({ if(current()) {
+                alive()
+                cameraFirstReceiptNs.compareAndSet(0,it.receivedElapsedNs)
+                cameraLastReceiptNs.set(it.receivedElapsedNs)
+                cameraFrames.incrementAndGet()
+                inputs.addCamera(it)
+                showPreview(it)
+            } }, ::status)
+            Stream.IMU -> TcpImuCaptureSource(atomHost).also { imuSource=it }.start(onRecord={ r ->
+                if(current()) { alive(); inputs.addImu(r); r.frame?.let { gait.add(r.hostReceivedMonotonicNs,it.accelG) } }
+            },onStatus=::status)
+            Stream.TOF -> TcpCnhCaptureSource(tofHost).also { tofSource=it }.start(onRecord={ r ->
+                val f=r.frame ?: return@start
+                if(!current()) return@start
+                alive()
+                val match=inputs.match(r.hostReceivedMonotonicNs)
+                val pose=match.imu?.frame?.let { camera?.attitude(it) }
+                if(pose==null) {
+                    inputs.invalidate(expectedEpoch=match.epoch)?.let {
+                        emit(MobileFusionView(message="等待匹配的 IMU 姿态"),it)
+                    }
+                    return@start
                 }
-                return@start
-            }
-            try { tofWork.execute { processTof(f,r.hostReceivedMonotonicNs,match,pose) } }
-            catch (_:RejectedExecutionException) {
-                tofQueueRejected.incrementAndGet(); skipped.incrementAndGet()
-                inputs.invalidate(expectedEpoch=match.epoch)
-            }
-        },onStatus={ unavailable("ToF",it) })
+                try { tofWork.execute { processTof(f,r.hostReceivedMonotonicNs,match,pose) } }
+                catch (_:RejectedExecutionException) {
+                    tofQueueRejected.incrementAndGet(); skipped.incrementAndGet()
+                    inputs.invalidate(expectedEpoch=match.epoch)
+                }
+            },onStatus=::status)
+        } } catch(error:Exception) { scheduleReconnect(stream,error.message ?: "连接失败") }
+    }
+
+    private fun scheduleReconnect(stream:Stream, reason:String) {
+        if(closed.get()) return
+        val attempt=synchronized(streamPending) {
+            if(!streamPending.add(stream)) return
+            ((streamAttempts[stream] ?: 0)+1).also { streamAttempts[stream]=it }
+        }
+        reconnectCount.incrementAndGet()
+        reconnectNote="${stream.label} 连接中断，正在自动重连（第 $attempt 次）"
+        inputs.invalidate(clearInputs=true)?.let {
+            rgbPending.set(null)
+            emit(MobileFusionView(message=reconnectNote,heightM=height,heightSource=heightSource),it)
+        }
+        synchronized(streamLastNs) { streamLastNs.remove(stream) }
+        val delayMs=minOf(4_000L,1_000L shl minOf(attempt-1,2))
+        try { reconnects.schedule({
+            try {
+                val old=when(stream) { Stream.CAMERA -> cameraSource; Stream.TOF -> tofSource; Stream.IMU -> imuSource }
+                // Advance the generation first so callbacks from the closing source are ignored.
+                synchronized(streamGeneration) { streamGeneration[stream]=streamGeneration[stream]!!+1 }
+                runCatching { old?.close() }
+                synchronized(streamPending) { streamPending.remove(stream) }
+                openStream(stream)
+            } catch(_:Exception) { synchronized(streamPending) { streamPending.remove(stream) } }
+        },delayMs,TimeUnit.MILLISECONDS) } catch(_:RejectedExecutionException) { }
     }
 
     private fun showPreview(frame: AtomCameraCaptureFrame) {
@@ -172,7 +225,7 @@ internal class MobileFusionSession(
         try { displayWork.execute {
             try {
                 while(!closed.get()) {
-                    val wait=66_000_000L-(SystemClock.elapsedRealtimeNanos()-displayLastNs)
+                    val wait=previewIntervalNs-(SystemClock.elapsedRealtimeNanos()-displayLastNs)
                     if(wait>0) Thread.sleep(wait/1_000_000,(wait%1_000_000).toInt())
                     val next=displayLatest.getAndSet(null) ?: break
                     displayLastNs=SystemClock.elapsedRealtimeNanos()
@@ -370,17 +423,15 @@ internal class MobileFusionSession(
         // Never block the Android lifecycle thread on socket or accelerator shutdown.
         Thread({
             try {
+            // A reconnect in flight must finish before the final source close, or it could leak one.
+            reconnects.shutdownNow(); reconnects.awaitTermination(5,TimeUnit.SECONDS)
             listOf(tofSource,imuSource,cameraSource).forEach { runCatching { it?.close() } }
             displayWork.shutdown(); displayWork.awaitTermination(5,TimeUnit.SECONDS)
             tofWork.shutdown(); tofWork.awaitTermination(10,TimeUnit.SECONDS)
             rgbWork.shutdown(); rgbWork.awaitTermination(30,TimeUnit.SECONDS)
-            // If a native call is still running, its serialized cleanup follows it.
-            if(tofWork.isTerminated && rgbWork.isTerminated) {
-                runCatching { tofEngine?.close() }; runCatching { depth?.close() }
-            } else {
-                while(!tofWork.isTerminated || !rgbWork.isTerminated) Thread.sleep(100)
-                runCatching { tofEngine?.close() }; runCatching { depth?.close() }
-            }
+            // Cached engines stay loaded (MobileFusionModels); wait for any native call to finish
+            // before the lease lets the next session use them.
+            while(!tofWork.isTerminated || !rgbWork.isTerminated) Thread.sleep(100)
             } finally { MobileFusionLease.release(lease) }
         },"fusion-cleanup").start()
     }
