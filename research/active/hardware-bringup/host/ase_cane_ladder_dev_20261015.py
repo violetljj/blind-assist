@@ -180,9 +180,11 @@ def arm_points(arm, scene, work, i, T_fish, T_up, dirs_f, sa_f, dirs_p, sa_p):
     """World points and per-point solid angle seen by one arm at frame i.
     Suffix E<pct> (post-hoc): drop pixels whose depth differs from any 4-neighbour (step-2 grid) by > pct % (edge filter)."""
     import cv2
-    edge = None
+    edge, kband = None, None
     if 'E' in arm[1:]:
         arm, edge = arm.split('E')[0], float(arm.split('E')[1]) / 100.
+    if 'K' in arm:                                                    # PLAN_BOUNDARY: A2sKi8 = GT inside 8 px edge band
+        arm, kb = arm.split('K'); kband = (kb[0], int(kb[1:]))
     if arm == 'A0':
         d, _ = A.read(scene, i); ok = (d > 0) & (d < A.MAX_MM)
         return (dirs_f[ok] * (d[ok, None] / 1000.)) @ T_fish[:3, :3].T + T_fish[:3, 3], sa_f[ok], None
@@ -198,6 +200,10 @@ def arm_points(arm, scene, work, i, T_fish, T_up, dirs_f, sa_f, dirs_p, sa_p):
         if arm in ('A2o', 'A2s'):
             m = (gt > 0) & (gt < A.MAX_MM) & (z > 0)
             z = z * (np.median(gt[m] / z[m]) if m.sum() > 100 else 1.)
+        if kband is not None:
+            band = edge_band(work / 'pinhole_nn' / scene.name / f'{i:07d}.png', kband[1])
+            sel = band if kband[0] == 'i' else ~band
+            z = np.where(sel & (gt > 0), gt, z)
     ok = (z > 0) & (z < A.MAX_MM)
     if edge is not None:
         zp = np.pad(z, 1, mode='edge'); jump = np.zeros_like(z)
@@ -209,6 +215,37 @@ def arm_points(arm, scene, work, i, T_fish, T_up, dirs_f, sa_f, dirs_p, sa_p):
         m = ok & (gt > 0) & (gt < A.MAX_MM)
         stats = float(np.median(np.abs(z[m] - gt[m]) / gt[m])) if m.sum() > 100 else None
     return (dirs_p[ok] * (z[ok, None] / 1000.)) @ T_up[:3, :3].T + T_up[:3, 3], sa_p[ok], stats
+
+
+def edge_band(path, k, jump=.05):
+    """PLAN_BOUNDARY: full-res GT depth discontinuities (4-neighbour relative jump > 5 %) dilated by k px, on the step-2 grid."""
+    import cv2
+    g = cv2.imread(str(path), cv2.IMREAD_UNCHANGED).astype(np.float32)
+    d = np.zeros(g.shape, bool)
+    for a, b in ((g[:, 1:], g[:, :-1]), (g[1:, :], g[:-1, :])):
+        j = (a > 0) & (b > 0) & (np.abs(a - b) > jump * np.minimum(a, b))
+        if a.shape[1] < g.shape[1]:
+            d[:, 1:] |= j; d[:, :-1] |= j
+        else:
+            d[1:, :] |= j; d[:-1, :] |= j
+    d = cv2.dilate(d.astype(np.uint8), np.ones((2 * k + 1, 2 * k + 1), np.uint8)) > 0
+    return d[::STEP, ::STEP]
+
+
+def band_coverage(scenes, work, ks='2,4,8,16', every=10):
+    """Median fraction of valid pinhole pixels inside the edge band (every `every`-th frame of each scene)."""
+    import cv2
+    out = {}
+    for k in map(int, ks.split(',')):
+        fr = []
+        for sd in sorted((Path(work) / 'pinhole_nn').iterdir(), key=lambda p: int(p.name))[:20]:
+            for f in sorted(sd.glob('*.png'))[::every]:
+                g = cv2.imread(str(f), cv2.IMREAD_UNCHANGED)[::STEP, ::STEP]
+                v = g > 0
+                if v.sum():
+                    fr.append(float((edge_band(f, k) & v).sum() / v.sum()))
+        out[k] = round(float(np.median(fr)), 4)
+    print(json.dumps(out))
 
 
 def tof_filter(P, w, floor, T_up, P0, w0, tilt_deg, bw, frac_min=.02, half=22.5, nz=8, rmax=4.8):
@@ -305,7 +342,8 @@ def ladder_scene(args):
 def ladder(scenes, work, arms='A0,A1,A2r,A2o', band_lo=None):
     work = Path(work); arms = arms.split(',')
     band_lo = float(band_lo) if band_lo else A.BAND_LO
-    todo = sorted((p for p in Path(scenes).iterdir() if (p / 'trajectory.csv').exists()), key=lambda p: int(p.name))
+    todo = sorted((p for p in Path(scenes).iterdir() if (p / 'trajectory.csv').exists()
+                   and (work / 'scenes' / f'{p.name}.json').exists()), key=lambda p: int(p.name))   # labelled scenes only
     with ProcessPoolExecutor(3) as ex:
         res = dict(ex.map(ladder_scene, [(str(s), str(work), arms, band_lo) for s in todo]))
     rep = {}
@@ -332,4 +370,5 @@ def ladder(scenes, work, arms='A0,A1,A2r,A2o', band_lo=None):
 
 
 if __name__ == '__main__':
-    dict(pinhole=pinhole, pinhole_nn=pinhole_nn, mono=mono, mono_fast=mono_fast, ladder=ladder)[sys.argv[1]](*sys.argv[2:])
+    dict(pinhole=pinhole, pinhole_nn=pinhole_nn, mono=mono, mono_fast=mono_fast, ladder=ladder,
+         band_coverage=band_coverage)[sys.argv[1]](*sys.argv[2:])
