@@ -4,7 +4,7 @@
 
 **眼镜采集 RGB、ToF 与 IMU，手机在本地感知前方障碍，给出头部／身体区域的提醒。**
 
-[体验演示](docs/HARDWARE_OBSTACLE_DEMO.md) · [录制数据](docs/PHONE_DATA_CAPTURE.md) · [开始构建](#快速开始) · [参与贡献](CONTRIBUTING.md) · [English quick start](docs/QUICKSTART_EN.md)
+[体验演示](docs/HARDWARE_OBSTACLE_DEMO.md) · [录制数据](docs/PHONE_DATA_CAPTURE.md) · [开始构建](#快速开始) · [文档导航](docs/README.md) · [参与贡献](CONTRIBUTING.md)
 
 ![BlindAssist 概念流程：眼镜端 RGB 相机、ToF 距离和 IMU 姿态经无线连接进入 Android 手机，在本地处理后提供 HEAD 头部、BODY 身体区域线索及语音、震动和屏幕反馈；画面为原创示意](docs/assets/brand/blindassist-showcase.svg)
 
@@ -45,7 +45,7 @@
 
 ## 快速开始
 
-Android 最低版本为 **8.0 / API 26**。维护的 Windows 开发路径使用 **PowerShell 7、JDK 17、Android SDK Platform 37**；Linux 路径及其验证范围见 [English quick start](docs/QUICKSTART_EN.md)。
+Android 最低版本为 **8.0 / API 26**。维护的 Windows 开发路径使用 **PowerShell 7、JDK 17、Android SDK Platform 37**；分步操作见[中文快速开始](docs/QUICKSTART_ZH.md)，Linux 路径及其验证范围见 [English quick start](docs/QUICKSTART_EN.md)。
 
 ```powershell
 git clone https://github.com/violetljj/blind-assist.git
@@ -83,7 +83,7 @@ flowchart LR
     D --> F["core:ui<br/>状态与界面"]
 ```
 
-`app` 管理入口与资产，`apps/` 保留独立研究与基准应用。具体接口和所有权见[代码地图](docs/CODE_MAP.md)。
+`app` 管理入口与资产，`apps/` 保留独立研究与基准应用。[代码地图](docs/CODE_MAP.md)按目录和常见修改定位实现；构建与维护命令见[脚本索引](scripts/README.md)，操作指南见[文档导航](docs/README.md)。
 
 | 想了解什么 | 从这里开始 |
 | --- | --- |

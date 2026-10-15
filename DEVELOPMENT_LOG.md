@@ -4,6 +4,12 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-15 — Project structure and navigation
+
+- Scope: consolidate configuration and refresh project, application and tooling navigation; documentation/path checks only, no experiment or device budget. Moved the unchanged public asset manifest from `configs/` to `config/`, updated its consumers, and added configuration and tool indexes.
+- Replaced stale route descriptions, demo instructions and machine handoff references with current implementation and guide links; included these entry pages in the existing documentation-link check. Research decisions, data and parallel work retain their existing ownership.
+- Validation: 24 entry pages / 449 local links and the structure check passed; public-release fixtures passed 3/3 and both packaged asset identities passed. Whole-worktree hygiene found pre-existing whitespace in `docs/PROJECT_STATE.md` and `docs/CURRENT_DECISION.md`; these parallel edits remain outside this delivery.
+
 ## 2026-10-15 — Dependency PR and alert maintenance
 
 - Merged original PR heads #11/#15/#18 with coordinated QNN 2.49.0, Kotlin 2.4.10, core-ktx 1.19.0, AGP 9.1.1, Hilt 2.60.1 and compileSdk 37. Repaired AGP generated-directory compatibility, retained external Kotlin/kapt flags and pinned the existing vision NDK. minSdk 26 and targetSdk 35 remain unchanged; both languages' setup instructions now require SDK 37.

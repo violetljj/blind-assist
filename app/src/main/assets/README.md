@@ -8,4 +8,4 @@ yolo11n_fp16_320.tflite
 
 正式仓库中的模型身份、许可证、用途与限制见
 [`docs/MODEL_CARD.md`](../../../../docs/MODEL_CARD.md)；机器可核验的大小和 SHA-256 见
-[`configs/public_release_assets.json`](../../../../configs/public_release_assets.json)。
+[`config/public_release_assets.json`](../../../../config/public_release_assets.json)。

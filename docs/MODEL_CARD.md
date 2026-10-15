@@ -28,7 +28,7 @@ class-name metadata. No independent ownership or license claim is made for the
 upstream class names.
 
 The machine-readable identity is
-[`configs/public_release_assets.json`](../configs/public_release_assets.json).
+[`config/public_release_assets.json`](../config/public_release_assets.json).
 CI recomputes the packaged asset size and SHA-256 and fails if this record,
 the notice, or the payload drifts independently.
 

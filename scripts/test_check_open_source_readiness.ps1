@@ -84,7 +84,7 @@ uses: github/codeql-action/analyze@5595ccaf912efad79be6eef63a5619ff05969be3
             }
         )
     }
-    Write-FixtureFile 'configs/public_release_assets.json' ($manifest | ConvertTo-Json -Depth 5)
+    Write-FixtureFile 'config/public_release_assets.json' ($manifest | ConvertTo-Json -Depth 5)
 
     Assert-Check $true 'complete-public-project'
     Write-FixtureFile '.github/workflows/codeql.yml' ($pinnedCodeqlWorkflow -replace '@[0-9a-f]{40}', '@v4')

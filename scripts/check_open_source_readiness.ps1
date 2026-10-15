@@ -47,13 +47,13 @@ $requiredFiles = @(
     '.github/workflows/android.yml',
     '.github/workflows/codeql.yml',
     '.github/workflows/release.yml',
-    'configs/public_release_assets.json'
+    'config/public_release_assets.json'
 )
 foreach ($relativePath in $requiredFiles) {
     Require-File $relativePath | Out-Null
 }
 
-$manifestPath = Resolve-PublicPath 'configs/public_release_assets.json'
+$manifestPath = Resolve-PublicPath 'config/public_release_assets.json'
 $verifiedAssets = @()
 if (Test-Path -LiteralPath $manifestPath -PathType Leaf) {
     try {

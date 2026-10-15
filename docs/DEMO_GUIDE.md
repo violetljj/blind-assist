@@ -1,94 +1,71 @@
 # BlindAssist 演示指南
 
-本文档用于课程展示、阶段检查和毕业设计答辩时快速演示 BlindAssist。它描述的是当前仓库真实功能，不把原型能力描述为安全认证产品。
+本页用于课程展示、阶段检查和毕业设计答辩。当前演示以真实 Atom RGB、H3 ToF 和
+BMI270 IMU 接入为主；具体操作以[硬件辅助与融合演示](HARDWARE_OBSTACLE_DEMO.md)、
+[三路数据采集](PHONE_DATA_CAPTURE.md)为准。
 
-当前仓库版本：`v10.10.0` / `versionCode=38`。演示前必须用下方命令核对实际安装包；如果现场使用历史 APK，应说明对应版本和功能差异。构建或测试是否通过以本次演示前的新鲜输出为准，不沿用旧报告中的通过结论。
+## 选择演示内容
 
-## 1. 演示目标
+| 首页入口 | 展示内容 | 操作说明 |
+| --- | --- | --- |
+| 融合演示 | 显示 HEAD/BODY 区域、ToF/RGB 来源及确认后的提醒 | [融合演示](HARDWARE_OBSTACLE_DEMO.md) |
+| 开始辅助 | 当前 H3 固件上的基础 ToF 提醒；显式开始与结束 | [默认辅助入口](HARDWARE_OBSTACLE_DEMO.md) |
+| 数据采集 | Atom RGB、8×8 ToF、IMU 预览，原始记录保存与 ZIP 导出 | [采集步骤与文件内容](PHONE_DATA_CAPTURE.md) |
 
-- 说明 BlindAssist 是 Android Kotlin + Compose 的助盲原型，障碍感知定位为“盲杖互补的类别无关前视障碍感知”，由佩戴者决定如何移动。
-- 展示手机摄像头实时识别、检测框覆盖、语音/震动提醒、现场测试摘要和用户偏好设置。
-- 介绍算法研究时，优先讲墙、杆、胸部／头部与悬空障碍的前视提醒；超低位障碍保留为附加能力。研究目标、离线实验和当前 APK 功能分开说明，不把新融合原型讲成已部署能力。详见[当前主线](../research/active/dtr-r0/CURRENT.md)。
-- 强调隐私与安全边界：摄像头画面本地处理，不上传、不联网、不保存视频；提醒只作为辅助参考。
+手机相机与旧设备模拟页面属于其他已有路径。演示时按实际打开的入口说明输入来源，
+不要把旧模拟页面或素材回放当成真实硬件连接。
 
-## 2. 演示前准备
+## 演示前准备
 
-以下命令均从仓库根 `E:\linnan\linnan` 执行。
+1. 按[快速开始](QUICKSTART_ZH.md)准备构建工具；使用已有 APK 时，核对其版本与
+   [CHANGELOG.md](../CHANGELOG.md)中的功能记录。源码版本在
+   [app/build.gradle.kts](../app/build.gradle.kts)中，不在本页另存一份版本号。
+2. 现场融合展示使用 `demo` 包。按硬件指南部署匹配的实验模型与本地运行库；仅安装
+   APK 不会自动下载模型。构建入口：
 
-1. 确认 Android 手机已打开 USB 调试或 ADB over Wi-Fi。
-2. 确认当前 APK 已安装：
+   ```powershell
+   pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleDemo
+   ```
 
-```powershell
-.\.android-sdk\platform-tools\adb.exe devices
-.\.android-sdk\platform-tools\adb.exe install -r app\build\outputs\apk\debug\app-debug.apk
-```
+   普通 clone 的包位于 `app/build/outputs/apk/demo/app-demo.apk`；配置外置 artifact
+   junction 的工作区位于 `artifacts.local/work/gradle-build/app/outputs/apk/demo/app-demo.apk`。
+   安装、预编译与所需资产见[硬件指南](HARDWARE_OBSTACLE_DEMO.md)，需要留存的演示包按
+   [APK 归档策略](APK_ARCHIVE.md)保存。
+3. 手机与硬件接入同一局域网或已配置热点，在“数据采集”中寻找设备并确认启用输入有
+   有效画面和读数。H3 只允许一个 TCP 消费者，切换到辅助或融合前先结束当前采集，
+   并关闭电脑上的 ToF 预览或采集客户端。
+4. 若通过 ADB 核对安装版本，使用本机 Android SDK 的 `adb`：
 
-3. 核对版本：
+   ```powershell
+   adb shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'
+   ```
 
-```powershell
-.\.android-sdk\platform-tools\adb.exe shell dumpsys package com.linnan.blindassist | Select-String -Pattern 'versionCode|versionName'
-```
+## 推荐演示顺序
 
-预期当前演示版本为：
+1. 在首页介绍各入口，说明本次使用的硬件、APK 和演示模式。
+2. 打开“融合演示”，点“开始演示”后观察 HEAD/BODY、输入来源、未知状态与提醒；
+   所用演示规则和冻结评价版本的区别按硬件指南说明。结束后停止演示。
+3. 如需展示基础路径，回首页打开“开始辅助”，展示 ToF 状态及语音／震动设置，再结束辅助。
+4. 打开“数据采集”，连接后显式开始一段录制，停止保存并导出 ZIP；展示原始文件种类，
+   说明采集本身不提供障碍真值。采集时保持页面在前台，已启动的独立 ZIP 导出可以在离页后继续。
+5. 展示设置页中的语言、语音、震动偏好。结束时返回首页，并确认辅助或采集已停止。
 
-```text
-versionCode=38
-versionName=10.10.0
-```
+这些步骤用于展示已有操作；研究数字引用对应报告中的设备、数据范围和分母。
+模型推理耗时、手机接收时刻和完整提醒延迟是不同测量，不相互替代。
 
-## 3. 推荐演示顺序
+## 没有硬件时
 
-1. 打开 App，展示启动页和首次使用引导。
-2. 进入“功能”页，先说明日常使用向导和一键预设：
-   - 通用日常、室内慢行、走廊通行、密集区域、户外慢行会组合调整场景、提醒档位、语音风格、震动强度和 Care Mode。
-   - 手动调整后若不再匹配预设，界面会显示为自定义组合。
-3. 说明两个功能入口：
-   - “使用手机摄像头”：当前可用的本地检测路径。
-   - “眼镜设备模拟中心”：正式版可见的交互演示，所有状态均明确为模拟，不扫描蓝牙、不联网、不连接真实眼镜。
-4. 进入模拟中心，依次演示“模拟连接”（800ms 后 82%）、“模拟低电量”（15%）、“模拟断连”和“重置模拟”。debug 版本连接后可选择 HIGH/MEDIUM/LOW/NONE 本地素材并开始离线回放；release 不显示回放入口。
-5. 返回功能页，点击“使用手机摄像头”，进入相机权限说明。
-6. 授权后进入沉浸式相机页，展示：
-   - 实时预览和检测框。
-   - 风险指导语、目标行、提醒档位。
-   - 检测、语音、震动、场景、Care Mode、调安静和调敏感快捷控制。
-   - `持续检测中 / Monitoring` 只表示未达到提醒等级；必须说明这不代表环境安全。
-7. 打开调试信息，展示 FPS、推理耗时、风险判定和现场测试摘要。
-8. 回到主界面，进入“设置”页，展示：
-   - 语音提醒、震动提醒、关怀模式、调试信息。
-   - 提醒档位、语音风格、震动强度。
-   - 现场测试摘要和“查看新手引导”。
-9. 进入“个人主页”，展示本地原型状态、当前版本和辅助偏好。
+可以构建并查看首页和设置，结合 [README](../README.md)、[版本记录](../CHANGELOG.md)、
+[项目状态](PROJECT_STATE.md)说明功能。展示既有截图、录像、回放或设备报告时，标明其
+版本和来源；UI 构建、素材回放或历史测试不证明现场硬件已连接。历史材料从
+[历史索引](history-index.md)查找。
 
-## 4. 无设备 fallback
+## 数据与能力边界
 
-如果现场没有连接手机或 ADB 不稳定：
+硬件通过局域网向手机传输数据，感知在手机端处理；不能笼统表述为“不联网”。数据采集
+会保存原始 JPEG、ToF、IMU 和事件记录，并按用户选择的位置导出 ZIP。基础辅助也提供
+显式留证和可选画面抽帧，保存内容与导出行为见各入口指南；不能笼统表述为“不保存画面”。
 
-- 使用 [APK_ARCHIVE.md](APK_ARCHIVE.md) 的收据清单和外部归档说明历史 APK；`releases/apk/` 不保存原始 APK。
-- 打开 [CHANGELOG.md](../CHANGELOG.md) 说明版本演进。
-- 打开 [历史阶段进度说明](history/project-materials/PROJECT_PROGRESS_REVIEW.md) 讲述早期阶段，并明确它不是当前状态。
-- 打开 [README.md](../README.md) 说明当前功能、模型资产、构建方式和风险提醒策略。
-- 打开 [DEVICE_REGRESSION.md](DEVICE_REGRESSION.md) 说明当前真机回归脚本和本地证据目录规则。
-- 可展示 Compose 仪器测试和 Gradle 构建记录，证明 UI 路径和核心逻辑经过验证。
-- debug APK 可用离线回放展示背景图、真实检测框、风险解释和 session 摘要；应说明素材回放不等同于实际场景验证。
-
-## 5. 隐私与安全边界表述
-
-推荐说明：
-
-> BlindAssist 当前是本地运行的助盲避障原型。摄像头画面只在手机端用于实时识别，不上传、不联网、不保存视频。语音和震动提醒受光照、遮挡、模型识别结果和设备性能影响，只能作为辅助参考，不能替代盲杖、导盲犬、人工判断或专业安全设备。
-
-避免说明：
-
-- “可以保证避障安全”
-- “可以替代盲杖或导盲犬”
-- “能识别所有障碍物”
-- “已经完成真实眼镜设备连接”
-
-## 6. 验收材料清单
-
-- [README.md](../README.md)：当前状态、使用方式、模型和构建说明。
-- [CHANGELOG.md](../CHANGELOG.md)：真实版本路线和 APK 归档路径。
-- [历史阶段进度说明](history/project-materials/PROJECT_PROGRESS_REVIEW.md)：早期阶段回顾，不作为当前状态。
-- [DEVELOPMENT_LOG.md](../DEVELOPMENT_LOG.md)：近期开发、验证和版本判断记录。
-- [DEVICE_REGRESSION.md](DEVICE_REGRESSION.md)：真机安装、冷启动、截图、UI dump 和性能采样脚本说明。
-- [APK_ARCHIVE.md](APK_ARCHIVE.md)：Git 收据与外部 APK 归档位置。
+BlindAssist 是盲杖互补的前视感知研究原型。演示响应、离线评价和真实使用效果分别报告；
+`UNKNOWN` 不等于无障碍，设备接收时间匹配不等于传感器曝光同步。提醒受安装、光照、
+遮挡、网络和模型影响，当前材料不构成可通行或导航安全证明。

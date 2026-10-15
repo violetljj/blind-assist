@@ -1,53 +1,60 @@
-# Documentation map
+# Documentation map / 文档导航
 
-The hot path is intentionally short:
+[Project overview](../README.md) · [中文项目介绍](../README.zh-CN.md) · [Code and directory map](CODE_MAP.md) · [Script index](../scripts/README.md) · [Tool index](../tools/README.md)
 
-1. [中文一页状态：系统、指标、当前问题](PROJECT_STATE.md)
-2. [Current research decision](CURRENT_DECISION.md)
-3. [Paused L10-R0 Goal-Lock evidence](../research/active/l10-r0/CURRENT.md)
-4. [Cane-complementary forward perception / retained DTR history](../research/active/dtr-r0/CURRENT.md)
+## Start with the task
 
-The route `README.md` files are detailed ledgers and reproduction surfaces;
-load them only after the matching compact current.
+| What you need / 要做什么 | Start here / 入口 |
+| --- | --- |
+| Build the app or make a first contribution | [English quickstart](QUICKSTART_EN.md) · [中文快速开始](QUICKSTART_ZH.md) · [Contributing](../CONTRIBUTING.md) |
+| Run the current hardware or fusion demo | [硬件与融合演示](HARDWARE_OBSTACLE_DEMO.md) |
+| Record Atom RGB, ToF and IMU; export a session | [手机采集与预览](PHONE_DATA_CAPTURE.md) |
+| Find current priorities, capabilities and gaps | [项目一页状态](PROJECT_STATE.md) → [研究决定](CURRENT_DECISION.md) |
+| Change Android code or locate its owner | [Code map](CODE_MAP.md) · [Isolated apps](../apps/README.md) |
+| Verify a device change or prepare an APK | [Device regression](DEVICE_REGRESSION.md) · [Release and verification](RELEASE_AND_VERIFICATION.md) · [APK archive](APK_ARCHIVE.md) |
 
-## Engineering
+## Research routes
 
-- [手机端 Atom RGB + ToF + IMU 数据采集与预览](PHONE_DATA_CAPTURE.md)
-- [8×8 ToF hardware obstacle demonstration](HARDWARE_OBSTACLE_DEMO.md)
-- [Code map](CODE_MAP.md)
-- [Device regression](DEVICE_REGRESSION.md)
-- [Release and verification](RELEASE_AND_VERIFICATION.md)
-- [Local artifacts](LOCAL_ARTIFACTS.md)
-- [关键证据备份与恢复](operations/CRITICAL_EVIDENCE_BACKUP.md)
-- [Python CI 与冻结文件跨平台检查](operations/PYTHON_CI.md)
-- [Asset management system](asset-management/README.md)
-- [Resource fabric and data reuse](RESOURCE_FABRIC.md)
-- [Host research compute](HOST_RESEARCH_COMPUTE.md)
-- [CARLA integration](CARLA_PLAYBOOK.md)
-- [Glasses hardware route](GLASSES_HARDWARE_ROUTE.md)
-- [Independent hardware bring-up: Atom + XIAO/ToF + phone](../research/active/hardware-bringup/README.md)
+Read the matching `CURRENT.md` first; its links lead to detailed results,
+protocols and reproduction records. The directory name `active/` alone does
+not mean a route is currently advancing. Priorities belong to the
+[research decision](CURRENT_DECISION.md), not this index.
 
-## Research knowledge
+| Area | Current status | Detailed records |
+| --- | --- | --- |
+| Hardware, calibration and mobile fusion | [Hardware current](../research/active/hardware-bringup/CURRENT.md) | [Hardware ledger](../research/active/hardware-bringup/README.md) · [Runs](../research/active/hardware-bringup/RUNS.md) |
+| Cane-complementary forward perception / retained DTR history | [Forward perception current](../research/active/dtr-r0/CURRENT.md) | [DTR ledger](../research/active/dtr-r0/README.md) |
+| Paused L10-R0 Goal-Lock evidence | [L10 current](../research/active/l10-r0/CURRENT.md) | [L10 ledger](../research/active/l10-r0/README.md) |
 
-- [Cross-route knowledge reserve](../research/knowledge/README.md): papers,
-  mechanisms, projects, route-specific usage, reproduction evidence, and
-  falsified hypotheses.
+[Research workflow](../research/WORKFLOW.md) describes experiment execution;
+the [knowledge reserve](../research/knowledge/README.md) indexes papers,
+mechanisms, route-specific use and falsified hypotheses.
 
-## Public project material
+## Tools, hardware and local data
 
-- [English quickstart](QUICKSTART_EN.md)
-- [Chinese quickstart](QUICKSTART_ZH.md)
-- [Demo guide](DEMO_GUIDE.md)
-- [Model card](MODEL_CARD.md)
-- [Threat model](THREAT_MODEL.md)
-- [Evaluation set](BLINDASSIST_EVALSET.md)
+| Area | Guides |
+| --- | --- |
+| Hardware connection and firmware | [Glasses hardware route](GLASSES_HARDWARE_ROUTE.md) |
+| Local paths, models, datasets and outputs | [Local artifacts](LOCAL_ARTIFACTS.md) · [Asset management](asset-management/README.md) · [Resource fabric and reuse](RESOURCE_FABRIC.md) |
+| Configuration and machine setup | [Configuration map](../config/README.md) · [新电脑交接](NEW_COMPUTER_HANDOFF.md) |
+| Compute and simulation | [Host research compute](HOST_RESEARCH_COMPUTE.md) · [CARLA](CARLA_PLAYBOOK.md) · [SkyDiscover](SKYDISCOVER_PLAYBOOK.md) |
+| Recovery and reproducible checks | [关键证据备份与恢复](operations/CRITICAL_EVIDENCE_BACKUP.md) · [Python CI 与冻结文件检查](operations/PYTHON_CI.md) |
 
-## Governance and history
+Command families are indexed in [tools](../tools/README.md) and
+[shared research helpers](../scripts/research/README.md).
 
-- [Documentation governance](DOCUMENT_GOVERNANCE.md)
-- [Formal research governance](formal/RESEARCH_GOVERNANCE.md)
-- [Operational runbooks](operations/CODEX_WORKFLOW.md)
-- [Historical lookup](history-index.md)
+## Project material and history
 
-Closed research prose is not current authority. Use the history index and the
-archive tag when an audit or reproduction task explicitly needs it.
+- [Changelog](../CHANGELOG.md): version-specific changes and verification.
+- [Model card](MODEL_CARD.md), [evaluation set](BLINDASSIST_EVALSET.md) and
+  [detector benchmark](DETECTOR_BENCHMARK.md): model, data and measurement scope.
+- [Threat model](THREAT_MODEL.md) and [security reporting](../SECURITY.md).
+- [Demo guide](DEMO_GUIDE.md): prepare a presentation and distinguish the
+  displayed app behavior from research results.
+- [Documentation governance](DOCUMENT_GOVERNANCE.md),
+  [research governance for formal claims](formal/RESEARCH_GOVERNANCE.md) and
+  [operational runbooks](operations/CODEX_WORKFLOW.md).
+- [History index](history-index.md): archived research and exact historical paths.
+
+Closed research prose and historical snapshots retain their original evidence
+and decisions; they do not replace the current route pages.

@@ -4,7 +4,7 @@
 
 **RGB, ToF and IMU inputs from a wearable feed local Android perception, producing obstacle cues for head and body zones.**
 
-[Explore the demo](docs/HARDWARE_OBSTACLE_DEMO.md) · [Record data](docs/PHONE_DATA_CAPTURE.md) · [Build it](#quick-start) · [Contribute](CONTRIBUTING.md) · [Developer quick start](docs/QUICKSTART_EN.md)
+[Explore the demo](docs/HARDWARE_OBSTACLE_DEMO.md) · [Record data](docs/PHONE_DATA_CAPTURE.md) · [Build it](#quick-start) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md)
 
 ![BlindAssist concept flow: wearable RGB camera, ToF range and IMU pose inputs connect wirelessly to an Android phone; local processing provides HEAD and BODY obstacle cues with speech, vibration and screen feedback. Original concept illustration.](docs/assets/brand/blindassist-showcase-en.svg)
 
@@ -83,7 +83,7 @@ flowchart LR
     D --> F["core:ui<br/>State and rendering"]
 ```
 
-`app` owns entry points and assets; `apps/` contains isolated research and benchmark applications. See the [code map](docs/CODE_MAP.md) for interfaces and ownership.
+`app` owns entry points and assets; `apps/` contains isolated research and benchmark applications. The [code map](docs/CODE_MAP.md) maps directories and common changes to their implementation. Use the [script index](scripts/README.md) for build and maintenance commands, and the [documentation map](docs/README.md) for task-specific guides.
 
 | To learn about | Start here |
 | --- | --- |
