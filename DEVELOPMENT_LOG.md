@@ -1,9 +1,11 @@
 # Development log
 
-This file records only current milestones. Full earlier history is preserved at
-`archive/pre-agent-surface-2026-08-26` and searchable through
-`experiments/index.jsonl`.
+This file records only current milestones. Earlier history is preserved at `archive/pre-agent-surface-2026-08-26` and searchable through `experiments/index.jsonl`.
 
+## 2026-10-15 — Remaining contribution review
+
+- Repaired and integrated PR #22/#23 receipt contracts under tools/contracts, preserving their contributor history: 64 unit tests and 13 independent Draft 2020-12 fixture checks passed. Fixed misleading PASS paths for identities, evidence completeness, rates/denominators, session performance, parameters and authority. Examples remain synthetic; no real provenance, threshold freeze or candidate admission is claimed.
+- Reviewed all six remaining issues: #19's duplicate flavor proposal is superseded by the separate depth demo, now visibly labelled research preview (manifest merge passed); #7/#9/#20/#21/#26 retain their real host, accessibility, provenance or device-evidence gaps. Repaired stale contributor commands/model-card references and clarified both quickstarts; detailed dispositions and receipts are under artifacts.local/github-remaining-20261015/.
 ## 2026-10-15 — Project structure and navigation
 
 - Scope: consolidate configuration and refresh project, application and tooling navigation; documentation/path checks only, no experiment or device budget. Moved the unchanged public asset manifest from `configs/` to `config/`, updated its consumers, and added configuration and tool indexes.
@@ -195,5 +197,4 @@ This file records only current milestones. Full earlier history is preserved at
 
 ## Earlier milestones
 
-The unchanged earlier entries are preserved at Git
-`d40634e373afbd38f9dfef8edc325a8fc221469a:DEVELOPMENT_LOG.md`.
+The unchanged earlier entries are preserved at Git `d40634e373afbd38f9dfef8edc325a8fc221469a:DEVELOPMENT_LOG.md`.

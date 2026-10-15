@@ -70,11 +70,11 @@ the model. The repository therefore uses AGPL-3.0-only for its original default
 distribution and records third-party scope in
 [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md).
 
-The repository contains an export helper, `scripts/export_yolo11n_tflite.py`,
-but does not currently publish a complete bit-for-bit upstream checkpoint,
+The historical export helper was archived out of the current tree in
+`c8f17dee` (2026-08-26). The repository does not currently publish a complete upstream checkpoint,
 toolchain, and export receipt for this exact TFLite payload. The immutable hash
 above is the current distribution identity; reproducible re-export remains a
-public maintenance gap rather than an implied claim.
+public maintenance gap tracked in [issue #20](https://github.com/violetljj/blind-assist/issues/20).
 
 ## Evaluation and promotion boundary
 

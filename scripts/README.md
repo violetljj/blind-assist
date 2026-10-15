@@ -27,6 +27,7 @@ pwsh -NoProfile -File scripts/check_docs_index.ps1
 
 [project.ps1](project.ps1) 保留旧调用兼容；新调用使用 [tools/ba.ps1](../tools/ba.ps1)。
 `test_*.ps1` 验证相应维护脚本；研究模块测试与模块代码放在一起。
+模型来源与研究准入收据的验证器、Schema 和合成测试位于 [tools/contracts](../tools/contracts/README.md)。
 
 ## 研究代码在哪里
 

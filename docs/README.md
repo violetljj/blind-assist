@@ -11,6 +11,7 @@
 | Record Atom RGB, ToF and IMU; export a session | [手机采集与预览](PHONE_DATA_CAPTURE.md) |
 | Find current priorities, capabilities and gaps | [项目一页状态](PROJECT_STATE.md) → [研究决定](CURRENT_DECISION.md) |
 | Change Android code or locate its owner | [Code map](CODE_MAP.md) · [Isolated apps](../apps/README.md) |
+| Inspect model provenance or research-preview receipt contracts | [YOLO export receipt](YOLO_EXPORT_PROVENANCE_RECEIPT.md) · [Android admission receipt](ANDROID_RESEARCH_PREVIEW_ADMISSION.md) |
 | Verify a device change or prepare an APK | [Device regression](DEVICE_REGRESSION.md) · [Release and verification](RELEASE_AND_VERIFICATION.md) · [APK archive](APK_ARCHIVE.md) |
 
 ## Research routes

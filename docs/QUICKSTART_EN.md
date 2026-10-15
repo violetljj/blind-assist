@@ -2,7 +2,7 @@
 
 Status: `current`
 
-Last verified: 2026-08-12
+Last reviewed: 2026-10-15; Windows checks verified, clean Linux verification pending.
 
 This page gets a new contributor from clone to one honest, reviewable result. The
 three minutes cover orientation and starting a check; the first Android build can
@@ -66,8 +66,11 @@ chmod +x ./gradlew
   :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
 ```
 
-This is a CI-validated path, not yet a promise that every Linux workstation is
-supported. If a clean machine differs, report the distribution, architecture,
+These tasks match the Linux CI configuration. The current SDK 37 / AGP 9
+combination has been checked locally on Windows; a fresh Linux workstation
+transcript remains tracked in [issue #26](https://github.com/violetljj/blind-assist/issues/26),
+and macOS setup remains tracked in [issue #7](https://github.com/violetljj/blind-assist/issues/7).
+If a clean machine differs, report the distribution, architecture,
 JDK, Android SDK packages, exact command, and complete error in the setup issue.
 
 ## 2:00 — produce one verifiable result
@@ -84,6 +87,9 @@ The APK is written to:
 ```text
 app/build/outputs/apk/debug/app-debug.apk
 ```
+
+On the managed Windows checkout with an external artifact junction, the same
+APK is under `artifacts.local/work/gradle-build/app/outputs/apk/debug/`.
 
 For a documentation-only change, finish with the checks that own that surface:
 

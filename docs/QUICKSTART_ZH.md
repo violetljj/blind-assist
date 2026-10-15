@@ -2,7 +2,7 @@
 
 状态：`current`
 
-最后核验：2026-08-13
+最后审阅：2026-10-15；Windows 检查已验证，干净 Linux 环境验证仍待完成。
 
 本页让新贡献者从克隆仓库走到一个真实、可复核的结果。三分钟覆盖定位和启动专项检查；
 首次 Android 构建若需下载 Gradle 依赖，可能更久。
@@ -60,7 +60,10 @@ pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:testDebugUnitTest
 pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleDebug
 ```
 
-输出位于 `app/build/outputs/apk/debug/app-debug.apk`。纯文档修改通常只需：
+普通克隆输出位于 `app/build/outputs/apk/debug/app-debug.apk`。配置外置 artifact junction
+的维护工作区输出位于 `artifacts.local/work/gradle-build/app/outputs/apk/debug/`。
+干净 Linux 环境验证见 [#26](https://github.com/violetljj/blind-assist/issues/26)，
+macOS 环境说明与验证见 [#7](https://github.com/violetljj/blind-assist/issues/7)。纯文档修改通常只需：
 
 ```powershell
 git diff --check

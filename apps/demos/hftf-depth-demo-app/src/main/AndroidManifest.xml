@@ -7,7 +7,7 @@
     <application
         android:allowBackup="false"
         android:usesCleartextTraffic="true"
-        android:label="BlindAssist 深度体验"
+        android:label="BlindAssist 深度研究预览"
         android:theme="@android:style/Theme.Material.NoActionBar">
         <uses-native-library
             android:name="libcdsprpc.so"

@@ -39,6 +39,7 @@ RGB/CNH 融合与实机工具从[硬件路线](../research/active/hardware-bring
 | --- | --- | --- |
 | 查找已有方法、结果和继承关系 | [knowledge.py](knowledge.py) | [研究知识库](../research/knowledge/README.md) |
 | 研究提案的阶段与证据字段 | [research_workflow.py](research_workflow.py) | [研究工作流](../research/WORKFLOW.md) |
+| 模型来源与 Android 研究准入收据 | [contracts](contracts/README.md) | [YOLO 导出收据](../docs/YOLO_EXPORT_PROVENANCE_RECEIPT.md) · [Android 准入合同](../docs/ANDROID_RESEARCH_PREVIEW_ADMISSION.md) |
 | 计算后端与远程 worker | [research_backend.py](research_backend.py)、[remote_worker.ps1](remote_worker.ps1) | [主机计算说明](../docs/HOST_RESEARCH_COMPUTE.md) |
 | 资产查询、登记与运行记录 | [data/asset_catalog.py](data/asset_catalog.py)、[data/asset_runtime.py](data/asset_runtime.py) | [资产管理](../docs/asset-management/README.md) |
 | 不可变资源、共享缓存与薄实验 | [data/resource_fabric.py](data/resource_fabric.py) | [资源管理说明](../docs/RESOURCE_FABRIC.md) |

@@ -63,7 +63,7 @@ See [docs/CODE_MAP.md](docs/CODE_MAP.md) before cross-module changes.
 - Preserve failed and consumed outcomes; do not lower gates after observing results.
 - Do not expose private paths, access tokens, device identifiers or non-redistributable payloads.
 
-The current research policy is documented in [docs/RESEARCH_GOVERNANCE.md](docs/RESEARCH_GOVERNANCE.md).
+The current research policy is documented in [research governance](docs/formal/RESEARCH_GOVERNANCE.md).
 
 ## Verification
 
@@ -73,7 +73,13 @@ Run the narrowest checks that cover your change. All pull requests should includ
 pwsh -NoProfile -File scripts/check_repo_hygiene.ps1 -IncludeStructure
 pwsh -NoProfile -File scripts/check_docs_index.ps1
 pwsh -NoProfile -File scripts/check_open_source_readiness.ps1
-python scripts/run_research_contract_tests.py
+```
+
+For changes to the receipt or admission validators, run their focused synthetic
+contract tests:
+
+```powershell
+python -m unittest discover -s tools/contracts -p "test_*.py"
 ```
 
 Android code, resources, build configuration or shared interfaces require the affected tests/lint/build through `scripts/run_android_gradle.ps1`. Device behavior claims require the relevant documented device regression; absence of a device must be reported as an evidence gap.
