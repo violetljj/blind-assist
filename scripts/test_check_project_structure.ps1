@@ -17,6 +17,8 @@ try {
     foreach ($relative in @(
         'AGENTS.md', 'docs/PROJECT_STATE.md', 'docs/CURRENT_DECISION.md',
         'docs/history-index.md', 'research/active/dtr-r0/README.md',
+        'research/active/assistive-object-finding/README.md',
+        'research/active/assistive-object-finding/CURRENT.md',
         'research/active/dtr-r0/CURRENT.md', 'research/active/l10-r0/README.md',
         'research/active/l10-r0/CURRENT.md', 'research/active/hardware-bringup/README.md',
         'research/active/hardware-bringup/CURRENT.md',
@@ -38,7 +40,7 @@ try {
     & git -c core.hideDotFiles=false init --quiet --template= $fixture
     if ($LASTEXITCODE -ne 0) { throw 'Could not initialize structure fixture.' }
     # Only route names are read from the index; no commits or user identity needed.
-    foreach ($route in @('dtr-r0', 'hardware-bringup', 'l10-r0')) {
+    foreach ($route in @('assistive-object-finding', 'assistive-thesis-screen', 'dtr-r0', 'hardware-bringup', 'l10-r0')) {
         & git -C $fixture update-index --add --cacheinfo "100644,e69de29bb2d1d6434b8b29ae775ad8c2e48c5391,research/active/$route/CURRENT.md"
         if ($LASTEXITCODE -ne 0) { throw 'Could not index structure fixture routes.' }
     }
@@ -71,7 +73,14 @@ finally {
     if ($links | Where-Object { $_.Attributes -band [IO.FileAttributes]::ReparsePoint }) {
         throw "Unexpected reparse point in fixture; retained for inspection: $fixture"
     }
-    Remove-Item -LiteralPath $fixture -Recurse
+    if ($IsWindows) {
+        Remove-Item -LiteralPath $fixture -Recurse
+    }
+    else {
+        # PowerShell treats Unix dotfiles (.git, .codex, etc.) as hidden.
+        # Force is needed for those entries, only after the path/link checks above.
+        Remove-Item -LiteralPath $fixture -Recurse -Force
+    }
     if (Test-Path -LiteralPath $fixture) { throw "Fixture cleanup failed: $fixture" }
 }
 Write-Host 'Project structure and document budget tests passed.'
