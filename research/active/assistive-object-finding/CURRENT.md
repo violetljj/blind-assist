@@ -49,7 +49,15 @@ Ranking reached .361902 versus matched MSE .352627 and ridge .364588;
 paired gain .009275 has 95% interval [-.014708,.033532]. All three individual
 ranking seeds lost to their matched MSE seeds. Candidate oracle has144/200
 heatmap hits but ranking selects76; rejection has no stable advantage either.
-Do not tune on this fresh set or select a thesis from this result. A different
-visual representation/supervision remains untested. GPU inference110.374s;
-acquisition CPU budget compliance is unverifiable after failed-attempt counters
-were lost. Full costs, corrections and sealed evidence are in the result report.
+Do not tune on that fresh set or select a thesis from that result.
+
+The [dense visual follow-up](functional_parts/VISUAL_RANK_RESULTS.md) now uses the
+same fit158/cal79 and another fresh150. DINO point MLP reaches .492157/84 hits,
+versus matched GAP .422118/66 and score-only .433490/70; point-GAP delta .070039,
+95% interval [.019425,.120224], all3 seed directions positive. Candidate fusion
+.456105 and fixed-crop DINO tree .467660 remain statistically unresolved controls.
+Oracle123 hits versus selected84 still leaves39 missed opportunities. Continue
+the local-visual mechanism toward independent-source/part-label validation;
+do not declare novelty, select a thesis, or tune on fresh150. Heatmap proxies
+do not establish physical functional correctness. GPU-process317.357s, no human
+labels or backbone training; all evidence and resource corrections in the report.

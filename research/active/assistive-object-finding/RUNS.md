@@ -92,3 +92,25 @@ data, weights, predictions, seals and casebook retained for reproduction.
 Delivery checks: four new Python files compiled in memory; learner loss/geometry/
 schema self-tests,29 scoped documentation links, staged whitespace, project
 structure and hot-doc index458 links passed. No application build needed.
+
+| Date | Run | Inputs / changes | Results | Decision / evidence |
+| --- | --- | --- | --- | --- |
+| 2026-10-15 | functional-parts-visual-ranking / EXPLORE | Same fit158/cal79, fresh150 after excluding all460 prior image IDs; frozen DINO/pre-classifier point vs GAP features,193D matched MLP3seeds/600steps plus ridge/HGB, both crop families,4calls. | DINO point .492157/84 of150 vs GAP .422118/66 and scores .433490/70; point-GAP delta .070039 CI[.019425,.120224], all3seed directions positive. Candidate fusion .456105, fixed DINO tree .467660; superiority to these unresolved. Oracle123 hits, selected84. | COMPLETE: positive spatial-visual mechanism signal, no topic/novelty claim or fresh tuning. Next independent-source/part-label validation remains unrun. [Results](functional_parts/VISUAL_RANK_RESULTS.md), [plan](functional_parts/VISUAL_RANK_PLAN.md). Payload artifacts.local/work/functional-parts-visual-ranking-20261015/. |
+
+New150 covers29actions/32objects; RGB checked157, rejected7, cached160. Old fit/cal
+byte-identical. Download networkwall386.203s, CPU117.71875s including all threads,
+20,828,165B received,22,735,075B conservative bound,18 retried failures counted.
+Development237+fresh150 inference3561calls, GPU-process317.357s, CPU713.469s,
+peak779,306,496B. Training featureCPU37.78125s, learning/cal49.5s, fresh21.3125s;
+evaluation52.765625s. No labels, paid resources or backbone training.
+Old7110maps/1659logits/candidate geometry unchanged. Independent scalers,
+initializations/batches,1500ensembles,288visual vectors,10200scored points,
+13paired comparisons and68-method gates/AURC passed. A failed audit expected
+a missing manifest hash field; preserved then corrected to recompute RGB hashes.
+That failed-auditCPU is unmeasured; no wall-as-CPU upper-bound claim. All processes
+and locks released. Strongest observed control comparison separately labelled
+posthoc descriptive; no model or predictions changed after fresh scoring.
+
+Delivery checks:5 Python files compiled, learner/scorer/feature synthetic checks,
+34 scoped documentation links, project structure and458 hot-doc links passed.
+Scoped whitespace check passed; no application build was needed.
