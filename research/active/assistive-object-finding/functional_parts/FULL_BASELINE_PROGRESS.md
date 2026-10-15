@@ -29,6 +29,8 @@
 
 一次性同步入口为[full_worker_sync.py](full_worker_sync.py)，每30分钟由既有automation执行；没有新增常驻监控进程。它只读采集副机状态，在本地UMD supervisor COMPLETE后才镜像全量作者手标文件，逐文件SHA校验后最后发布supervisor成功证据；不解码GT、不启动GPU。副机主/后队列及其owner是当前执行权威，原local FAILED不得触发本机重启。主副机路径适配入口[full_worker_entry.py](full_worker_entry.py)与mapping SHA均已封入remote request；Windows asyncio继承Popen兼容故障及修复验证保留在migration/canary_attempts。第二批PLSP完整训练/测试资产正在迁入，验收以副机`migration/plsp_asset_receipt.json`为准。
 
+19:55迁移验收完成：副机已逐文件核验第二批PLSP的38,330份payload，source bytes不变、未解码test像素；单线程BelowNormal接收任务终态success并结束。收据已取回本地`migration/worker_acceptance/`。主训练实际进入epoch24，副机可用RAM约8.6GiB；这些是迁移/运行证据，不是完整模型性能结论。后续按既有主/后队列继续，不能恢复本机GPU，也不以新的运行时计时覆盖主机已消耗成本。
+
 2026-10-15 18:13（UTC+8）：主本地队列已启动。实际进度以`queue/progress.json`、`runs/*/progress.jsonl`及各terminal为准；launcher PID49392对应实际queue Python PID45932，首个训练PID52016。没有把launcher回执当训练完成；已确认首个模型在全部train4417清单上持续更新。
 
 顺序为SegFormer-B0训练80epoch→全val导出/独立评分/错误图→DINO-S/16同样流程→PLSP Seen完整40epoch→曲线与汇总。两密集模型448输入、物理/有效batch16、2个loader worker、同CE+Dice；SegFormer全部3,716,714参数训练，DINO后4块/norm/decoder共7,690,506参数训练。DINO权重为原DINO-S/16，明确不是DINOv2。
