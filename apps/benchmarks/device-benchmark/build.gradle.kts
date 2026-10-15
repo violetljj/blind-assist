@@ -195,13 +195,13 @@ android {
 
     sourceSets {
         getByName("main") {
-            assets.srcDir(detectorBenchmarkAssetsDir)
-            assets.srcDir(depthBenchmarkAssetsDir)
-            assets.srcDir(segmentationBenchmarkAssetsDir)
-            assets.srcDir(risksegPidnetPreflightAssetsDir)
-            assets.srcDir(sparseLkBenchmarkAssetsDir)
-            assets.srcDir(eventHeadBenchmarkAssetsDir)
-            assets.srcDir(ustrfR12DetectorAssetsDir)
+            assets.srcDir(detectorBenchmarkAssetsDir.get().asFile)
+            assets.srcDir(depthBenchmarkAssetsDir.get().asFile)
+            assets.srcDir(segmentationBenchmarkAssetsDir.get().asFile)
+            assets.srcDir(risksegPidnetPreflightAssetsDir.get().asFile)
+            assets.srcDir(sparseLkBenchmarkAssetsDir.get().asFile)
+            assets.srcDir(eventHeadBenchmarkAssetsDir.get().asFile)
+            assets.srcDir(ustrfR12DetectorAssetsDir.get().asFile)
         }
     }
 }

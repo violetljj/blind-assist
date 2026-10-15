@@ -8,6 +8,8 @@ plugins {
 android {
     namespace = "com.linnan.blindassist.core.vision"
     compileSdk = libs.versions.compileSdk.get().toInt()
+    // Keep native preprocessing on the existing NDK when updating AGP.
+    ndkVersion = "27.0.12077973"
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()

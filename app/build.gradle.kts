@@ -156,7 +156,7 @@ android {
     if (dav2SnpeEnabled) {
         sourceSets.getByName("main").java.srcDir("src/dav2Snpe/java")
         sourceSets.getByName("androidTest").java.srcDir("src/dav2SnpeAndroidTest/java")
-        sourceSets.getByName("main").jniLibs.srcDir(layout.buildDirectory.dir("generated/dav2SnpeJni"))
+        sourceSets.getByName("main").jniLibs.srcDir(layout.buildDirectory.dir("generated/dav2SnpeJni").get().asFile)
         externalNativeBuild {
             cmake {
                 path = file("src/dav2Snpe/cpp/CMakeLists.txt")

@@ -200,8 +200,17 @@ function Resolve-AndroidSdk {
         )
     }
     $resolved = (Resolve-Path -LiteralPath $candidate).Path
-    $androidJar = Join-Path $resolved "platforms\android-$CompileSdk\android.jar"
-    if (-not (Test-Path -LiteralPath $androidJar -PathType Leaf)) {
+    # API 37 and newer SDK packages use a major.minor platform directory,
+    # while compileSdk can still declare the integer major API level.
+    $platformNames = @("android-$CompileSdk")
+    if ($CompileSdk -match '^\d+$') {
+        $platformNames += "android-$CompileSdk.0"
+    }
+    $androidJar = $platformNames |
+        ForEach-Object { Join-Path $resolved "platforms\$_\android.jar" } |
+        Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } |
+        Select-Object -First 1
+    if ([string]::IsNullOrWhiteSpace($androidJar)) {
         Stop-Environment (
             "Android SDK Platform $CompileSdk is missing under '$resolved'."
         )

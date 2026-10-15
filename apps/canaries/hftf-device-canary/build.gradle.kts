@@ -63,7 +63,7 @@ android {
     }
 
     sourceSets.getByName("main").jniLibs.srcDir(
-        layout.buildDirectory.dir("generated/qairtRuntimeJni"),
+        layout.buildDirectory.dir("generated/qairtRuntimeJni").get().asFile,
     )
 
     buildFeatures {

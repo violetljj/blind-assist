@@ -14,7 +14,7 @@ take longer while Gradle downloads dependencies.
 
 ## Before the timer
 
-Install Git, PowerShell 7, JDK 17, and Android SDK Platform 35. On Windows, the
+Install Git, PowerShell 7, JDK 17, and Android SDK Platform 37. On Windows, the
 maintained wrapper discovers and validates the local toolchain. On Linux, the
 commands below mirror the public GitHub Actions path; clean-host verification is
 still tracked as a contributor task.

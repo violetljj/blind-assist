@@ -12,7 +12,7 @@
 
 ## 开始前
 
-准备 Git、PowerShell 7、JDK 17 与 Android SDK Platform 35。Windows 路径由仓库脚本
+准备 Git、PowerShell 7、JDK 17 与 Android SDK Platform 37。Windows 路径由仓库脚本
 统一发现并校验工具链；本快速开始不需要数据集、研究 payload、真机或任何密钥。
 
 ## 0:00 — 克隆并进入仓库

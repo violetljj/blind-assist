@@ -45,7 +45,7 @@ These S24 Ultra screenshots show the existing Chinese interface and interaction 
 
 ## Quick start
 
-Minimum Android version: **8.0 / API 26**. The maintained Windows development path uses **PowerShell 7, JDK 17 and Android SDK Platform 35**. The [developer quick start](docs/QUICKSTART_EN.md) describes the Linux path and its validation scope.
+Minimum Android version: **8.0 / API 26**. The maintained Windows development path uses **PowerShell 7, JDK 17 and Android SDK Platform 37**. The [developer quick start](docs/QUICKSTART_EN.md) describes the Linux path and its validation scope.
 
 ```powershell
 git clone https://github.com/violetljj/blind-assist.git

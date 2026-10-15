@@ -69,10 +69,10 @@ android {
 
     packaging { jniLibs { useLegacyPackaging = true } }
     sourceSets.getByName("main").jniLibs.srcDir(
-        layout.buildDirectory.dir("generated/qairtRuntimeJni"),
+        layout.buildDirectory.dir("generated/qairtRuntimeJni").get().asFile,
     )
     sourceSets.getByName("main").assets.srcDir(
-        layout.buildDirectory.dir("generated/dav2DemoAssets"),
+        layout.buildDirectory.dir("generated/dav2DemoAssets").get().asFile,
     )
     androidResources { noCompress += "dlc" }
     buildFeatures { prefab = true }

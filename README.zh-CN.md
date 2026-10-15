@@ -45,7 +45,7 @@
 
 ## 快速开始
 
-Android 最低版本为 **8.0 / API 26**。维护的 Windows 开发路径使用 **PowerShell 7、JDK 17、Android SDK Platform 35**；Linux 路径及其验证范围见 [English quick start](docs/QUICKSTART_EN.md)。
+Android 最低版本为 **8.0 / API 26**。维护的 Windows 开发路径使用 **PowerShell 7、JDK 17、Android SDK Platform 37**；Linux 路径及其验证范围见 [English quick start](docs/QUICKSTART_EN.md)。
 
 ```powershell
 git clone https://github.com/violetljj/blind-assist.git

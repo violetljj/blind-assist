@@ -28,7 +28,7 @@ New contributors should begin with the
 documentation-only first check from the Android build path and states the current
 Linux evidence gap.
 
-The maintained local entrypoint currently targets Windows 11 and PowerShell 7 with JDK 17 and Android SDK Platform 35:
+The maintained local entrypoint currently targets Windows 11 and PowerShell 7 with JDK 17 and Android SDK Platform 37:
 
 ```powershell
 pwsh -NoProfile -File scripts/run_android_gradle.ps1 -PreflightOnly
