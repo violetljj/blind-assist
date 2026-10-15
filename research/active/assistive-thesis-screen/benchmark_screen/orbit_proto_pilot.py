@@ -25,6 +25,7 @@ BACKBONES = {
     'clip_b16': ('vit_base_patch16_clip_224.openai', 224),
     'dinov2_s14': ('vit_small_patch14_dinov2.lvd142m', 224),
     'dinov2_b14': ('vit_base_patch14_dinov2.lvd142m', 224),
+    'dinov2_s14_168': ('vit_small_patch14_dinov2.lvd142m', 168),     # efficiency variant: 144 instead of 256 tokens
 }
 
 

@@ -35,3 +35,7 @@ baselines + standard metrics) ranks ORBIT teachable object recognition first: fr
 70–78% versus the official meta-trained 85.67% on validation, while ground-truth object crops reach 88–94%, so
 personalised localization in clutter is the measured headroom; naive 14-crop grids recover part (best 83.5%).
 VizWiz-Classification is a secondary robustness benchmark (best modern zero-shot 55.1%). Next: ORBIT test users.
+ORBIT test (17 users, official 50-task protocol, one run after validation-only selection): an annotation-free
+personal part memory on frozen DINOv2-S reaches 72.93% (full-frame 66.19%, unfiltered parts 55.52%, GT-box 81.62%),
+above the 2022 winner (71.69%) but below the best official meta-trained model (75.38%). Halving context frames keeps
+72.48% at half the personalisation MACs. Next: learn part selection/scoring on ORBIT train users to pass 75.4.
