@@ -30,8 +30,12 @@ No further model/data/parameter expansion in this completed pilot.
 Payload: `artifacts.local/work/assistive-object-finding-pilot-20261015/`.
 
 An independent user-requested [alternative screen](audio_screen/README.md) is
-complete: public audio inference works, but the richer gate showed a tradeoff,
-not a clear gain. Prefer action-conditioned functional-part localization for
-the next feasibility check. AGD20K 6 image/heatmap pairs and IIT-AFF 3 native
-pixel-label pairs were actually retrieved; visual model performance and method
-novelty are not yet established. This does not resume the finding pilot.
+complete: public audio inference works, but the richer gate showed a tradeoff.
+The subsequent [functional-part pilot](functional_parts/README.md) ran released
+SelectiveCL on 280 images (AGD 80cal/160eval; IIT 16cal/24eval). Peak-guided crop
+did not beat equal-call flip fusion: AGD point proxy .3697 versus .3769; IIT
+4/24 versus 4/24. Small GT regions are harder, but crop refinement barely helps.
+Confidence filtering helps same-domain point quality while retaining many
+cross-domain errors. Preserve multi-candidate local verification and selective
+pointing as hypotheses; neither innovation nor a thesis topic is established.
+This completed pilot does not resume the finding pilot or authorize new tuning.

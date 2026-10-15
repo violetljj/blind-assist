@@ -39,3 +39,21 @@ The evaluator's three hand examples and independent reconstruction of all 840
 decisions, frozen logistic probabilities and AUROC agreed. No full application
 build was needed for this research-only change. No task-owned process remains;
 models/data/receipts are retained under the payload for authorized reuse.
+
+| Date | Run | Inputs / changes | Results | Decision / evidence |
+| --- | --- | --- | --- | --- |
+| 2026-10-15 | functional-parts-280 / EXPLORE | AGD240 (80cal/160eval), IIT40 (16cal/24eval), 280 unique image SHA; released SelectiveCL, cal-selected ree, six fixed methods and three gates. | AGD M1/M4/M5/M6 point proxy .3620/.3769/.3368/.3697; IIT hits3/4/5/4 out of24. M6 vs M5 saves1/harms2 on IIT. Small AGD regions82: M1 .2823, M6 .2841. Entropy retains125/160 AGD at .4065, but IIT23/24 with only3 hits. | COMPLETE: automatic data/inference/scoring feasible; crop does not beat matched flip, rejection cross-domain weakness remains. No topic or novelty confirmation. [Results](functional_parts/README.md), [frozen plan](functional_parts/PLAN.md). Payload artifacts.local/work/functional-parts-pilot-20261015/. |
+
+GPU-process wall153.564s (conservative158.878s), peak allocation779,306,496B;
+model/source download714,079,887B, data46,082,704B. A progress-file sharing lock
+interrupted additional views after242 images; preserved failure and completed
+rows, retried only38 missing images, and merged by identity. Only bounded I/O
+retry changed; inference math stayed fixed. Processes and writer locks released.
+Independent checks passed for280 image geometries,4200 finite raw maps,1680
+method rows,552 eval gate rows and32 case-level scores. Native metrics matched
+released source. AGD heatmap proxies are not part-mask accuracy; IIT native hits
+are not grasp success. Its5/24 evaluation native-empty images remain in denominators.
+
+Delivery checks: all5 new Python files compiled in memory; metric/geometry/gate
+self-tests,16 scoped local documentation links, staged whitespace, project
+structure and hot-doc index (458 links) passed. No application build was needed.
