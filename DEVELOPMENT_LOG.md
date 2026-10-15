@@ -6,7 +6,7 @@ This file records only current milestones. Full earlier history is preserved at
 
 ## 2026-10-15 — GitHub presentation and contribution maintenance
 
-- Scope: repository showcase, unread triage and reviewable contribution delivery. Added an original sensor-to-phone-to-feedback SVG, refreshed README navigation, labelled historical screenshots and updated repository About/topics.
+- Scope: repository showcase, unread triage and reviewable contribution delivery. Added original sensor-to-phone-to-feedback SVGs, an English-default README with a separate Chinese version and language switch, labelled historical screenshots and updated repository About/topics. Both README versions are included in hot-link checks.
 - Merged accessibility PR #49 with its preference-isolation repair; reconciled the added Compose test with the current callback API and credited the contributor. Issue #9 retains the connected-test/TalkBack audit. Closed superseded PRs #14/#37/#38/#40/#42 with reasons; retained three dependency upgrades and two invalid-input-accepting drafts for follow-up.
 - Repaired four reproduced CI causes: Windows path-alias identity assertion, moved public-doc fixture, missing candidate direct dependencies and outdated readiness fixture. Candidate compilation, 4 localization tests, 3 readiness tests, 4 asset-catalog tests and 3 public-readiness fixtures passed. Final app debug build, lint (0 errors/26 warnings) and androidTest compilation passed; no connected tests were executed.
 - Reviewed the 3,700-notification snapshot plus three later historical CI reminders; repository unread count was zero after marking reviewed items. Detailed local receipts are under `artifacts.local/github-maintenance-20261015/`; no account-wide notification preferences were changed.

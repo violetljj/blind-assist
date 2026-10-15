@@ -2,7 +2,7 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = (& git rev-parse --show-toplevel 2>$null | Select-Object -First 1).Trim()
 if (-not $repoRoot) { throw 'Run inside the BlindAssist Git checkout.' }
 $sources = @(
-    'README.md', 'idea.md', 'docs/README.md', 'docs/PROJECT_STATE.md',
+    'README.md', 'README.zh-CN.md', 'idea.md', 'docs/README.md', 'docs/PROJECT_STATE.md',
     'docs/CURRENT_DECISION.md', 'docs/DOCUMENT_GOVERNANCE.md',
     'docs/operations/CRITICAL_EVIDENCE_BACKUP.md', 'docs/operations/PYTHON_CI.md',
     'docs/history-index.md', 'docs/CODE_MAP.md', 'scripts/README.md',
