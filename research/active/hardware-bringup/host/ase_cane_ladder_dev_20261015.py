@@ -87,6 +87,8 @@ def pinhole_nn(scenes, work):
     for sd in sorted((work / 'pinhole').iterdir(), key=lambda p: int(p.name)):
         out = work / 'pinhole_nn' / sd.name; out.mkdir(parents=True, exist_ok=True)
         for f in sorted(sd.glob('*.png')):
+            if (out / f.name).exists():
+                continue
             D = cv2.imread(str(Path(scenes) / sd.name / 'depth' / f'depth{f.stem}.png'), cv2.IMREAD_UNCHANGED).astype(np.float32)
             z = np.where(ok, D[mv, mu] / nr, 0.)
             cv2.imwrite(str(out / f.name), np.clip(np.round(np.rot90(z, 3)), 0, 65535).astype(np.uint16))
@@ -190,10 +192,10 @@ def arm_points(arm, scene, work, i, T_fish, T_up, dirs_f, sa_f, dirs_p, sa_p):
     elif arm == 'A1i':                                                # first run: interpolated reprojection (kept for record)
         z = cv2.imread(str(work / 'pinhole' / scene.name / f'{i:07d}.png'), cv2.IMREAD_UNCHANGED)[::STEP, ::STEP].astype(np.float32)
     else:
-        src = {'A2r': 'dav2l', 'A2o': 'dav2l', 'A3': 'unidepth'}[arm]
+        src = {'A2r': 'dav2l', 'A2o': 'dav2l', 'A3': 'unidepth', 'A2s': 'dav2s'}[arm]
         z = cv2.imread(str(work / f'mono_{src}' / scene.name / f'{i:07d}.png'), cv2.IMREAD_UNCHANGED)[::STEP, ::STEP].astype(np.float32)
         z = np.where(gt > 0, z, 0.)                                   # same valid image area as the pinhole view
-        if arm == 'A2o':
+        if arm in ('A2o', 'A2s'):
             m = (gt > 0) & (gt < A.MAX_MM) & (z > 0)
             z = z * (np.median(gt[m] / z[m]) if m.sum() > 100 else 1.)
     ok = (z > 0) & (z < A.MAX_MM)
