@@ -114,3 +114,23 @@ posthoc descriptive; no model or predictions changed after fresh scoring.
 Delivery checks:5 Python files compiled, learner/scorer/feature synthetic checks,
 34 scoped documentation links, project structure and458 hot-doc links passed.
 Scoped whitespace check passed; no application build was needed.
+
+| Date | Run | Inputs / changes | Results | Decision / evidence |
+| --- | --- | --- | --- | --- |
+| 2026-10-15 | functional-parts-cross-source / EXPLORE | New IIT150 native masks, frozen AGD158/79 models/scalers/projection/gates; hold mapped to grasp5/wrap9 full-image union. Cross-source RGB SHA/pHash screen against665 prior files; no training or target calibration. | DINO point44/150 vs GAP48/scores54/fixed tree42/fusion49/base47. Point-GAP −2.67pp CI[-9.33,4.00]; point-scores −6.67pp CI[-12.67,−.67], exact p=.05248. All3seed directions negative. Oracle81, selected44, missed37. Empty20 retained. | COMPLETE: same-source local-visual signal not reproduced on IIT native grasp masks; no generalization/topic claim or tuning. [Results](functional_parts/CROSS_SOURCE_RESULTS.md), [plan](functional_parts/CROSS_SOURCE_PLAN.md). Payload artifacts.local/work/functional-parts-cross-source-20261015/. |
+
+Metadata-class quotas15each, inspected168/rejected18/cached176; no native GT used
+for selection. Download434.859wall_s,22,542,832B received/23,988,206B bound,
+CPU126.75s. Inference1422shared calls,GPU-process74.859s,CPU237.844s,
+peak779,306,496B. Frozen predictionCPU15.875s, runneraudit6.46875s,
+evaluationCPU21.609375s, dataaudit7.484375s, aggregateaudit.453125s.
+157training files unchanged,1500ensemble vectors,180visual reconstructions,
+10200categorical decisions and8840EDT/KDTree distances independently checked.
+68method aggregates/gates/AURC,13paired bootstrap/exact tests and2oracles pass.
+Native NOT_EVALUABLE0; empty20 are label absence, not proof of real ungraspability.
+All processes/locks released. Source snapshots preserve the pre-download plan
+clarification that additionally excludes prior AGD RGB; no outcomes preceded it.
+
+Delivery:3 new Python files compiled, categorical/empty/invalid-label synthetic
+checks passed,37 scoped documentation links and458 hot-doc links verified;
+project structure and scoped whitespace passed. No application build needed.

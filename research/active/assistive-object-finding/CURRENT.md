@@ -56,8 +56,14 @@ same fit158/cal79 and another fresh150. DINO point MLP reaches .492157/84 hits,
 versus matched GAP .422118/66 and score-only .433490/70; point-GAP delta .070039,
 95% interval [.019425,.120224], all3 seed directions positive. Candidate fusion
 .456105 and fixed-crop DINO tree .467660 remain statistically unresolved controls.
-Oracle123 hits versus selected84 still leaves39 missed opportunities. Continue
-the local-visual mechanism toward independent-source/part-label validation;
-do not declare novelty, select a thesis, or tune on fresh150. Heatmap proxies
-do not establish physical functional correctness. GPU-process317.357s, no human
-labels or backbone training; all evidence and resource corrections in the report.
+Oracle123 hits versus selected84 still leaves39 missed opportunities.
+
+The [cross-source native-mask test](functional_parts/CROSS_SOURCE_RESULTS.md) is
+complete: another150 IIT images, frozen AGD models/gates, no target-domain training.
+Local DINO hits44/150 versus GAP48, scores54, fixed DINO tree42, fusion49 and
+original47. All3 local seeds lose to matched GAP/scores. Native-empty20 remain
+in denominator; candidate oracle81, selected44 leaves37 missed opportunities.
+Inherited gate retains79 with46 wrong native labels. Same-source positive signal
+has not transferred to IIT grasp5/wrap9 regions. Do not select a thesis, claim
+general functional correctness or tune this cohort. Supervision alignment and
+another held-out source/scene remain future tests. Reports preserve full evidence.
