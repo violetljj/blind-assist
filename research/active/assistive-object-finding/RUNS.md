@@ -16,6 +16,6 @@ writer lock released. No full StreamingRVOS runtime or first-person video run.
 Delivery checks: evaluator self-test passed (join, missing rows, censoring,
 unknown FPS and native mask state); all route Python files compiled; saved
 full-pool replay reproduced 85/327; 26 local documentation links and scoped
-whitespace/identity/path checks passed. Whole-repository structure check retained
-one unrelated concurrent failure: the existing `schemas/` surface. The new route
-is included in its explicit route list and compact-current budget.
+whitespace/identity/path checks passed. Whole-repository structure check also
+passed after concurrent maintenance settled. The new route is included in its
+explicit route list and compact-current budget.
