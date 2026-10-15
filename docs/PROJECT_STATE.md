@@ -1,5 +1,7 @@
 # 项目现在做到哪里
 
+本页只覆盖**避障线**；毕设线另见[两条工作线](WORK_LINES.md)。
+
 更新：2026-10-13（本轮任务始于 10 月 12 日）。研究决定以[总决定](CURRENT_DECISION.md)为准；实机研究见[硬件当前状态](../research/active/hardware-bringup/CURRENT.md)。
 
 ## 当前可用与本轮接入
@@ -30,7 +32,7 @@
 
 ## 按任务进入
 
-[研究决定](CURRENT_DECISION.md) · [避障研究](../research/active/dtr-r0/CURRENT.md) · [代码地图](CODE_MAP.md) · [硬件路线](GLASSES_HARDWARE_ROUTE.md) · [设备回归](DEVICE_REGRESSION.md)
+[两条工作线](WORK_LINES.md) · [研究决定](CURRENT_DECISION.md) · [避障研究](../research/active/dtr-r0/CURRENT.md) · [代码地图](CODE_MAP.md) · [硬件路线](GLASSES_HARDWARE_ROUTE.md) · [设备回归](DEVICE_REGRESSION.md)
 
 本页整理前全文保留在 Git `83fbc28a` 同路径；旧实验结果、失败与各自停止规则仍以原报告为准。
 L10 暂停、DTR R2 动态路线保留历史证据（`L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`），不作为当前推进线。

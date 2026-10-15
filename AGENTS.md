@@ -4,6 +4,9 @@
 
 BlindAssist is an Android research demo and thesis project, not a certified safety product.
 Choose methods by measured benefit, stability and cost; novelty claims need evidence.
+Two work lines that only partly overlap: **毕设** (thesis topic and results) and
+**避障** (obstacle avoidance); keep their status, priorities and wording separate
+per [work lines](docs/WORK_LINES.md).
 Ownership: `:app` shell/assets, `:feature:assist` runtime, `:core:assist` risk,
 `:core:vision` detection, `:core:device` adapters, `:core:ui` UI.
 

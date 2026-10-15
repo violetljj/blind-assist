@@ -9,7 +9,8 @@
 | Build the app or make a first contribution | [English quickstart](QUICKSTART_EN.md) · [中文快速开始](QUICKSTART_ZH.md) · [Contributing](../CONTRIBUTING.md) |
 | Run the current hardware or fusion demo | [硬件与融合演示](HARDWARE_OBSTACLE_DEMO.md) |
 | Record Atom RGB, ToF and IMU; export a session | [手机采集与预览](PHONE_DATA_CAPTURE.md) |
-| Find current priorities, capabilities and gaps | [项目一页状态](PROJECT_STATE.md) → [研究决定](CURRENT_DECISION.md) |
+| Tell the thesis line (毕设) from the obstacle line (避障) | [两条工作线](WORK_LINES.md) |
+| Find obstacle-line priorities, capabilities and gaps | [项目一页状态](PROJECT_STATE.md) → [研究决定](CURRENT_DECISION.md) |
 | Change Android code or locate its owner | [Code map](CODE_MAP.md) · [Isolated apps](../apps/README.md) |
 | Inspect model provenance or research-preview receipt contracts | [YOLO export receipt](YOLO_EXPORT_PROVENANCE_RECEIPT.md) · [Android admission receipt](ANDROID_RESEARCH_PREVIEW_ADMISSION.md) |
 | Verify a device change or prepare an APK | [Device regression](DEVICE_REGRESSION.md) · [Release and verification](RELEASE_AND_VERIFICATION.md) · [APK archive](APK_ARCHIVE.md) |
@@ -19,14 +20,16 @@
 Read the matching `CURRENT.md` first; its links lead to detailed results,
 protocols and reproduction records. The directory name `active/` alone does
 not mean a route is currently advancing. Priorities belong to the
-[research decision](CURRENT_DECISION.md), not this index.
+[research decision](CURRENT_DECISION.md), not this index. Each route belongs to
+the thesis line (毕设), the obstacle line (避障) or neither; see [work lines](WORK_LINES.md).
 
-| Area | Current status | Detailed records |
-| --- | --- | --- |
-| Hardware, calibration and mobile fusion | [Hardware current](../research/active/hardware-bringup/CURRENT.md) | [Hardware ledger](../research/active/hardware-bringup/README.md) · [Runs](../research/active/hardware-bringup/RUNS.md) |
-| Cane-complementary forward perception / retained DTR history | [Forward perception current](../research/active/dtr-r0/CURRENT.md) | [DTR ledger](../research/active/dtr-r0/README.md) |
-| Paused L10-R0 Goal-Lock evidence | [L10 current](../research/active/l10-r0/CURRENT.md) | [L10 ledger](../research/active/l10-r0/README.md) |
-| Exploratory BLV-assistance thesis directions | [Screen current](../research/active/assistive-thesis-screen/CURRENT.md) | [Small-data results](../research/active/assistive-thesis-screen/README.md) · [Runs](../research/active/assistive-thesis-screen/RUNS.md) |
+| Line | Area | Current status | Detailed records |
+| --- | --- | --- | --- |
+| 避障 | Hardware, calibration and mobile fusion | [Hardware current](../research/active/hardware-bringup/CURRENT.md) | [Hardware ledger](../research/active/hardware-bringup/README.md) · [Runs](../research/active/hardware-bringup/RUNS.md) |
+| 避障 | Cane-complementary forward perception / retained DTR history | [Forward perception current](../research/active/dtr-r0/CURRENT.md) | [DTR ledger](../research/active/dtr-r0/README.md) |
+| — | Paused L10-R0 Goal-Lock evidence | [L10 current](../research/active/l10-r0/CURRENT.md) | [L10 ledger](../research/active/l10-r0/README.md) |
+| 毕设 | Exploratory BLV-assistance thesis directions | [Screen current](../research/active/assistive-thesis-screen/CURRENT.md) | [Small-data results](../research/active/assistive-thesis-screen/README.md) · [Runs](../research/active/assistive-thesis-screen/RUNS.md) |
+| 毕设 | Object finding and functional-part localization | [Object finding current](../research/active/assistive-object-finding/CURRENT.md) | [Pilot results](../research/active/assistive-object-finding/README.md) · [Runs](../research/active/assistive-object-finding/RUNS.md) |
 
 [Research workflow](../research/WORKFLOW.md) describes experiment execution;
 the [knowledge reserve](../research/knowledge/README.md) indexes papers,

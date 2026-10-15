@@ -1,5 +1,7 @@
 # 当前研究决定
 
+本页只记录**避障线**的决定；毕设线见[两条工作线](WORK_LINES.md)。
+
 ## 2026-10-13 工程接入状态
 
 [数据再利用](../research/active/hardware-bringup/DATA_POTENTIAL_DEV_20261013.md)及[四轮扩展目录](../research/active/hardware-bringup/DATA_OPPORTUNITY_CATALOG_20261013.md)：第四轮导出8个Hypersim family的393216格原生分布，恢复SANPO50帧人工来源及6条五关键帧pole掩码索引，并实际读取GW-Depth玻璃门raw/人工平面修正配对。优先人工形状与原生几何的表示损失检查；OctoNet18→16的物理合同仍缺，LLRGBD配套深度为尺度未知的8位过滤图。首两轮9本地/27公开来源及第三轮54额外RGB入口保留；没有模型收益或默认升级。

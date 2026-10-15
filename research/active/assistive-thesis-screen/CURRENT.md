@@ -1,5 +1,7 @@
 # Assistive thesis screen
 
+所属：**毕设线**，不是避障线（见[两条工作线](../../../docs/WORK_LINES.md)）。
+
 2026-10-15: EXPLORE screen and product-field follow-up complete. Initial four
 small-data experiments and one source contract are in the [screen](README.md).
 The follow-up ran PP-OCRv5 server and Qwen3-VL-2B on the existing96 product images:

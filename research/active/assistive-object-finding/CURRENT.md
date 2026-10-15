@@ -1,5 +1,7 @@
 # Assistive object finding
 
+所属：**毕设线**，不是避障线（见[两条工作线](../../../docs/WORK_LINES.md)）。
+
 2026-10-15: Development feasibility pilot completed. Keep object finding as a
 candidate thesis direction; do not choose the topic from this pilot alone.
 
