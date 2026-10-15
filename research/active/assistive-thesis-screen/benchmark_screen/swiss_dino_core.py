@@ -70,15 +70,19 @@ def _components(active, grid, iters=40):
     return lab.view(B, T).long()
 
 
-def query_scores(fpat, protos, trs, grid, chunk=16):
-    """fpat: [N, T, D] query patch tokens; protos: [O, D]; trs: [O]. Returns [N, O] Swiss DINO class scores."""
-    return torch.cat([_query(fpat[i:i + chunk], protos, trs, grid) for i in range(0, len(fpat), chunk)])
+def query_scores(fpat, protos, trs, grid, chunk=16, prec='fp32'):
+    """fpat: [N, T, D] query patch tokens; protos: [O, D]; trs: [O]. Returns [N, O] Swiss DINO class scores.
+    prec 'fp16' keeps the patch features, component sums and dot products in half precision (tensor cores)."""
+    if prec == 'fp16':
+        chunk *= 2
+    return torch.cat([_query(fpat[i:i + chunk], protos, trs, grid, prec) for i in range(0, len(fpat), chunk)])
 
 
-def _query(fpat, protos, trs, grid):
+def _query(fpat, protos, trs, grid, prec='fp32'):
     N, T, D = fpat.shape; O = len(protos)
-    fp = fpat.float()
-    d = 1 - fp @ protos.T                                                    # [N, T, O]
+    dt = torch.half if prec == 'fp16' else torch.float
+    fp = fpat.to(dt); protos = protos.to(dt)
+    d = 1 - (fp @ protos.T).float()                                          # [N, T, O]
     active = (d < trs[None, None]).permute(0, 2, 1).reshape(N * O, T)         # [N*O, T]
     nearest = d.permute(0, 2, 1).reshape(N * O, T).argmin(1)
     active[torch.arange(N * O, device=fp.device), nearest] |= ~active.any(1)
@@ -86,9 +90,9 @@ def _query(fpat, protos, trs, grid):
     # component means: scatter patch features by (row, comp id)
     feats = fp.unsqueeze(1).expand(N, O, T, D).reshape(N * O, T, D)
     valid = comp >= 0; cid = comp.clamp(min=0)
-    sums = torch.zeros(N * O, T, D, device=fp.device).scatter_add_(1, cid.unsqueeze(2).expand(-1, -1, D), feats * valid.unsqueeze(2))
+    sums = torch.zeros(N * O, T, D, device=fp.device, dtype=dt).scatter_add_(1, cid.unsqueeze(2).expand(-1, -1, D), feats * valid.unsqueeze(2).to(dt))
     cnt = torch.zeros(N * O, T, device=fp.device).scatter_add_(1, cid, valid.float())
-    means = F.normalize(sums / cnt.clamp(min=1).unsqueeze(2), dim=2)
+    means = F.normalize(sums.float() / cnt.clamp(min=1).unsqueeze(2), dim=2).to(dt)
     pr = protos.unsqueeze(0).expand(N, O, D).reshape(N * O, D)
-    s = torch.einsum('btd,bd->bt', means, pr).masked_fill(cnt == 0, -2.)
+    s = torch.einsum('btd,bd->bt', means, pr).float().masked_fill(cnt == 0, -2.)
     return s.amax(1).view(N, O)

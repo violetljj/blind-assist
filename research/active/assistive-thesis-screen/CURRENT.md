@@ -46,3 +46,6 @@ DINOv2 and multi-scale memory did not help on validation. Thesis direction: ORBI
 Nearest-neighbour check (2026-10-16): a faithful Swiss DINO re-implementation on the same frozen DINOv2-S with
 annotation-free masks (validation-selected 448 + centre box) reaches 61.63/69.35% (single frame/causal) on the test
 users, about 10 points below the part memory. PerSAM is scripted but not run. Laptop safety rules: docs/HOST_RESEARCH_COMPUTE.md.
+PerSAM (SAM ViT-B, automatic centre-click support masks) reaches 20.64% on the same 2,970 test frames where the part
+memory gets 72.53% and Swiss DINO 61.52%; SAM features separate even clean objects poorly. nvJPEG decode + TF32 memory
+build + FP16 matching (`gpu mixed`) cut validation time 73.6->57.8 s with accuracy unchanged; all-FP16 was rejected.

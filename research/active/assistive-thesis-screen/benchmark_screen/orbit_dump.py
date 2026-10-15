@@ -39,7 +39,31 @@ def shrink(x, s):
     return out
 
 
-def part_memory_from(flat, cfg):
+def read_bytes(frames_dir, names):
+    """CPU-only file reads (safe to run in a prefetch thread)."""
+    from torchvision.io import read_file
+    with ThreadPoolExecutor(8) as ex:
+        return list(ex.map(lambda f: read_file(str(frames_dir / f)), names))
+
+
+def decode_gpu(data):
+    """nvJPEG decode into CUDA uint8 NCHW. Must run on the consuming (main) thread: nvJPEG writes on its own stream,
+    and decoding from a prefetch thread let it overwrite blocks the main thread had just freed but still used."""
+    import torch
+    from torchvision.io import decode_jpeg
+    out = []
+    for i in range(0, len(data), 256):
+        out += decode_jpeg(data[i:i + 256], device='cuda')
+    out = torch.stack(out)
+    torch.cuda.synchronize()
+    return out
+
+
+def read_gpu(frames_dir, names):
+    return decode_gpu(read_bytes(frames_dir, names))
+
+
+def part_memory_from(flat, cfg, prec='fp32'):
     """flat: list of [n_o, D] normalised context patches (fp16, all scales). Discriminative keep + k-means, as
     orbit_eval; converts one object at a time and samples the other objects before gathering (bounded memory)."""
     import torch
@@ -49,15 +73,18 @@ def part_memory_from(flat, cfg):
         oth = [j for j in range(len(flat)) if j != o]; tot = sum(sizes[j] for j in oth)
         pick = torch.randperm(tot, generator=g)[:30000]
         offs = torch.tensor([0] + [sizes[j] for j in oth]).cumsum(0)
+        dt = torch.half if prec == 'fp16' else torch.float          # 'mixed': fp32 storage, TF32 tensor-core matmuls
+        torch.backends.cuda.matmul.allow_tf32 = prec == 'mixed'
         others = torch.cat([flat[j][pick[(pick >= offs[i]) & (pick < offs[i + 1])].to(flat[j].device) - offs[i]]
-                            for i, j in enumerate(oth)]).float()
-        P = flat[o].float()
+                            for i, j in enumerate(oth)]).to(dt)
+        P = flat[o].to(dt)
         own = P[torch.randperm(len(P), generator=g)[:30000].to(P.device)]
         s_other = torch.cat([(P[i:i + 4096] @ others.T).amax(1) for i in range(0, len(P), 4096)])
         s_own = torch.cat([(P[i:i + 4096] @ own.T).topk(6, dim=1).values[:, 1:].mean(1) for i in range(0, len(P), 4096)])
-        d = s_own - s_other
-        keep = P[d >= d.quantile(1 - cfg['keep'])]
+        d = (s_own - s_other).float()
+        keep = P[d >= d.quantile(1 - cfg['keep'])].float()
         mem.append(kmeans(keep, min(cfg['parts'], len(keep))))
+        torch.backends.cuda.matmul.allow_tf32 = False
         del others, P, own, s_other, s_own, d, keep
     return mem
 
@@ -86,7 +113,7 @@ def peaks():
                 ram_free_gb=round(psutil.virtual_memory().available / 2 ** 30, 2))
 
 
-def main(root, out, backbone, cfgs, baselines='', limit=0, only_users=''):
+def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode='cpu', prec='fp32'):
     """baselines: comma list of Swiss DINO support masks, e.g. 'full,center' -> arms swiss_full, swiss_center."""
     import torch
     root, out = Path(root), Path(out); out.mkdir(parents=True, exist_ok=True)
@@ -99,7 +126,14 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users=''):
     users = {}
     for v in plan['videos']:
         users.setdefault(v['user'], []).append(v)
-    t0 = time.time(); meta = dict(backbone=backbone, cfgs=cfgs, gmacs_per_frame=mpf / 1e9, users={})
+    t0 = time.time(); meta = dict(backbone=backbone, cfgs=cfgs, gmacs_per_frame=mpf / 1e9, users={}, decode=decode, prec=prec)
+    # prefetch thread does CPU work only; GPU decode (if any) happens on the main thread in `finish`
+    reader = (lambda names: read_bytes(root / 'frames', names)) if decode == 'gpu' else (lambda names: read_many(root / 'frames', names))
+    finish = decode_gpu if decode == 'gpu' else (lambda x: x)
+    T = dict(read_wait=0., ctx=0., forward=0., full=0., part=0., swiss=0., save=0.)
+
+    def tick(key, t):
+        torch.cuda.synchronize(); T[key] += time.time() - t; return time.time()
     pool = ThreadPoolExecutor(1)
     for user, vids in sorted(users.items()):
         if only_users and user not in only_users.split(','):
@@ -110,7 +144,8 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users=''):
         objs = sorted({v['obj'] for v in vids if v['type'] == 'clean'})
         ctx = {o: [f for v in vids if v['type'] == 'clean' and v['obj'] == o for f in v['context'] if fnum(f) <= 1000] for o in objs}
         names = [f for o in objs for f in ctx[o]]; lab = np.array([i for i, o in enumerate(objs) for _ in ctx[o]])
-        xc = read_many(root / 'frames', names)
+        tc = time.time()
+        xc = finish(reader(names))
         L = torch.as_tensor(lab).cuda()
         cls1, p1 = forward(m, size, mean, std, xc, bs=bs)                 # one pass gives CLS and scale-1 patches
         protos = torch.nn.functional.normalize(torch.stack([cls1[L == i].mean(0) for i in range(len(objs))]), dim=1)
@@ -122,14 +157,14 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users=''):
         for c in cfgs:
             flat = [torch.cat([scale_pat[s][L == i].reshape(-1, scale_pat[s].shape[-1]) for s in c['scales']])
                     for i in range(len(objs))]
-            mem = part_memory_from(flat, c)
+            mem = part_memory_from(flat, c, prec)
             mems.append((torch.cat(mem).half(), torch.cat([torch.full((len(q),), i) for i, q in enumerate(mem)]).cuda()))
         import swiss_dino_core as SW
         grid = int(round(scale_pat[1.0].shape[1] ** .5)); sw = {}
         for mode in [b for b in baselines.split(',') if b]:
             pt = [SW.support(scale_pat[1.0][L == i], grid, mode) for i in range(len(objs))]
             sw[mode] = (torch.stack([p for p, _ in pt]), torch.stack([t for _, t in pt]))
-        del scale_pat, xc; torch.cuda.empty_cache()
+        del scale_pat, xc; torch.cuda.empty_cache(); tick('ctx', tc)
         meta['users'][user] = dict(objects=objs, context_frames=len(names),
                                    context_forwards={j: len(names) * len(c['scales']) for j, c in enumerate(cfgs)})
         clut = []
@@ -141,31 +176,41 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users=''):
             valid = set(f for f in v['valid'] if fnum(f) <= 1000)
             if len(valid) >= 50:
                 clut.append((v, allf, np.array([f in valid for f in allf])))
-        nxt = pool.submit(read_many, root / 'frames', clut[0][1]) if clut else None
+        nxt = pool.submit(reader, clut[0][1]) if clut else None
         if limit:
             clut = clut[:limit]
         for k, (v, allf, valid) in enumerate(clut):
-            x = nxt.result()
+            t = time.time(); x = finish(nxt.result()); t = tick('read_wait', t)
             if k + 1 < len(clut):
-                nxt = pool.submit(read_many, root / 'frames', clut[k + 1][1])
-            res = {'full': [], **{f'part@{j}': [] for j in range(len(cfgs))}, **{f'swiss_{k}': [] for k in sw}}
+                nxt = pool.submit(reader, clut[k + 1][1])
+            res = {'full': [], **{f'part@{j}': [] for j in range(len(cfgs))}, **{f'swiss_{b}': [] for b in sw}}
             for a in range(0, len(x), qbs):
-                fcls, fpat = forward(m, size, mean, std, x[a:a + qbs], bs=bs)
-                res['full'].append((fcls @ protos.T).cpu().numpy())
-                for k, (P_, T_) in sw.items():
-                    res[f'swiss_{k}'].append(SW.query_scores(fpat, P_, T_, grid).cpu().numpy())
+                t = time.time(); fcls, fpat = forward(m, size, mean, std, x[a:a + qbs], bs=bs); t = tick('forward', t)
+                res['full'].append((fcls @ protos.T).cpu().numpy()); t = tick('full', t)
+                for b, (P_, T_) in sw.items():
+                    res[f'swiss_{b}'].append(SW.query_scores(fpat, P_, T_, grid, prec='fp16' if prec in ('fp16', 'mixed') else prec).cpu().numpy())
+                t = tick('swiss', t)
                 for j, (allp, owner) in enumerate(mems):
-                    sim = (fpat @ allp.T).float()
-                    per_obj = torch.stack([sim[:, :, owner == i].amax(2) for i in range(len(objs))], 2)
+                    sim = fpat @ allp.T                                          # fp16 tensor-core matmul in both modes
+                    counts = torch.bincount(owner, minlength=len(objs))
+                    if prec in ('fp16', 'mixed') and bool((counts == counts[0]).all()):   # equal part counts: one reshape-max
+                        per_obj = sim.view(*sim.shape[:2], len(objs), int(counts[0])).amax(3).float()
+                    else:
+                        sim = sim.float()
+                        per_obj = torch.stack([sim[:, :, owner == i].amax(2) for i in range(len(objs))], 2)
                     res[f'part@{j}'].append(per_obj.topk(cfgs[j]['topk'], dim=1).values.mean(1).cpu().numpy())
+                t = tick('part', t)
+            t = time.time()
             np.savez_compressed(out / f"{v['video']}.npz", names=np.array(allf), valid=valid, y=objs.index(v['obj']),
                                 user=user, **{a: np.concatenate(b).astype(np.float32) for a, b in res.items()})
+            tick('save', t)
         print(user, len(objs), 'objects', len(clut), 'videos', round(time.time() - t0), 's', json.dumps(peaks()), flush=True)
         del mems, sw, protos, cls1, L
         torch.cuda.empty_cache(); guard()
         if limit:
             break
-    meta['wall_s'] = round(time.time() - t0, 1); meta['peaks'] = peaks()
+    meta['wall_s'] = round(time.time() - t0, 1); meta['peaks'] = peaks(); meta['stage_s'] = {k: round(v, 1) for k, v in T.items()}
+    print('stage seconds', json.dumps(meta['stage_s']), 'wall', meta['wall_s'], flush=True)
     (out / 'meta.json').write_text(json.dumps(meta, indent=1))
 
 

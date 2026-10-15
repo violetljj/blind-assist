@@ -74,7 +74,8 @@ def forward(m, size, mean, std, x_u8, rois=None, bs=192):
     n = len(rois) if rois is not None else len(x_u8)
     for k in range(0, n, bs):
         if rois is None:
-            x = torch.from_numpy(x_u8[k:k + bs]).cuda().permute(0, 3, 1, 2).float().div_(255.)
+            x = (x_u8[k:k + bs].float().div(255.) if torch.is_tensor(x_u8)          # nvJPEG frames: CUDA NCHW uint8
+                 else torch.from_numpy(x_u8[k:k + bs]).cuda().permute(0, 3, 1, 2).float().div_(255.))
             if x.shape[-1] != size:
                 x = F.interpolate(x, (size, size), mode='bilinear', align_corners=False, antialias=True)
         else:
