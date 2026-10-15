@@ -254,5 +254,78 @@ def sample(scenes, work, k=16, seed=20261015):
     print(len(miss), 'primary near MISS frames; sheet written')
 
 
+def pack(q, OFF=1024, B=11):
+    q = q + OFF
+    return (q[:, 0] << B | q[:, 1]) << B | q[:, 2]
+
+
+def unpack(c, OFF=1024, B=11):
+    m = (1 << B) - 1
+    return np.stack([(c >> 2 * B) & m, (c >> B) & m, c & m], 1) - OFF
+
+
+def memory_scene(args):
+    """Causal 3 s ground memory on GT points (PLAN_MEMORY.md): does the past alone show the cane support?"""
+    scene, work = Path(args[0]), Path(args[1])
+    S = json.loads((work / 'scenes' / f'{scene.name}.json').read_text()); floor = S['floor']
+    R = np.load(work / 'rays.npz'); dirs, T_dc = R['dirs'], R['T_dc']
+    frames = load_scene(scene, T_dc); rows = {r['frame']: r for r in S['rows']}
+    sup, flo = [], []
+    for i, _, T, _ in frames:
+        P, _, _ = points(scene, i, T, dirs); h = P[:, 2] - floor
+        sup.append(np.unique(pack(np.floor(P[(h >= BAND_LO) & (h <= TOPS['R2'])] / VOX).astype(np.int64))))
+        flo.append(np.unique(pack(np.floor(P[np.abs(h) <= FLOOR_TOL] / VOX).astype(np.int64))))
+    t = np.array([f[1] for f in frames]); out = []
+    for j, (i, _, T, _) in enumerate(frames):
+        row = rows[i]
+        if not row.get('pos') or row['d_body'] > NEAR or 'walk_aligned' not in strata(row):
+            continue
+        win = np.flatnonzero((t >= t[j] - 3.) & (t <= t[j]))
+        o = T[:3, 3]; f = T[:3, 2] - UP * (T[:3, 2] @ UP); f /= np.linalg.norm(f); xr = np.cross(f, UP)
+        reach = row['d_body'] + MARGIN
+        def region(Q):
+            a, b = (Q[:, :2] - o[:2]) @ xr[:2], (Q[:, :2] - o[:2]) @ f[:2]
+            return (np.abs(a) <= X_HALF) & (b >= 0) & (b <= reach)
+        C = (unpack(np.unique(np.concatenate([sup[k] for k in win]))) + .5) * VOX
+        inr = region(C); h = C[:, 2] - floor
+        F = (unpack(np.unique(np.concatenate([flo[k] for k in win]))) + .5) * VOX
+        cells = len(np.unique(np.floor(F[region(F), :2] / VOX).astype(np.int64), axis=0)) if len(F) else 0
+        out.append(dict(frame=i, cls=row['cls'], truth=row['cat'], mem=dict(R2=int(inr.sum()), R1=int((inr & (h <= TOPS['R1'])).sum())),
+                        cover=round(cells * VOX * VOX / (2 * X_HALF * reach), 3)))
+    return scene.name, out
+
+
+def memory(scenes, work):
+    work = Path(work)
+    scenes = sorted((p for p in Path(scenes).iterdir() if (p / 'trajectory.csv').exists()), key=lambda p: int(p.name))
+    with ProcessPoolExecutor(3) as ex:
+        res = dict(ex.map(memory_scene, [(str(s), str(work)) for s in scenes]))
+    rep = {}
+    for r in TOPS:
+        cane = [x for v in res.values() for x in v if x['truth'][r] == 'CANE']
+        miss = [x for v in res.values() for x in v if x['truth'][r] == 'MISS']
+        resid = [x for x in cane if x['mem'][r] < MIN_VOX]
+        by = {}
+        for x in resid:
+            by[x['cls']] = by.get(x['cls'], 0) + 1
+        allpos = [x for v in res.values() for x in v if x['truth'][r] in ('CANE', 'MISS')]
+        share = {}
+        for x in allpos:
+            s = share.setdefault(x['cls'], [0, 0]); s[0] += x['truth'][r] == 'CANE'; s[1] += 1
+        standing = sorted(c for c, (a, b) in share.items() if a / b >= .95)
+        rep[r] = dict(cane=len(cane), miss=len(miss), cane_suppressed=len(cane) - len(resid), residual=len(resid),
+                      residual_frac=round(len(resid) / max(len(cane), 1), 3),
+                      miss_suppressed=sum(x['mem'][r] >= MIN_VOX for x in miss),
+                      residual_by_class=dict(sorted(by.items(), key=lambda kv: -kv[1])),
+                      residual_cover_lt_half=sum(x['cover'] < FLOOR_COVER for x in resid),
+                      class_share={c: f'{a}/{b}' for c, (a, b) in sorted(share.items(), key=lambda kv: -kv[1][1])},
+                      standing=standing,
+                      prior_removes_residual=sum(x['cls'] in standing for x in resid),
+                      prior_suppresses_miss=sum(x['cls'] in standing for x in miss))
+    (work / 'memory_summary.json').write_text(json.dumps(rep, indent=1), encoding='utf8')
+    (work / 'memory_rows.json').write_text(json.dumps(res), encoding='utf8')
+    print(json.dumps(rep, indent=1))
+
+
 if __name__ == '__main__':
-    dict(rays=rays, label=label, sample=sample, summarize=summarize)[sys.argv[1]](*sys.argv[2:])
+    dict(rays=rays, label=label, sample=sample, summarize=summarize, memory=memory)[sys.argv[1]](*sys.argv[2:])
