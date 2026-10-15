@@ -135,8 +135,74 @@ def grids(scenes, work, first, last):
             print('grids', name, msg, flush=True)
 
 
+# ---------------------------------------------------------------- image features (arm N2)
+def _dav2s():
+    import torch
+    import torch.nn.functional as Fn
+    import adt_backbone_blobs_dev_20261013 as B
+    sys.path.insert(0, str(B.UP / 'Depth-Anything-V2/metric_depth'))
+    from depth_anything_v2.dpt import DepthAnythingV2
+    from depth_anything_v2.dinov2_layers import attention as At
+
+    def sdpa_forward(self, x, attn_bias=None):
+        Bn, N, C = x.shape
+        q, k, v = self.qkv(x).reshape(Bn, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
+        return self.proj_drop(self.proj(Fn.scaled_dot_product_attention(q, k, v).transpose(1, 2).reshape(Bn, N, C)))
+    At.Attention.forward = sdpa_forward; At.MemEffAttention.forward = sdpa_forward
+    model = DepthAnythingV2(encoder='vits', features=64, out_channels=[48, 96, 192, 384], max_depth=20)
+    model.load_state_dict(torch.load(B.MODELS / 'depth-anything--Depth-Anything-V2-Metric-Hypersim-Small/depth_anything_v2_metric_hypersim_vits.pth',
+                                     map_location='cpu', weights_only=True), strict=True)
+    return model.cuda().eval()
+
+
+def feats(scenes, work, first, last):
+    """DPT refinenet1 features (64 ch) of the current frame, sampled where each cell's three lateral points project."""
+    import cv2
+    import torch
+    import torch.nn.functional as Fn
+    work = Path(work); model = _dav2s(); store = {}
+    model.depth_head.scratch.refinenet1.register_forward_hook(lambda m, i, o: store.__setitem__('f', o))
+    R = np.load(work / 'rays.npz'); T_dc = R['T_dc']
+    meta = json.loads((work / 'pinhole_meta.json').read_text()); fx, fy, cx, cy = meta['projection']; W, H = meta['size']
+    T_dc_up = np.array(meta['T_device_camera'])
+    hc, fc = (np.arange(NH) + .5) * CELL, (np.arange(NF) + .5) * CELL
+    L_, F_, H_ = np.meshgrid(np.array([-.2, 0., .2]), fc, hc, indexing='ij')
+    for k in range(int(first), int(last) + 1):
+        out = work / 'feats' / f'{k}.npz'
+        if out.exists():
+            continue
+        Z = np.load(work / 'grids' / f'{k}.npz'); floor = float(Z['floor']); valid = Z['valid']
+        pose = {f[0]: f[2] for f in A.load_scene(Path(scenes) / str(k), T_dc)}
+        n = len(Z['frames']); Fo = np.zeros((n, 64, NH, NF), np.float16)
+        grid = np.full((n, 3 * NF * NH, 2), -2., np.float32)
+        for j, fr in enumerate(Z['frames']):
+            if not valid[j]:
+                continue
+            Tu = pose[int(fr)] @ np.linalg.inv(T_dc) @ T_dc_up; o = Tu[:3, 3]
+            f = Tu[:3, 2] - A.UP * (Tu[:3, 2] @ A.UP); f /= np.linalg.norm(f); xr = np.cross(f, A.UP)
+            Wp = (o * (1 - A.UP) + L_[..., None] * xr + F_[..., None] * f + (floor + H_)[..., None] * A.UP).reshape(-1, 3)
+            q = (Wp - o) @ Tu[:3, :3]; z = q[:, 2]; zs = np.where(z > .05, z, 1.)
+            u, v = fx * q[:, 0] / zs + cx, fy * q[:, 1] / zs + cy
+            ins = (z > .05) & (u >= 0) & (u < W) & (v >= 0) & (v < H)
+            grid[j, ins, 0] = (u[ins] + .5) / W * 2 - 1; grid[j, ins, 1] = (v[ins] + .5) / H * 2 - 1
+        idx = np.flatnonzero(valid)
+        for b in range(0, len(idx), 8):
+            jj = idx[b:b + 8]
+            ims = [cv2.imread(str(work / 'pinhole' / str(k) / f'{int(Z["frames"][j]):07d}.jpg')) for j in jj]
+            t = torch.cat([model.image2tensor(im, 518)[0] for im in ims])
+            with torch.inference_mode(), torch.autocast('cuda', dtype=torch.float16):
+                model(t)
+                g = torch.from_numpy(grid[jj]).cuda()[:, None]
+                s = Fn.grid_sample(store['f'].float(), g, align_corners=False, padding_mode='zeros')[:, :, 0]   # (B,64,N)
+            s = s.reshape(len(jj), 64, 3, NF, NH); inview = (g[:, 0, :, 0] > -1.5).reshape(len(jj), 1, 3, NF, NH).float()
+            s = (s * inview).sum(2) / inview.sum(2).clamp(min=1)
+            Fo[jj] = s.transpose(2, 3).cpu().numpy().astype(np.float16)
+        out.parent.mkdir(exist_ok=True); np.savez(out, F=Fo)
+        print('feats', k, n, flush=True)
+
+
 # ---------------------------------------------------------------- network
-def make_net():
+def make_net(cin=8):
     import torch.nn as nn
 
     def blk(a, b):
@@ -146,7 +212,7 @@ def make_net():
     class UNet(nn.Module):
         def __init__(self):
             super().__init__()
-            self.e1, self.e2, self.e3 = blk(8, 32), blk(32, 64), blk(64, 128)
+            self.e1, self.e2, self.e3 = blk(cin, 32), blk(32, 64), blk(64, 128)
             self.pool = nn.MaxPool2d(2)
             self.u2, self.d2 = nn.ConvTranspose2d(128, 64, 2, 2), blk(128, 64)
             self.u1, self.d1 = nn.ConvTranspose2d(64, 32, 2, 2), blk(64, 32)
@@ -160,13 +226,19 @@ def make_net():
     return UNet()
 
 
-def load_split(work, ids):
-    Xs, Ys = [], []
-    for k in ids:
-        p = Path(work) / 'grids' / f'{k}.npz'
-        if p.exists():
-            Z = np.load(p); v = Z['valid']; Xs.append(Z['X'][v]); Ys.append(Z['Y'][v])
-    return np.concatenate(Xs), np.concatenate(Ys)
+def scene_input(work, k, img):
+    Z = np.load(Path(work) / 'grids' / f'{k}.npz')
+    X = Z['X'] if not img else np.concatenate([Z['X'], np.load(Path(work) / 'feats' / f'{k}.npz')['F']], 1)
+    return Z, X
+
+
+def load_split(work, ids, img=False):
+    sizes = [int(np.load(Path(work) / 'grids' / f'{k}.npz')['valid'].sum()) for k in ids]
+    X = np.empty((sum(sizes), 72 if img else 8, NH, NF), np.float16); Y = np.empty((sum(sizes), NH, NF), np.uint8); a = 0
+    for k, n in zip(ids, sizes):                                       # fill in place: the 72-channel set is ~2.5 GB
+        Z, Xk = scene_input(work, k, img); v = Z['valid']
+        X[a:a + n] = Xk[v]; Y[a:a + n] = Z['Y'][v]; a += n
+    return X, Y
 
 
 def pad(x):
@@ -174,22 +246,27 @@ def pad(x):
     return Fn.pad(x, (0, 0, 0, 40 - NH))
 
 
-def train(work, epochs=25):
+def _tag(img, seed):
+    return ('_img' if img else '') + ('' if int(seed) == 0 else f'_s{int(seed)}')
+
+
+def train(work, epochs=25, variant='base', seed=0):
     import torch
-    torch.manual_seed(20261015); np.random.seed(20261015)
-    Xtr, Ytr = load_split(work, TRAIN); Xva, Yva = load_split(work, VAL)
+    img = variant == 'img'; epochs = int(epochs)
+    torch.manual_seed(20261015 + int(seed)); np.random.seed(20261015 + int(seed))
+    Xtr, Ytr = load_split(work, TRAIN, img); Xva, Yva = load_split(work, VAL, img)
     print('train', Xtr.shape, 'val', Xva.shape, 'pos rate', float(Ytr.mean()), flush=True)
     dev = 'cuda'
-    net = make_net().to(dev); opt = torch.optim.AdamW(net.parameters(), 1e-3, weight_decay=1e-4)
+    net = make_net(Xtr.shape[1]).to(dev); opt = torch.optim.AdamW(net.parameters(), 1e-3, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, 2e-3, total_steps=epochs * (len(Xtr) // 64 + 1))
     wrow = torch.ones(NH, NF, device=dev); wrow[BAND_ROWS[0]:BAND_ROWS[1]] = 4.
-    Xtr_t, Ytr_t = torch.from_numpy(Xtr.astype(np.float32)), torch.from_numpy(Ytr.astype(np.float32))
-    Xva_t, Yva_t = torch.from_numpy(Xva.astype(np.float32)).to(dev), torch.from_numpy(Yva.astype(np.float32)).to(dev)
+    Xtr_t, Ytr_t = torch.from_numpy(Xtr), torch.from_numpy(Ytr)
+    Xva_t, Yva_t = torch.from_numpy(Xva).to(dev).float(), torch.from_numpy(Yva).to(dev).float()
     best = 1e9
     for ep in range(epochs):
         net.train(); perm = torch.randperm(len(Xtr_t))
         for b in range(0, len(perm), 64):
-            idx = perm[b:b + 64]; x, y = Xtr_t[idx].to(dev), Ytr_t[idx].to(dev)
+            idx = perm[b:b + 64]; x, y = Xtr_t[idx].to(dev).float(), Ytr_t[idx].to(dev).float()
             logit = net(pad(x))[:, :NH]
             loss = (torch.nn.functional.binary_cross_entropy_with_logits(logit, y, reduction='none') * wrow).mean()
             opt.zero_grad(); loss.backward(); opt.step(); sched.step()
@@ -202,9 +279,9 @@ def train(work, epochs=25):
                 p = (logit > 0)[:, BAND_ROWS[0]:BAND_ROWS[1]]; g = y[:, BAND_ROWS[0]:BAND_ROWS[1]] > .5
                 inter += float((p & g).sum()); uni += float((p | g).sum())
             lv /= len(Xva_t)
-        print(f'epoch {ep} train {float(loss):.4f} val {lv:.4f} band IoU {inter / max(uni, 1):.3f}', flush=True)
+        print(f'epoch {ep} train {float(loss.detach()):.4f} val {lv:.4f} band IoU {inter / max(uni, 1):.3f}', flush=True)
         if lv < best:
-            best = lv; torch.save(net.state_dict(), Path(work) / 'sideview_net.pt')
+            best = lv; torch.save(net.state_dict(), Path(work) / f'sideview_net{_tag(img, seed)}.pt')
 
 
 # ---------------------------------------------------------------- decision and test scoring
@@ -218,15 +295,17 @@ def decide(occ):
     return d <= A.NEAR, d, bool(sup)
 
 
-def evaluate(work):
+def evaluate(work, variant='base', seed=0):
     import torch
-    work = Path(work); net = make_net().cuda(); net.load_state_dict(torch.load(work / 'sideview_net.pt')); net.eval()
+    img = variant == 'img'; work = Path(work)
+    net = make_net(72 if img else 8).cuda(); net.load_state_dict(torch.load(work / f'sideview_net{_tag(img, seed)}.pt')); net.eval()
     arms = ['G', 'H', 'N03', 'N05', 'N07']; rows = {a: [] for a in arms}
     for k in TEST:
-        Z = np.load(work / 'grids' / f'{k}.npz'); S = json.loads((work / 'scenes' / f'{k}.json').read_text())
+        Z, Xk = scene_input(work, k, img); S = json.loads((work / 'scenes' / f'{k}.json').read_text())
         truth = {r['frame']: r for r in S['rows']}
         with torch.no_grad():
-            P = torch.sigmoid(net(pad(torch.from_numpy(Z['X'].astype(np.float32)).cuda()))[:, :NH]).cpu().numpy()
+            P = np.concatenate([torch.sigmoid(net(pad(torch.from_numpy(Xk[b:b + 256]).cuda().float()))[:, :NH]).cpu().numpy()
+                                for b in range(0, len(Xk), 256)])
         for j, fr in enumerate(Z['frames']):
             tr = truth.get(int(fr))
             if tr is None or 'skip' in tr or not Z['valid'][j] or 'walk_aligned' not in A.strata(tr):
@@ -249,9 +328,9 @@ def evaluate(work):
                       cane_alert=sum(r['alert'] for r in rr if r['lab'] == 'CANE_near'),
                       cane_detected=sum(r['det'] for r in rr if r['lab'] == 'CANE_near'),
                       neg_alert=sum(r['alert'] for r in rr if r['lab'] == 'NEG'), neg=sum(r['lab'] == 'NEG' for r in rr))
-    (work / 'sideview_eval.json').write_text(json.dumps(dict(report=rep, rows=rows)), encoding='utf8')
+    (work / f'sideview_eval{_tag(img, seed)}.json').write_text(json.dumps(dict(report=rep, rows=rows)), encoding='utf8')
     print(json.dumps(rep, indent=1))
 
 
 if __name__ == '__main__':
-    dict(mono_s=mono_s, grids=grids, train=train, eval=evaluate)[sys.argv[1]](*sys.argv[2:])
+    dict(mono_s=mono_s, grids=grids, feats=feats, train=train, eval=evaluate)[sys.argv[1]](*sys.argv[2:])
