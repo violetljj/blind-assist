@@ -57,3 +57,18 @@ are not grasp success. Its5/24 evaluation native-empty images remain in denomina
 Delivery checks: all5 new Python files compiled in memory; metric/geometry/gate
 self-tests,16 scoped local documentation links, staged whitespace, project
 structure and hot-doc index (458 links) passed. No application build was needed.
+
+| Date | Run | Inputs / changes | Results | Decision / evidence |
+| --- | --- | --- | --- | --- |
+| 2026-10-15 | functional-parts-multicandidate / EXPLORE successor | User-authorized reuse280 images/splits/ree; threeNMS crops, passive36class hook, GAP semantic support, spatial/semantic/combined selection; nine fixed methods, matched4call controls. | AGD160 C4 .344926 vs TTA .353431/fixed fusion .321765; IIT24 C4 4 vs5/7. C4 vs first candidate saves19/harms37 AGD; candidate oracle .529951. At128/160 ranked coverage C4 .360263 vs TTA .387714; IIT20/24 C4 3hits vs fixed7. | COMPLETE: no stable gain for full method; candidate retention has same-domain diagnostic headroom but selector loses it. Reused Development, not confirmation or topic selection. [Results](functional_parts/MULTICANDIDATE_RESULTS.md), [plan](functional_parts/MULTICANDIDATE_PLAN.md). Payload artifacts.local/work/functional-parts-multicandidate-20261015/. |
+
+New1960 calls, GPU-process152.355s, peak779,306,496B; no download/training/failed
+rerun. ScoringCPU32.453s and independent audit15.16s. All280 original baseline
+points/qualities unchanged; independently checked2520 method points,3360
+candidate/seed points,144 paired comparisons,20 gates,100 matched-coverage
+points and72 oracle gaps. Models/process math unchanged by passive hook.
+GPU processes and locks released. Preserved source/plan snapshots and all outputs.
+
+Delivery: both new Python files compiled, evaluator self-tests and23 scoped
+documentation links passed; project structure, hot-doc index458 links and
+scoped whitespace checks passed. No application build needed.

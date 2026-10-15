@@ -36,6 +36,10 @@ SelectiveCL on 280 images (AGD 80cal/160eval; IIT 16cal/24eval). Peak-guided cro
 did not beat equal-call flip fusion: AGD point proxy .3697 versus .3769; IIT
 4/24 versus 4/24. Small GT regions are harder, but crop refinement barely helps.
 Confidence filtering helps same-domain point quality while retaining many
-cross-domain errors. Preserve multi-candidate local verification and selective
-pointing as hypotheses; neither innovation nor a thesis topic is established.
-This completed pilot does not resume the finding pilot or authorize new tuning.
+cross-domain errors. The authorized [multi-candidate successor](functional_parts/MULTICANDIDATE_RESULTS.md)
+also completed on the reused280 images: combined local verification reached
+AGD .3449/IIT4 of24, versus equal-call TTA .3534/5 and fixed crops .3218/7.
+Candidate AGD oracle .5300 exposes a selection gap, but actual verification
+saved19/harmed37 versus first-candidate pointing; matched-coverage rejection
+did not establish a stable advantage. Keep candidate-quality learning as an
+untested hypothesis; do not select a thesis or tune this completed comparison.
