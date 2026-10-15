@@ -5,6 +5,12 @@ candidate thesis direction; do not choose the topic from this pilot alone.
 
 [Results and reproduction](README.md) · [Plan and budget](PLAN.md) · [Run record](RUNS.md)
 
+Latest user-requested [functional-part research design](functional_parts/RESEARCH_PLAN.md)
+is complete: primary papers and released-data audit, full-training baselines,
+role-conditioned instance/part binding hypothesis, matched-supervision controls,
+and compute scenarios. No new training or confirmed novelty. Next: native-label
+census and converged strong baselines; do not infer a thesis from small pilots.
+
 Public data and the automatic pipeline work: 12 source videos, 16 query sequences,
 528 query-frames. DINO localized 82/327 visible frames; CLIP reranking 70/327,
 source-grouped comparative learning 81/327. A disclosed posthoc full-pool CLIP
