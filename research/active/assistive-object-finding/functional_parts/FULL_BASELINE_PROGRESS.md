@@ -37,6 +37,10 @@
 
 2026-10-16 01:02，DINO-S/16亦已终态COMPLETE：80epoch、22,160次更新，训练进程壁钟10,546.12秒；全cleanval导出SUCCESS，独立评分尚在运行，不能据训练终态声称完整比较已完成。原trainer15272已退出且owner锁释放，主queue28148当前接续CPU评分，post27384仍等待main。两模型各有40次全val记录，第62–80轮最近10次验证的mIoU范围分别为SegFormer0.523个百分点、DINO0.155个百分点；最近首末变化分别+0.343/+0.135个百分点。只说明该划分下后期曲线波动较小，不等于泛化或全局收敛证明。最佳val checkpoint分别来自epoch74/32，仍按原先val规则选取，不改轮数或据后续test选模型。已取回只读曲线/已完成评分收据 `migration/iit_completed_receipt_20261016T170231Z.json`；PLSP待评分及错误图结束后自动接续，没有手动启动第二GPU任务。
 
+01:05交接复核：DINO独立评分和错误图均SUCCESS，两套IIT基线已完成全部原定train/val步骤。原生分辨率1,757条验证记录/1,754个不同RGB上，SegFormer/DINO前景mIoU为66.266%/71.436%，点命中3,352/3,821（87.726%）与3,279/3,821（85.815%），小区域点命中1,371/1,635（83.853%）与1,286/1,635（78.654%）。DINO相对SegFormer的1,000次RGB组配对bootstrap95%区间：mIoU差+3.287至+7.015个百分点，点命中差−3.150至−0.790个百分点。范围只覆盖该验证划分，不是物理实例分组、跨源或创新确认；后续不能用更高分割mIoU代替点定位指标。完整评分收据已取回 `migration/iit_completed_receipt_20261016T1705Z.json`，不手动重复评分。
+
+同次复核确认PLSP于01:03已自动接续，实际trainer26208、launcher21364、主queue28148，原micro10/effective20未变且已完成30次更新；GPU实际分配峰值5,339,471,360B，系统显存瞬时5,903/6,144MiB，可用RAM8,294MiB。没有OOM或修改训练源码；保留单GPU写者。早期30步的剩余时间估计38,411秒（约10.7小时）尚不含完整epoch实测和后续评估，不据此保证完工时间；24小时训练上限不变。UMD镜像仍ALREADY_MIRRORED、无重传，post继续等待main，最终研究报告仍待PLSP与跨源评估。
+
 2026-10-15 18:13（UTC+8）：主本地队列已启动。实际进度以`queue/progress.json`、`runs/*/progress.jsonl`及各terminal为准；launcher PID49392对应实际queue Python PID45932，首个训练PID52016。没有把launcher回执当训练完成；已确认首个模型在全部train4417清单上持续更新。
 
 顺序为SegFormer-B0训练80epoch→全val导出/独立评分/错误图→DINO-S/16同样流程→PLSP Seen完整40epoch→曲线与汇总。两密集模型448输入、物理/有效batch16、2个loader worker、同CE+Dice；SegFormer全部3,716,714参数训练，DINO后4块/norm/decoder共7,690,506参数训练。DINO权重为原DINO-S/16，明确不是DINOv2。
