@@ -1,0 +1,29 @@
+# Assistive object finding
+
+2026-10-15: Development feasibility pilot completed. Keep object finding as a
+candidate thesis direction; do not choose the topic from this pilot alone.
+
+[Results and reproduction](README.md) · [Plan and budget](PLAN.md) · [Run record](RUNS.md)
+
+Public data and the automatic pipeline work: 12 source videos, 16 query sequences,
+528 query-frames. DINO localized 82/327 visible frames; CLIP reranking 70/327,
+source-grouped comparative learning 81/327. A disclosed posthoc full-pool CLIP
+probe reached 85/327 but saved 69 and harmed 66 frames, not a stable improvement.
+At 119 localization calls, adaptive KLT gained 8 visible frames over the matched
+uniform replay but added 19 absent-target outputs. Neither hypothesis has a
+reliable gain in its current implementation.
+
+Official StreamingRVOS-1B cached predictions were rescored, not executed locally:
+147/327 visible frames localized, 88/105 absent frames still nonempty. Independent
+mask decoding and mapping checks agreed. Its missing 96 no-target rows remain
+NOT_EVALUABLE. This GT-enriched MeViS subset is a cross-domain diagnostic, not a
+BLV user error rate, full benchmark result or first-person finding validation.
+
+Ego4D access request was submitted through the official portal; email agreement
+and official approval remain pending. RefEgo annotations parsed, pixels NOT_RUN.
+The next useful experiment is a bounded first-person RefEgo sample after access,
+prioritizing retention of low-score correct candidates and specified-instance
+presence. Decide whether temporal allocation deserves a thesis chapter afterward.
+No further model/data/parameter expansion in this completed pilot.
+
+Payload: `artifacts.local/work/assistive-object-finding-pilot-20261015/`.
