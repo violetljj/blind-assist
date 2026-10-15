@@ -27,3 +27,9 @@ Next decision: separate literal text errors, field assignment and semantic scori
 before promoting a field-evidence method. No thesis commitment; actual recapture
 still needs paired subsequent views. All reused data remain Development, with no
 deployment or user-benefit claim. Payload stays in artifacts.local; compute released.
+
+2026-10-15 later: a [quantifiable-benchmark screen](benchmark_screen/RESULTS.md) (public benchmark + released
+baselines + standard metrics) ranks ORBIT teachable object recognition first: frozen full-frame prototypes reach
+70–78% versus the official meta-trained 85.67% on validation, while ground-truth object crops reach 88–94%, so
+personalised localization in clutter is the measured headroom; naive 14-crop grids recover part (best 83.5%).
+VizWiz-Classification is a secondary robustness benchmark (best modern zero-shot 55.1%). Next: ORBIT test users.
