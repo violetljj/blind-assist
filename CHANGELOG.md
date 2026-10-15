@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+- 无障碍：大字体下首页提醒频率与设置选项改为纵向排列，补充独立选项语义与触控目标；感谢 [@Vaishnavi220506](https://github.com/Vaishnavi220506) 的 [PR #49](https://github.com/violetljj/blind-assist/pull/49)。TalkBack、显示缩放与权限恢复的剩余验证见[审计清单](docs/accessibility/DEFAULT_FLOW_AUDIT.md)。
 - 开源维护新增公开治理规则、引用元数据、Dependabot、默认模型卡和 SHA256/provenance 机器清单；CI 会拒绝社区文件或默认公开资产身份漂移。
 - 新增 tag 驱动的 fail-closed GitHub Release 工作流，自动校验 debug evaluation APK 并生成 `SHA256SUMS`、机器 manifest 和证据边界说明；不产生生产签名或安全证明。
 - 默认检测、风险与提醒策略以及 YOLO11n 模型资产不变；研究候选仍未替换正式 App 默认模型。

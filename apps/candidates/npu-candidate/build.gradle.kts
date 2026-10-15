@@ -23,6 +23,7 @@ android {
         buildConfigField("boolean", "NPU_CANDIDATE", "true")
         buildConfigField("boolean", "DUAL_LOOP_SHADOW", "false")
         buildConfigField("boolean", "DUAL_LOOP_ACTIVE", "false")
+        buildConfigField("boolean", "DTR_KNOWN_HEIGHT", "false")
         ndk {
             abiFilters += "arm64-v8a"
         }
