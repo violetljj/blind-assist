@@ -209,6 +209,32 @@ def arm_points(arm, scene, work, i, T_fish, T_up, dirs_f, sa_f, dirs_p, sa_p):
     return (dirs_p[ok] * (z[ok, None] / 1000.)) @ T_up[:3, :3].T + T_up[:3, 3], sa_p[ok], stats
 
 
+def tof_filter(P, w, floor, T_up, P0, w0, tilt_deg, bw, frac_min=.02, half=22.5, nz=8, rmax=4.8):
+    """Ideal 8x8 ToF histogram check (PLAN_TOF.md): drop cane-band points (0.05-0.70 m above floor) that fall in a zone/range
+    bin holding < frac_min of that zone's GT solid angle. ToF axis = camera axis pitched down by tilt_deg; points outside the
+    ToF field of view are kept."""
+    t = np.radians(tilt_deg); c, s = np.cos(t), np.sin(t)
+    R_wt = T_up[:3, :3] @ np.array([[1, 0, 0], [0, c, s], [0, -s, c]])
+    o, nb, step = T_up[:3, 3], int(np.ceil(rmax / bw)), 2 * half / nz
+
+    def zb(Q):
+        q = (Q - o) @ R_wt
+        ax, ay = np.degrees(np.arctan2(q[:, 0], q[:, 2])), np.degrees(np.arctan2(q[:, 1], q[:, 2]))
+        fov = (q[:, 2] > 0) & (np.abs(ax) < half) & (np.abs(ay) < half)
+        z = np.clip(((ay + half) // step).astype(int), 0, nz - 1) * nz + np.clip(((ax + half) // step).astype(int), 0, nz - 1)
+        b = (np.linalg.norm(q, axis=1) / bw).astype(int)
+        return fov, z, b
+    f0, z0, b0 = zb(P0)
+    tot = np.bincount(z0[f0], weights=w0[f0], minlength=nz * nz)
+    k = f0 & (b0 < nb); hist = np.zeros((nz * nz, nb)); np.add.at(hist, (z0[k], b0[k]), w0[k])
+    frac = hist / np.maximum(tot, 1e-12)[:, None]
+    h = P[:, 2] - floor; cand = np.flatnonzero((h >= A.BAND_LO) & (h <= A.TOPS['R2']))
+    f, z, b = zb(P[cand])
+    bad = f & ((b >= nb) | (frac[z, np.minimum(b, nb - 1)] < frac_min))
+    keep = np.ones(len(P), bool); keep[cand[bad]] = False
+    return P[keep], w[keep]
+
+
 def ladder_scene(args):
     scene, work, arms = Path(args[0]), Path(args[1]), args[2]
     band_lo = args[3] if len(args) > 3 else A.BAND_LO                  # post-hoc sweep only (PLAN_LADDER addendum)
@@ -227,8 +253,14 @@ def ladder_scene(args):
     res = {}
     for arm in arms:
         keys, body, err = [], [], []
+        tof = None
+        if 'T' in arm:                                                 # e.g. A2oT20B30: ideal ToF check, tilt 20 deg, 0.30 m bins
+            base, rest = arm.split('T'); tof = (float(rest.split('B')[0]), float(rest.split('B')[1]) / 100.)
         for j, (i, _, T_fish, _) in enumerate(frames):
-            P, w, e = arm_points(arm, scene, work, i, T_fish, T_up[j], dirs_f, sa_f, dirs_p, sa_p)
+            P, w, e = arm_points(base if tof else arm, scene, work, i, T_fish, T_up[j], dirs_f, sa_f, dirs_p, sa_p)
+            if tof:
+                P0, w0, _ = arm_points('A0', scene, work, i, T_fish, T_up[j], dirs_f, sa_f, dirs_p, sa_p)
+                P, w = tof_filter(P, w, floor, T_up[j], P0, w0, *tof)
             h = P[:, 2] - floor
             keys.append(np.unique(A.pack(np.floor(P[(h >= band_lo) & (h <= A.TOPS['R2'])] / A.VOX).astype(np.int64))))
             Tc = T_fish if arm == 'A0' else T_up[j]
