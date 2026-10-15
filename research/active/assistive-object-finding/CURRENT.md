@@ -13,13 +13,16 @@ complete for IIT native train/val, PACO annotations and current InstructPart rel
 registered secondary worker after the user reported primary-host memory pressure.
 The primary GPU queues were intentionally stopped with the epoch17 checkpoint
 preserved; do not auto-restart them. Worker ownership is recorded in the payload's
-`migration/STATE.json`; actual epoch18 updates have continued on the worker.
-The plan remains SegFormer
-and DINO dense80epoch baselines, then PLSP40epoch; all4417 native train rows,
-cleanval1757 after10 train-identical images excluded. Automatic full-val scoring,
-error galleries and follow-up are attached; no complete training gain yet.
+`migration/STATE.json`. SegFormer and DINO each completed80epoch and full-val
+scoring/galleries on train4417/cleanval1757; PLSP40epoch is still running.
+The [full point-gap diagnosis](functional_parts/DINO_POINT_GAP_ANALYSIS.md) reproduced
+all3821 queries: stable decoding shrinks DINO's point deficit from73 to21,
+and predicted-region interior points reach3384 hits. Natural-image small-part
+three-candidate oracle remains209/392, so fine-detail/new-candidate generation
+with point-quality learning is a hypothesis; no new structure is trained yet.
+Post-queue PLSP test and UMD cross-source evaluations remain pending.
 Native labels do not establish free-task role truth; InstructPart release is
-incomplete/overlapping. Wait for full curves and errors before choosing a thesis.
+incomplete/overlapping. Wait for PLSP and cross-source errors before choosing a thesis.
 
 Public data and the automatic pipeline work: 12 source videos, 16 query sequences,
 528 query-frames. DINO localized 82/327 visible frames; CLIP reranking 70/327,

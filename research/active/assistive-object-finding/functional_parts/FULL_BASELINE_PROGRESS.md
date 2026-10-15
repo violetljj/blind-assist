@@ -41,6 +41,10 @@
 
 同次复核确认PLSP于01:03已自动接续，实际trainer26208、launcher21364、主queue28148，原micro10/effective20未变且已完成30次更新；GPU实际分配峰值5,339,471,360B，系统显存瞬时5,903/6,144MiB，可用RAM8,294MiB。没有OOM或修改训练源码；保留单GPU写者。早期30步的剩余时间估计38,411秒（约10.7小时）尚不含完整epoch实测和后续评估，不据此保证完工时间；24小时训练上限不变。UMD镜像仍ALREADY_MIRRORED、无重传，post继续等待main，最终研究报告仍待PLSP与跨源评估。
 
+02:11用户要求的[全量点定位差异诊断](DINO_POINT_GAP_ANALYSIS.md)已COMPLETE：全部1,757条验证记录、3,821正类查询的原坐标/命中/混淆矩阵严格复现。两模型使用相同稳定log-odds读点后，DINO净差由−73缩至−21；DINO最大预测连通域内部点3,384/3,821，小区域1,368/1,635。数值/解码修正不是模型创新；同稳定解码差及DINO内部点对Seg原始差的RGB组区间均跨零。ImageNet小区域的固定三点oracle仅209/392，优先保留局部细节与新候选生成联合定位质量的待证机制，未启动结构训练。独立CPU单线程BelowNormal诊断壁钟1,013.49秒、峰值RSS726.3MiB，runner终态success、进程已释放，thin evidence逐SHA取回；没有第二GPU写者。
+
+02:20轻量同步确认PLSP完成5/40轮并进入第6轮、1,740次更新；近期step2.71秒、剩余训练估计32,674秒（约9.1小时），不含后续评估。副机瞬时GPU100%、显存5,882/6,144MiB、可用RAM9,737MiB。main/post仍RUNNING，UMD仍ALREADY_MIRRORED且无重传，主机GPU禁用政策不变。本次IIT诊断可独立交付，不能据此称整轮最终报告完成。
+
 2026-10-15 18:13（UTC+8）：主本地队列已启动。实际进度以`queue/progress.json`、`runs/*/progress.jsonl`及各terminal为准；launcher PID49392对应实际queue Python PID45932，首个训练PID52016。没有把launcher回执当训练完成；已确认首个模型在全部train4417清单上持续更新。
 
 顺序为SegFormer-B0训练80epoch→全val导出/独立评分/错误图→DINO-S/16同样流程→PLSP Seen完整40epoch→曲线与汇总。两密集模型448输入、物理/有效batch16、2个loader worker、同CE+Dice；SegFormer全部3,716,714参数训练，DINO后4块/norm/decoder共7,690,506参数训练。DINO权重为原DINO-S/16，明确不是DINOv2。

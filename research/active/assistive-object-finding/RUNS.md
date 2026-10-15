@@ -155,3 +155,16 @@ clarification that additionally excludes prior AGD RGB; no outcomes preceded it.
 Delivery:3 new Python files compiled, categorical/empty/invalid-label synthetic
 checks passed,37 scoped documentation links and458 hot-doc links verified;
 project structure and scoped whitespace passed. No application build needed.
+
+| Date | Run | Inputs / changes | Results | Decision / evidence |
+| --- | --- | --- | --- | --- |
+| 2026-10-16 | functional-parts-full-point-gap / EXPLORE | Both completed80epoch checkpoints; all1757 consumed-val rows/1754 RGB groups,3821 positive queries. Frozen exported logits, CPU1thread, no model forward; five fixed point decoders and full original-coordinate/confusion reproduction. | Same stable decoding: Seg3351/DINO3330; original3352/3279. DINO interior point3384, small1368/1635. Fixed3point oracle3508 overall, ImageNet-small209/392; RGB-group interval for DINO interior vs Seg original crosses0. | COMPLETE diagnostic, not new model/independent confirmation. Prioritize testing fine-detail/new-candidate generation with point-quality learning; ordinary high-resolution controls required. [Analysis](functional_parts/DINO_POINT_GAP_ANALYSIS.md). Payload artifacts.local/work/functional-parts-full-20261015/diagnostics/dino_point_gap/. PLSP and queued cross-source evaluations continue. |
+
+Full CPU diagnosis used1013.49wall_s/957.11CPU_s and761,585,664B peakRSS,
+below the1800wall_s cap, while PLSP retained sole GPU ownership. All1757 original
+image results and3821 point coordinates/hits strictly reproduced; runner success,
+thin result12files/17,532,391B SHA-verified locally. Eight deterministic illustrative
+cases and source/area chart were rendered with Pillow and visually inspected.
+Auxiliary paired/bootstrap/interpretation source and receipts are retained in
+payload tables_agent/. This consumed Development split supplies no new
+specified-instance role, existence/rejection or BLV operation-success evidence.
