@@ -35,6 +35,8 @@
 
 22:05只读快照确认SegFormer-B0终态COMPLETE：80epoch、22,160次更新；训练、全cleanval导出、独立评分、错误图四个队列步骤均SUCCESS，原trainer已退出且owner锁已释放。DINO-S/16于22:03自动接续，实际trainer PID15272（父launcher13172、主queue28148），第1轮已推进210次更新；post仍只读等待main。副机当时可用RAM7,301MiB/16,236MiB、显存使用2,449MiB/6,144MiB；均为瞬时资源快照，不代表持续均值。同步耗时1.58秒，UMD返回ALREADY_MIRRORED且未传输数据。收据见payload `monitor/20261015T140506Z.json`；主队列尚未完成，暂不交付最终性能或稳定性结论，耗时仍按主副机分段累计。
 
+2026-10-16 01:02，DINO-S/16亦已终态COMPLETE：80epoch、22,160次更新，训练进程壁钟10,546.12秒；全cleanval导出SUCCESS，独立评分尚在运行，不能据训练终态声称完整比较已完成。原trainer15272已退出且owner锁释放，主queue28148当前接续CPU评分，post27384仍等待main。两模型各有40次全val记录，第62–80轮最近10次验证的mIoU范围分别为SegFormer0.523个百分点、DINO0.155个百分点；最近首末变化分别+0.343/+0.135个百分点。只说明该划分下后期曲线波动较小，不等于泛化或全局收敛证明。最佳val checkpoint分别来自epoch74/32，仍按原先val规则选取，不改轮数或据后续test选模型。已取回只读曲线/已完成评分收据 `migration/iit_completed_receipt_20261016T170231Z.json`；PLSP待评分及错误图结束后自动接续，没有手动启动第二GPU任务。
+
 2026-10-15 18:13（UTC+8）：主本地队列已启动。实际进度以`queue/progress.json`、`runs/*/progress.jsonl`及各terminal为准；launcher PID49392对应实际queue Python PID45932，首个训练PID52016。没有把launcher回执当训练完成；已确认首个模型在全部train4417清单上持续更新。
 
 顺序为SegFormer-B0训练80epoch→全val导出/独立评分/错误图→DINO-S/16同样流程→PLSP Seen完整40epoch→曲线与汇总。两密集模型448输入、物理/有效batch16、2个loader worker、同CE+Dice；SegFormer全部3,716,714参数训练，DINO后4块/norm/decoder共7,690,506参数训练。DINO权重为原DINO-S/16，明确不是DINOv2。
@@ -53,4 +55,4 @@ Seen完整测试输入已按CRC/SHA准备：1,710动作—图像行、730精确�
 
 已实际完成首个模型前2epoch与全部1,757图验证通路，继续完整80epoch；这些中期值仅在原始进度中保留，不作为充分训练效果或研究结论。
 
-尚无充分训练后的新效果或创新结论。完整统计、训练曲线、错误分析和实际成本将在同一记录更新。当前仅保留副机训练与只读等待的后续队列，owner与停止/恢复方式如上；主机没有本任务的GPU作业或常驻下载/同步进程。
+本轮完整研究及创新结论尚未交付。两套IIT训练已跑满80epoch，PLSP和跨源评估仍待完成；完整统计、训练曲线、错误分析和实际成本将在同一记录更新。当前仅保留副机主队列与只读等待的后续队列，owner与停止/恢复方式如上；主机没有本任务的GPU作业或常驻下载/同步进程。
