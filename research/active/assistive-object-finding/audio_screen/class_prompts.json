@@ -1,0 +1,466 @@
+{
+  "vocabulary_source": "https://github.com/karolpiczak/ESC-50/blob/master/meta/esc50.csv",
+  "vocabulary_sha256": "ca660da60191a97de289983a05821c9382d852a38a2ba8428980816b68cf6246",
+  "classes": [
+    {
+      "class_id": "0",
+      "label": "dog",
+      "prompts": [
+        "The sound of dog.",
+        "An audio recording of dog.",
+        "dog can be heard."
+      ]
+    },
+    {
+      "class_id": "1",
+      "label": "rooster",
+      "prompts": [
+        "The sound of rooster.",
+        "An audio recording of rooster.",
+        "rooster can be heard."
+      ]
+    },
+    {
+      "class_id": "2",
+      "label": "pig",
+      "prompts": [
+        "The sound of pig.",
+        "An audio recording of pig.",
+        "pig can be heard."
+      ]
+    },
+    {
+      "class_id": "3",
+      "label": "cow",
+      "prompts": [
+        "The sound of cow.",
+        "An audio recording of cow.",
+        "cow can be heard."
+      ]
+    },
+    {
+      "class_id": "4",
+      "label": "frog",
+      "prompts": [
+        "The sound of frog.",
+        "An audio recording of frog.",
+        "frog can be heard."
+      ]
+    },
+    {
+      "class_id": "5",
+      "label": "cat",
+      "prompts": [
+        "The sound of cat.",
+        "An audio recording of cat.",
+        "cat can be heard."
+      ]
+    },
+    {
+      "class_id": "6",
+      "label": "hen",
+      "prompts": [
+        "The sound of hen.",
+        "An audio recording of hen.",
+        "hen can be heard."
+      ]
+    },
+    {
+      "class_id": "7",
+      "label": "insects",
+      "prompts": [
+        "The sound of insects.",
+        "An audio recording of insects.",
+        "insects can be heard."
+      ]
+    },
+    {
+      "class_id": "8",
+      "label": "sheep",
+      "prompts": [
+        "The sound of sheep.",
+        "An audio recording of sheep.",
+        "sheep can be heard."
+      ]
+    },
+    {
+      "class_id": "9",
+      "label": "crow",
+      "prompts": [
+        "The sound of crow.",
+        "An audio recording of crow.",
+        "crow can be heard."
+      ]
+    },
+    {
+      "class_id": "10",
+      "label": "rain",
+      "prompts": [
+        "The sound of rain.",
+        "An audio recording of rain.",
+        "rain can be heard."
+      ]
+    },
+    {
+      "class_id": "11",
+      "label": "sea waves",
+      "prompts": [
+        "The sound of sea waves.",
+        "An audio recording of sea waves.",
+        "sea waves can be heard."
+      ]
+    },
+    {
+      "class_id": "12",
+      "label": "crackling fire",
+      "prompts": [
+        "The sound of crackling fire.",
+        "An audio recording of crackling fire.",
+        "crackling fire can be heard."
+      ]
+    },
+    {
+      "class_id": "13",
+      "label": "crickets",
+      "prompts": [
+        "The sound of crickets.",
+        "An audio recording of crickets.",
+        "crickets can be heard."
+      ]
+    },
+    {
+      "class_id": "14",
+      "label": "chirping birds",
+      "prompts": [
+        "The sound of chirping birds.",
+        "An audio recording of chirping birds.",
+        "chirping birds can be heard."
+      ]
+    },
+    {
+      "class_id": "15",
+      "label": "water drops",
+      "prompts": [
+        "The sound of water drops.",
+        "An audio recording of water drops.",
+        "water drops can be heard."
+      ]
+    },
+    {
+      "class_id": "16",
+      "label": "wind",
+      "prompts": [
+        "The sound of wind.",
+        "An audio recording of wind.",
+        "wind can be heard."
+      ]
+    },
+    {
+      "class_id": "17",
+      "label": "pouring water",
+      "prompts": [
+        "The sound of pouring water.",
+        "An audio recording of pouring water.",
+        "pouring water can be heard."
+      ]
+    },
+    {
+      "class_id": "18",
+      "label": "toilet flush",
+      "prompts": [
+        "The sound of toilet flush.",
+        "An audio recording of toilet flush.",
+        "toilet flush can be heard."
+      ]
+    },
+    {
+      "class_id": "19",
+      "label": "thunderstorm",
+      "prompts": [
+        "The sound of thunderstorm.",
+        "An audio recording of thunderstorm.",
+        "thunderstorm can be heard."
+      ]
+    },
+    {
+      "class_id": "20",
+      "label": "crying baby",
+      "prompts": [
+        "The sound of crying baby.",
+        "An audio recording of crying baby.",
+        "crying baby can be heard."
+      ]
+    },
+    {
+      "class_id": "21",
+      "label": "sneezing",
+      "prompts": [
+        "The sound of sneezing.",
+        "An audio recording of sneezing.",
+        "sneezing can be heard."
+      ]
+    },
+    {
+      "class_id": "22",
+      "label": "clapping",
+      "prompts": [
+        "The sound of clapping.",
+        "An audio recording of clapping.",
+        "clapping can be heard."
+      ]
+    },
+    {
+      "class_id": "23",
+      "label": "breathing",
+      "prompts": [
+        "The sound of breathing.",
+        "An audio recording of breathing.",
+        "breathing can be heard."
+      ]
+    },
+    {
+      "class_id": "24",
+      "label": "coughing",
+      "prompts": [
+        "The sound of coughing.",
+        "An audio recording of coughing.",
+        "coughing can be heard."
+      ]
+    },
+    {
+      "class_id": "25",
+      "label": "footsteps",
+      "prompts": [
+        "The sound of footsteps.",
+        "An audio recording of footsteps.",
+        "footsteps can be heard."
+      ]
+    },
+    {
+      "class_id": "26",
+      "label": "laughing",
+      "prompts": [
+        "The sound of laughing.",
+        "An audio recording of laughing.",
+        "laughing can be heard."
+      ]
+    },
+    {
+      "class_id": "27",
+      "label": "brushing teeth",
+      "prompts": [
+        "The sound of brushing teeth.",
+        "An audio recording of brushing teeth.",
+        "brushing teeth can be heard."
+      ]
+    },
+    {
+      "class_id": "28",
+      "label": "snoring",
+      "prompts": [
+        "The sound of snoring.",
+        "An audio recording of snoring.",
+        "snoring can be heard."
+      ]
+    },
+    {
+      "class_id": "29",
+      "label": "drinking sipping",
+      "prompts": [
+        "The sound of drinking sipping.",
+        "An audio recording of drinking sipping.",
+        "drinking sipping can be heard."
+      ]
+    },
+    {
+      "class_id": "30",
+      "label": "door wood knock",
+      "prompts": [
+        "The sound of door wood knock.",
+        "An audio recording of door wood knock.",
+        "door wood knock can be heard."
+      ]
+    },
+    {
+      "class_id": "31",
+      "label": "mouse click",
+      "prompts": [
+        "The sound of mouse click.",
+        "An audio recording of mouse click.",
+        "mouse click can be heard."
+      ]
+    },
+    {
+      "class_id": "32",
+      "label": "keyboard typing",
+      "prompts": [
+        "The sound of keyboard typing.",
+        "An audio recording of keyboard typing.",
+        "keyboard typing can be heard."
+      ]
+    },
+    {
+      "class_id": "33",
+      "label": "door wood creaks",
+      "prompts": [
+        "The sound of door wood creaks.",
+        "An audio recording of door wood creaks.",
+        "door wood creaks can be heard."
+      ]
+    },
+    {
+      "class_id": "34",
+      "label": "can opening",
+      "prompts": [
+        "The sound of can opening.",
+        "An audio recording of can opening.",
+        "can opening can be heard."
+      ]
+    },
+    {
+      "class_id": "35",
+      "label": "washing machine",
+      "prompts": [
+        "The sound of washing machine.",
+        "An audio recording of washing machine.",
+        "washing machine can be heard."
+      ]
+    },
+    {
+      "class_id": "36",
+      "label": "vacuum cleaner",
+      "prompts": [
+        "The sound of vacuum cleaner.",
+        "An audio recording of vacuum cleaner.",
+        "vacuum cleaner can be heard."
+      ]
+    },
+    {
+      "class_id": "37",
+      "label": "clock alarm",
+      "prompts": [
+        "The sound of clock alarm.",
+        "An audio recording of clock alarm.",
+        "clock alarm can be heard."
+      ]
+    },
+    {
+      "class_id": "38",
+      "label": "clock tick",
+      "prompts": [
+        "The sound of clock tick.",
+        "An audio recording of clock tick.",
+        "clock tick can be heard."
+      ]
+    },
+    {
+      "class_id": "39",
+      "label": "glass breaking",
+      "prompts": [
+        "The sound of glass breaking.",
+        "An audio recording of glass breaking.",
+        "glass breaking can be heard."
+      ]
+    },
+    {
+      "class_id": "40",
+      "label": "helicopter",
+      "prompts": [
+        "The sound of helicopter.",
+        "An audio recording of helicopter.",
+        "helicopter can be heard."
+      ]
+    },
+    {
+      "class_id": "41",
+      "label": "chainsaw",
+      "prompts": [
+        "The sound of chainsaw.",
+        "An audio recording of chainsaw.",
+        "chainsaw can be heard."
+      ]
+    },
+    {
+      "class_id": "42",
+      "label": "siren",
+      "prompts": [
+        "The sound of siren.",
+        "An audio recording of siren.",
+        "siren can be heard."
+      ]
+    },
+    {
+      "class_id": "43",
+      "label": "car horn",
+      "prompts": [
+        "The sound of car horn.",
+        "An audio recording of car horn.",
+        "car horn can be heard."
+      ]
+    },
+    {
+      "class_id": "44",
+      "label": "engine",
+      "prompts": [
+        "The sound of engine.",
+        "An audio recording of engine.",
+        "engine can be heard."
+      ]
+    },
+    {
+      "class_id": "45",
+      "label": "train",
+      "prompts": [
+        "The sound of train.",
+        "An audio recording of train.",
+        "train can be heard."
+      ]
+    },
+    {
+      "class_id": "46",
+      "label": "church bells",
+      "prompts": [
+        "The sound of church bells.",
+        "An audio recording of church bells.",
+        "church bells can be heard."
+      ]
+    },
+    {
+      "class_id": "47",
+      "label": "airplane",
+      "prompts": [
+        "The sound of airplane.",
+        "An audio recording of airplane.",
+        "airplane can be heard."
+      ]
+    },
+    {
+      "class_id": "48",
+      "label": "fireworks",
+      "prompts": [
+        "The sound of fireworks.",
+        "An audio recording of fireworks.",
+        "fireworks can be heard."
+      ]
+    },
+    {
+      "class_id": "49",
+      "label": "hand saw",
+      "prompts": [
+        "The sound of hand saw.",
+        "An audio recording of hand saw.",
+        "hand saw can be heard."
+      ]
+    },
+    {
+      "class_id": "background_all",
+      "label": "background diagnostic",
+      "diagnostic_only": true,
+      "prompts": [
+        "Background noise.",
+        "Ambient sound.",
+        "Silence."
+      ]
+    }
+  ]
+}

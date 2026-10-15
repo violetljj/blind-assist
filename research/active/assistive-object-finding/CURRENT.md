@@ -19,11 +19,19 @@ mask decoding and mapping checks agreed. Its missing 96 no-target rows remain
 NOT_EVALUABLE. This GT-enriched MeViS subset is a cross-domain diagnostic, not a
 BLV user error rate, full benchmark result or first-person finding validation.
 
-Ego4D access request was submitted through the official portal; email agreement
-and official approval remain pending. RefEgo annotations parsed, pixels NOT_RUN.
+Ego4D access request was submitted through the official portal. The user reports
+the agreement signed; official approval/AWS credentials remain pending, and no
+local download credentials were found. RefEgo annotations parsed, pixels NOT_RUN.
 The next useful experiment is a bounded first-person RefEgo sample after access,
 prioritizing retention of low-score correct candidates and specified-instance
 presence. Decide whether temporal allocation deserves a thesis chapter afterward.
 No further model/data/parameter expansion in this completed pilot.
 
 Payload: `artifacts.local/work/assistive-object-finding-pilot-20261015/`.
+
+An independent user-requested [alternative screen](audio_screen/README.md) is
+complete: public audio inference works, but the richer gate showed a tradeoff,
+not a clear gain. Prefer action-conditioned functional-part localization for
+the next feasibility check. AGD20K 6 image/heatmap pairs and IIT-AFF 3 native
+pixel-label pairs were actually retrieved; visual model performance and method
+novelty are not yet established. This does not resume the finding pilot.
