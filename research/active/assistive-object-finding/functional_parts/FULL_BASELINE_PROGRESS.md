@@ -27,11 +27,13 @@
 
 19:41副机main/post持久runner已接手，19:42确认真实第18轮推进至4,890 updates（原断点4,709），不是只凭启动回执。恢复先导实际完成2次GPU optimizer更新，峰值CUDA allocation 3,597,675,008B；只是兼容与容量验收。主queue PID28148、trainer实际PID26572，post PID27384只读等待；runner ID见`migration/STATE.json`。副机payload在`G:/DevWorkspace/BlindAssist/artifacts/work/functional-parts-full-20261015`，保留原始主机终止记录与完整log，工作曲线只移除已归档的未完成epoch18片段。耗时按主机/副机分段累计，不把恢复后重置的wall_seconds当全程成本。
 
-一次性同步入口为[full_worker_sync.py](full_worker_sync.py)，每30分钟由既有automation执行；没有新增常驻监控进程。它只读采集副机状态，在本地UMD supervisor COMPLETE后才镜像全量作者手标文件，逐文件SHA校验后最后发布supervisor成功证据；不解码GT、不启动GPU。副机主/后队列及其owner是当前执行权威，原local FAILED不得触发本机重启。主副机路径适配入口[full_worker_entry.py](full_worker_entry.py)与mapping SHA均已封入remote request；Windows asyncio继承Popen兼容故障及修复验证保留在migration/canary_attempts。第二批PLSP完整训练/测试资产正在迁入，验收以副机`migration/plsp_asset_receipt.json`为准。
+一次性同步入口为[full_worker_sync.py](full_worker_sync.py)，按用户最新要求每1小时由既有automation执行；没有新增常驻监控进程。它只读采集副机状态，在本地UMD supervisor COMPLETE后才镜像全量作者手标文件，逐文件SHA校验后最后发布supervisor成功证据；不解码GT、不启动GPU。副机主/后队列及其owner是当前执行权威，原local FAILED不得触发本机重启。主副机路径适配入口[full_worker_entry.py](full_worker_entry.py)与mapping SHA均已封入remote request；Windows asyncio继承Popen兼容故障及修复验证保留在migration/canary_attempts。第二批PLSP完整训练/测试资产正在迁入，验收以副机`migration/plsp_asset_receipt.json`为准。
 
 19:55迁移验收完成：副机已逐文件核验第二批PLSP的38,330份payload，source bytes不变、未解码test像素；单线程BelowNormal接收任务终态success并结束。收据已取回本地`migration/worker_acceptance/`。主训练实际进入epoch24，副机可用RAM约8.6GiB；这些是迁移/运行证据，不是完整模型性能结论。后续按既有主/后队列继续，不能恢复本机GPU，也不以新的运行时计时覆盖主机已消耗成本。
 
 20:04 UMD数据链终态COMPLETE且副机镜像已通过：29,711原生帧ID中有9,939个作者手标配对，来自105工具组/3杂乱场景组，逐文件SHA确认9,939个不同RGB、与IIT train/cleanval完全同RGB交叉为0。镜像19,898文件验证后才最后发布supervisor证据，未解码GT像素，尚无跨源模型成绩。完整计数及相关性边界见[全量普查](FULL_DATA_CENSUS.md)。本机下载/supervisor/一次性同步进程已结束；保留归档、失败/请求记录和镜像包用于复核。副机main仍训练、post仍等待，不启动额外GPU任务。
+
+22:05只读快照确认SegFormer-B0终态COMPLETE：80epoch、22,160次更新；训练、全cleanval导出、独立评分、错误图四个队列步骤均SUCCESS，原trainer已退出且owner锁已释放。DINO-S/16于22:03自动接续，实际trainer PID15272（父launcher13172、主queue28148），第1轮已推进210次更新；post仍只读等待main。副机当时可用RAM7,301MiB/16,236MiB、显存使用2,449MiB/6,144MiB；均为瞬时资源快照，不代表持续均值。同步耗时1.58秒，UMD返回ALREADY_MIRRORED且未传输数据。收据见payload `monitor/20261015T140506Z.json`；主队列尚未完成，暂不交付最终性能或稳定性结论，耗时仍按主副机分段累计。
 
 2026-10-15 18:13（UTC+8）：主本地队列已启动。实际进度以`queue/progress.json`、`runs/*/progress.jsonl`及各terminal为准；launcher PID49392对应实际queue Python PID45932，首个训练PID52016。没有把launcher回执当训练完成；已确认首个模型在全部train4417清单上持续更新。
 
@@ -43,7 +45,7 @@
 
 UMD原下载supervisor（`data/umd/supervisor_owner.json`）现已COMPLETE并释放；停止文件`data/umd/STOP.flag`仅为历史控制入口，勿据此重复启动。当前主/后queue的STOP_REQUESTED须放在副机对应queue目录；原主机queue已经停止，不能恢复。断点最多丢失当前未完成epoch；恢复先核进程身份/锁/配置，使用last.pt，禁止重复GPU写者。失败记录保留，退出码0但terminal不是COMPLETE也不算训练完成。
 
-已建立本对话自动跟进`automation-2`，每30分钟核终态/必要恢复，正常进度保持安静，训练与完整评估完成或有故障时汇报，本轮完成后停用。不租付费算力，不自行扩至新结构搜索。
+已建立本对话自动跟进`automation-2`，按用户最新要求每1小时核终态/必要恢复，正常进度保持安静，训练与完整评估完成或有故障时汇报，本轮完成后停用。不租付费算力，不自行扩至新结构搜索。
 
 18:22已启动独立`post_queue`，实际queue PID53956、等待子进程48852，当前只读等待主队列SUCCESS，不占GPU。随后自动执行PLSP固定epoch40完整Seen test→等待UMD supervisor COMPLETE→两密集基线全量作者手标帧跨源导出/共享6类评分→`final/REPORT.md`。它使用独立冻结request，不能手动重复启动同一GPU推理。停止可创建`post_queue/STOP_REQUESTED`。UMD/source未就绪或失败不会静默变成已评分。
 
