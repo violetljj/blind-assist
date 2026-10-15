@@ -21,6 +21,14 @@
 
 ## 状态
 
+2026-10-15 19:24起，按用户“主机卡顿，优化或迁副机”的最新要求转移执行位置。本机可用物理内存一度仅约185MiB；已通过既有STOP_REQUESTED主动停止main/post两队列，约19:24确认训练及loader退出，可用内存回升至约7.6GiB。旧FAILED终态是operator stop，保留原日志、锁和断点，不计为算法失败，不自动重启本机GPU。最后完整断点为epoch17，第18轮未完成部分将重放。
+
+迁移权威为payload的`migration/STATE.json`。注册副机RTX3060 Laptop 6GB，检查时约9GiB空闲RAM、5.1GiB空闲显存且没有Python作业。传输原始数据、冻结源码、模型及完整optimizer/scaler/RNG断点；原manifest与trainer raw SHA保持不变，独立`full_worker_entry.py`仅重定位主副机路径。副机Torch2.9.1/cu128与主机2.11.0/cu130不同，须实际断点加载/GPU更新验收，不声称逐元素复现。训练轮数、种子、有效批量、模型选择及数据划分保持原计划；恢复前核无第二写者。主机只保留轻量下载与状态同步。迁移成功前，下述原18点启动PID仅作历史，不代表当前仍运行。
+
+19:41副机main/post持久runner已接手，19:42确认真实第18轮推进至4,890 updates（原断点4,709），不是只凭启动回执。恢复先导实际完成2次GPU optimizer更新，峰值CUDA allocation 3,597,675,008B；只是兼容与容量验收。主queue PID28148、trainer实际PID26572，post PID27384只读等待；runner ID见`migration/STATE.json`。副机payload在`G:/DevWorkspace/BlindAssist/artifacts/work/functional-parts-full-20261015`，保留原始主机终止记录与完整log，工作曲线只移除已归档的未完成epoch18片段。耗时按主机/副机分段累计，不把恢复后重置的wall_seconds当全程成本。
+
+一次性同步入口为[full_worker_sync.py](full_worker_sync.py)，每30分钟由既有automation执行；没有新增常驻监控进程。它只读采集副机状态，在本地UMD supervisor COMPLETE后才镜像全量作者手标文件，逐文件SHA校验后最后发布supervisor成功证据；不解码GT、不启动GPU。副机主/后队列及其owner是当前执行权威，原local FAILED不得触发本机重启。主副机路径适配入口[full_worker_entry.py](full_worker_entry.py)与mapping SHA均已封入remote request；Windows asyncio继承Popen兼容故障及修复验证保留在migration/canary_attempts。第二批PLSP完整训练/测试资产正在迁入，验收以副机`migration/plsp_asset_receipt.json`为准。
+
 2026-10-15 18:13（UTC+8）：主本地队列已启动。实际进度以`queue/progress.json`、`runs/*/progress.jsonl`及各terminal为准；launcher PID49392对应实际queue Python PID45932，首个训练PID52016。没有把launcher回执当训练完成；已确认首个模型在全部train4417清单上持续更新。
 
 顺序为SegFormer-B0训练80epoch→全val导出/独立评分/错误图→DINO-S/16同样流程→PLSP Seen完整40epoch→曲线与汇总。两密集模型448输入、物理/有效batch16、2个loader worker、同CE+Dice；SegFormer全部3,716,714参数训练，DINO后4块/norm/decoder共7,690,506参数训练。DINO权重为原DINO-S/16，明确不是DINOv2。

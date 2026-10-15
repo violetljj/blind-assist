@@ -4,6 +4,30 @@ This route covers local or remote training, offline evaluation, and other long
 research jobs. It does not define Android/device execution and contains no
 credentials or SSH endpoints; machine configuration remains in ignored files.
 
+## Efficiency and primary-machine responsiveness
+
+For large jobs, treat throughput, end-to-end wall time, peak RAM/VRAM and useful
+outputs per unit of compute as design criteria, not only post-run statistics.
+Use a short representative window to choose placement, batching, data-loader
+workers, precision and concurrency before a long launch. Include decoding,
+transfer, validation and checkpoint overhead when estimating completion time.
+
+When the primary laptop is in interactive use, prefer the registered secondary
+worker for sustained training and inference. If a large job must run locally,
+leave practical headroom for the user's apps (on the current 16GB laptop, aim
+for at least about 4GiB available RAM), use suitable process priority and limit
+prefetch/thread oversubscription. A user report of lag or severe memory pressure
+requires prompt checkpoint-preserving load reduction; do not wait for an OOM.
+An idle GPU is not proof that the CPU, RAM or disk can support another job.
+
+Keep engineering speedups and research claims separate. For an efficiency
+contribution, compare quality at matched compute and cost at matched quality;
+report measurement scope, warm-up, hardware/runtime, memory and repeated timing
+where it affects the decision. Numerical/precision changes and additional data
+must be disclosed. A kernel-only speedup is not end-to-end acceleration, and a
+short startup profile is not sustained training throughput. Record failed
+optimizations as well as gains; preserve scientific inputs and resume state.
+
 ## Registered secondary worker
 
 The secondary Windows laptop is authorized for ordinary scoped development and

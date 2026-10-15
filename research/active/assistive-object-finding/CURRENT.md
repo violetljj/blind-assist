@@ -7,7 +7,12 @@ candidate thesis direction; do not choose the topic from this pilot alone.
 
 User-authorized [full data census](functional_parts/FULL_DATA_CENSUS.md) is now
 complete for IIT native train/val, PACO annotations and current InstructPart release.
-[Training queue](functional_parts/FULL_BASELINE_PROGRESS.md) is RUNNING: SegFormer
+[Training queue](functional_parts/FULL_BASELINE_PROGRESS.md) is RUNNING on the
+registered secondary worker after the user reported primary-host memory pressure.
+The primary GPU queues were intentionally stopped with the epoch17 checkpoint
+preserved; do not auto-restart them. Worker ownership is recorded in the payload's
+`migration/STATE.json`; actual epoch18 updates have continued on the worker.
+The plan remains SegFormer
 and DINO dense80epoch baselines, then PLSP40epoch; all4417 native train rows,
 cleanval1757 after10 train-identical images excluded. Automatic full-val scoring,
 error galleries and follow-up are attached; no complete training gain yet.
