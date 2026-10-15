@@ -35,8 +35,8 @@ def causal(s, h):
 def main(dump, out, tasks=50, arms='all', halflives='0,5,15,30,60,120,cum'):
     dump = Path(dump); tasks = int(tasks); hs = halflives.split(',')
     vids = [dict(np.load(f, allow_pickle=False)) for f in sorted(dump.glob('*.npz'))]
-    keys = [k for k in vids[0] if k == 'full' or k.startswith('part@')]
-    all_arms = ['full'] + [k for k in keys if k != 'full'] + ['fuse@' + k.split('@')[1] for k in keys if k != 'full']
+    keys = [k for k in vids[0] if k not in ('names', 'valid', 'y', 'user')]
+    all_arms = keys + ['fuse@' + k.split('@')[1] for k in keys if k.startswith('part@')]
     want = all_arms if arms == 'all' else arms.split(',')
     rng = random.Random(0)
     samples = [[sorted(rng.sample(range(int(v['valid'].sum())), min(200, int(v['valid'].sum())))) for _ in range(tasks)]

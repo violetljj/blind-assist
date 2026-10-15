@@ -43,3 +43,6 @@ Training-free upgrades (validation-selected, one test run): adding causal tempor
 rules allow, the part memory reaches 79.21 +- 0.58% on the test users versus 75.38% for the best official
 meta-trained model; whole-frame with the same accumulation gets 75.72%, and a 1-second window gives 75.61%. Register
 DINOv2 and multi-scale memory did not help on validation. Thesis direction: ORBIT personal-object recognition.
+Nearest-neighbour check (2026-10-16): a faithful Swiss DINO re-implementation on the same frozen DINOv2-S with
+annotation-free masks (validation-selected 448 + centre box) reaches 61.63/69.35% (single frame/causal) on the test
+users, about 10 points below the part memory. PerSAM is scripted but not run. Laptop safety rules: docs/HOST_RESEARCH_COMPUTE.md.

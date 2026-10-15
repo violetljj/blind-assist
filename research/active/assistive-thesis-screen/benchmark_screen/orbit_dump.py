@@ -40,28 +40,61 @@ def shrink(x, s):
 
 
 def part_memory_from(flat, cfg):
-    """flat: list of [n_o, D] normalised context patches (all scales). Discriminative keep + k-means, as orbit_eval."""
+    """flat: list of [n_o, D] normalised context patches (fp16, all scales). Discriminative keep + k-means, as
+    orbit_eval; converts one object at a time and samples the other objects before gathering (bounded memory)."""
     import torch
-    mem = []
-    for o, P in enumerate(flat):
-        others = torch.cat([q for j, q in enumerate(flat) if j != o])
-        g = torch.Generator(device=P.device).manual_seed(o)
-        others = others[torch.randperm(len(others), generator=g, device=P.device)[:30000]]
-        own = P[torch.randperm(len(P), generator=g, device=P.device)[:30000]]
+    mem, sizes = [], [len(q) for q in flat]
+    for o in range(len(flat)):
+        g = torch.Generator(device='cpu').manual_seed(o)
+        oth = [j for j in range(len(flat)) if j != o]; tot = sum(sizes[j] for j in oth)
+        pick = torch.randperm(tot, generator=g)[:30000]
+        offs = torch.tensor([0] + [sizes[j] for j in oth]).cumsum(0)
+        others = torch.cat([flat[j][pick[(pick >= offs[i]) & (pick < offs[i + 1])].to(flat[j].device) - offs[i]]
+                            for i, j in enumerate(oth)]).float()
+        P = flat[o].float()
+        own = P[torch.randperm(len(P), generator=g)[:30000].to(P.device)]
         s_other = torch.cat([(P[i:i + 4096] @ others.T).amax(1) for i in range(0, len(P), 4096)])
         s_own = torch.cat([(P[i:i + 4096] @ own.T).topk(6, dim=1).values[:, 1:].mean(1) for i in range(0, len(P), 4096)])
         d = s_own - s_other
         keep = P[d >= d.quantile(1 - cfg['keep'])]
         mem.append(kmeans(keep, min(cfg['parts'], len(keep))))
+        del others, P, own, s_other, s_own, d, keep
     return mem
 
 
-def main(root, out, backbone, cfgs):
+def guard(frac=0.75, ram_free_min_gb=2.0, wait_s=1200):
+    """Fail fast instead of freezing Windows: cap this process's CUDA allocator (an overrun raises OOM rather than
+    spilling into shared system memory); when free host RAM is low (often other apps), pause until it recovers and
+    give up only after wait_s."""
+    import psutil
+    import torch
+    torch.cuda.set_per_process_memory_fraction(float(frac))
+    t = time.time()
+    while psutil.virtual_memory().available / 2 ** 30 < ram_free_min_gb:
+        if time.time() - t > wait_s:
+            raise MemoryError(f'host RAM below {ram_free_min_gb} GB for {wait_s} s')
+        print(f'paused: {psutil.virtual_memory().available / 2 ** 30:.1f} GB host RAM free', flush=True)
+        time.sleep(30)
+
+
+def peaks():
+    import psutil
+    import torch
+    return dict(gpu_peak_gb=round(torch.cuda.max_memory_allocated() / 2 ** 30, 2),
+                gpu_reserved_gb=round(torch.cuda.max_memory_reserved() / 2 ** 30, 2),
+                rss_gb=round(psutil.Process().memory_info().rss / 2 ** 30, 2),
+                ram_free_gb=round(psutil.virtual_memory().available / 2 ** 30, 2))
+
+
+def main(root, out, backbone, cfgs, baselines='', limit=0, only_users=''):
+    """baselines: comma list of Swiss DINO support masks, e.g. 'full,center' -> arms swiss_full, swiss_center."""
     import torch
     root, out = Path(root), Path(out); out.mkdir(parents=True, exist_ok=True)
     cfgs = [{**CFG, 'scales': [1.0], **c} for c in json.loads(cfgs)]
     plan = json.loads((root / 'plan.json').read_text())
+    guard(); limit = int(limit)
     m, size, mean, std = load(backbone); m = m.to(memory_format=torch.channels_last)
+    tok = (size // 14) ** 2; bs = max(16, int(192 * 256 / tok)); qbs = max(32, int(256 * 256 / tok))   # chunks shrink with tokens
     mpf = macs_per_frame(m, size)
     users = {}
     for v in plan['videos']:
@@ -69,23 +102,34 @@ def main(root, out, backbone, cfgs):
     t0 = time.time(); meta = dict(backbone=backbone, cfgs=cfgs, gmacs_per_frame=mpf / 1e9, users={})
     pool = ThreadPoolExecutor(1)
     for user, vids in sorted(users.items()):
+        if only_users and user not in only_users.split(','):
+            continue
+        todo = [v for v in vids if v['type'] == 'clutter' and len([f for f in v['valid'] if fnum(f) <= 1000]) >= 50]
+        if not limit and todo and all((out / f"{v['video']}.npz").exists() for v in todo):
+            print(user, 'already dumped, skipped', flush=True); continue
         objs = sorted({v['obj'] for v in vids if v['type'] == 'clean'})
         ctx = {o: [f for v in vids if v['type'] == 'clean' and v['obj'] == o for f in v['context'] if fnum(f) <= 1000] for o in objs}
         names = [f for o in objs for f in ctx[o]]; lab = np.array([i for i, o in enumerate(objs) for _ in ctx[o]])
         xc = read_many(root / 'frames', names)
         L = torch.as_tensor(lab).cuda()
-        cls1, _ = forward(m, size, mean, std, xc)
+        cls1, p1 = forward(m, size, mean, std, xc, bs=bs)                 # one pass gives CLS and scale-1 patches
         protos = torch.nn.functional.normalize(torch.stack([cls1[L == i].mean(0) for i in range(len(objs))]), dim=1)
         scale_pat = {}
-        for s in sorted({s for c in cfgs for s in c['scales']}):
-            _, p = forward(m, size, mean, std, shrink(xc, s)); scale_pat[s] = p
+        scale_pat = {1.0: p1}; del p1
+        for s in sorted({s for c in cfgs for s in c['scales']} - {1.0}):
+            _c, p = forward(m, size, mean, std, shrink(xc, s), bs=bs); scale_pat[s] = p; del _c, p
         mems = []
         for c in cfgs:
-            flat = [torch.cat([scale_pat[s][L == i].reshape(-1, scale_pat[s].shape[-1]).float() for s in c['scales']])
+            flat = [torch.cat([scale_pat[s][L == i].reshape(-1, scale_pat[s].shape[-1]) for s in c['scales']])
                     for i in range(len(objs))]
             mem = part_memory_from(flat, c)
             mems.append((torch.cat(mem).half(), torch.cat([torch.full((len(q),), i) for i, q in enumerate(mem)]).cuda()))
-        del scale_pat, xc
+        import swiss_dino_core as SW
+        grid = int(round(scale_pat[1.0].shape[1] ** .5)); sw = {}
+        for mode in [b for b in baselines.split(',') if b]:
+            pt = [SW.support(scale_pat[1.0][L == i], grid, mode) for i in range(len(objs))]
+            sw[mode] = (torch.stack([p for p, _ in pt]), torch.stack([t for _, t in pt]))
+        del scale_pat, xc; torch.cuda.empty_cache()
         meta['users'][user] = dict(objects=objs, context_frames=len(names),
                                    context_forwards={j: len(names) * len(c['scales']) for j, c in enumerate(cfgs)})
         clut = []
@@ -98,22 +142,30 @@ def main(root, out, backbone, cfgs):
             if len(valid) >= 50:
                 clut.append((v, allf, np.array([f in valid for f in allf])))
         nxt = pool.submit(read_many, root / 'frames', clut[0][1]) if clut else None
+        if limit:
+            clut = clut[:limit]
         for k, (v, allf, valid) in enumerate(clut):
             x = nxt.result()
             if k + 1 < len(clut):
                 nxt = pool.submit(read_many, root / 'frames', clut[k + 1][1])
-            res = {'full': [], **{f'part@{j}': [] for j in range(len(cfgs))}}
-            for a in range(0, len(x), 256):
-                fcls, fpat = forward(m, size, mean, std, x[a:a + 256])
+            res = {'full': [], **{f'part@{j}': [] for j in range(len(cfgs))}, **{f'swiss_{k}': [] for k in sw}}
+            for a in range(0, len(x), qbs):
+                fcls, fpat = forward(m, size, mean, std, x[a:a + qbs], bs=bs)
                 res['full'].append((fcls @ protos.T).cpu().numpy())
+                for k, (P_, T_) in sw.items():
+                    res[f'swiss_{k}'].append(SW.query_scores(fpat, P_, T_, grid).cpu().numpy())
                 for j, (allp, owner) in enumerate(mems):
                     sim = (fpat @ allp.T).float()
                     per_obj = torch.stack([sim[:, :, owner == i].amax(2) for i in range(len(objs))], 2)
                     res[f'part@{j}'].append(per_obj.topk(cfgs[j]['topk'], dim=1).values.mean(1).cpu().numpy())
             np.savez_compressed(out / f"{v['video']}.npz", names=np.array(allf), valid=valid, y=objs.index(v['obj']),
                                 user=user, **{a: np.concatenate(b).astype(np.float32) for a, b in res.items()})
-        print(user, len(objs), 'objects', len(clut), 'videos', round(time.time() - t0), 's', flush=True)
-    meta['wall_s'] = round(time.time() - t0, 1)
+        print(user, len(objs), 'objects', len(clut), 'videos', round(time.time() - t0), 's', json.dumps(peaks()), flush=True)
+        del mems, sw, protos, cls1, L
+        torch.cuda.empty_cache(); guard()
+        if limit:
+            break
+    meta['wall_s'] = round(time.time() - t0, 1); meta['peaks'] = peaks()
     (out / 'meta.json').write_text(json.dumps(meta, indent=1))
 
 

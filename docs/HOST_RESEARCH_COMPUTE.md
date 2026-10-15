@@ -20,6 +20,33 @@ prefetch/thread oversubscription. A user report of lag or severe memory pressure
 requires prompt checkpoint-preserving load reduction; do not wait for an OOM.
 An idle GPU is not proof that the CPU, RAM or disk can support another job.
 
+### Primary laptop profile (measured 2026-10-15)
+
+Lenovo 83VK: Core Ultra 7 251HX (18 threads); **one** 16 GB DDR5-6400 DIMM (single
+channel, ~15.4 GB visible, usually 5–6 GB free; 34 GB pagefile on C:); RTX 5060
+Laptop (Blackwell, CC 12.0, 26 SMs, 8 GB GDDR7, 32 MB L2, bf16, up to 115 W, PCIe 5
+x16) on the WDDM driver **with the display attached** (~1.1 GB VRAM always taken);
+two NVMe SSDs (C:/D: disk 0, E:/F: disk 1; F: holds `artifacts.local`, ~54 GB free).
+Under a full GPU load on AC it held ~112 W / 69 °C / ~2.7 GHz, limited by the power
+cap; earlier sustained runs logged software thermal slowdown.
+
+Safe-use rules learned from a crash (2026-10-15: a 448-px DINOv2 run without a cap
+reached ~5.9 GB reserved + display, spilled into shared memory and the laptop
+restarted):
+
+- Cap each CUDA process (`torch.cuda.set_per_process_memory_fraction(0.75)`, ≈6 GB)
+  so an overrun raises OOM instead of spilling into system RAM; one GPU job at a time.
+- Before a new resolution/batch/method, smoke one representative unit (the heaviest
+  user/video) and log `max_memory_reserved`, RSS and free RAM; scale chunk sizes
+  with token count. Refuse to start or continue below ~2 GB free host RAM.
+- RAM is the scarcest resource (single DIMM): stream/memmap data, decode once into
+  bounded caches, keep CPU decode threads ≤ 8 and avoid several torch processes.
+- Use fp16/bf16 autocast, `channels_last` and PyTorch SDPA attention; Triton (and so
+  `torch.compile`) is not installed here. Keep long jobs on AC; prefer the secondary
+  worker for multi-hour runs while the user works on the laptop.
+- Optional user-side settings (not changed by agents): NVIDIA Control Panel "CUDA –
+  Sysmem Fallback Policy: Prefer No Sysmem Fallback", and the vendor performance mode.
+
 Keep engineering speedups and research claims separate. For an efficiency
 contribution, compare quality at matched compute and cost at matched quality;
 report measurement scope, warm-up, hardware/runtime, memory and repeated timing

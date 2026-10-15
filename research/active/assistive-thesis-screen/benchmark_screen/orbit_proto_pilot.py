@@ -27,6 +27,7 @@ BACKBONES = {
     'dinov2_b14': ('vit_base_patch14_dinov2.lvd142m', 224),
     'dinov2_s14_168': ('vit_small_patch14_dinov2.lvd142m', 168),     # efficiency variant: 144 instead of 256 tokens
     'dinov2_s14_reg': ('vit_small_patch14_reg4_dinov2.lvd142m', 224),  # 4 registers: cleaner patch tokens
+    'dinov2_s14_448': ('vit_small_patch14_dinov2.lvd142m', 448),       # Swiss DINO's input size
 }
 
 

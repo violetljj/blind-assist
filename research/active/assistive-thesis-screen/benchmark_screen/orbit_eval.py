@@ -70,7 +70,7 @@ def forward(m, size, mean, std, x_u8, rois=None, bs=192):
     import torch
     import torch.nn.functional as F
     from torchvision.ops import roi_align
-    cls_out, pat_out = [], []
+    cls_out = pat_out = None                      # preallocated on the first batch: no second copy at the end
     n = len(rois) if rois is not None else len(x_u8)
     for k in range(0, n, bs):
         if rois is None:
@@ -87,8 +87,11 @@ def forward(m, size, mean, std, x_u8, rois=None, bs=192):
             t = m.forward_features(((x - mean) / std).contiguous(memory_format=torch.channels_last))
         t = F.normalize(t.float(), dim=-1)
         npre = getattr(m, 'num_prefix_tokens', 1)
-        cls_out.append(t[:, 0]); pat_out.append(t[:, npre:].half())
-    return torch.cat(cls_out), torch.cat(pat_out)
+        if cls_out is None:
+            cls_out = torch.empty(n, t.shape[-1], device=t.device)
+            pat_out = torch.empty(n, t.shape[1] - npre, t.shape[-1], device=t.device, dtype=torch.half)
+        cls_out[k:k + len(t)] = t[:, 0]; pat_out[k:k + len(t)] = t[:, npre:].half(); del t
+    return cls_out, pat_out
 
 
 def kmeans(x, k, iters=15, seed=0):
