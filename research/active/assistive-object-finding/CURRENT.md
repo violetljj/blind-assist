@@ -41,5 +41,15 @@ also completed on the reused280 images: combined local verification reached
 AGD .3449/IIT4 of24, versus equal-call TTA .3534/5 and fixed crops .3218/7.
 Candidate AGD oracle .5300 exposes a selection gap, but actual verification
 saved19/harmed37 versus first-candidate pointing; matched-coverage rejection
-did not establish a stable advantage. Keep candidate-quality learning as an
-untested hypothesis; do not select a thesis or tune this completed comparison.
+did not establish a stable advantage.
+
+The [learned-ranking follow-up](functional_parts/LEARNED_RANK_RESULTS.md) is now
+complete: fit158/cal79, fresh200 project-unseen images after duplicate screening.
+Ranking reached .361902 versus matched MSE .352627 and ridge .364588;
+paired gain .009275 has 95% interval [-.014708,.033532]. All three individual
+ranking seeds lost to their matched MSE seeds. Candidate oracle has144/200
+heatmap hits but ranking selects76; rejection has no stable advantage either.
+Do not tune on this fresh set or select a thesis from this result. A different
+visual representation/supervision remains untested. GPU inference110.374s;
+acquisition CPU budget compliance is unverifiable after failed-attempt counters
+were lost. Full costs, corrections and sealed evidence are in the result report.

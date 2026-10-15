@@ -72,3 +72,23 @@ GPU processes and locks released. Preserved source/plan snapshots and all output
 Delivery: both new Python files compiled, evaluator self-tests and23 scoped
 documentation links passed; project structure, hot-doc index458 links and
 scoped whitespace checks passed. No application build needed.
+
+| Date | Run | Inputs / changes | Results | Decision / evidence |
+| --- | --- | --- | --- | --- |
+| 2026-10-15 | functional-parts-learned-ranking / EXPLORE | Native heatmap supervision, fit158/cal79 after pHash screening; fresh200 project-unseen images. Frozen93 features, matched MSE/pairwise MLP with3 seeds, ridge/HGB and fixed-crop controls,4 backbone calls per family. | Ranking .361902 vs MSE .352627/ridge .364588; paired delta .009275,95% interval[-.014708,.033532],23 better/18 worse. Every individual rank seed loses to matched MSE. Candidate oracle144/200 heatmap hits, actual76/200. Rejection no stable advantage. | COMPLETE, no stable improvement or topic selection; do not tune on fresh200. [Results](functional_parts/LEARNED_RANK_RESULTS.md), [frozen plan](functional_parts/LEARNED_RANK_PLAN.md). Payload artifacts.local/work/functional-parts-learned-ranking-20261015/. |
+
+Actual shared inference1843 calls, GPU-process110.374s, peak779,306,496B.
+Successful trainingCPU25.625s, fresh feature/predictionCPU7.34375s,
+evaluationCPU54.1875s. Download body bounded28,015,877–139,556,973B,
+within500MB; acquisition met15min wall deadline. Two failed acquisition
+attempts lost CPU counters, so600CPU-second budget compliance is UNVERIFIABLE;
+wall time is not a valid multithreaded CPU upper bound. Corrections and failures
+retained. One pretraining input-join failure was repaired without model changes.
+Independent checks covered5600 scored points,800 ensemble vectors,8 paired
+bootstrap comparisons,28-method gates/AURC and36x93 feature entries. No manual
+labels or backbone training. Task-owned processes/locks released; source snapshots,
+data, weights, predictions, seals and casebook retained for reproduction.
+
+Delivery checks: four new Python files compiled in memory; learner loss/geometry/
+schema self-tests,29 scoped documentation links, staged whitespace, project
+structure and hot-doc index458 links passed. No application build needed.
