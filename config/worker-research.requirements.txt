@@ -1,13 +1,18 @@
-# Windows Python 3.13. Install torch/torchvision from the cu128 index first.
+# Windows Python 3.13, registered RTX 3060 worker. Install torch/torchvision
+# from https://download.pytorch.org/whl/cu126 first (not the CPU/PyPI wheels).
+# Use uv on Windows; pip can exceed MAX_PATH in Torch's bundled licenses.
+# Keep existing experiment environments/locks; provision a separate environment.
+# 2.14 is the tested Windows fix for GHSA-rrmf-rvhw-rf47; the 2.13 wheel
+# still crashed on the upstream regression despite its advisory metadata.
 -r ../research/active/dtr-r0/nearfield/requirements-ue-capture.txt
-torch==2.9.1
-torchvision==0.24.1
+torch==2.14.0
+torchvision==0.29.0
 cupy-cuda12x==14.1.1
 numba==0.66.0
 onnxruntime-gpu==1.26.0
 onnx==1.22.0
 transformers==5.14.1
-accelerate==1.14.0
+# Unused optional Accelerate removed (unpatched GHSA-4j2p-28q2-5m79; issue #54).
 rapidocr==3.9.2
 ultralytics==8.4.142
 opencv-python==5.0.0.93

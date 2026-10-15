@@ -4,6 +4,14 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-15 — Dependency PR and alert maintenance
+
+- Merged original PR heads #11/#15/#18 with coordinated QNN 2.49.0, Kotlin 2.4.10, core-ktx 1.19.0, AGP 9.1.1, Hilt 2.60.1 and compileSdk 37. Repaired AGP generated-directory compatibility, retained external Kotlin/kapt flags and pinned the existing vision NDK. minSdk 26 and targetSdk 35 remain unchanged; both languages' setup instructions now require SDK 37.
+- Exact merged build inputs match the validated hashes: 621/628 unit tests passed, seven existing fixture/oracle-dependent skips, zero failures; five lint groups, App/AndroidTest/NPU/device-benchmark APKs and USTRF AndroidTest compilation passed. App strict 16 KB packaging and NPU legacy-extraction ELF checks passed. No connected device or HTP execution/performance result; the existing Gradle 9.7.1 combination was locally verified above Kotlin's fully tested matrix.
+- Reconciled 36 stale Dependabot entries with per-alert source evidence: 23 reference the retired GRAIL lock preserved in Git history, 13 report Pillow 12.2 although the current included requirement pins 12.3.0. Dismissed as inaccurate; archived runtime evidence was retained. Detailed receipts are under `artifacts.local/github-dependencies-20261015/` and issue #54.
+- Updated research/CPU-export inputs to Torch 2.14.0 and torchvision 0.29.0, CI to Torch 2.14.0/Pillow 12.3.0 and the hardware Pillow floor to 12.3. Removed unused, unpatched Accelerate after resolving and testing the 92-package worker without it. Actual 2.13 Windows CPU/CUDA wheels still crashed on the upstream bare-list regression; 2.14 rejects it correctly. Both Torch advisory regressions passed on CPU/CUDA, including eight malformed RNN inputs and four valid controls per backend.
+- The isolated worker passed 24 imports, CUDA NMS/BERT, a ten-shard local model roundtrip without Accelerate, CuPy/Numba and actual ORT CUDA execution with CPU fallback disabled. CPU export passed its 78-package check, existing Keras probe and Torch-to-ONNX-to-TFLite/LiteRT invocation; 155 tool tests passed on 2.14. Old worker freeze is byte-identical; accepted isolated environments and exact locks are retained for explicit migration. Failed installations, task caches and temporary processes were released; no frozen experiment or model evaluation was rerun.
+
 ## 2026-10-15 — GitHub presentation and contribution maintenance
 
 - Scope: repository showcase, unread triage and reviewable contribution delivery. Added original sensor-to-phone-to-feedback SVGs, an English-default README with a separate Chinese version and language switch, labelled historical screenshots and updated repository About/topics. Both README versions are included in hot-link checks.

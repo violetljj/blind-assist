@@ -76,8 +76,22 @@ Provisioning inputs are tracked in
 the route's SEVN requirements and
 [`worker-export.constraints.txt`](../config/worker-export.constraints.txt) with
 `requirements-export.txt`. Create separate virtual environments from compatible
-base interpreters. Install Torch/torchvision from the cu128 index for research
-and CPU index for export before applying these requirements. Reuse verified
+base interpreters. Current research requirements use matching Torch/torchvision
+from the cu126 index; export uses the CPU index. On Windows, use `uv` (validated
+with 0.11.15) for these wheels: `pip` extraction hit WinError206 on deeply nested
+Torch license paths. Install into a new environment without changing system path
+settings:
+
+```powershell
+uv pip install --python <new-venv>/Scripts/python.exe --torch-backend cu126 -r config/worker-research.requirements.txt
+# For the separate Python 3.11 export environment:
+uv pip install --python <new-export-venv>/Scripts/python.exe --torch-backend cpu -r requirements-export.txt -c config/worker-export.constraints.txt
+```
+
+The provisioned 2026-09-07 research profile above remains the recorded
+2.9.1/cu128 environment; updated inputs do not replace existing or frozen
+environments. See [dependency maintenance #54](https://github.com/violetljj/blind-assist/issues/54)
+for the isolated replacement environment and its validation. Reuse verified
 portable SDK/runtime archives and immutable Gradle dependencies from the primary
 machine. Keep exact installed locks and transfer hashes in local evidence.
 

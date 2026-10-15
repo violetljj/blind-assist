@@ -1,4 +1,4 @@
 pyserial==3.5
 esptool==4.11.0
 matplotlib>=3.8,<4
-Pillow>=10,<13
+Pillow>=12.3,<13

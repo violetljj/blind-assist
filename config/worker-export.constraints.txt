@@ -1,6 +1,7 @@
 # Python 3.11 CPU conversion environment; use with requirements-export.txt.
-torch==2.9.1
-torchvision==0.24.1
+# 2.14 includes the upstream JIT fix for GHSA-rrmf-rvhw-rf47.
+torch==2.14.0
+torchvision==0.29.0
 tensorflow==2.19.0
 tf_keras==2.19.0
 numpy==2.1.3
