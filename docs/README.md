@@ -25,6 +25,7 @@ not mean a route is currently advancing. Priorities belong to the
 | Hardware, calibration and mobile fusion | [Hardware current](../research/active/hardware-bringup/CURRENT.md) | [Hardware ledger](../research/active/hardware-bringup/README.md) · [Runs](../research/active/hardware-bringup/RUNS.md) |
 | Cane-complementary forward perception / retained DTR history | [Forward perception current](../research/active/dtr-r0/CURRENT.md) | [DTR ledger](../research/active/dtr-r0/README.md) |
 | Paused L10-R0 Goal-Lock evidence | [L10 current](../research/active/l10-r0/CURRENT.md) | [L10 ledger](../research/active/l10-r0/README.md) |
+| Exploratory BLV-assistance thesis directions | [Screen current](../research/active/assistive-thesis-screen/CURRENT.md) | [Small-data results](../research/active/assistive-thesis-screen/README.md) · [Runs](../research/active/assistive-thesis-screen/RUNS.md) |
 
 [Research workflow](../research/WORKFLOW.md) describes experiment execution;
 the [knowledge reserve](../research/knowledge/README.md) indexes papers,
