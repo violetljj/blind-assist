@@ -2,7 +2,8 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 $checkScript = Join-Path $PSScriptRoot 'check_open_source_readiness.ps1'
-$testRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("blindassist-open-source-readiness-" + [guid]::NewGuid().ToString('N'))
+$scratchRoot = Join-Path (Split-Path -Parent $PSScriptRoot) 'artifacts.local/tmp'
+$testRoot = Join-Path $scratchRoot ("blindassist-open-source-readiness-" + [guid]::NewGuid().ToString('N'))
 
 function Write-FixtureFile([string]$RelativePath, [string]$Content) {
     $path = Join-Path $testRoot $RelativePath
@@ -35,11 +36,11 @@ try {
     $modelHash = (Get-FileHash -LiteralPath $modelFile -Algorithm SHA256).Hash
     $labelsHash = (Get-FileHash -LiteralPath $labelsFile -Algorithm SHA256).Hash
 
-    Write-FixtureFile 'README.md' 'CONTRIBUTING.md GOVERNANCE.md docs/MODEL_CARD.md docs/CODEX_MAINTAINER_AUTOMATION.md docs/THREAT_MODEL.md SECURITY.md'
+    Write-FixtureFile 'README.md' 'CONTRIBUTING.md GOVERNANCE.md docs/MODEL_CARD.md docs/operations/CODEX_MAINTAINER_AUTOMATION.md docs/THREAT_MODEL.md SECURITY.md'
     foreach ($file in @(
         'LICENSE', 'CONTRIBUTING.md', 'SECURITY.md', 'CODE_OF_CONDUCT.md',
         'GOVERNANCE.md', 'CITATION.cff', 'docs/OPEN_SOURCE_PUBLIC_VALUE.md',
-        'docs/CODEX_MAINTAINER_AUTOMATION.md', 'docs/THREAT_MODEL.md',
+        'docs/operations/CODEX_MAINTAINER_AUTOMATION.md', 'docs/THREAT_MODEL.md',
         '.github/CODEOWNERS', '.github/dependabot.yml',
         '.github/ISSUE_TEMPLATE/bug_report.yml',
         '.github/ISSUE_TEMPLATE/feature_request.yml',
@@ -94,6 +95,24 @@ uses: github/codeql-action/analyze@5595ccaf912efad79be6eef63a5619ff05969be3
 }
 finally {
     if (Test-Path -LiteralPath $testRoot) {
-        Remove-Item -LiteralPath $testRoot -Recurse -Force
+        $resolvedScratch = (Resolve-Path -LiteralPath $scratchRoot).Path.TrimEnd([System.IO.Path]::DirectorySeparatorChar)
+        $resolvedTest = (Resolve-Path -LiteralPath $testRoot).Path
+        if (-not $resolvedTest.StartsWith($resolvedScratch + [System.IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
+            throw "Refusing to remove fixture outside its scratch root: $resolvedTest"
+        }
+        $fixtureItems = @((Get-Item -LiteralPath $resolvedTest)) + @(Get-ChildItem -LiteralPath $resolvedTest -Recurse -Force)
+        if (@($fixtureItems | Where-Object { $_.Attributes -band [System.IO.FileAttributes]::ReparsePoint }).Count -gt 0) {
+            throw "Refusing to recursively remove fixture containing a reparse point: $resolvedTest"
+        }
+        if ($IsWindows) {
+            Remove-Item -LiteralPath $resolvedTest -Recurse
+        }
+        else {
+            # Unix dot-directories such as .github need Force for fixture cleanup.
+            Remove-Item -LiteralPath $resolvedTest -Recurse -Force
+        }
+        if (Test-Path -LiteralPath $resolvedTest) {
+            throw "Fixture cleanup did not remove $resolvedTest"
+        }
     }
 }

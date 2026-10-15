@@ -62,6 +62,20 @@ class GoalHandoffStateOwnerTest {
     private fun advanceToHandoff(owner: GoalHandoffStateOwner) {
         owner.dispatch(GoalHandoffEvent.Found("goal-1", "session-1"))
         owner.dispatch(GoalHandoffEvent.Approach)
-        owner.dispatch(GoalHandoffEvent.HandoffReady(1_000L, "CURRENT_FRAME_HANDOFF_READY"))
+        val readiness = GoalHandoffReadinessDecision.Ready(
+            GoalHandoffReadinessReceipt(
+                sourceContractId = GoalHandoffReadinessGuard.CONTRACT_ID,
+                goalId = "goal-1",
+                sessionId = "session-1",
+                parentBindingId = "binding-1",
+                currentFrameId = 2L,
+                actionSourceId = CausalActionGeometryAdmitter.PAIRED_RGBD_SOURCE_ID,
+                actionMotionType = ActionMotionType.TRANSLATION,
+                evaluatedAtNs = 30L
+            )
+        )
+        owner.dispatch(
+            GoalHandoffEvent.HandoffReady(1_000L, "CURRENT_FRAME_HANDOFF_READY", readiness)
+        )
     }
 }

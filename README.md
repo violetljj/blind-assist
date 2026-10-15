@@ -1,99 +1,99 @@
-# BlindAssist
+![BlindAssist：端侧感知、无障碍反馈与可复现研究](docs/assets/brand/blindassist-hero.svg)
 
-BlindAssist is an Android showcase research prototype for goal-driven visual
-assistance. It combines camera perception, risk logic, and concise guidance to
-demonstrate measurable effects in clearly stated controlled conditions. It is
-not a certified mobility or safety product.
+# BlindAssist · 盲杖互补前视感知
 
-App v10.19.4 opens the original home without starting perception. **Start assist**
-connects the camera and ToF. Current H3 CNH firmware uses **basic range assistance**;
-the legacy mapped-time transport can use **A+LOCAL experimental mode**, with
-the frozen research classifier running offline on the phone. Its nominal camera/ToF
-registration is not physical calibration; simulation results do not establish hardware
-accuracy. The original ToF mode remains available. See [hardware guide](docs/HARDWARE_OBSTACLE_DEMO.md).
+**用 Android、RGB 相机、ToF 和 IMU，探索盲杖之外的前方障碍提醒。**
+关注墙体、大型遮挡、身体／头部凸出物、悬空障碍与不同高度的细杆，在有限算力下提供方向和粗距离线索。类别无关前视感知是当前研究目标，具体能力与验证范围见下表；移动选择由佩戴者作出。
 
-The obstacle-perception research goal is **盲杖互补的类别无关前视障碍感知**
-(cane-complementary, class-agnostic forward obstacle awareness). Priorities are
-forward walls and large obstructions, body/head protrusions, suspended hazards,
-and multi-height poles, with useful direction and coarse range evidence under
-limited compute. The wearer chooses movement; this is not autonomous avoidance.
-Very low obstacles remain secondary compatibility evidence, not a headline
-optimization target. Knee-height hazards are not discarded. Earlier warning and
-dynamic-obstacle coverage are objectives requiring temporal validation.
+An Android research prototype for **cane-complementary, class-agnostic forward obstacle awareness**, with on-device perception and inspectable evidence.
 
-The current research design combines base near-obstacle evidence with optional
-ground-relative enhancement. Missing ground may remove height refinement but
-must not erase an already observed near obstacle. This design and the new task
-priorities are research direction, not a claim that all capabilities are already
-deployed or validated. See the [current perception route](research/active/dtr-r0/CURRENT.md).
+[快速开始](#快速开始) · [硬件演示](docs/HARDWARE_OBSTACLE_DEMO.md) · [手机采集](docs/PHONE_DATA_CAPTURE.md) · [English quick start](docs/QUICKSTART_EN.md) · [参与贡献](CONTRIBUTING.md)
 
-## Start here
+## 现在可以做什么
 
-- **采集预览试用包 62 / 10.19.4**：新增可切换的去畸变和轻增强，原始 JPEG 保留；本轮没有在线手机，尚未覆盖安装或实测帧率。[试用记录](research/active/hardware-bringup/ATOM_PREVIEW_POSTPROCESS_DEV_20261014.md)
-- **最近验证安装 61 / 10.19.3**：修复旧缓存帧干扰新连接计时；配套两板固件在持续传输期间不主动扫描、迁移热点，空闲与真实掉线后仍保留热点优先及原 Wi-Fi 回退。[热点与采集页更新](research/active/hardware-bringup/HOTSPOT_PRIORITY_20261013.md)
-- **融合实验待佩戴验证**：“数据采集 → 打开融合实验 → 开始实验”，显示 ToF 强档或 RGB 的 HEAD/BODY 融合，经 2/3 帧确认；无语音震动，不替换默认基础 ToF。已补因果输入及两项数值修复，真实流 RGB 分支与完整融合仍待有效姿态下验证。[实验入口与状态](docs/HARDWARE_OBSTACLE_DEMO.md)
-- **手机端 Atom RGB + ToF + IMU 采集**：首页“数据采集”同时预览 Atom 画面、ToF 距离网格和 IMU 读数，保存原始 JPEG、完整 8×8×16 CNH、Atom 六轴与姿态、时间戳和场景备注；停止后可导出 ZIP。使用局域网或已配置的手机热点。[采集使用说明](docs/PHONE_DATA_CAPTURE.md)
-- 默认入口（v10.19.3）：打开 App 停留首页；点击“开始辅助”连接相机与 ToF，当前 H3 固件使用基础测距，旧版时序协议保留 A+LOCAL 实验模式。[使用说明](docs/HARDWARE_OBSTACLE_DEMO.md)。首页语言、提醒频率、语音风格、震动强度和关怀模式作用于辅助页；结束后停止连接与反馈。支持最近 20 秒留证、静音回放与分路降级。
-- **中文一页状态（系统、指标、当前问题）**: [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md)
-- Current research decision: [docs/CURRENT_DECISION.md](docs/CURRENT_DECISION.md)
-- L10-R0 paused / retained evidence: [research/active/l10-r0/CURRENT.md](research/active/l10-r0/CURRENT.md)
-- Forward obstacle perception / retained DTR history: [research/active/dtr-r0/CURRENT.md](research/active/dtr-r0/CURRENT.md)
-- Code ownership: [docs/CODE_MAP.md](docs/CODE_MAP.md)
-- Documentation map: [docs/README.md](docs/README.md)
-- Historical lookup: [docs/history-index.md](docs/history-index.md)
+当前源码为 **10.20.1 / versionCode 64**（2026-10-14）。[更新记录](CHANGELOG.md)区分演示包、试用包与各轮实机验证，具体操作见[硬件演示指南](docs/HARDWARE_OBSTACLE_DEMO.md)。
 
-Forward obstacle perception is the sole advancing research line. L10 is paused;
-its results and reproduction paths are retained. Closed
-experiments are summarized in `experiments/index.jsonl` and remain recoverable
-from the remote tag `archive/pre-agent-surface-2026-08-26` or the terminal
-commits listed in `docs/history-index.md`.
+| 入口 | 已实现的能力 | 当前验证范围 |
+| --- | --- | --- |
+| **数据采集** | 同屏预览 Atom RGB、8×8 ToF 网格与 BMI270 IMU；保存原始 JPEG、完整 8×8×16 CNH、姿态和时间戳；后台导出 ZIP | 已有真机三路录制、断线恢复和文件完整性检查；各设备时钟独立 |
+| **开始辅助** | 显式开始／结束；当前 H3 固件提供基础 ToF 提醒，支持语言、语音与震动偏好 | 基础辅助与融合演示分别保留；旧时序协议的 A+LOCAL 为实验模式 |
+| **融合演示** | 首页直达；去畸变取景器、HEAD／BODY 状态、ToF／RGB 来源、2/3 帧确认及语音／震动 | 演示规则采用开发候选，可停止后切回冻结 v2；完整在线融合与提醒体验仍需验证 |
+| **研究与回放** | 冻结脚本、输入合同、来源记录、逐段结果和负结果 | 已有头戴新录制的冻结离线评价；小样本、标定失败及窄走廊误报仍限制结论 |
 
-## Workstation profiles
+**最近的工程进展：** 10.20.1 新增不可调试的 `demo` 构建；S24 Ultra 上预编译后，ToF 推理由约 300–400 ms/帧降至约 42 ms/帧。这是特定设备的模型执行时间，完整响应时间与持续使用表现仍待测量。[版本与测量范围](CHANGELOG.md#10201--2026-10-14演示包)
 
-Copy the local template once and edit only machine-owned values:
+> BlindAssist 是展示与研究原型。`UNKNOWN` 不代表无障碍；它尚不构成可通行判断、通用实景准确率或导航安全证明。
+
+## 界面预览
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/assets/ui/blindassist-master-feature-sm-s9280-2026-08-13.png" width="250" alt="功能页存档：开始辅助、行走任务与设备入口"></td>
+    <td align="center"><img src="docs/assets/ui/blindassist-master-profile-sm-s9280-2026-08-13.png" width="250" alt="本地档案页存档：设备状态、版本与提醒偏好"></td>
+    <td align="center"><img src="docs/assets/ui/blindassist-master-settings-sm-s9280-2026-08-13.png" width="250" alt="设置页存档：中英文、关怀模式、语音与震动开关"></td>
+  </tr>
+  <tr>
+    <td align="center">功能入口</td>
+    <td align="center">本地辅助档案</td>
+    <td align="center">个性化反馈</td>
+  </tr>
+</table>
+
+以上是 **2026-08-13、v10.9.0、S24 Ultra 的真实界面存档**，用于展示交互风格；当前融合取景器已在 10.20.1 更新，具体行为以使用指南与更新记录为准。
+
+## 快速开始
+
+Android 最低版本为 **8.0 / API 26**。维护的 Windows 开发路径使用 **PowerShell 7、JDK 17、Android SDK Platform 35**；Linux 路径及其验证范围见 [English quick start](docs/QUICKSTART_EN.md)。
 
 ```powershell
-Copy-Item config/local.example.toml config/local.toml
-pwsh -NoProfile -File tools/ba.ps1 setup base
-pwsh -NoProfile -File tools/ba.ps1 doctor base
-```
-
-Profiles are independent: `base`, `research-l10-r0`, `research-dtr-r0`,
-`android`, `device`, and `export`. Research setup does not install or probe
-Android tooling.
-
-```powershell
-pwsh -NoProfile -File tools/ba.ps1 setup research-dtr-r0
-pwsh -NoProfile -File tools/ba.ps1 doctor research-dtr-r0
-pwsh -NoProfile -File tools/ba.ps1 smoke research-dtr-r0
-```
-
-The Codex desktop environment exposes the same setup and common actions through
-`.codex/environments/environment.toml`.
-
-## Android
-
-Run Gradle only through the repository wrapper:
-
-```powershell
+git clone https://github.com/violetljj/blind-assist.git
+cd blind-assist
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 -PreflightOnly
 pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleDebug
 ```
 
-Module boundaries are stable: `:app` owns the shell and assets,
-`:feature:assist` runtime coordination, `:core:assist` pure risk logic,
-`:core:vision` detection, `:core:device` Android adapters, and `:core:ui` state
-and rendering.
+无硬件也可以构建并查看首页。连接 Atom／H3 后，可按[手机采集说明](docs/PHONE_DATA_CAPTURE.md)录制与导出；H3 同时只允许一个 TCP 消费者，先结束电脑预览或其他采集会话。
 
-## Evidence boundary
+融合演示另需匹配的实验模型、可选本地运行时与兼容硬件，按[演示指南](docs/HARDWARE_OBSTACLE_DEMO.md)部署。面向实际演示使用：
 
-Synthetic, replay, curated Development, device, and natural evidence are named
-separately. `UNKNOWN` and `NOT_EVALUABLE` are not negative evidence. A focused
-demo result is never presented as universal real-world or safety performance.
-Protected final evaluations use [formal research governance](docs/formal/RESEARCH_GOVERNANCE.md).
+```powershell
+pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleDemo
+```
 
-## License
+研究环境按需配置，不随 Android 构建自动安装：
 
-See [CONTRIBUTING.md](CONTRIBUTING.md), [GOVERNANCE.md](GOVERNANCE.md),
-[the model card](docs/MODEL_CARD.md), [maintainer automation](docs/operations/CODEX_MAINTAINER_AUTOMATION.md),
-[the threat model](docs/THREAT_MODEL.md), [LICENSE](LICENSE),
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), and [SECURITY.md](SECURITY.md).
+```powershell
+Copy-Item config/local.example.toml config/local.toml
+pwsh -NoProfile -File tools/ba.ps1 setup research-dtr-r0
+pwsh -NoProfile -File tools/ba.ps1 doctor research-dtr-r0
+```
+
+本地工具、数据、模型和证据载荷使用忽略的 `artifacts.local/`，配置方法见[本地产物说明](docs/LOCAL_ARTIFACTS.md)。
+
+## 架构与研究入口
+
+![Android 模块职责：输入、运行协调、视觉、风险逻辑、设备适配与界面反馈；研究应用独立保留](docs/assets/community-architecture.svg)
+
+`app` 管理入口与资产，`feature:assist` 协调运行生命周期；`core:vision` 负责视觉，`core:assist` 负责风险与反馈策略，`core:device` 和 `core:ui` 负责设备适配及界面。研究、基准与候选应用保留在独立模块中。[代码地图](docs/CODE_MAP.md)
+
+| 想了解什么 | 从这里开始 |
+| --- | --- |
+| 系统现状、指标与主要缺口 | [中文一页状态](docs/PROJECT_STATE.md) |
+| 当前研究选择与下一步 | [总研究决定](docs/CURRENT_DECISION.md) |
+| 前视感知与保留的 DTR 研究 | [前视感知当前状态](research/active/dtr-r0/CURRENT.md) |
+| 传感器接入、标定与实机证据 | [硬件研究当前状态](research/active/hardware-bringup/CURRENT.md) |
+| 已暂停的 L10 结果 | [L10 保留证据](research/active/l10-r0/CURRENT.md) |
+| 完整文档与历史复现 | [文档地图](docs/README.md) · [历史索引](docs/history-index.md) |
+
+合成、回放、Development、设备与自然场景证据分别记录。新增研究结果不自动替换默认 App；新冻结数据也不用于事后调阈值。受保护的最终评价按[正式研究规则](docs/formal/RESEARCH_GOVERNANCE.md)执行。
+
+## 一起改进
+
+欢迎中文或英文贡献，尤其是 Android 无障碍、生命周期与采集可靠性、可复现工具和文档。
+
+- 从 [`good first issue`](https://github.com/violetljj/blind-assist/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22) 开始，先阅读[贡献指南](CONTRIBUTING.md)。
+- 可复现问题提交到 [Issues](https://github.com/violetljj/blind-assist/issues)，早期想法与使用交流放在 [Discussions](https://github.com/violetljj/blind-assist/discussions)。
+- 模型、权限、反馈策略或研究合同的大幅变更先讨论；每次贡献说明验证命令、剩余缺口及默认 App 影响。
+- 安全与隐私问题按[安全报告说明](SECURITY.md)提交，系统边界见[威胁模型](docs/THREAT_MODEL.md)；相机原始素材、私人信息、密钥及受限数据不进入公开仓库。
+
+代码采用 [AGPL-3.0-only](LICENSE)。模型与第三方资产的身份、来源和许可证见[模型卡](docs/MODEL_CARD.md)及[第三方声明](THIRD_PARTY_NOTICES.md)；维护规则见[公开治理](GOVERNANCE.md)与[维护自动化](docs/operations/CODEX_MAINTAINER_AUTOMATION.md)。

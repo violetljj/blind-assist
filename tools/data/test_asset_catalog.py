@@ -288,8 +288,11 @@ class AssetCatalogTest(unittest.TestCase):
             "--purpose",
             "scenario-definition",
         )
-        self.assertEqual(
-            str(self.artifacts / "runtime" / "carla-assets" / "scene.json"),
+        # Windows temp roots may use an 8.3 alias while the catalog resolves it.
+        self.assertTrue(
+            Path(component["path"]).samefile(
+                self.artifacts / "runtime" / "carla-assets" / "scene.json"
+            ),
             component["path"],
         )
         self.assertEqual("scene-registry", component["component"]["component_key"])
