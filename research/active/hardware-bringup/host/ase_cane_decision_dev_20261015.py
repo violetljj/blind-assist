@@ -298,5 +298,130 @@ def crossval(work, epochs=10):
         print('curve', c)
 
 
+# ---------------------------------------------------------------- calibrated folds + event-level metrics (PLAN_EVENT.md)
+def scene_records(work, k):
+    """All labelled valid frames of scene k in time order: X (8 ch), frame ids, labels, instances, d_body, H/G decisions."""
+    Z = np.load(Path(work) / 'grids' / f'{k}.npz')
+    rows = {r['frame']: r for r in json.loads((Path(work) / 'labels_v2' / f'{k}.json').read_text())['rows']}
+    keep, lab, inst, d = [], [], [], []
+    for j, fr in enumerate(Z['frames']):
+        r = rows.get(int(fr))
+        if not Z['valid'][j] or r is None or 'skip' in r:
+            continue
+        keep.append(j)
+        if r['pos']:
+            c = {'MISS': 'MISS', 'CANE': 'CANE'}.get(r['cat'], 'UNOBS')
+            lab.append(c + ('_near' if r['d_body'] <= A.NEAR else '_far')); inst.append(r['inst']); d.append(r['d_body'])
+        else:
+            lab.append('NEG'); inst.append(None); d.append(None)
+    keep = np.array(keep, int); X = Z['X'][keep]; Y = Z['Y'][keep]
+    dec = lambda occ: (lambda r: bool(r[0] and not r[2]))(V.decide(occ))
+    return dict(X=X, frames=np.asarray(Z['frames'])[keep], lab=lab, inst=inst, d=d,
+                H=np.array([dec((x[0] > 0) | (x[1] > 0)) for x in X]), G=np.array([dec(y > 0) for y in Y]))
+
+
+def event_metrics(recs, alerts):
+    """recs: {scene: record}; alerts: {scene: bool array}. Events = per-object MISS_near runs (gap <= 1 s)."""
+    ev, caught, t07, t10, nuis, eps, nframes = 0, 0, 0, 0, 0, 0, 0
+    for k, R in recs.items():
+        a = alerts[k]; fr = R['frames']; nframes += len(fr)
+        runs = {}
+        for j, (l, i) in enumerate(zip(R['lab'], R['inst'])):
+            if l == 'MISS_near':
+                rl = runs.setdefault(i, [])
+                if rl and fr[j] - fr[rl[-1][-1]] <= 10:
+                    rl[-1].append(j)
+                else:
+                    rl.append([j])
+        for rl in runs.values():
+            for run in rl:
+                ev += 1; hit = [j for j in run if a[j]]
+                if hit:
+                    caught += 1; d0 = R['d'][hit[0]]
+                    t07 += d0 >= .7; t10 += d0 >= 1.
+        j = 0
+        while j < len(fr):                                                # alert episodes: consecutive alerts, gap <= 1 sample
+            if not a[j]:
+                j += 1; continue
+            e = [j]
+            while j + 1 < len(fr) and a[j + 1] and fr[j + 1] - fr[e[-1]] <= 4:
+                j += 1; e.append(j)
+            eps += 1; nuis += not any(R['lab'][q] == 'MISS_near' for q in e); j += 1
+    minutes = nframes * .2 / 60
+    return dict(events=ev, caught=caught, timely_07=t07, timely_10=t10, episodes=eps, nuisance=nuis,
+                minutes=round(minutes, 1), nuisance_per_min=round(nuis / minutes, 3))
+
+
+def events(work, epochs=10, confirm=None):
+    import torch
+    confirm = tuple(int(v) for v in confirm.split('of')) if confirm else None; epochs = int(epochs)
+    work = Path(work); folds = {f: [k for k in TRAIN if k % 5 == f] for f in range(5)}
+    recs = {k: scene_records(work, k) for k in TRAIN}
+    ys = {k: np.array([l == 'MISS_near' for l in recs[k]['lab']], np.float32) for k in TRAIN}
+    scores, thetas = {}, {}
+    for f in range(5):
+        cal = folds[(f + 1) % 5]; tr = [k for k in TRAIN if k not in folds[f] and k not in cal]
+        torch.manual_seed(100 + f)
+        X = torch.from_numpy(np.concatenate([recs[k]['X'] for k in tr])); Y = torch.from_numpy(np.concatenate([ys[k] for k in tr]))
+        pw = min(float((len(Y) - Y.sum()) / max(Y.sum(), 1)), 100.)
+        net = make_head(8).cuda(); opt = torch.optim.AdamW(net.parameters(), 1e-3, weight_decay=1e-4)
+        sched = torch.optim.lr_scheduler.OneCycleLR(opt, 2e-3, total_steps=epochs * (len(Y) // 256 + 1))
+        lossf = torch.nn.BCEWithLogitsLoss(pos_weight=torch.tensor(pw, device='cuda'))
+        for ep in range(epochs):
+            net.train(); perm = torch.randperm(len(Y))
+            for b in range(0, len(perm), 256):
+                i = perm[b:b + 256]; loss = lossf(net(V.pad(X[i].cuda().float())), Y[i].cuda())
+                opt.zero_grad(); loss.backward(); opt.step(); sched.step()
+        net.eval()
+
+        def score(k):
+            with torch.no_grad():
+                return np.concatenate([torch.sigmoid(net(V.pad(torch.from_numpy(recs[k]['X'][b:b + 1024]).cuda().float()))).cpu().numpy()
+                                       for b in range(0, len(recs[k]['X']), 1024)])
+        cc = np.concatenate([score(k)[[l == 'CANE_near' for l in recs[k]['lab']]] for k in cal])
+        thetas[f] = float(np.quantile(cc, .95))
+        for k in folds[f]:
+            scores[k] = score(k)
+        print('fold', f, 'theta', round(thetas[f], 4), 'train MISS frames', int(Y.sum()), flush=True)
+    test = {k: recs[k] for k in TRAIN}
+    fold_of = {k: f for f, ks in folds.items() for k in ks}
+    np.savez(work / 'decision_event_scores.npz', **{f's{k}': scores[k] for k in TRAIN},
+             **{f't{f}': np.array(t) for f, t in thetas.items()})
+    if confirm:                                                       # post-hoc (PLAN_EVENT appendix): m-of-n confirmation
+        m, n = confirm
+
+        def conf(a, fr):
+            out = np.zeros_like(a)
+            for j in range(len(a)):
+                w = [q for q in range(max(0, j - n + 1), j + 1) if fr[j] - fr[q] <= 2 * (n - 1)]
+                out[j] = sum(a[q] for q in w) >= m
+            return out
+        rep_c = {}
+        for name, al in (('D8', {k: scores[k] > thetas[fold_of[k]] for k in TRAIN}),
+                         ('H', {k: recs[k]['H'] for k in TRAIN}), ('G', {k: recs[k]['G'] for k in TRAIN})):
+            rep_c[name] = event_metrics(test, {k: conf(al[k], recs[k]['frames']) for k in TRAIN})
+        allc = np.concatenate([scores[k][[l == 'CANE_near' for l in recs[k]['lab']]] for k in TRAIN])
+        rep_c['curve_D8'] = [event_metrics(test, {k: conf(scores[k] > q, recs[k]['frames']) for k in TRAIN}) | dict(cane_rate=r)
+                             for r, q in ((r, float(np.quantile(allc, 1 - r))) for r in (.01, .02, .05, .10, .20, .30))]
+        print(f'--- {m}-of-{n} confirmation (post-hoc)')
+        for a in ('D8', 'H', 'G'):
+            print(a, rep_c[a])
+        for c in rep_c['curve_D8']:
+            print('curve', c)
+        (work / f'decision_events_confirm{m}of{n}.json').write_text(json.dumps(rep_c, indent=1, default=lambda o: o.item()), encoding='utf8')
+    rep = dict(thetas=thetas,
+               D8=event_metrics(test, {k: scores[k] > thetas[fold_of[k]] for k in TRAIN}),
+               H=event_metrics(test, {k: recs[k]['H'] for k in TRAIN}),
+               G=event_metrics(test, {k: recs[k]['G'] for k in TRAIN}))
+    allc = np.concatenate([scores[k][[l == 'CANE_near' for l in recs[k]['lab']]] for k in TRAIN])
+    rep['curve_D8'] = [event_metrics(test, {k: scores[k] > q for k in TRAIN}) | dict(cane_rate=r)
+                       for r, q in ((r, float(np.quantile(allc, 1 - r))) for r in (.005, .01, .02, .05, .10, .20))]
+    (work / ('decision_events_rerun.json' if confirm else 'decision_events.json')).write_text(json.dumps(rep, indent=1, default=lambda o: o.item()), encoding='utf8')
+    for a in ('D8', 'H', 'G'):
+        print(a, rep[a])
+    for c in rep['curve_D8']:
+        print('curve', c)
+
+
 if __name__ == '__main__':
-    dict(relabel=relabel, probs=probs, train=train, eval=evaluate, cv=crossval)[sys.argv[1]](*sys.argv[2:])
+    dict(relabel=relabel, probs=probs, train=train, eval=evaluate, cv=crossval, events=events)[sys.argv[1]](*sys.argv[2:])
