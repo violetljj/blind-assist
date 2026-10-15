@@ -1,0 +1,42 @@
+# 全量数据普查与充分训练基线
+
+2026-10-15，进行中，Development。用户已授权按完整研究方案开展全量数据普查、强基线训练与剩余错误分析，暂不定题。
+
+本轮先回答：原生标注是否支持同实例功能区域配对；全量监督训练后仍存哪些定位/标签混淆；哪些错误有足够样本支持进一步研究。定位命中不是物理操作成功，grasp/cut共现不是完整任务角色真值。
+
+## 执行范围
+
+- 全部IIT官方训练/验证图片及原生mask普查，核查train_and_val/val/test集合；按原生对象框统计配对与关联歧义，保留来源/序列信息。
+- PACO-LVIS完整annotation与InstructPart完整metadata统计，不把部件数量当独立图片数，不将缺标自动变负例。
+- 优先完整训练SegFormer-B0及第二个预训练视觉密集模型；先使用官方train/val可复现划分并检查实例/近重复泄漏，最终以实际manifest为准。全图原生功能类别预测作为强诊断基线，不能称自然语言或指定实例任务已解决。
+- 官方AGD/PLSP全量训练资源并行准备，若下载或兼容阻塞，保留具体证据，不用小样本替代完整复现。
+
+## 资源、选择与完成条件
+
+数据、模型和运行证据位于 `artifacts.local/work/functional-parts-full-20261015/`；复用已有模型、Python和原生索引。使用现有本地GPU/已授权secondary worker，未获付费资源额度，不新租算力。外部GPU只读连接检查不构成拥有可用计算资源。
+
+两种密集基线实际队列固定为80epoch学习率计划，40epoch为中期检查点；结束后结合完整曲线判断稳定性，不能仅因跑满轮数称收敛。40k updates为前期研究预算情景，不是本轮强制epoch换算。采用全4,417训练行；原1,767验证行排除10个train完全相同SHA后，主模型选择使用1,757行。训练4,400个唯一RGB、原val1,764个，行数与独立底图并列。只用val选checkpoint，不用test选择模型/阈值；旧消费样本保留Development身份。
+
+长期作业须有独占输出、进度、断点和终态，恢复前核配置/输入与无第二写者。本轮执行到数据普查、完整基线及可解释的剩余错误报告；若需要跨交互窗口继续训练，应保留可恢复状态并明确未完成项目，不能把启动成功写成充分训练完成。
+
+## 状态
+
+2026-10-15 18:13（UTC+8）：主本地队列已启动。实际进度以`queue/progress.json`、`runs/*/progress.jsonl`及各terminal为准；launcher PID49392对应实际queue Python PID45932，首个训练PID52016。没有把launcher回执当训练完成；已确认首个模型在全部train4417清单上持续更新。
+
+顺序为SegFormer-B0训练80epoch→全val导出/独立评分/错误图→DINO-S/16同样流程→PLSP Seen完整40epoch→曲线与汇总。两密集模型448输入、物理/有效batch16、2个loader worker、同CE+Dice；SegFormer全部3,716,714参数训练，DINO后4块/norm/decoder共7,690,506参数训练。DINO权重为原DINO-S/16，明确不是DINOv2。
+
+已做真实数据资源测量：SegFormer batch16峰值3,598,445,056B，workers0/1/2短窗口稳定更新中位约0.614/0.476/0.171秒；短窗口有预取和初始化，不能据此保证全程ETA。DINO batch16峰值1,744,150,016B；PLSP原微批10有效20峰值5,351,804,416B，FP32。均为CUDA训练实际分配峰值，不是系统总显存或纯kernel时间。先导只验证运行/资源，不提供模型效果结论。
+
+本轮全量数据发现见[普查报告](FULL_DATA_CENSUS.md)：IIT/PACO可支持结构/区域监督，尚不支持把角色推理作为既定贡献；InstructPart当前发布不完整且跨split重复；AGD训练行有大量同底图多动作复用。
+
+UMD下载有独立supervisor（`data/umd/supervisor_owner.json`），自动完整索引/手标规则解析/共享标签records；尚未科学评分。停止它可创建`data/umd/STOP.flag`。主queue停止可创建`queue/STOP_REQUESTED`，断点最多丢失当前未完成epoch；恢复先核进程身份/锁/配置，使用last.pt，禁止重复GPU写者。失败记录保留，退出码0但terminal不是COMPLETE也不算训练完成。
+
+已建立本对话自动跟进`automation-2`，每30分钟核终态/必要恢复，正常进度保持安静，训练与完整评估完成或有故障时汇报，本轮完成后停用。不租付费算力，不自行扩至新结构搜索。
+
+18:22已启动独立`post_queue`，实际queue PID53956、等待子进程48852，当前只读等待主队列SUCCESS，不占GPU。随后自动执行PLSP固定epoch40完整Seen test→等待UMD supervisor COMPLETE→两密集基线全量作者手标帧跨源导出/共享6类评分→`final/REPORT.md`。它使用独立冻结request，不能手动重复启动同一GPU推理。停止可创建`post_queue/STOP_REQUESTED`。UMD/source未就绪或失败不会静默变成已评分。
+
+Seen完整测试输入已按CRC/SHA准备：1,710动作—图像行、730精确唯一RGB、1,675 GT，35缺GT保持NOT_EVAL；历史消费传播后fresh仅217行/113来源组，另18行与官方train同SHA，全部单列。该基准不能解释为1,710独立新图。所有test像素首次解码在模型和主训练队列终态成功后，不用test选择模型。UMD仅用有作者代码支持的手标索引；scoop无共享IIT标签置ignore255，不当背景，不按GT屏蔽模型预测。
+
+已实际完成首个模型前2epoch与全部1,757图验证通路，继续完整80epoch；这些中期值仅在原始进度中保留，不作为充分训练效果或研究结论。
+
+尚无充分训练后的新效果或创新结论。完整统计、训练曲线、错误分析和实际成本将在同一记录更新。保留本地GPU作业和UMD网络作业是为了完成当前用户任务，owner与停止/恢复方式如上。

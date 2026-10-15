@@ -1,5 +1,16 @@
 # Runs
 
+2026-10-15 — Full native-data census and baseline training ACTIVE. Actual IIT
+4417train/1767val prepared and independently parsed;10 exact train-val RGB pairs
+excluded from checkpoint selection, cleanval1757. PACO full45790train annotations,
+InstructPart full release metadata audited; latter incomplete with24 cross-split
+same-RGB groups. PLSP26990 training rows/17078 exact unique RGB prepared. Local
+sequential queue started18:13 UTC+8: SegFormer80epoch, DINO80epoch, PLSP40epoch,
+automatic full-val scores/galleries/curves; no converged result yet. UMD complete
+archive/index job running separately; current-thread automation-2 follows terminal
+states and completes scoped analysis. No paid allocation, no topic selection.
+[Census](functional_parts/FULL_DATA_CENSUS.md), [live record](functional_parts/FULL_BASELINE_PROGRESS.md).
+
 2026-10-15 — Functional-part literature/data research and full experiment design
 completed, with no new training, dataset bulk download, evaluation or paid compute.
 Scope: primary-method overlap, released-data supervision, structural hypotheses,

@@ -5,11 +5,14 @@ candidate thesis direction; do not choose the topic from this pilot alone.
 
 [Results and reproduction](README.md) · [Plan and budget](PLAN.md) · [Run record](RUNS.md)
 
-Latest user-requested [functional-part research design](functional_parts/RESEARCH_PLAN.md)
-is complete: primary papers and released-data audit, full-training baselines,
-role-conditioned instance/part binding hypothesis, matched-supervision controls,
-and compute scenarios. No new training or confirmed novelty. Next: native-label
-census and converged strong baselines; do not infer a thesis from small pilots.
+User-authorized [full data census](functional_parts/FULL_DATA_CENSUS.md) is now
+complete for IIT native train/val, PACO annotations and current InstructPart release.
+[Training queue](functional_parts/FULL_BASELINE_PROGRESS.md) is RUNNING: SegFormer
+and DINO dense80epoch baselines, then PLSP40epoch; all4417 native train rows,
+cleanval1757 after10 train-identical images excluded. Automatic full-val scoring,
+error galleries and follow-up are attached; no complete training gain yet.
+Native labels do not establish free-task role truth; InstructPart release is
+incomplete/overlapping. Wait for full curves and errors before choosing a thesis.
 
 Public data and the automatic pipeline work: 12 source videos, 16 query sequences,
 528 query-frames. DINO localized 82/327 visible frames; CLIP reranking 70/327,
