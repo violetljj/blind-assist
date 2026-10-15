@@ -85,13 +85,24 @@ train1800/masks有550路径；按相同stem与375张RGB匹配仅125对。train18
 
 来源：[PLSP官方实现](https://github.com/woyut/WSAG-PLSP)。
 
-## UMD：原生索引与未决条件
+## UMD：完整归档与作者手标子集
 
 已实际获取官方README、gzip前缀和完整split文本。105工具实例、17类；10个fold各17测试工具，工具有跨fold重复，不能称每工具恰好测试一次。novel_split原生值1/2分别76/29个工具，方向需依据作者定义核定。
 
-tools压缩包2,986,470,339B、clutter186,182,704B，是真实gzip而非可尾部索引ZIP。前缀不足以统计全部帧。本轮已安排完整归档获取与索引普查，准确手标帧数待完成后统计；不用自动标帧冒充手标外测。完整进度在 `data/umd/`，此前小前缀证据保留于 `metadata/umd_*`。
+20:04已完成两份完整归档与副机镜像：tools压缩包2,986,470,339B、clutter186,182,704B，合计3,172,653,043B。本地内容SHA与完整索引已留档；官方没有公布可比对checksum，不能把本地SHA称为官方校验值。新增请求保留上界含作者代码共3,430,125,359B，未超过本轮3.6GB上限；下载线程、supervisor及一次性同步进程均已结束。
 
-后续已取得作者S-HMP源代码证据：`config_compare_feats.m`及`config_clutter.m`均选择末8位帧号`mod3==1`，并核查了filename token调用链。该规则来自原作者代码和README，不是猜测；完整帧数仍待归档完成后统计。独立supervisor已接管下载→完整索引→规则解析→共享标签records，不在下载完成前伪报手标分母。
+| 完整索引 | tools | clutter | 合计 |
+| --- | ---: | ---: | ---: |
+| 原生唯一帧ID | 28,843 | 868 | 29,711 |
+| 作者规则确认的手标RGB—标签配对 | 9,649 | 290 | 9,939 |
+| 自动标注帧 | 19,194 | 578 | 19,772 |
+| 手标子集来源组 | 105 | 3 | 108 |
+
+作者S-HMP的`config_compare_feats.m`及`config_clutter.m`均选择末8位帧号`mod3==1`，filename token调用链及源SHA已封存；完整索引无未解析frame ID。本次跨源records只含9,939个作者手标配对，自动标帧不进入手标外测。108组是工具/场景来源组，不能把连续视角帧称为9,939个独立物理场景。
+
+复用镜像打包时已有的逐文件SHA完成RGB字节普查：手标子集9,939个文件对应**9,939个不同RGB SHA256**，内部完全重复组0；与IIT train4,417行/4,400唯一RGB、cleanval1,757行/1,754唯一RGB的完全相同RGB交叉组均为0。只验证了字节相等性，没有排除近重复、相似视角或物理对象关联；本次检查没有重新解码RGB或GT像素。证据为`data/umd/rgb_byte_census.json`、`migration/audit_umd_rgb_bytes.py`与镜像逐文件manifest，均记录输入SHA。
+
+副机已校验并接收19,898份文件，冻结records原始字节未改；supervisor成功证据在全部文件验证后最后发布。共享功能类为contain、cut、grasp、pound、support、wrap-grasp；UMD scoop没有IIT对应，GT映射为ignore255，不作为背景；保留全部10类模型输出，不能按GT屏蔽不共享预测。本轮尚未进行跨源像素评分，逐类有效分母需待授权评估实际解码后报告。完整终态、索引和镜像收据在`data/umd/`及`migration/umd_mirror_receipt.json`，此前前缀/失败证据保留。
 
 来源：[UMD官方README](https://users.umiacs.umd.edu/~fermulcm/affordance/part-affordance-dataset/README.txt)。
 

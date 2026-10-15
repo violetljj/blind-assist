@@ -31,6 +31,8 @@
 
 19:55迁移验收完成：副机已逐文件核验第二批PLSP的38,330份payload，source bytes不变、未解码test像素；单线程BelowNormal接收任务终态success并结束。收据已取回本地`migration/worker_acceptance/`。主训练实际进入epoch24，副机可用RAM约8.6GiB；这些是迁移/运行证据，不是完整模型性能结论。后续按既有主/后队列继续，不能恢复本机GPU，也不以新的运行时计时覆盖主机已消耗成本。
 
+20:04 UMD数据链终态COMPLETE且副机镜像已通过：29,711原生帧ID中有9,939个作者手标配对，来自105工具组/3杂乱场景组，逐文件SHA确认9,939个不同RGB、与IIT train/cleanval完全同RGB交叉为0。镜像19,898文件验证后才最后发布supervisor证据，未解码GT像素，尚无跨源模型成绩。完整计数及相关性边界见[全量普查](FULL_DATA_CENSUS.md)。本机下载/supervisor/一次性同步进程已结束；保留归档、失败/请求记录和镜像包用于复核。副机main仍训练、post仍等待，不启动额外GPU任务。
+
 2026-10-15 18:13（UTC+8）：主本地队列已启动。实际进度以`queue/progress.json`、`runs/*/progress.jsonl`及各terminal为准；launcher PID49392对应实际queue Python PID45932，首个训练PID52016。没有把launcher回执当训练完成；已确认首个模型在全部train4417清单上持续更新。
 
 顺序为SegFormer-B0训练80epoch→全val导出/独立评分/错误图→DINO-S/16同样流程→PLSP Seen完整40epoch→曲线与汇总。两密集模型448输入、物理/有效batch16、2个loader worker、同CE+Dice；SegFormer全部3,716,714参数训练，DINO后4块/norm/decoder共7,690,506参数训练。DINO权重为原DINO-S/16，明确不是DINOv2。
@@ -39,7 +41,7 @@
 
 本轮全量数据发现见[普查报告](FULL_DATA_CENSUS.md)：IIT/PACO可支持结构/区域监督，尚不支持把角色推理作为既定贡献；InstructPart当前发布不完整且跨split重复；AGD训练行有大量同底图多动作复用。
 
-UMD下载有独立supervisor（`data/umd/supervisor_owner.json`），自动完整索引/手标规则解析/共享标签records；尚未科学评分。停止它可创建`data/umd/STOP.flag`。主queue停止可创建`queue/STOP_REQUESTED`，断点最多丢失当前未完成epoch；恢复先核进程身份/锁/配置，使用last.pt，禁止重复GPU写者。失败记录保留，退出码0但terminal不是COMPLETE也不算训练完成。
+UMD原下载supervisor（`data/umd/supervisor_owner.json`）现已COMPLETE并释放；停止文件`data/umd/STOP.flag`仅为历史控制入口，勿据此重复启动。当前主/后queue的STOP_REQUESTED须放在副机对应queue目录；原主机queue已经停止，不能恢复。断点最多丢失当前未完成epoch；恢复先核进程身份/锁/配置，使用last.pt，禁止重复GPU写者。失败记录保留，退出码0但terminal不是COMPLETE也不算训练完成。
 
 已建立本对话自动跟进`automation-2`，每30分钟核终态/必要恢复，正常进度保持安静，训练与完整评估完成或有故障时汇报，本轮完成后停用。不租付费算力，不自行扩至新结构搜索。
 
@@ -49,4 +51,4 @@ Seen完整测试输入已按CRC/SHA准备：1,710动作—图像行、730精确�
 
 已实际完成首个模型前2epoch与全部1,757图验证通路，继续完整80epoch；这些中期值仅在原始进度中保留，不作为充分训练效果或研究结论。
 
-尚无充分训练后的新效果或创新结论。完整统计、训练曲线、错误分析和实际成本将在同一记录更新。保留本地GPU作业和UMD网络作业是为了完成当前用户任务，owner与停止/恢复方式如上。
+尚无充分训练后的新效果或创新结论。完整统计、训练曲线、错误分析和实际成本将在同一记录更新。当前仅保留副机训练与只读等待的后续队列，owner与停止/恢复方式如上；主机没有本任务的GPU作业或常驻下载/同步进程。
