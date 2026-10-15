@@ -39,3 +39,7 @@ ORBIT test (17 users, official 50-task protocol, one run after validation-only s
 personal part memory on frozen DINOv2-S reaches 72.93% (full-frame 66.19%, unfiltered parts 55.52%, GT-box 81.62%),
 above the 2022 winner (71.69%) but below the best official meta-trained model (75.38%). Halving context frames keeps
 72.48% at half the personalisation MACs. Next: learn part selection/scoring on ORBIT train users to pass 75.4.
+Training-free upgrades (validation-selected, one test run): adding causal temporal accumulation, which the ORBIT
+rules allow, the part memory reaches 79.21 +- 0.58% on the test users versus 75.38% for the best official
+meta-trained model; whole-frame with the same accumulation gets 75.72%, and a 1-second window gives 75.61%. Register
+DINOv2 and multi-scale memory did not help on validation. Thesis direction: ORBIT personal-object recognition.
