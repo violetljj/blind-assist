@@ -1,7 +1,8 @@
 """Offline ORBIT scoring of dumped per-frame scores (orbit_dump.py): arms x causal temporal accumulation, official
 50-task / 200-frame sampling. CPU only, seconds. EXPLORE, 2026-10-15.
 
-Arms: full, part@j, fuse@j = z(full) + z(part@j) (z-scored over the user's objects per frame).
+Arms: full, part@j, fuse@j = z(full) + z(part@j) (z-scored over the user's objects per frame), head:<name> (learned
+matching, orbit_dump head=...), ens:<prefix> = mean z-score of all arms whose name starts with <prefix> (seed ensemble).
 Temporal (causal - the official rules allow the current and all earlier frames of the clutter video, no labels):
   h0      current frame only
   hN      exponential moving average of the per-frame z-scores with a half-life of N frames
@@ -37,7 +38,7 @@ def main(dump, out, tasks=50, arms='all', halflives='0,5,15,30,60,120,cum'):
     vids = [dict(np.load(f, allow_pickle=False)) for f in sorted(dump.glob('*.npz'))]
     keys = [k for k in vids[0] if k not in ('names', 'valid', 'y', 'user')]
     all_arms = keys + ['fuse@' + k.split('@')[1] for k in keys if k.startswith('part@')]
-    want = all_arms if arms == 'all' else arms.split(',')
+    want = all_arms if arms == 'all' else [a for x in arms.split(',') for a in (all_arms if x == 'all' else [x])]
     rng = random.Random(0)
     samples = [[sorted(rng.sample(range(int(v['valid'].sum())), min(200, int(v['valid'].sum())))) for _ in range(tasks)]
                for v in vids]
@@ -46,7 +47,12 @@ def main(dump, out, tasks=50, arms='all', halflives='0,5,15,30,60,120,cum'):
         for h in hs:
             accs, users = [], {}
             for v, smp in zip(vids, samples):
-                s = z(v['full']) + z(v['part@' + arm.split('@')[1]]) if arm.startswith('fuse@') else z(v[arm])
+                if arm.startswith('fuse@'):
+                    s = z(v['full']) + z(v['part@' + arm.split('@')[1]])
+                elif arm.startswith('ens:'):
+                    s = np.mean([z(v[k]) for k in keys if k.startswith(arm[4:])], 0)
+                else:
+                    s = z(v[arm])
                 ok = (causal(s, h).argmax(1) == int(v['y']))[v['valid']]
                 a = [ok[i].mean() for i in smp]; accs += a; users.setdefault(str(v['user']), []).extend(a)
             accs = np.array(accs)

@@ -7,12 +7,20 @@ config ('part@j'). Configs may add context scales (e.g. [1, 0.5]): context frame
 canvas, so the memory also holds the object at clutter-like sizes (personalisation cost only; per-frame cost unchanged).
 Decoding of the next video overlaps GPU work on the current one. Output: <out>/<video>.npz (names, valid, y, scores)
 and <out>/meta.json. Usage: orbit_dump.py <split dir with plan.json, frames/> <out dir> <backbone> <cfgs json list>
+patch_k > 0 also stores, for k seeded random valid frames per video, the patch tokens, the per-object part similarity
+maps of cfg 0 and the patch-in-box mask (boxes only used as training targets / diagnostics) in <out>/patch/<video>.npz.
+A cfg with 'color': beta > 0 makes the part match colour-aware: DINOv2's colour-jitter training leaves its patches
+nearly colour-blind, while personal objects often differ only in colour (failure analysis: five markers of different
+colours absorbed by one). Each patch gets its mean opponent chroma (O1, O2); a memory part carries the mean chroma of
+its kept patches, and the match becomes max_k [cos(x_t, p_k) - beta * ||chroma_t - chroma_k||].
+head=<a.pt,b.pt,...> adds one arm 'head:<file stem>' per learned matching model (evidence_head.py) on cfg 0's memory.
 """
 from __future__ import annotations
 
 import json
 import sys
 import time
+import zlib
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -63,11 +71,27 @@ def read_gpu(frames_dir, names):
     return decode_gpu(read_bytes(frames_dir, names))
 
 
-def part_memory_from(flat, cfg, prec='fp32'):
-    """flat: list of [n_o, D] normalised context patches (fp16, all scales). Discriminative keep + k-means, as
-    orbit_eval; converts one object at a time and samples the other objects before gathering (bounded memory)."""
+def patch_colors(x, size, grid, chunk=256):
+    """Mean opponent colour (L, O1, O2) of every patch: x uint8 CUDA NCHW tensor or NHWC numpy -> [N, grid*grid, 3]."""
     import torch
-    mem, sizes = [], [len(q) for q in flat]
+    import torch.nn.functional as F
+    out = []
+    for i in range(0, len(x), chunk):
+        b = x[i:i + chunk] if torch.is_tensor(x) else torch.from_numpy(x[i:i + chunk]).cuda().permute(0, 3, 1, 2)
+        b = b.float().div(255.)
+        if b.shape[-1] != size:
+            b = F.interpolate(b, (size, size), mode='bilinear', align_corners=False, antialias=True)
+        r, g, bl = F.adaptive_avg_pool2d(b, grid).unbind(1)
+        out.append(torch.stack([(r + g + bl) / 3, (r - g) / 2, (r + g - 2 * bl) / 4], -1).flatten(1, 2))
+    return torch.cat(out)
+
+
+def part_memory_from(flat, cfg, prec='fp32', cols=None):
+    """flat: list of [n_o, D] normalised context patches (fp16, all scales). Discriminative keep + k-means, as
+    orbit_eval; converts one object at a time and samples the other objects before gathering (bounded memory).
+    cols: optional list of [n_o, 3] patch colours -> also returns each part's mean chroma (O1, O2)."""
+    import torch
+    mem, sizes, pcols = [], [len(q) for q in flat], []
     for o in range(len(flat)):
         g = torch.Generator(device='cpu').manual_seed(o)
         oth = [j for j in range(len(flat)) if j != o]; tot = sum(sizes[j] for j in oth)
@@ -82,11 +106,15 @@ def part_memory_from(flat, cfg, prec='fp32'):
         s_other = torch.cat([(P[i:i + 4096] @ others.T).amax(1) for i in range(0, len(P), 4096)])
         s_own = torch.cat([(P[i:i + 4096] @ own.T).topk(6, dim=1).values[:, 1:].mean(1) for i in range(0, len(P), 4096)])
         d = (s_own - s_other).float()
-        keep = P[d >= d.quantile(1 - cfg['keep'])].float()
+        sel = d >= d.quantile(1 - cfg['keep']); keep = P[sel].float()
         mem.append(kmeans(keep, min(cfg['parts'], len(keep))))
+        if cols is not None:
+            a = (keep @ mem[-1].T).argmax(1); ch = cols[o][sel][:, 1:]
+            pcols.append(torch.zeros(len(mem[-1]), 2, device=ch.device).index_add_(0, a, ch)
+                         / torch.bincount(a, minlength=len(mem[-1])).clamp(min=1)[:, None])
         torch.backends.cuda.matmul.allow_tf32 = False
         del others, P, own, s_other, s_own, d, keep
-    return mem
+    return (mem, pcols) if cols is not None else mem
 
 
 def guard(frac=0.75, ram_free_min_gb=2.0, wait_s=1200):
@@ -113,10 +141,26 @@ def peaks():
                 ram_free_gb=round(psutil.virtual_memory().available / 2 ** 30, 2))
 
 
-def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode='cpu', prec='fp32'):
+def box_mask(box, grid, side=1080):
+    """Patch-centre-in-box mask [grid*grid] for an ORBIT box in original 1080 px coordinates (None -> all False)."""
+    if not box:
+        return np.zeros(grid * grid, bool)
+    c = (np.arange(grid) + .5) * side / grid
+    inx = (c >= box['x']) & (c < box['x'] + box['w']); iny = (c >= box['y']) & (c < box['y'] + box['h'])
+    return (iny[:, None] & inx[None]).reshape(-1)
+
+
+def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode='cpu', prec='fp32', patch_k=0, head=''):
     """baselines: comma list of Swiss DINO support masks, e.g. 'full,center' -> arms swiss_full, swiss_center."""
     import torch
     root, out = Path(root), Path(out); out.mkdir(parents=True, exist_ok=True)
+    patch_k = int(patch_k)
+    if patch_k:
+        (out / 'patch').mkdir(exist_ok=True)
+    hds = {}
+    if head:
+        import evidence_head as EH
+        hds = {f'head:{Path(h).stem}': EH.load(h) for h in head.split(',')}
     cfgs = [{**CFG, 'scales': [1.0], **c} for c in json.loads(cfgs)]
     plan = json.loads((root / 'plan.json').read_text())
     guard(); limit = int(limit)
@@ -126,11 +170,12 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
     users = {}
     for v in plan['videos']:
         users.setdefault(v['user'], []).append(v)
-    t0 = time.time(); meta = dict(backbone=backbone, cfgs=cfgs, gmacs_per_frame=mpf / 1e9, users={}, decode=decode, prec=prec)
+    t0 = time.time(); meta = dict(backbone=backbone, cfgs=cfgs, gmacs_per_frame=mpf / 1e9, users={}, decode=decode, prec=prec,
+                                  patch_k=patch_k, head=head)
     # prefetch thread does CPU work only; GPU decode (if any) happens on the main thread in `finish`
     reader = (lambda names: read_bytes(root / 'frames', names)) if decode == 'gpu' else (lambda names: read_many(root / 'frames', names))
     finish = decode_gpu if decode == 'gpu' else (lambda x: x)
-    T = dict(read_wait=0., ctx=0., forward=0., full=0., part=0., swiss=0., save=0.)
+    T = dict(read_wait=0., ctx=0., forward=0., full=0., part=0., swiss=0., head=0., save=0.)
 
     def tick(key, t):
         torch.cuda.synchronize(); T[key] += time.time() - t; return time.time()
@@ -150,21 +195,31 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
         cls1, p1 = forward(m, size, mean, std, xc, bs=bs)                 # one pass gives CLS and scale-1 patches
         protos = torch.nn.functional.normalize(torch.stack([cls1[L == i].mean(0) for i in range(len(objs))]), dim=1)
         scale_pat = {}
-        scale_pat = {1.0: p1}; del p1
+        scale_pat = {1.0: p1}; p_tok = p1.shape[1]; del p1
         for s in sorted({s for c in cfgs for s in c['scales']} - {1.0}):
             _c, p = forward(m, size, mean, std, shrink(xc, s), bs=bs); scale_pat[s] = p; del _c, p
-        mems = []
+        mems, pcol = [], []
+        ccol = patch_colors(xc, size, int(round(p_tok ** .5))) if any(c.get('color', 0) for c in cfgs) else None
         for c in cfgs:
             flat = [torch.cat([scale_pat[s][L == i].reshape(-1, scale_pat[s].shape[-1]) for s in c['scales']])
                     for i in range(len(objs))]
-            mem = part_memory_from(flat, c, prec)
+            if c.get('color', 0):
+                assert c['scales'] == [1.0], 'colour-aware memory is single-scale'
+                mem, pc = part_memory_from(flat, c, prec, [ccol[L == i].reshape(-1, 3) for i in range(len(objs))])
+                pcol.append(torch.cat(pc))
+            else:
+                mem = part_memory_from(flat, c, prec); pcol.append(None)
             mems.append((torch.cat(mem).half(), torch.cat([torch.full((len(q),), i) for i, q in enumerate(mem)]).cuda()))
+        del ccol
         import swiss_dino_core as SW
         grid = int(round(scale_pat[1.0].shape[1] ** .5)); sw = {}
         for mode in [b for b in baselines.split(',') if b]:
             pt = [SW.support(scale_pat[1.0][L == i], grid, mode) for i in range(len(objs))]
             sw[mode] = (torch.stack([p for p, _ in pt]), torch.stack([t for _, t in pt]))
         del scale_pat, xc; torch.cuda.empty_cache(); tick('ctx', tc)
+        if patch_k:                                                     # cfg-0 memory, for training the matching head
+            np.savez(out / 'patch' / f'_mem_{user}.npz', parts=mems[0][0].float().cpu().numpy(),
+                     owner=mems[0][1].cpu().numpy(), objects=np.array(objs))
         meta['users'][user] = dict(objects=objs, context_frames=len(names),
                                    context_forwards={j: len(names) * len(c['scales']) for j, c in enumerate(cfgs)})
         clut = []
@@ -183,15 +238,24 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
             t = time.time(); x = finish(nxt.result()); t = tick('read_wait', t)
             if k + 1 < len(clut):
                 nxt = pool.submit(reader, clut[k + 1][1])
-            res = {'full': [], **{f'part@{j}': [] for j in range(len(cfgs))}, **{f'swiss_{b}': [] for b in sw}}
+            res = {'full': [], **{f'part@{j}': [] for j in range(len(cfgs))}, **{f'swiss_{b}': [] for b in sw},
+                   **{k: [] for k in hds}}
+            sel = np.zeros(len(allf), bool); store = dict(X=[], S=[], idx=[])
+            if patch_k:
+                vi = np.flatnonzero(valid); rs = np.random.default_rng(zlib.crc32(v['video'].encode()))
+                sel[rs.choice(vi, min(patch_k, len(vi)), replace=False)] = True
             for a in range(0, len(x), qbs):
                 t = time.time(); fcls, fpat = forward(m, size, mean, std, x[a:a + qbs], bs=bs); t = tick('forward', t)
-                res['full'].append((fcls @ protos.T).cpu().numpy()); t = tick('full', t)
+                qcol = patch_colors(x[a:a + qbs], size, grid)[..., 1:] if any(pc is not None for pc in pcol) else None
+                full_s = fcls @ protos.T
+                res['full'].append(full_s.cpu().numpy()); t = tick('full', t)
                 for b, (P_, T_) in sw.items():
                     res[f'swiss_{b}'].append(SW.query_scores(fpat, P_, T_, grid, prec='fp16' if prec in ('fp16', 'mixed') else prec).cpu().numpy())
                 t = tick('swiss', t)
                 for j, (allp, owner) in enumerate(mems):
                     sim = fpat @ allp.T                                          # fp16 tensor-core matmul in both modes
+                    if pcol[j] is not None:
+                        sim = sim - (cfgs[j]['color'] * torch.cdist(qcol, pcol[j][None].expand(len(qcol), -1, -1))).to(sim.dtype)
                     counts = torch.bincount(owner, minlength=len(objs))
                     if prec in ('fp16', 'mixed') and bool((counts == counts[0]).all()):   # equal part counts: one reshape-max
                         per_obj = sim.view(*sim.shape[:2], len(objs), int(counts[0])).amax(3).float()
@@ -199,10 +263,26 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
                         sim = sim.float()
                         per_obj = torch.stack([sim[:, :, owner == i].amax(2) for i in range(len(objs))], 2)
                     res[f'part@{j}'].append(per_obj.topk(cfgs[j]['topk'], dim=1).values.mean(1).cpu().numpy())
+                    if j == 0:
+                        po0 = per_obj
                 t = tick('part', t)
+                for k, hd in hds.items():
+                    res[k].append(EH.scores(hd, fpat, po0, full_s, *mems[0]).cpu().numpy())
+                t = tick('head', t)
+                ii = np.flatnonzero(sel[a:a + len(fcls)])
+                if len(ii):
+                    it = torch.as_tensor(ii, device=fpat.device)
+                    store['X'].append(fpat[it].cpu().numpy()); store['S'].append(po0[it].half().cpu().numpy())
+                    store['idx'].append(ii + a)
+                del po0
             t = time.time()
             np.savez_compressed(out / f"{v['video']}.npz", names=np.array(allf), valid=valid, y=objs.index(v['obj']),
                                 user=user, **{a: np.concatenate(b).astype(np.float32) for a, b in res.items()})
+            if store['idx']:
+                idx = np.concatenate(store['idx']); full_all = np.concatenate(res['full'])
+                np.savez(out / 'patch' / f"{v['video']}.npz", X=np.concatenate(store['X']), S=np.concatenate(store['S']),
+                         full=full_all[idx].astype(np.float32), idx=idx, names=np.array(allf)[idx], y=objs.index(v['obj']),
+                         user=user, mask=np.stack([box_mask(v['boxes'][allf[i]], grid) for i in idx]))
             tick('save', t)
         print(user, len(objs), 'objects', len(clut), 'videos', round(time.time() - t0), 's', json.dumps(peaks()), flush=True)
         del mems, sw, protos, cls1, L
