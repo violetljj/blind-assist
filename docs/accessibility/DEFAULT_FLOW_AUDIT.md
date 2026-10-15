@@ -31,7 +31,9 @@ Run the focused surface with:
 pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:connectedDebugAndroidTest '-Pandroid.testInstrumentationRunnerArguments.class=com.linnan.blindassist.ui.compose.FeatureScreenAccessibilityTest,com.linnan.blindassist.ui.compose.BlindAssistComposeTest'
 ```
 
-The connected tests have not been run for this contribution: local validation is blocked by the missing JDK 17, and the upstream Android workflow awaits maintainer approval. Passing results would establish the asserted Compose semantics and layout reachability only; TalkBack usability requires the manual checks below.
+The contributor's original environment lacked JDK 17. During maintainer integration on 2026-10-15, JDK/SDK preflight and `:core:ui:compileDebugKotlin` passed. The added test initially failed to compile against the current `FeatureScreen` API; replacing its three obsolete callbacks with `onProfileChange` made `:app:compileDebugAndroidTestKotlin` pass. The existing preference-isolation repair was retained.
+
+The connected tests have not been executed in this maintenance round. Compilation establishes source compatibility; passing connected tests would establish the asserted Compose semantics and layout reachability only. TalkBack usability requires the manual checks below.
 
 ## Regression matrix
 

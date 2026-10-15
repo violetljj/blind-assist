@@ -4,6 +4,13 @@ This file records only current milestones. Full earlier history is preserved at
 `archive/pre-agent-surface-2026-08-26` and searchable through
 `experiments/index.jsonl`.
 
+## 2026-10-15 — GitHub presentation and contribution maintenance
+
+- Scope: repository showcase, unread triage and reviewable contribution delivery. Added an original sensor-to-phone-to-feedback SVG, refreshed README navigation, labelled historical screenshots and updated repository About/topics.
+- Merged accessibility PR #49 with its preference-isolation repair; reconciled the added Compose test with the current callback API and credited the contributor. Issue #9 retains the connected-test/TalkBack audit. Closed superseded PRs #14/#37/#38/#40/#42 with reasons; retained three dependency upgrades and two invalid-input-accepting drafts for follow-up.
+- Repaired four reproduced CI causes: Windows path-alias identity assertion, moved public-doc fixture, missing candidate direct dependencies and outdated readiness fixture. Candidate compilation, 4 localization tests, 3 readiness tests, 4 asset-catalog tests and 3 public-readiness fixtures passed. Final app debug build, lint (0 errors/26 warnings) and androidTest compilation passed; no connected tests were executed.
+- Reviewed the 3,700-notification snapshot plus three later historical CI reminders; repository unread count was zero after marking reviewed items. Detailed local receipts are under `artifacts.local/github-maintenance-20261015/`; no account-wide notification preferences were changed.
+
 ## 2026-10-14 — v10.19.4 Atom preview trial
 
 - Added independent, persistent undistortion/enhancement switches on the capture preview. Reuses the existing hash-bound Atom remap; absent/mismatched calibration falls back visibly to raw geometry. Upright results skip the old display rotation/mirror. A fixed endpoint-preserving LUT gives mild contrast/gamma enhancement; original JPEGs, recording/export and model inputs retain their prior behavior.

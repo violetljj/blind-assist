@@ -1,30 +1,30 @@
-![BlindAssist：端侧感知、无障碍反馈与可复现研究](docs/assets/brand/blindassist-hero.svg)
+# BlindAssist
 
-# BlindAssist · 盲杖互补前视感知
+**眼镜采集 RGB、ToF 与 IMU，手机在本地感知前方障碍，给出头部／身体区域的提醒。**
 
-**用 Android、RGB 相机、ToF 和 IMU，探索盲杖之外的前方障碍提醒。**
-关注墙体、大型遮挡、身体／头部凸出物、悬空障碍与不同高度的细杆，在有限算力下提供方向和粗距离线索。类别无关前视感知是当前研究目标，具体能力与验证范围见下表；移动选择由佩戴者作出。
+[体验演示](docs/HARDWARE_OBSTACLE_DEMO.md) · [录制数据](docs/PHONE_DATA_CAPTURE.md) · [开始构建](#快速开始) · [参与贡献](CONTRIBUTING.md) · [English](docs/QUICKSTART_EN.md)
 
-An Android research prototype for **cane-complementary, class-agnostic forward obstacle awareness**, with on-device perception and inspectable evidence.
-
-[快速开始](#快速开始) · [硬件演示](docs/HARDWARE_OBSTACLE_DEMO.md) · [手机采集](docs/PHONE_DATA_CAPTURE.md) · [English quick start](docs/QUICKSTART_EN.md) · [参与贡献](CONTRIBUTING.md)
+![BlindAssist 概念流程：眼镜端 RGB 相机、ToF 距离和 IMU 姿态经无线连接进入 Android 手机，在本地处理后提供 HEAD 头部、BODY 身体区域线索及语音、震动和屏幕反馈；画面为原创示意](docs/assets/brand/blindassist-showcase.svg)
 
 ## 现在可以做什么
 
 当前源码为 **10.20.1 / versionCode 64**（2026-10-14）。[更新记录](CHANGELOG.md)区分演示包、试用包与各轮实机验证，具体操作见[硬件演示指南](docs/HARDWARE_OBSTACLE_DEMO.md)。
 
-| 入口 | 已实现的能力 | 当前验证范围 |
-| --- | --- | --- |
-| **数据采集** | 同屏预览 Atom RGB、8×8 ToF 网格与 BMI270 IMU；保存原始 JPEG、完整 8×8×16 CNH、姿态和时间戳；后台导出 ZIP | 已有真机三路录制、断线恢复和文件完整性检查；各设备时钟独立 |
-| **开始辅助** | 显式开始／结束；当前 H3 固件提供基础 ToF 提醒，支持语言、语音与震动偏好 | 基础辅助与融合演示分别保留；旧时序协议的 A+LOCAL 为实验模式 |
-| **融合演示** | 首页直达；去畸变取景器、HEAD／BODY 状态、ToF／RGB 来源、2/3 帧确认及语音／震动 | 演示规则采用开发候选，可停止后切回冻结 v2；完整在线融合与提醒体验仍需验证 |
-| **研究与回放** | 冻结脚本、输入合同、来源记录、逐段结果和负结果 | 已有头戴新录制的冻结离线评价；小样本、标定失败及窄走廊误报仍限制结论 |
+| 从哪里进入 | 可以看到什么 |
+| --- | --- |
+| **首页 → 融合演示** | 去畸变取景器、HEAD／BODY 分区、ToF／RGB 来源与 2/3 帧确认；确认报警时提供语音／震动 |
+| **首页 → 数据采集** | RGB 画面、8×8 距离网格与 IMU；保存原始 JPEG、完整 8×8×16 CNH、姿态及时间戳，后台导出 ZIP |
+| **首页 → 开始辅助** | 当前 H3 固件的基础 ToF 提醒；显式开始／结束，支持语言、语音与震动偏好 |
+| **研究脚本 → 离线回放** | 按来源与逐段结果复现，保留输入合同、冻结版本和负结果 |
 
-**最近的工程进展：** 10.20.1 新增不可调试的 `demo` 构建；S24 Ultra 上预编译后，ToF 推理由约 300–400 ms/帧降至约 42 ms/帧。这是特定设备的模型执行时间，完整响应时间与持续使用表现仍待测量。[版本与测量范围](CHANGELOG.md#10201--2026-10-14演示包)
+10.20.1 的 `demo` 构建支持系统预编译，S24 Ultra 上 ToF 推理由约 **300–400 → 42 ms/帧**；这是该设备的模型执行时间。[工程记录与测量范围](CHANGELOG.md#10201--2026-10-14演示包)
 
-> BlindAssist 是展示与研究原型。`UNKNOWN` 不代表无障碍；它尚不构成可通行判断、通用实景准确率或导航安全证明。
+**研究定位与验证范围：** BlindAssist 是盲杖互补的类别无关前视感知研究原型（cane-complementary）。已有真机采集完整性检查及头戴新录制的冻结离线评价；当前融合演示规则仍是开发候选，可停止后切回冻结 v2，完整在线融合与提醒体验待验证。标定、窄走廊误报和独立设备时钟仍是限制；合成、回放和设备证据分别记录，`UNKNOWN` 不代表无障碍，尚不能据此判断可通行或导航安全。[研究与评价规则](docs/formal/RESEARCH_GOVERNANCE.md)
 
-## 界面预览
+<details>
+<summary>查看真实界面存档 · 2026-08-13 / v10.9.0</summary>
+
+以下截图来自 S24 Ultra，展示已有主界面的交互风格；当前融合取景器已在 10.20.1 更新。
 
 <table>
   <tr>
@@ -39,7 +39,7 @@ An Android research prototype for **cane-complementary, class-agnostic forward o
   </tr>
 </table>
 
-以上是 **2026-08-13、v10.9.0、S24 Ultra 的真实界面存档**，用于展示交互风格；当前融合取景器已在 10.20.1 更新，具体行为以使用指南与更新记录为准。
+</details>
 
 ## 快速开始
 
@@ -72,9 +72,16 @@ pwsh -NoProfile -File tools/ba.ps1 doctor research-dtr-r0
 
 ## 架构与研究入口
 
-![Android 模块职责：输入、运行协调、视觉、风险逻辑、设备适配与界面反馈；研究应用独立保留](docs/assets/community-architecture.svg)
+```mermaid
+flowchart LR
+    A["相机 / 硬件输入"] --> B["feature:assist<br/>运行协调"]
+    B --> C["core:vision<br/>视觉处理"]
+    C --> D["core:assist<br/>风险与反馈策略"]
+    D --> E["core:device<br/>设备与反馈"]
+    D --> F["core:ui<br/>状态与界面"]
+```
 
-`app` 管理入口与资产，`feature:assist` 协调运行生命周期；`core:vision` 负责视觉，`core:assist` 负责风险与反馈策略，`core:device` 和 `core:ui` 负责设备适配及界面。研究、基准与候选应用保留在独立模块中。[代码地图](docs/CODE_MAP.md)
+`app` 管理入口与资产，`apps/` 保留独立研究与基准应用。具体接口和所有权见[代码地图](docs/CODE_MAP.md)。
 
 | 想了解什么 | 从这里开始 |
 | --- | --- |
@@ -84,8 +91,6 @@ pwsh -NoProfile -File tools/ba.ps1 doctor research-dtr-r0
 | 传感器接入、标定与实机证据 | [硬件研究当前状态](research/active/hardware-bringup/CURRENT.md) |
 | 已暂停的 L10 结果 | [L10 保留证据](research/active/l10-r0/CURRENT.md) |
 | 完整文档与历史复现 | [文档地图](docs/README.md) · [历史索引](docs/history-index.md) |
-
-合成、回放、Development、设备与自然场景证据分别记录。新增研究结果不自动替换默认 App；新冻结数据也不用于事后调阈值。受保护的最终评价按[正式研究规则](docs/formal/RESEARCH_GOVERNANCE.md)执行。
 
 ## 一起改进
 

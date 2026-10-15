@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="840" viewBox="0 0 1440 840" role="img" aria-labelledby="title desc">
+  <title id="title">BlindAssist：从眼镜端感知到手机端分区提醒</title>
+  <desc id="desc">概念流程图。眼镜端 RGB 相机、ToF 距离与 IMU 姿态输入，经无线连接传到 Android 手机；手机运行端侧模型、几何与时序处理，呈现 HEAD 头部和 BODY 身体区域的障碍线索，并提供语音、震动和屏幕反馈。图中眼镜与手机界面为原创示意，实际能力与验证范围见仓库说明。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#07161C"/>
+      <stop offset="1" stop-color="#102B34"/>
+    </linearGradient>
+    <linearGradient id="lens" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#86E4BE" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#82BBD8" stop-opacity=".025"/>
+    </linearGradient>
+    <linearGradient id="phone" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#183D47"/>
+      <stop offset="1" stop-color="#0C2129"/>
+    </linearGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M36 0H0V36" fill="none" stroke="#9FC6CD" stroke-opacity=".035"/>
+    </pattern>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <path d="M0 0 7 3.5 0 7" fill="none" stroke="#86E4BE" stroke-width="1.5"/>
+    </marker>
+    <clipPath id="screen"><rect x="560" y="421" width="134" height="218" rx="18"/></clipPath>
+    <style>
+      text { font-family: "Segoe UI", "Microsoft YaHei UI", "Noto Sans CJK SC", sans-serif; }
+      .ink { fill: #F2F4EC; }
+      .muted { fill: #A6BCC0; }
+      .mint { fill: #86E4BE; }
+      .amber { fill: #FFD58A; }
+      .micro { font-size: 15px; font-weight: 600; letter-spacing: 1.4px; }
+      .panel-title { font-size: 27px; font-weight: 650; }
+      .body { font-size: 18px; }
+      .panel { fill: #0C222B; stroke: #29434B; stroke-width: 1.5; }
+      .line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="840" rx="30" fill="url(#bg)"/>
+  <rect width="1440" height="840" rx="30" fill="url(#grid)"/>
+  <circle cx="1295" cy="100" r="190" fill="#86E4BE" fill-opacity=".025"/>
+  <circle cx="1295" cy="100" r="126" fill="none" stroke="#86E4BE" stroke-opacity=".08"/>
+  <circle cx="1295" cy="100" r="72" fill="none" stroke="#86E4BE" stroke-opacity=".09"/>
+
+  <!-- Identity and promise. -->
+  <rect x="64" y="54" width="48" height="48" rx="13" fill="#173B36"/>
+  <g class="line" stroke="#86E4BE" stroke-width="2.7" transform="translate(64 54)">
+    <path d="M12 12v25m0-25h8c8 0 8 12 0 12h-8m8 0c8 0 8 13 0 13h-8"/>
+    <path d="m24 37 8-21 8 21m-13-7h10"/>
+  </g>
+  <text x="128" y="90" class="ink" font-size="40" font-weight="650" letter-spacing="-1">BlindAssist</text>
+  <rect x="1100" y="62" width="276" height="35" rx="17.5" fill="#1B3337" stroke="#466058"/>
+  <circle cx="1120" cy="80" r="4" fill="#FFD58A"/>
+  <text x="1134" y="85" class="amber" font-size="13" font-weight="650" letter-spacing="1.2">RESEARCH PROTOTYPE</text>
+
+  <text x="64" y="184" class="ink" font-size="49" font-weight="650" letter-spacing="-.5">盲杖之外，多一层前视感知。</text>
+  <text x="66" y="231" class="muted" font-size="23">RGB + ToF + IMU → Android → 头部 / 身体分区提醒</text>
+  <text x="1376" y="265" text-anchor="end" class="muted" font-size="14" letter-spacing="1">概念示意 · CONCEPT</text>
+
+  <!-- Three stages, linked across explicit panel boundaries. -->
+  <rect x="48" y="292" width="416" height="416" rx="22" class="panel"/>
+  <rect x="512" y="292" width="416" height="416" rx="22" class="panel"/>
+  <rect x="976" y="292" width="416" height="416" rx="22" class="panel"/>
+  <path d="M475 503H500" class="line" stroke="#86E4BE" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M939 503H964" class="line" stroke="#86E4BE" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 01: Original wearable illustration. -->
+  <text x="76" y="333" class="mint micro">01 / SENSE</text>
+  <text x="76" y="376" class="ink panel-title">眼镜端 · 采集</text>
+  <g class="line">
+    <path d="m97 441-15-18m282 14 34-27 23 3" stroke="#738D93" stroke-width="6"/>
+    <path d="M103 432h86c14 0 20 7 22 20l2 32c1 15-6 22-20 22h-74c-14 0-21-7-23-20l-4-32c-2-15 1-22 11-22Z" fill="url(#lens)" stroke="#A9C4C8" stroke-width="5"/>
+    <path d="M251 432h86c14 0 20 7 18 22l-4 32c-2 13-9 20-23 20h-74c-14 0-21-7-20-22l2-32c2-13 1-20 15-20Z" fill="url(#lens)" stroke="#A9C4C8" stroke-width="5"/>
+    <path d="M211 451q12-13 26 0" stroke="#A9C4C8" stroke-width="5"/>
+    <path d="m110 448 71 0m69 0 71 0" stroke="#C1F2E0" stroke-opacity=".35" stroke-width="2"/>
+    <rect x="351" y="413" width="48" height="38" rx="11" fill="#193D3B" stroke="#86E4BE" stroke-width="2"/>
+    <circle cx="375" cy="432" r="10" fill="#081A21" stroke="#86E4BE" stroke-width="2"/>
+    <circle cx="375" cy="432" r="4" fill="#86E4BE"/>
+  </g>
+  <path d="M120 524H392" class="line" stroke="#35535A" stroke-width="1.5"/>
+  <g>
+    <rect x="76" y="551" width="104" height="85" rx="12" fill="#173832"/>
+    <text x="92" y="582" class="mint" font-size="23" font-weight="650">RGB</text>
+    <text x="92" y="613" class="muted body">相机画面</text>
+    <rect x="192" y="551" width="104" height="85" rx="12" fill="#1B3341"/>
+    <text x="208" y="582" fill="#A5D2F0" font-size="23" font-weight="650">ToF</text>
+    <text x="208" y="613" class="muted body">距离网格</text>
+    <rect x="308" y="551" width="128" height="85" rx="12" fill="#383426"/>
+    <text x="324" y="582" class="amber" font-size="23" font-weight="650">IMU</text>
+    <text x="324" y="613" class="muted body">运动与姿态</text>
+  </g>
+  <text x="76" y="676" class="muted body">多路原始输入，经无线连接汇入手机</text>
+
+  <!-- 02: Deliberately illustrative phone screen, not a device capture. -->
+  <text x="540" y="333" class="mint micro">02 / COMPUTE</text>
+  <text x="540" y="376" class="ink panel-title">手机端 · 感知</text>
+  <rect x="549" y="408" width="156" height="246" rx="26" fill="#09171E" stroke="#6C9299" stroke-width="2.5"/>
+  <g clip-path="url(#screen)">
+    <rect x="560" y="421" width="134" height="218" fill="url(#phone)"/>
+    <path d="m560 446 42 42v86l-42 65m134-193-35 42v86l35 65" fill="#304B52" fill-opacity=".65" stroke="#5F7B81" stroke-width="1"/>
+    <path d="M560 598 630 548 694 598M560 623 630 558 694 623M630 550V639" class="line" stroke="#7A979C" stroke-opacity=".32"/>
+    <path d="M634 474V589" class="line" stroke="#BFDAD0" stroke-width="7"/>
+    <rect x="605" y="483" width="56" height="73" rx="7" fill="#FFD58A" fill-opacity=".07" stroke="#FFD58A" stroke-width="1.5"/>
+    <path d="M572 438h15m-15 0v15m110-15h-15m15 0v15m-110 144v15h15m95-15v15h-15" class="line" stroke="#B8D2CE" stroke-width="1.5"/>
+    <rect x="572" y="609" width="110" height="18" rx="9" fill="#152F35"/>
+    <circle cx="588" cy="618" r="3" fill="#86E4BE"/>
+    <path d="M600 618H667" stroke="#86E4BE" stroke-opacity=".55" stroke-width="2"/>
+  </g>
+  <rect x="606" y="415" width="40" height="7" rx="3.5" fill="#09171E"/>
+  <path d="M610 646H644" class="line" stroke="#6C9299" stroke-width="2.5"/>
+
+  <circle cx="739" cy="451" r="5" fill="#86E4BE"/>
+  <text x="755" y="458" class="ink body" font-weight="600">端侧模型</text>
+  <text x="755" y="484" class="muted" font-size="16">视觉 + 距离</text>
+  <path d="M739 466V509" stroke="#35535A" stroke-width="1.5"/>
+  <circle cx="739" cy="521" r="5" fill="#86E4BE"/>
+  <text x="755" y="528" class="ink body" font-weight="600">几何与时序</text>
+  <text x="755" y="554" class="muted" font-size="16">区域 + 确认</text>
+  <path d="M739 536V579" stroke="#35535A" stroke-width="1.5"/>
+  <circle cx="739" cy="591" r="5" fill="#FFD58A"/>
+  <text x="755" y="598" class="ink body" font-weight="600">保留未知</text>
+  <text x="755" y="624" class="muted" font-size="16">UNKNOWN</text>
+  <text x="540" y="676" class="muted body">本地推理与原始记录，支持离线回放</text>
+
+  <!-- 03: Human-height regions and accessible outputs. -->
+  <text x="1004" y="333" class="mint micro">03 / FEEDBACK</text>
+  <text x="1004" y="376" class="ink panel-title">分区线索 · 清楚提醒</text>
+  <circle cx="1053" cy="446" r="27" fill="#FFD58A" fill-opacity=".16" stroke="#FFD58A" stroke-width="2"/>
+  <path d="M1034 487h38c14 0 25 13 25 28v54c0 8-5 13-12 13h-9v42h-46v-42h-9c-7 0-12-5-12-13v-54c0-15 11-28 25-28Z" fill="#86E4BE" fill-opacity=".13" stroke="#86E4BE" stroke-width="2"/>
+  <path d="M1053 581v43" stroke="#86E4BE" stroke-width="2"/>
+  <path d="M1087 446H1115M1097 535H1115" class="line" stroke="#64858A" stroke-width="1.5"/>
+
+  <rect x="1125" y="415" width="239" height="77" rx="13" fill="#3A3326"/>
+  <text x="1143" y="445" class="amber" font-size="16" font-weight="650" letter-spacing="1.4">HEAD</text>
+  <text x="1143" y="475" class="ink" font-size="21" font-weight="600">头部区域</text>
+  <rect x="1125" y="511" width="239" height="77" rx="13" fill="#173832"/>
+  <text x="1143" y="541" class="mint" font-size="16" font-weight="650" letter-spacing="1.4">BODY</text>
+  <text x="1143" y="571" class="ink" font-size="21" font-weight="600">身体区域</text>
+  <text x="1125" y="620" class="muted" font-size="17">障碍方向 · 粗距离线索</text>
+
+  <rect x="1004" y="649" width="360" height="36" rx="18" fill="#142F35"/>
+  <path d="M1023 662h11v8h-6l-5 4Z" class="line" stroke="#86E4BE" stroke-width="1.5"/>
+  <text x="1047" y="673" class="muted" font-size="17">语音 · 震动 · 屏幕反馈</text>
+
+  <path d="M64 751H1376" stroke="#304950" stroke-width="1"/>
+  <text x="64" y="791" class="mint" font-size="19" font-weight="600">端侧计算</text>
+  <text x="188" y="791" class="muted body">On-device</text>
+  <text x="518" y="791" class="mint" font-size="19" font-weight="600">原始数据留存</text>
+  <text x="680" y="791" class="muted body">Traceable inputs</text>
+  <text x="1054" y="791" class="mint" font-size="19" font-weight="600">可复现评价</text>
+  <text x="1195" y="791" class="muted body">Reproducible</text>
+  <text x="64" y="822" fill="#78969D" font-size="13">概念流程与原创示意界面；各入口的实际能力、设备条件与验证范围见仓库说明。</text>
+</svg>
