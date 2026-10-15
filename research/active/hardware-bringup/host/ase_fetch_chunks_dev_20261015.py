@@ -16,6 +16,10 @@ ROOT = Path(__file__).resolve().parents[4] / 'artifacts.local/downloads/aria-ase
 
 def fetch(entry):
     z = ROOT / entry['filename']
+    k = int(entry['filename'].split('_')[-1].split('.')[0])
+    have = [str(s) for s in range(10 * k, 10 * k + 10) if (ROOT / 'scenes' / str(s) / 'trajectory.csv').exists()]
+    if len(have) == 10 and not z.exists():                            # already extracted (train chunk k holds scenes 10k..10k+9)
+        return entry['filename'], have
     for attempt in range(30):                                         # resume with Range after dropped connections
         have = z.stat().st_size if z.exists() else 0
         try:

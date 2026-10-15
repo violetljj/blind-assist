@@ -246,15 +246,20 @@ def pad(x):
     return Fn.pad(x, (0, 0, 0, 40 - NH))
 
 
-def _tag(img, seed):
-    return ('_img' if img else '') + ('' if int(seed) == 0 else f'_s{int(seed)}')
+TRAIN_SETS = dict(big=list(range(20, 55)) + list(range(60, 200)),   # PLAN_SIDEVIEW appendix 3
+                  mid=list(range(20, 55)) + list(range(60, 100)))    # descriptive data-size midpoint
+
+
+def _tag(img, seed, big=False):
+    return ('_img' if img else '') + (f'_{big}' if big else '') + ('' if int(seed) == 0 else f'_s{int(seed)}')
 
 
 def train(work, epochs=25, variant='base', seed=0):
     import torch
-    img = variant == 'img'; epochs = int(epochs)
+    img = variant == 'img'; big = variant if variant in TRAIN_SETS else False; epochs = int(epochs)
     torch.manual_seed(20261015 + int(seed)); np.random.seed(20261015 + int(seed))
-    Xtr, Ytr = load_split(work, TRAIN, img); Xva, Yva = load_split(work, VAL, img)
+    ids = [k for k in TRAIN_SETS[big] if (Path(work) / 'grids' / f'{k}.npz').exists()] if big else TRAIN
+    Xtr, Ytr = load_split(work, ids, img); Xva, Yva = load_split(work, VAL, img)
     print('train', Xtr.shape, 'val', Xva.shape, 'pos rate', float(Ytr.mean()), flush=True)
     dev = 'cuda'
     net = make_net(Xtr.shape[1]).to(dev); opt = torch.optim.AdamW(net.parameters(), 1e-3, weight_decay=1e-4)
@@ -281,7 +286,7 @@ def train(work, epochs=25, variant='base', seed=0):
             lv /= len(Xva_t)
         print(f'epoch {ep} train {float(loss.detach()):.4f} val {lv:.4f} band IoU {inter / max(uni, 1):.3f}', flush=True)
         if lv < best:
-            best = lv; torch.save(net.state_dict(), Path(work) / f'sideview_net{_tag(img, seed)}.pt')
+            best = lv; torch.save(net.state_dict(), Path(work) / f'sideview_net{_tag(img, seed, big)}.pt')
 
 
 # ---------------------------------------------------------------- decision and test scoring
@@ -297,8 +302,8 @@ def decide(occ):
 
 def evaluate(work, variant='base', seed=0):
     import torch
-    img = variant == 'img'; work = Path(work)
-    net = make_net(72 if img else 8).cuda(); net.load_state_dict(torch.load(work / f'sideview_net{_tag(img, seed)}.pt')); net.eval()
+    img = variant == 'img'; big = variant if variant in TRAIN_SETS else False; work = Path(work)
+    net = make_net(72 if img else 8).cuda(); net.load_state_dict(torch.load(work / f'sideview_net{_tag(img, seed, big)}.pt')); net.eval()
     arms = ['G', 'H', 'N03', 'N05', 'N07']; rows = {a: [] for a in arms}
     for k in TEST:
         Z, Xk = scene_input(work, k, img); S = json.loads((work / 'scenes' / f'{k}.json').read_text())
@@ -328,7 +333,7 @@ def evaluate(work, variant='base', seed=0):
                       cane_alert=sum(r['alert'] for r in rr if r['lab'] == 'CANE_near'),
                       cane_detected=sum(r['det'] for r in rr if r['lab'] == 'CANE_near'),
                       neg_alert=sum(r['alert'] for r in rr if r['lab'] == 'NEG'), neg=sum(r['lab'] == 'NEG' for r in rr))
-    (work / f'sideview_eval{_tag(img, seed)}.json').write_text(json.dumps(dict(report=rep, rows=rows)), encoding='utf8')
+    (work / f'sideview_eval{_tag(img, seed, big)}.json').write_text(json.dumps(dict(report=rep, rows=rows)), encoding='utf8')
     print(json.dumps(rep, indent=1))
 
 
