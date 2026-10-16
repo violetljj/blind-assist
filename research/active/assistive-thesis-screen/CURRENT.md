@@ -44,7 +44,9 @@ Next decision: object-count augmentation for large object sets (a second registe
 context-frame selection. Laptop safety rules: docs/HOST_RESEARCH_COMPUTE.md.
 
 Independent worker [validation](benchmark_screen/independent_20261016/RESULTS.md): paired user-cluster intervals support
-the +6.25 pp local-memory and +2.06 pp pooling gains. On consumed validation (6 users/1,512 queries), negative-only
-support screening hits1,325 vs combined1,328 and random899–932; query-competition scoring loses140/11,064.
-Standalone warm memory construction totals27.87→18.87s (-32.3%, 6 users/3 repeats), with0/1,512 prediction
-mismatches against each arm's prior output; this is a simplification candidate, not a noninferiority result.
+the +6.25 pp local-memory and +2.06 pp pooling gains; query-competition scoring loses140/11,064.
+The negative-only [training-user holdout](benchmark_screen/negative_train_holdout_20261016/RESULTS.md) completes44 users:
+primary11 users/3,192 queries hit2,571→2,550, delta−0.658pp [−2.840,+0.987]; all44 delta−0.172pp [−0.933,+0.567].
+Warm construction205.80→144.75s (−29.66%); extraction-plus-build decomposition saves9.73%.
+Keep combined screening: the0.5pp accuracy-loss bound is unestablished. Four center-consistency failures are retained;
+cached three-repeat diagnostics change0/9,216 predictions. Features remain on the worker; owned jobs are released.
