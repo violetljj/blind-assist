@@ -191,3 +191,7 @@ Complete curves,6 deterministic UMD cases and PLSP action pairs are saved with
 source hashes and checked rendering. Task processes released; hourly follow-up
 is removed on this completion delivery. All observed cohorts are Development;
 no specified-instance role, absence/reject or BLV operation-success claim.
+
+| Date | Run | Inputs / changes | Results | Decision / evidence |
+| --- | --- | --- | --- | --- |
+| 2026-10-16 | functional-parts-joint / RUNNING | User-authorized full UMD fixed-decoder controls, followed by six-arm shared-RGB/DINO local fusion, quality and new-candidate ablations. Same IIT4417/1757; no extra data or PLSP retraining. Worker-only, seed20261016, micro8/effective16, common full epochs selected from actual profiles within24h train-process wall. | Worker CPU selftests and real pretrained synthetic64px compatibility PASS. UMD9939 full controls actually progressing; campaign verifying12348 frozen RGB/mask files and preparing train-only geometry, then waits controls COMPLETE before GPU profiles/training. No new model efficacy result. | Active bounded continuation, no thesis selection. Same-exposure and common-update-time-budget checkpoints, full native/cross-source paired evaluation and cost record queued. [Progress and controls](functional_parts/JOINT_LEARNING_PROGRESS.md). Payload artifacts.local/work/functional-parts-joint-20261016/. |

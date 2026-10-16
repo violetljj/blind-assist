@@ -2,8 +2,11 @@
 
 所属：**毕设线**，不是避障线（见[两条工作线](../../../docs/WORK_LINES.md)）。
 
-2026-10-16，Development。用户授权的全量功能部位普查、强基线训练、
-完整Seen测试及共享标签跨源评估均COMPLETE；暂不定题。
+2026-10-16，Development。上一轮全量普查、强基线及跨源评估COMPLETE。
+用户已授权继续[UMD固定读点与结构消融](functional_parts/JOINT_LEARNING_PROGRESS.md)：
+先补齐全9939图解码强对照，再以相同真实RGB细节、原DINO预训练和数据开展
+六组融合／新候选／点质量消融，实测配平成本；总训练壁钟24小时上限，
+副机持久队列自动推进。所有重型计算均在副机，主机GPU不恢复；暂不定题。
 
 [完整结果与结构研究判断](functional_parts/FULL_BASELINE_RESULTS.md) ·
 [数据与角色监督普查](functional_parts/FULL_DATA_CENSUS.md) ·
@@ -25,7 +28,7 @@ knife cut_with／stick的135/135对空间伪标签相同，限制纯结构归因
 [全量读点诊断](functional_parts/DINO_POINT_GAP_ANALYSIS.md)表明稳定读点
 已将IIT原始DINO差73缩至21；内部点等固定规则及普通高分辨率头是必要强对照。
 UMD未跑稳定／内部点对照，不能将9.56个百分点原始差当可恢复的结构收益。
-PLSP动作绑定须先区分监督缺口与结构瓶颈；没有启动新训练或扩大本轮预算。
+PLSP动作绑定须先区分监督缺口与结构瓶颈；当前续作不再训练PLSP或增加数据。
 
 IIT为语义并集；PACO有同实例语义部位关系但无任务角色；InstructPart当前
 发布不完整且跨split重叠。正类查询不支持存在性／拒答或视障操作成功结论。
@@ -35,4 +38,6 @@ IIT为语义并集；PACO有同实例语义部位关系但无任务角色；Inst
 
 本轮payload：`artifacts.local/work/functional-parts-full-20261015/`；
 回收证据在`worker_completion/`、`diagnostics/full_final/`，完整原始数据和恢复
-状态保留注册副机；完成状态与位置见`migration/STATE.json`。
+状态保留注册副机；旧完成状态见`migration/STATE.json`。
+续作payload为`artifacts.local/work/functional-parts-joint-20261016/`，封存request、
+实时收据及自动跟进归此新run，不能与旧已完成队列混用。
