@@ -168,3 +168,7 @@ cases and source/area chart were rendered with Pillow and visually inspected.
 Auxiliary paired/bootstrap/interpretation source and receipts are retained in
 payload tables_agent/. This consumed Development split supplies no new
 specified-instance role, existence/rejection or BLV operation-success evidence.
+
+| Date | Run | Inputs / changes | Results | Decision / evidence |
+| --- | --- | --- | --- | --- |
+| 2026-10-16 | functional-parts-full / PLSP complete and UMD reader repair | Fixed40epoch PLSP, micro10/effective20; full Seen1710 rows. UMD original post failed on native−1; author code excludes negatives. Full9939-mask encoding census and narrow scorer repair; original exports/labels/checkpoints/softmax/seed/bootstrap unchanged. | PLSP13880updates COMPLETE,35042.45wall_s; Seen1674 EVALUATED/36NOT_EVAL, fresh without trainRGB overlap213 rows/111 groups. Native−1 only184 UMD masks/13928pixels; split from scoop ignore counts. Synthetic and real2image canary pass. | Repaired post RUNNING, no final cross-source conclusion yet. Old failures and original request archived; Seg9939 predictions reused, next DINO export remains frozen. [Progress/recovery](functional_parts/FULL_BASELINE_PROGRESS.md), [census correction](functional_parts/FULL_DATA_CENSUS.md). |

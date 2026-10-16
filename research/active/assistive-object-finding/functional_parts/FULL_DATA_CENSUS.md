@@ -106,6 +106,10 @@ train1800/masks有550路径；按相同stem与375张RGB匹配仅125对。train18
 
 来源：[UMD官方README](https://users.umiacs.umd.edu/~fermulcm/affordance/part-affordance-dataset/README.txt)。
 
+2026-10-16完整评估时首次解码全部9,939份手标mask，发现原生整数编码除0–7外还有**−1：184图、13,928像素**，没有其他额外编码；scoop3为4,723,700像素。原严格映射因此中止评分，失败证据保留。作者`author_hmp_source/part_affordance_release/src/util/get_seg_info.m`第25–26行明确只保留非负标签，因此−1按void忽略，不能当背景或新功能类别。修复评分适配器仅接受额外−1→255，并把native void、unsupported scoop及总忽略像素/落点分开计数；原生0–7映射、全部10通道预测、未按GT屏蔽的原始softmax点选择和分组bootstrap不变。全量编码普查收据为`migration/umd_actual_label_census_a1.json`，旧请求/失败输出在副机`migration/recovery_void_a1/`；没有重跑已完成的SegFormer推理。
+
+PLSP完整Seen测试已完成：1,710行中1,674可评，35缺GT和1个GT全零/无效保持NOT_EVAL。按底图传播历史消费后，未消费217行/113 RGB组；再排除与训练同RGB的4行后为**213行/111组**，不以1710行冒充独立新图。完整测试共有18行与训练底图重叠，均保留标记。最终固定epoch40模型测试结果在`plsp/final_seen_test/metrics.json`，原作者指标函数未改；未用此测试选模型。
+
 ## 对研究设计的实际影响
 
 1. 优先用完整IIT原生监督建立现代密集模型基线，分析已有类别辨别和小区域错误；不把这直接称为语言任务或指定实例能力。

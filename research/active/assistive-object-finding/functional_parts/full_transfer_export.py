@@ -133,7 +133,9 @@ def export(args):
 
 
 def map_umd(gt):
-    if not np.isin(gt, list(UMD_TO_IIT)).all():
+    # The released clutter MAT files contain -1. The author's get_seg_info.m
+    # excludes negative labels; -1 is void, not background or another affordance.
+    if not np.isin(gt, [-1, *UMD_TO_IIT]).all():
         raise ValueError('Unknown UMD label; do not silently guess mapping')
     mapped = np.full(gt.shape, 255, dtype=np.int64)
     for old, new in UMD_TO_IIT.items():
@@ -141,7 +143,7 @@ def map_umd(gt):
     return mapped
 
 
-def read_transfer_gt(row):
+def read_transfer_gt(row, *, with_ignore_reasons=False):
     path = Path(row['gt_path'])
     if path.suffix.lower() == '.mat':
         from scipy.io import loadmat
@@ -153,12 +155,16 @@ def read_transfer_gt(row):
         gt = evaluator.load_mask(path)
     space = row.get('gt_label_space', 'umd_native_0_7')
     if space == 'umd_native_0_7':
-        return map_umd(gt)
-    if space == 'iit_shared_ids_ignore255':
+        mapped = map_umd(gt)
+        reasons = {'native_void_minus1':gt==-1, 'unsupported_scoop3':gt==3}
+    elif space == 'iit_shared_ids_ignore255':
         if not np.isin(gt, [0, *SHARED, 255]).all():
             raise ValueError('Unexpected already-mapped IIT shared label')
-        return gt
-    raise ValueError(f'Unrecognized declared label space: {space}')
+        mapped = gt
+        reasons = {'preexisting_iit_ignore255':gt==255}
+    else:
+        raise ValueError(f'Unrecognized declared label space: {space}')
+    return (mapped, reasons) if with_ignore_reasons else mapped
 
 
 def evaluate(args):
@@ -167,6 +173,7 @@ def evaluate(args):
     if not predictions:
         raise ValueError('Empty manifest')
     results=[]; all_ignored=[]; ignored=0
+    ignored_pixels_by_reason={}; ignored_points_by_reason={}
     for row in predictions:
         if row.get('split') != 'external_transfer' or row.get('image_source') != 'UMD':
             raise ValueError('Only explicitly exported UMD transfer inputs accepted')
@@ -174,33 +181,50 @@ def evaluate(args):
             raise ValueError('Must retain all ten IIT output channels')
         if {int(k):v for k,v in row['umd_to_iit'].items()} != UMD_TO_IIT:
             raise ValueError('Mapping changed')
-        gt = read_transfer_gt(row)
+        gt, ignore_reasons = read_transfer_gt(row, with_ignore_reasons=True)
+        reason_counts={name:int(mask.sum()) for name,mask in ignore_reasons.items()}
+        assert sum(reason_counts.values())==int((gt==255).sum())
+        for name,count in reason_counts.items():
+            ignored_pixels_by_reason[name]=ignored_pixels_by_reason.get(name,0)+count
         ignored += int((gt==255).sum())
         if not (gt!=255).any():
             all_ignored.append(row['source_id']); continue
         pred, scores = evaluator.native_prediction(np.load(row['prediction_path'],allow_pickle=False),gt.shape,list(range(10)),'softmax')
         scored = evaluator.score_arrays(gt,pred,scores,list(range(10)),255,.01)
+        reason_points={name:sum(p['hit'] is None and bool(mask[p['point_xy'][1],p['point_xy'][0]])
+                                for p in scored['points']) for name,mask in ignore_reasons.items()}
+        assert sum(reason_points.values())==sum(p['hit'] is None for p in scored['points'])
+        for name,count in reason_points.items():
+            ignored_points_by_reason[name]=ignored_points_by_reason.get(name,0)+count
         group=row.get('source_group')
         results.append({'source_id':row['source_id'],'split':'external_transfer','supervision_scope':'full_image',
                         'image_source':'UMD','annotated_object_count':None,
                         'bootstrap_group':str(group) if group else 'image:'+row['source_id'],
-                        'source_group_known':bool(group),**scored})
+                        'source_group_known':bool(group),'ignored_pixels_by_reason':reason_counts,
+                        'ignored_point_queries_by_reason':reason_points,**scored})
     if not results:
         raise ValueError('No evaluable pixels after mapping')
     full=evaluator.aggregate(results,list(range(1,10)))
     shared=evaluator.aggregate(results,SHARED)
     points=[p for r in results for p in r['points']]
     summary={'status':'COMPLETE','input_images':len(predictions),'evaluated_images':len(results),
-             'all_pixels_ignored_source_ids':all_ignored,'ignored_scoop_pixels':ignored,
+             'all_pixels_ignored_source_ids':all_ignored,'ignored_pixels_total':ignored,
+             'ignored_scoop_pixels':ignored_pixels_by_reason.get('unsupported_scoop3',0),
+             'ignored_native_void_minus1_pixels':ignored_pixels_by_reason.get('native_void_minus1',0),
+             'ignored_pixels_by_reason':ignored_pixels_by_reason,
              'mapping_umd_to_iit':UMD_TO_IIT,'shared_foreground_ids':SHARED,
              'full10_output_mIoU_diagnostic':full,'shared6_foreground_mIoU_primary':shared,
              'point_queries_including_unevaluable':len(points),
-             'points_landing_on_ignored_scoop':sum(p['hit'] is None for p in points),
+             'point_queries_landing_on_any_ignore':sum(p['hit'] is None for p in points),
+             'points_landing_on_ignored_scoop':ignored_points_by_reason.get('unsupported_scoop3',0),
+             'points_landing_on_native_void_minus1':ignored_points_by_reason.get('native_void_minus1',0),
+             'ignored_point_queries_by_reason':ignored_points_by_reason,
              'point_hits_over_all_positive_queries_conservative':sum(p['hit'] is True for p in points)/len(points) if points else None,
              'prediction_policy':'All ten IIT logits retained; no shared-class masking or renormalization',
              'full10_note':'All-output foreground mean over IDs1..9 with union>0 on mapped valid pixels; not complete UMD task truth',
              'shared6_note':'Same full10 predictions; average IoU only over six mapped foreground IDs. Background excluded from primary mIoU.',
-             'ignore_note':'UMD scoop3 absent from IIT is ignore255, not background; point selection never masked by GT',
+             'ignore_note':'UMD native void -1 and unsupported scoop3 map to ignore255, never background; separately counted; point selection never masked by GT',
+             'native_void_provenance':'Released author get_seg_info.m excludes pix_labels<0; only observed -1 additionally accepted; other unknown codes rejected',
              'scope':'Cross-source shared semantic labels, not physical-instance part or blind-user task success',
              'bootstrap_shared':evaluator.bootstrap(results,SHARED,args.bootstrap,args.seed),
              'manifest_sha256':trainer.sha(args.predictions),'evaluator_source_sha256':trainer.sha(evaluator.__file__),
@@ -229,7 +253,25 @@ def selftest():
     pred[1,0]=3
     wrong=evaluator.aggregate([evaluator.score_arrays(gt,pred,scores,list(range(10)))],SHARED)
     assert wrong['mIoU_foreground'] < 1
-    print(json.dumps({'status':'PASS','mapping':True,'scoop_ignored':True,'shared_metrics':True,'unsupported_prediction_penalized':True}))
+    void_raw=np.array([[0,1,2,3,-1],[4,5,6,7,0]],dtype=np.int16)
+    void_gt=map_umd(void_raw)
+    assert void_gt[0,3]==void_gt[0,4]==255 and void_gt[0,0]==0
+    for unknown in (-2,8,255):
+        try:map_umd(np.array([[unknown]],dtype=np.int16))
+        except ValueError:pass
+        else:raise AssertionError(f'Unknown native code silently accepted: {unknown}')
+    void_logits=np.full((10,2,5),-4,dtype=np.float32)
+    for y in range(2):
+        for x in range(5):void_logits[0 if void_gt[y,x]==255 else void_gt[y,x],y,x]=4
+    void_logits[5,0,4]=12
+    void_pred,void_scores=evaluator.native_prediction(void_logits,void_gt.shape,list(range(10)))
+    void_scored=evaluator.score_arrays(void_gt,void_pred,void_scores,list(range(10)))
+    point=next(p for p in void_scored['points'] if p['class_id']==5)
+    assert point['point_xy']==[4,0] and point['hit'] is None and void_scored['ignored_pixels']==2
+    assert sum(map(sum,void_scored['confusion']))==8
+    print(json.dumps({'status':'PASS','mapping':True,'scoop_ignored':True,'native_void_ignored':True,
+                      'unknown_native_codes_rejected':True,'point_selection_not_GT_masked':True,
+                      'shared_metrics':True,'unsupported_prediction_penalized':True}))
 
 
 def main():

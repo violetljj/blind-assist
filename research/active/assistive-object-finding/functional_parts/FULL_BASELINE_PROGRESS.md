@@ -45,6 +45,10 @@
 
 02:20轻量同步确认PLSP完成5/40轮并进入第6轮、1,740次更新；近期step2.71秒、剩余训练估计32,674秒（约9.1小时），不含后续评估。副机瞬时GPU100%、显存5,882/6,144MiB、可用RAM9,737MiB。main/post仍RUNNING，UMD仍ALREADY_MIRRORED且无重传，主机GPU禁用政策不变。本次IIT诊断可独立交付，不能据此称整轮最终报告完成。
 
+11:42核查确认main队列SUCCESS，PLSP终态COMPLETE：40epoch/13,880次更新、进程壁钟35,042.45秒（9.734小时）、CPU133,679.20秒、峰值CUDA allocated5,339,471,360B/reserved5,519,704,064B；原micro10/effective20保持，全Seen测试1,710行亦COMPLETE，1,674可评/36NOT_EVAL。原post在SegFormer的9,939图导出后，评分因原生−1标签失败；这不是训练或模型推理失败。完整编码普查及作者代码确认−1是void，具体像素/分母见[普查](FULL_DATA_CENSUS.md)。
+
+11:49已保留原post terminal/request/日志和失败evaluation至副机`migration/recovery_void_a1/`，在确认原PID/子树/锁释放后恢复同一post_queue。新runner `functional-parts-full-20261015-post-void-a1`，新封存request `migration/worker_post_void_request_a1.json` SHA256 `9ebbbb92d26b5c12dab70464c46bf229b30d19066fc4eb395d9e015814665935`；queue实际PID17336/launcher27536，Seg评分实际26416/launcher14084。已完成步骤按原命令和成功证据跳过；Seg预测manifest SHA未变。只有评分器增加−1→ignore255与分账，部署源SHA `78e62d2855d670d0682080a450fc4ca9b43e015b6d99fb054d1e903a06607d37`，定向selftest和真实clutter/tool两图通路通过；两图仅作故障验收。DINO后续导出仍使用原冻结源，所有原生分割/点规则和bootstrap种子/次数不变，不混入此前诊断的稳定解码。当前顺序为Seg评分→DINO导出/评分→最终汇总，整轮仍待post SUCCESS。
+
 2026-10-15 18:13（UTC+8）：主本地队列已启动。实际进度以`queue/progress.json`、`runs/*/progress.jsonl`及各terminal为准；launcher PID49392对应实际queue Python PID45932，首个训练PID52016。没有把launcher回执当训练完成；已确认首个模型在全部train4417清单上持续更新。
 
 顺序为SegFormer-B0训练80epoch→全val导出/独立评分/错误图→DINO-S/16同样流程→PLSP Seen完整40epoch→曲线与汇总。两密集模型448输入、物理/有效batch16、2个loader worker、同CE+Dice；SegFormer全部3,716,714参数训练，DINO后4块/norm/decoder共7,690,506参数训练。DINO权重为原DINO-S/16，明确不是DINOv2。
@@ -63,4 +67,4 @@ Seen完整测试输入已按CRC/SHA准备：1,710动作—图像行、730精确�
 
 已实际完成首个模型前2epoch与全部1,757图验证通路，继续完整80epoch；这些中期值仅在原始进度中保留，不作为充分训练效果或研究结论。
 
-本轮完整研究及创新结论尚未交付。两套IIT训练已跑满80epoch，PLSP和跨源评估仍待完成；完整统计、训练曲线、错误分析和实际成本将在同一记录更新。当前仅保留副机主队列与只读等待的后续队列，owner与停止/恢复方式如上；主机没有本任务的GPU作业或常驻下载/同步进程。
+本轮完整研究及创新结论尚未交付。两套IIT各80epoch及PLSP40epoch训练、PLSP完整Seen测试均已完成，UMD跨源评分/最终汇总仍待修复后队列完成；完整统计、训练曲线、错误分析和实际成本将在同一记录更新。当前仅保留副机修复后的post队列，owner与停止/恢复方式如上；主机没有本任务的GPU作业或常驻下载/同步进程。

@@ -14,13 +14,16 @@ registered secondary worker after the user reported primary-host memory pressure
 The primary GPU queues were intentionally stopped with the epoch17 checkpoint
 preserved; do not auto-restart them. Worker ownership is recorded in the payload's
 `migration/STATE.json`. SegFormer and DINO each completed80epoch and full-val
-scoring/galleries on train4417/cleanval1757; PLSP40epoch is still running.
+scoring/galleries on train4417/cleanval1757. PLSP40epoch and full Seen test are
+COMPLETE; UMD transfer scoring/final summary are still running. An observed
+native-void(-1) reader failure was repaired against author code, with original
+predictions and failed records preserved; see the training queue record.
 The [full point-gap diagnosis](functional_parts/DINO_POINT_GAP_ANALYSIS.md) reproduced
 all3821 queries: stable decoding shrinks DINO's point deficit from73 to21,
 and predicted-region interior points reach3384 hits. Natural-image small-part
 three-candidate oracle remains209/392, so fine-detail/new-candidate generation
 with point-quality learning is a hypothesis; no new structure is trained yet.
-Post-queue PLSP test and UMD cross-source evaluations remain pending.
+The repaired post-queue continues UMD evaluations; no thesis topic is selected.
 Native labels do not establish free-task role truth; InstructPart release is
 incomplete/overlapping. Wait for PLSP and cross-source errors before choosing a thesis.
 
