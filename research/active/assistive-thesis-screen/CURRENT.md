@@ -30,22 +30,15 @@ before promoting a field-evidence method. No thesis commitment; actual recapture
 still needs paired subsequent views. All reused data remain Development, with no
 deployment or user-benefit claim. Payload stays in artifacts.local; compute released.
 
-2026-10-15 later: a [quantifiable-benchmark screen](benchmark_screen/RESULTS.md) (public benchmark + released
-baselines + standard metrics) ranks ORBIT teachable object recognition first: frozen full-frame prototypes reach
-70–78% versus the official meta-trained 85.67% on validation, while ground-truth object crops reach 88–94%, so
-personalised localization in clutter is the measured headroom; naive 14-crop grids recover part (best 83.5%).
-VizWiz-Classification is a secondary robustness benchmark (best modern zero-shot 55.1%). Next: ORBIT test users.
-ORBIT test (17 users, official 50-task protocol, one run after validation-only selection): an annotation-free
-personal part memory on frozen DINOv2-S reaches 72.93% (full-frame 66.19%, unfiltered parts 55.52%, GT-box 81.62%),
-above the 2022 winner (71.69%) but below the best official meta-trained model (75.38%). Halving context frames keeps
-72.48% at half the personalisation MACs. Next: learn part selection/scoring on ORBIT train users to pass 75.4.
-Training-free upgrades (validation-selected, one test run): adding causal temporal accumulation, which the ORBIT
-rules allow, the part memory reaches 79.21 +- 0.58% on the test users versus 75.38% for the best official
-meta-trained model; whole-frame with the same accumulation gets 75.72%, and a 1-second window gives 75.61%. Register
-DINOv2 and multi-scale memory did not help on validation. Thesis direction: ORBIT personal-object recognition.
-Nearest-neighbour check (2026-10-16): a faithful Swiss DINO re-implementation on the same frozen DINOv2-S with
-annotation-free masks (validation-selected 448 + centre box) reaches 61.63/69.35% (single frame/causal) on the test
-users, about 10 points below the part memory. PerSAM is scripted but not run. Laptop safety rules: docs/HOST_RESEARCH_COMPUTE.md.
-PerSAM (SAM ViT-B, automatic centre-click support masks) reaches 20.64% on the same 2,970 test frames where the part
-memory gets 72.53% and Swiss DINO 61.52%; SAM features separate even clean objects poorly. nvJPEG decode + TF32 memory
-build + FP16 matching (`gpu mixed`) cut validation time 73.6->57.8 s with accuracy unchanged; all-FP16 was rejected.
+ORBIT thesis direction (details: [results](benchmark_screen/RESULTS.md), [story](benchmark_screen/THESIS_STORY.md),
+[registered rules](benchmark_screen/PLAN.md)). Test = 17 official test users, official 50-task protocol, each round
+registered before one run. Annotation-free personal part memory on frozen DINOv2-S/224: 72.54/76.53/80.44%
+(single frame / 1 s causal window / from first frame); whole frame 66.29%; Swiss DINO 61.63% and PerSAM 20.64% under
+the same annotation-free condition; best official meta-trained model 75.38% (single frame).
+2026-10-16: a low-rank matching adapter learned on the 44 train users with frame labels only (49 k parameters, no boxes)
+gives +4.9 in user-disjoint train CV but +1.1 on test by the official video-weighted metric (73.67/77.79/81.06, three
+seeds; ensemble 74.07/78.35/81.54; pooling-only 74.60 single frame); user-mean gain +3.5, negative for users with
+>=11 objects. Single frame still below the official best; with the allowed history it is above. Box supervision,
+colour-aware matching and cohort score normalisation gave no stable gain.
+Next decision: object-count augmentation for large object sets (a second registered test use), phone latency, or
+context-frame selection. Laptop safety rules: docs/HOST_RESEARCH_COMPUTE.md.

@@ -186,6 +186,7 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
         todo = [v for v in vids if v['type'] == 'clutter' and len([f for f in v['valid'] if fnum(f) <= 1000]) >= 50]
         if not limit and todo and all((out / f"{v['video']}.npz").exists() for v in todo):
             print(user, 'already dumped, skipped', flush=True); continue
+        guard()                                                         # before each user's work, not after the last
         objs = sorted({v['obj'] for v in vids if v['type'] == 'clean'})
         ctx = {o: [f for v in vids if v['type'] == 'clean' and v['obj'] == o for f in v['context'] if fnum(f) <= 1000] for o in objs}
         names = [f for o in objs for f in ctx[o]]; lab = np.array([i for i, o in enumerate(objs) for _ in ctx[o]])
@@ -286,7 +287,7 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
             tick('save', t)
         print(user, len(objs), 'objects', len(clut), 'videos', round(time.time() - t0), 's', json.dumps(peaks()), flush=True)
         del mems, sw, protos, cls1, L
-        torch.cuda.empty_cache(); guard()
+        torch.cuda.empty_cache()
         if limit:
             break
     meta['wall_s'] = round(time.time() - t0, 1); meta['peaks'] = peaks(); meta['stage_s'] = {k: round(v, 1) for k, v in T.items()}
