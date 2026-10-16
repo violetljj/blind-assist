@@ -1,19 +1,20 @@
-# 两条工作线：毕设与避障
+# 毕设与避障：独立工作区，共享成果和数据
 
-更新：2026-10-15。用户确认：**“毕设”和“避障”是两条不同的线，只部分重合**。
-之后对话、记录和提交里说“毕设”只指毕设线，说“避障”只指避障线；话里没说清是哪条时先问。
+更新：2026-10-16。用户要求将毕设迁入 `E:\Graduation`；本工作区和本聊天继续避障项目。两边的成果和数据可以相互复用。
 
-| | 毕设线 | 避障线 |
+| 工作线 | 工作入口 | 当前内容 |
 | --- | --- | --- |
-| 要回答什么 | 毕业论文做什么题目、拿什么可量化成果撑起来 | BlindAssist 头戴前视避障能否做好、做成可演示的系统 |
-| 当前做法 | 在公开数据和公开基线上做小规模筛选，找有可测提升空间的方向 | ToF（CNH）+ RGB 单目深度融合；盲杖互补预警（盲杖先碰到的不报，碰不到的报）；手机 App 与硬件演示 |
-| 研究目录 | [`assistive-thesis-screen`](../research/active/assistive-thesis-screen/CURRENT.md)（选题筛选：商品字段读取、无障碍问答、ORBIT/VizWiz 基准等）· [`assistive-object-finding`](../research/active/assistive-object-finding/CURRENT.md)（找物、功能部位定位） | [`hardware-bringup`](../research/active/hardware-bringup/CURRENT.md)（实机融合、ADT/ASE 盲杖互补，`*_CANE_*` 报告）· [`dtr-r0`](../research/active/dtr-r0/CURRENT.md)（近场 ToF/RGB 算法与模拟） |
-| 代码与文档 | 各自目录下的脚本；载荷在 `artifacts.local/work/` | Android 模块、[硬件演示](HARDWARE_OBSTACLE_DEMO.md)、[项目状态](PROJECT_STATE.md)、[研究决定](CURRENT_DECISION.md) |
-| 状态（10-15） | 选题未定；各方向都只有 Development 小样结论 | 盲杖互补：几何规则可行，瓶颈在单目深度造假支撑，正在试学习式几何 |
+| 避障 | 本仓库的 [项目状态](PROJECT_STATE.md) → [研究决定](CURRENT_DECISION.md) | Android、头戴 ToF/RGB 融合、盲杖互补预警、硬件演示及原实验历史 |
+| 毕设 | [Graduation 入口](E:/Graduation/README.md) → [毕设状态](E:/Graduation/docs/PROJECT_STATE.md) → [资料索引](E:/Graduation/docs/RESOURCE_INDEX.md) | 选题筛选、ORBIT 等公开基准、找物／功能部位定位、开题和论文材料 |
 
-## 两条线的关系
+`assistive-thesis-screen` 与 `assistive-object-finding` 的完整源码、当前页、结果及运行记录已迁到 Graduation 的 `research/active/`，后续在新工作区继续。旧版本仍可从本仓库迁移前的 Git 历史恢复。
 
-- 避障线的成果可以被毕设**引用**（例如盲杖互补预警曾被讨论作为论文题目候选），但是否写进论文、写成哪一章，由毕设线决定。
-- 避障线的优先级、停止规则和下一步不受毕设选题影响；毕设线的筛选结果也不改变避障线的决定。
-- [项目状态](PROJECT_STATE.md) 与 [研究决定](CURRENT_DECISION.md) 只覆盖避障线；毕设线的进展看上表两个目录的 `CURRENT.md`。
-- 新开研究目录时，在 `CURRENT.md` 开头写明归属（毕设 / 避障）；两者都不是的（如已暂停的 [L10](../research/active/l10-r0/CURRENT.md) 等历史路线）不必归入。
+## 共享方式
+
+- 两边的 `artifacts.local` 访问同一份 F 盘数据、模型、实验产物和回执；不重复搬运。毕设的具体访问入口与历史论文材料见新资料索引。
+- 成果可以双向引用和复用。引用保留来源、数据划分、消费历史、指标分母、单位和适用范围；迁目录不构成新实验或独立测试。
+- 避障的 `hardware-bringup`、`dtr-r0` 及历史协议、失败和冻结证据留在本仓库。旧 CNH 论文文稿在 Graduation 有带来源记录的历史副本。
+- 各工作区独立决定优先级、下一步和提交范围；新实验使用独立 run 目录，避免覆盖共享存储中的既有输出。
+- 已在副机运行的毕设队列沿用原工作根、请求、作业、恢复状态和累计预算；本次迁移不重启任务。自动跟进改从 Graduation 读取和更新记录。
+
+本仓库不再承载毕设新源码或新论文工作。共享数据的物理入口继续遵循 [本地产物规则](LOCAL_ARTIFACTS.md)。
