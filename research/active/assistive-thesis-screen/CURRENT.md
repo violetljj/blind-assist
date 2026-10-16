@@ -33,7 +33,7 @@ deployment or user-benefit claim. Payload stays in artifacts.local; compute rele
 ORBIT thesis direction (details: [results](benchmark_screen/RESULTS.md), [story](benchmark_screen/THESIS_STORY.md),
 [registered rules](benchmark_screen/PLAN.md)). Test = 17 official test users, official 50-task protocol, each round
 registered before one run. Annotation-free personal part memory on frozen DINOv2-S/224: 72.54/76.53/80.44%
-(single frame / 1 s causal window / from first frame); whole frame 66.29%; Swiss DINO 61.63% and PerSAM 20.64% under
+(single frame / EMA half-life 30 frames / from first frame); whole frame 66.29%; Swiss DINO 61.63% and PerSAM 20.64% under
 the same annotation-free condition; best official meta-trained model 75.38% (single frame).
 2026-10-16: a low-rank matching adapter learned on the 44 train users with frame labels only (49 k parameters, no boxes)
 gives +4.9 in user-disjoint train CV but +1.1 on test by the official video-weighted metric (73.67/77.79/81.06, three
@@ -42,3 +42,9 @@ seeds; ensemble 74.07/78.35/81.54; pooling-only 74.60 single frame); user-mean g
 colour-aware matching and cohort score normalisation gave no stable gain.
 Next decision: object-count augmentation for large object sets (a second registered test use), phone latency, or
 context-frame selection. Laptop safety rules: docs/HOST_RESEARCH_COMPUTE.md.
+
+Independent worker [validation](benchmark_screen/independent_20261016/RESULTS.md): paired user-cluster intervals support
+the +6.25 pp local-memory and +2.06 pp pooling gains. On consumed validation (6 users/1,512 queries), negative-only
+support screening hits1,325 vs combined1,328 and random899–932; query-competition scoring loses140/11,064.
+Standalone warm memory construction totals27.87→18.87s (-32.3%, 6 users/3 repeats), with0/1,512 prediction
+mismatches against each arm's prior output; this is a simplification candidate, not a noninferiority result.
