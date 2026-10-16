@@ -6,6 +6,9 @@
                                                 user-disjoint folds; per-frame accuracy of each variant vs the
                                                 training-free rules (top-8 mean, top-8 + z(full)) on the held-out users
   fit  <prefix> <variant json> <out.pt> [seed=0]   train on all users of <prefix>
+  fitfolds <prefix> <variant json> <out dir> <name> [folds=4] [seed=0]
+                                                one model per cv fold (same user folds as cv) + <name>.json mapping
+                                                each user to the model that never saw them (honest dev dumps)
 
 Variant keys: objectness, contrast, rank (EvidenceHead args; rank > 0 = adapter on the memory matching), box (BCE
 weight of the objectness on train boxes), patchce (weight of in-box patch classification in adapter space), epochs, lr.
@@ -152,6 +155,20 @@ def cv(prefix, variants, out, folds=4, seed=0):
         print(f'{k:24s} user-mean {s["user_mean"]:6.2f}  fold-mean {s["fold_mean"]:6.2f}', flush=True)
 
 
+def fitfolds(prefix, variant, out, name, folds=4, seed=0):
+    import torch
+    d = load(prefix); var = json.loads(variant); folds, seed = int(folds), int(seed); out = Path(out); out.mkdir(parents=True, exist_ok=True)
+    users = sorted(set(d['user'])); rs = np.random.default_rng(seed); rs.shuffle(users)
+    fold_of = {u: i % folds for i, u in enumerate(users)}
+    fo = torch.as_tensor(np.array([fold_of[u] for u in d['user']]), device='cuda')
+    for f in range(folds):
+        m, kw = train(d, torch.nonzero(fo != f).squeeze(1), var, seed)
+        kw.update(D=d['X'].shape[2], T=d['X'].shape[1])
+        torch.save(dict(kw=kw, state=m.state_dict(), variant=var, fold=f), out / f'{name}_f{f}.pt')
+    (out / f'{name}.json').write_text(json.dumps({u: str(out / f'{name}_f{k}.pt') for u, k in fold_of.items()}, indent=1))
+    print('saved', folds, 'fold models and', out / f'{name}.json', flush=True)
+
+
 def fit(prefix, variant, out, seed=0):
     import torch
     d = load(prefix); var = json.loads(variant); log = []
@@ -164,4 +181,4 @@ def fit(prefix, variant, out, seed=0):
 
 
 if __name__ == '__main__':
-    dict(pack=pack, cv=cv, fit=fit)[sys.argv[1]](*sys.argv[2:])
+    dict(pack=pack, cv=cv, fit=fit, fitfolds=fitfolds)[sys.argv[1]](*sys.argv[2:])

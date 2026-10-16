@@ -13,7 +13,22 @@ A cfg with 'color': beta > 0 makes the part match colour-aware: DINOv2's colour-
 nearly colour-blind, while personal objects often differ only in colour (failure analysis: five markers of different
 colours absorbed by one). Each patch gets its mean opponent chroma (O1, O2); a memory part carries the mean chroma of
 its kept patches, and the match becomes max_k [cos(x_t, p_k) - beta * ||chroma_t - chroma_k||].
-head=<a.pt,b.pt,...> adds one arm 'head:<file stem>' per learned matching model (evidence_head.py) on cfg 0's memory.
+zoom=<s1,s2,...> adds "look again" arms 'zoom<100 s>' (PLAN addendum 5): from cfg 0's evidence map (max over objects of
+the part similarity, 3x3 smoothed) take the square of side s x frame around the strongest evidence, crop it from the
+already-decoded GPU frame with roi_align to the model size, forward once more and score it with the same memory
+(heads, if any, also get '<head>~zoom<100 s>'); the crop box is saved as 'box_zoom<100 s>' (pixels, x0 y0 x1 y1).
+zoom entry 'cand<s>' = candidate verification: each of the two best objects of the whole-frame part score gets its own
+crop around *its* evidence peak and is rescored there (2 extra forwards); arm 'cand<100 s>' keeps the whole-frame scores
+but puts the two candidates on top, ordered by their crop scores (aux_cand*: idx0, idx1, crop0, crop1).
+zoom entry 'gt' = DIAGNOSTIC upper bound only: crop around the annotated box (evaluator truth, never a method arm);
+'gtc<s>' = annotated centre with a fixed side s, 'gts' = evidence-peak centre with the annotated size (both DIAGNOSTIC:
+they separate where to look from how much to zoom).
+loc=<loc_all.pt | loc_folds.json> + zoom entries 'loc<s>' / 'locadapt': the crop centre comes from the learned
+localizer (train_localizer.py, trained on train-split boxes; a folds json maps each user to the model that never saw
+them, for honest dev runs); 'locadapt' sizes the square from the localizer's predicted object area (1.25 x sqrt, side
+0.35-0.8 of the frame).
+head=<a.pt,b.pt,...> adds one arm 'head:<file stem>' per learned matching model (evidence_head.py) on cfg 0's memory;
+an entry <name>.json maps each user to the fold model that never saw them (honest dev runs; arm 'head:<name>').
 """
 from __future__ import annotations
 
@@ -86,10 +101,11 @@ def patch_colors(x, size, grid, chunk=256):
     return torch.cat(out)
 
 
-def part_memory_from(flat, cfg, prec='fp32', cols=None):
+def part_memory_from(flat, cfg, prec='fp32', cols=None, keep_out=None):
     """flat: list of [n_o, D] normalised context patches (fp16, all scales). Discriminative keep + k-means, as
     orbit_eval; converts one object at a time and samples the other objects before gathering (bounded memory).
-    cols: optional list of [n_o, 3] patch colours -> also returns each part's mean chroma (O1, O2)."""
+    cols: optional list of [n_o, 3] patch colours -> also returns each part's mean chroma (O1, O2).
+    keep_out: optional list that receives each object's kept-patch mask (for figures)."""
     import torch
     mem, sizes, pcols = [], [len(q) for q in flat], []
     for o in range(len(flat)):
@@ -107,6 +123,8 @@ def part_memory_from(flat, cfg, prec='fp32', cols=None):
         s_own = torch.cat([(P[i:i + 4096] @ own.T).topk(6, dim=1).values[:, 1:].mean(1) for i in range(0, len(P), 4096)])
         d = (s_own - s_other).float()
         sel = d >= d.quantile(1 - cfg['keep']); keep = P[sel].float()
+        if keep_out is not None:
+            keep_out.append(sel.cpu())
         mem.append(kmeans(keep, min(cfg['parts'], len(keep))))
         if cols is not None:
             a = (keep @ mem[-1].T).argmax(1); ch = cols[o][sel][:, 1:]
@@ -150,17 +168,69 @@ def box_mask(box, grid, side=1080):
     return (iny[:, None] & inx[None]).reshape(-1)
 
 
-def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode='cpu', prec='fp32', patch_k=0, head=''):
+def per_object(sim, owner, n_obj, prec):
+    """sim [N,T,P] patch-part similarities -> [N,T,n_obj] max over each object's parts."""
+    import torch
+    counts = torch.bincount(owner, minlength=n_obj)
+    if prec in ('fp16', 'mixed') and bool((counts == counts[0]).all()):   # equal part counts: one reshape-max
+        return sim.view(*sim.shape[:2], n_obj, int(counts[0])).amax(3).float()
+    sim = sim.float()
+    return torch.stack([sim[:, :, owner == i].amax(2) for i in range(n_obj)], 2)
+
+
+def zoom_boxes(S, grid, side, s):
+    """S [N,T,O] part similarities -> square boxes [N,4] (x0,y0,x1,y1 px) of side s*side around the smoothed
+    strongest evidence over all of the user's objects, kept inside the frame."""
+    import torch
+    import torch.nn.functional as F
+    E = F.avg_pool2d(S.amax(2).view(-1, 1, grid, grid), 3, 1, 1, count_include_pad=False).flatten(1)
+    k = E.argmax(1); half = torch.as_tensor(s * side / 2, device=S.device, dtype=torch.float).expand(len(k))
+    cy = ((k // grid).float() + .5) * side / grid; cx = ((k % grid).float() + .5) * side / grid
+    cx = torch.minimum(torch.maximum(cx, half), side - half); cy = torch.minimum(torch.maximum(cy, half), side - half)
+    return torch.stack([cx - half, cy - half, cx + half, cy + half], 1)
+
+
+def zoom_tag(z):
+    if z in ('gt', 'gts'):
+        return 'zoom' + z
+    if z.startswith('gtc'):
+        return f'zoomgtc{round(100 * float(z[3:]))}'
+    if z.startswith('loc'):
+        return z if z == 'locadapt' else f'loc{round(100 * float(z[3:]))}'
+    return f'cand{round(100 * float(z[4:]))}' if z.startswith('cand') else f'zoom{round(100 * float(z))}'
+
+
+def gt_boxes(names, boxes, side, src=1080, fixed=None, sizes_only=False):
+    """DIAGNOSTIC: square crop around each frame's annotated box (1.25x its longer side, >= a quarter of the frame;
+    or a fixed side fraction); frames without a box get the whole frame. sizes_only -> the side fractions."""
+    import torch
+    out = []
+    for f in names:
+        b = boxes.get(f)
+        if not b:
+            out.append([0., 0., float(side), float(side)]); continue
+        sc = side / src
+        L = fixed * side if fixed else min(max(max(b['w'], b['h']) * sc * 1.25, side / 4), side); h = L / 2
+        cx = min(max((b['x'] + b['w'] / 2) * sc, h), side - h); cy = min(max((b['y'] + b['h'] / 2) * sc, h), side - h)
+        out.append([cx - h, cy - h, cx + h, cy + h])
+    t = torch.tensor(out, device='cuda')
+    return (t[:, 2] - t[:, 0]) / side if sizes_only else t
+
+
+def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode='cpu', prec='fp32', patch_k=0, head='',
+         zoom='', loc=''):
     """baselines: comma list of Swiss DINO support masks, e.g. 'full,center' -> arms swiss_full, swiss_center."""
     import torch
     root, out = Path(root), Path(out); out.mkdir(parents=True, exist_ok=True)
-    patch_k = int(patch_k)
+    patch_k = int(patch_k); zooms = [z for z in str(zoom).split(',') if z]
+    assert not zooms or decode == 'gpu', 'zoom crops from the GPU-decoded frames'
     if patch_k:
         (out / 'patch').mkdir(exist_ok=True)
     hds = {}
     if head:
         import evidence_head as EH
-        hds = {f'head:{Path(h).stem}': EH.load(h) for h in head.split(',')}
+        hds = {f'head:{Path(h).stem}': ({u: EH.load(pth) for u, pth in json.loads(Path(h).read_text()).items()}
+                                         if h.endswith('.json') else EH.load(h)) for h in head.split(',')}
     cfgs = [{**CFG, 'scales': [1.0], **c} for c in json.loads(cfgs)]
     plan = json.loads((root / 'plan.json').read_text())
     guard(); limit = int(limit)
@@ -170,12 +240,19 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
     users = {}
     for v in plan['videos']:
         users.setdefault(v['user'], []).append(v)
-    t0 = time.time(); meta = dict(backbone=backbone, cfgs=cfgs, gmacs_per_frame=mpf / 1e9, users={}, decode=decode, prec=prec,
-                                  patch_k=patch_k, head=head)
+    locs = {}
+    if loc:
+        import train_localizer as TL
+        if loc.endswith('.json'):
+            mp = json.loads(Path(loc).read_text()); locs = {u: TL.load_loc(pth) for u, pth in mp.items()}
+        else:
+            locs = {'*': TL.load_loc(loc)}
+    t0 = time.time(); meta = dict(loc=loc, backbone=backbone, cfgs=cfgs, gmacs_per_frame=mpf / 1e9, users={}, decode=decode, prec=prec,
+                                  patch_k=patch_k, head=head, zoom=zooms)
     # prefetch thread does CPU work only; GPU decode (if any) happens on the main thread in `finish`
     reader = (lambda names: read_bytes(root / 'frames', names)) if decode == 'gpu' else (lambda names: read_many(root / 'frames', names))
     finish = decode_gpu if decode == 'gpu' else (lambda x: x)
-    T = dict(read_wait=0., ctx=0., forward=0., full=0., part=0., swiss=0., head=0., save=0.)
+    T = dict(read_wait=0., ctx=0., forward=0., full=0., part=0., swiss=0., head=0., zoom=0., save=0.)
 
     def tick(key, t):
         torch.cuda.synchronize(); T[key] += time.time() - t; return time.time()
@@ -186,7 +263,7 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
         todo = [v for v in vids if v['type'] == 'clutter' and len([f for f in v['valid'] if fnum(f) <= 1000]) >= 50]
         if not limit and todo and all((out / f"{v['video']}.npz").exists() for v in todo):
             print(user, 'already dumped, skipped', flush=True); continue
-        guard()                                                         # before each user's work, not after the last
+        torch.cuda.empty_cache(); guard()                               # before each user's work, not after the last
         objs = sorted({v['obj'] for v in vids if v['type'] == 'clean'})
         ctx = {o: [f for v in vids if v['type'] == 'clean' and v['obj'] == o for f in v['context'] if fnum(f) <= 1000] for o in objs}
         names = [f for o in objs for f in ctx[o]]; lab = np.array([i for i, o in enumerate(objs) for _ in ctx[o]])
@@ -202,7 +279,10 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
         mems, pcol = [], []
         ccol = patch_colors(xc, size, int(round(p_tok ** .5))) if any(c.get('color', 0) for c in cfgs) else None
         for c in cfgs:
-            flat = [torch.cat([scale_pat[s][L == i].reshape(-1, scale_pat[s].shape[-1]) for s in c['scales']])
+            # context frames are grouped by object, so each object's patches are a slice (a view, no copy)
+            bounds = np.cumsum([0] + [len(ctx[o]) for o in objs])
+            view = lambda s_, i: scale_pat[s_][bounds[i]:bounds[i + 1]].reshape(-1, scale_pat[s_].shape[-1])
+            flat = [view(1.0, i) if c['scales'] == [1.0] else torch.cat([view(s_, i) for s_ in c['scales']])
                     for i in range(len(objs))]
             if c.get('color', 0):
                 assert c['scales'] == [1.0], 'colour-aware memory is single-scale'
@@ -241,6 +321,12 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
                 nxt = pool.submit(reader, clut[k + 1][1])
             res = {'full': [], **{f'part@{j}': [] for j in range(len(cfgs))}, **{f'swiss_{b}': [] for b in sw},
                    **{k: [] for k in hds}}
+            for z in zooms:
+                tag = zoom_tag(z); res[tag] = []; res[f'box_{tag}'] = []
+                if z.startswith('cand'):
+                    res[f'aux_{tag}'] = []
+                for k in hds:
+                    res[f'{k}~{tag}'] = []
             sel = np.zeros(len(allf), bool); store = dict(X=[], S=[], idx=[])
             if patch_k:
                 vi = np.flatnonzero(valid); rs = np.random.default_rng(zlib.crc32(v['video'].encode()))
@@ -257,19 +343,60 @@ def main(root, out, backbone, cfgs, baselines='', limit=0, only_users='', decode
                     sim = fpat @ allp.T                                          # fp16 tensor-core matmul in both modes
                     if pcol[j] is not None:
                         sim = sim - (cfgs[j]['color'] * torch.cdist(qcol, pcol[j][None].expand(len(qcol), -1, -1))).to(sim.dtype)
-                    counts = torch.bincount(owner, minlength=len(objs))
-                    if prec in ('fp16', 'mixed') and bool((counts == counts[0]).all()):   # equal part counts: one reshape-max
-                        per_obj = sim.view(*sim.shape[:2], len(objs), int(counts[0])).amax(3).float()
-                    else:
-                        sim = sim.float()
-                        per_obj = torch.stack([sim[:, :, owner == i].amax(2) for i in range(len(objs))], 2)
+                    per_obj = per_object(sim, owner, len(objs), prec)
                     res[f'part@{j}'].append(per_obj.topk(cfgs[j]['topk'], dim=1).values.mean(1).cpu().numpy())
                     if j == 0:
                         po0 = per_obj
                 t = tick('part', t)
-                for k, hd in hds.items():
+                hsel = {k: (hd[user] if isinstance(hd, dict) else hd) for k, hd in hds.items()}
+                for k, hd in hsel.items():
                     res[k].append(EH.scores(hd, fpat, po0, full_s, *mems[0]).cpu().numpy())
                 t = tick('head', t)
+                if zooms:
+                    from torchvision.ops import roi_align
+                    src = x[a:a + qbs].float(); side = src.shape[-1]; n = len(src)
+                    def look(bx):
+                        crop = roi_align(src, torch.cat([torch.arange(n, device=bx.device)[:, None].float(), bx], 1),
+                                         (size, size), 1.0, 2, True)                    # 0-255 float, like the frames
+                        zcls, zpat = forward(m, size, mean, std, crop, bs=bs); del crop
+                        return zcls, zpat, per_object(zpat @ mems[0][0].T, mems[0][1], len(objs), prec)
+                    k8 = cfgs[0]['topk']
+                    if any(z.startswith('loc') for z in zooms):
+                        lm = locs.get(user, locs.get('*'))
+                        with torch.inference_mode():
+                            lmap = lm(fpat, po0)
+                        lprob = torch.sigmoid(lmap)
+                    for z in zooms:
+                        tag = zoom_tag(z)
+                        if z.startswith('cand'):                                   # verify the two best candidates
+                            p224 = po0.topk(k8, dim=1).values.mean(1); top2 = p224.topk(2, dim=1).indices
+                            ar = torch.arange(n, device=p224.device); crops, bxs = [], []
+                            for r in range(2):
+                                o = top2[:, r]; bx = zoom_boxes(po0[ar, :, o][..., None], grid, side, float(z[4:]))
+                                _, _, zpo = look(bx); crops.append(zpo.topk(k8, dim=1).values.mean(1)[ar, o]); bxs.append(bx)
+                            sc = p224 - 1.; sc[ar, top2[:, 0]] = crops[0]; sc[ar, top2[:, 1]] = crops[1]
+                            res[tag].append(sc.cpu().numpy()); res[f'box_{tag}'].append(torch.stack(bxs, 1).cpu().numpy())
+                            res[f'aux_{tag}'].append(torch.stack([top2[:, 0].float(), top2[:, 1].float(), crops[0], crops[1]], 1).cpu().numpy())
+                            continue
+                        fr = [allf[a + i] for i in range(n)]
+                        if z.startswith('loc'):
+                            sz = ((1.25 * lprob.sum(1).div(lprob.shape[1]).sqrt()).clamp(0.35, 0.8) if z == 'locadapt'
+                                  else float(z[3:]))
+                            bx = zoom_boxes(lmap[..., None], grid, side, sz)
+                        else:
+                            bx = None
+                        bx = bx if bx is not None else (gt_boxes(fr, v['boxes'], side) if z == 'gt' else
+                              gt_boxes(fr, v['boxes'], side, fixed=float(z[3:])) if z.startswith('gtc') else
+                              zoom_boxes(po0, grid, side, gt_boxes(fr, v['boxes'], side, sizes_only=True)) if z == 'gts' else
+                              zoom_boxes(po0, grid, side, float(z)))
+                        zcls, zpat, zpo = look(bx)
+                        res[tag].append(zpo.topk(k8, dim=1).values.mean(1).cpu().numpy())
+                        res[f'box_{tag}'].append(bx.cpu().numpy())
+                        for k, hd in hsel.items():
+                            res[f'{k}~{tag}'].append(EH.scores(hd, zpat, zpo, zcls @ protos.T, *mems[0]).cpu().numpy())
+                        del zcls, zpat, zpo
+                    del src
+                t = tick('zoom', t)
                 ii = np.flatnonzero(sel[a:a + len(fcls)])
                 if len(ii):
                     it = torch.as_tensor(ii, device=fpat.device)
