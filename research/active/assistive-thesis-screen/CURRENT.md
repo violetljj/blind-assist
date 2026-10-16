@@ -49,4 +49,10 @@ The negative-only [training-user holdout](benchmark_screen/negative_train_holdou
 primary11 users/3,192 queries hit2,571→2,550, delta−0.658pp [−2.840,+0.987]; all44 delta−0.172pp [−0.933,+0.567].
 Warm construction205.80→144.75s (−29.66%); extraction-plus-build decomposition saves9.73%.
 Keep combined screening: the0.5pp accuracy-loss bound is unestablished. Four center-consistency failures are retained;
-cached three-repeat diagnostics change0/9,216 predictions. Features remain on the worker; owned jobs are released.
+cached three-repeat diagnostics change0/9,216 predictions.
+
+Cheap-consistency [successor](benchmark_screen/cheap_consistency_20261016/RESULTS.md):33 development users select
+K4096; the same11-user holdout loses59/3,192 queries (80.545→78.697%, Δ−1.848pp [−3.614,−0.411]).
+Warm construction46.925→34.397s saves26.70%; the three builds give identical predictions.
+Retain the original combined selector: shrinking the own-neighbor pool did not preserve accuracy.
+All features reused, no new test inference;8.29 minutes GPU job wall. Caches remain on the worker; owned jobs released.
