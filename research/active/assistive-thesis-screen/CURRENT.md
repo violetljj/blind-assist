@@ -35,24 +35,10 @@ ORBIT thesis direction (details: [results](benchmark_screen/RESULTS.md), [story]
 registered before one run. Annotation-free personal part memory on frozen DINOv2-S/224: 72.54/76.53/80.44%
 (single frame / EMA half-life 30 frames / from first frame); whole frame 66.29%; Swiss DINO 61.63% and PerSAM 20.64% under
 the same annotation-free condition; best official meta-trained model 75.38% (single frame).
-2026-10-16: a low-rank matching adapter learned on the 44 train users with frame labels only (49 k parameters, no boxes)
-gives +4.9 in user-disjoint train CV but +1.1 on test by the official video-weighted metric (73.67/77.79/81.06, three
-seeds; ensemble 74.07/78.35/81.54; pooling-only 74.60 single frame); user-mean gain +3.5, negative for users with
->=11 objects. Single frame still below the official best; with the allowed history it is above. Box supervision,
-colour-aware matching and cohort score normalisation gave no stable gain.
-Next decision: object-count augmentation for large object sets (a second registered test use), phone latency, or
-context-frame selection. Laptop safety rules: docs/HOST_RESEARCH_COMPUTE.md.
-
-Independent worker [validation](benchmark_screen/independent_20261016/RESULTS.md): paired user-cluster intervals support
-the +6.25 pp local-memory and +2.06 pp pooling gains; query-competition scoring loses140/11,064.
-The negative-only [training-user holdout](benchmark_screen/negative_train_holdout_20261016/RESULTS.md) completes44 users:
-primary11 users/3,192 queries hit2,571→2,550, delta−0.658pp [−2.840,+0.987]; all44 delta−0.172pp [−0.933,+0.567].
-Warm construction205.80→144.75s (−29.66%); extraction-plus-build decomposition saves9.73%.
-Keep combined screening: the0.5pp accuracy-loss bound is unestablished. Four center-consistency failures are retained;
-cached three-repeat diagnostics change0/9,216 predictions.
-
-Cheap-consistency [successor](benchmark_screen/cheap_consistency_20261016/RESULTS.md):33 development users select
-K4096; the same11-user holdout loses59/3,192 queries (80.545→78.697%, Δ−1.848pp [−3.614,−0.411]).
-Warm construction46.925→34.397s saves26.70%; the three builds give identical predictions.
-Retain the original combined selector: shrinking the own-neighbor pool did not preserve accuracy.
-All features reused, no new test inference;8.29 minutes GPU job wall. Caches remain on the worker; owned jobs released.
+2026-10-16: learned matching on the 44 train users (frame labels only) gave +4.9 in train CV but +1.1 on test (first
+test use). Second registered test use: a 25 k-parameter localizer trained on train-split boxes says where the filmed
+object is, and only unsure frames get a zoomed second look (crop from the GPU frame, same memory) - single frame
+76.84 +- 0.53% vs the official best 75.38 +- 0.51% (1 s window 79.55, from first frame 81.82), 1.42 forwards per
+frame on average (8.6 GMACs; uniform 448 is 31.7). Dev oracle: where to look, not zoom size, is the bottleneck.
+Storyline, figures and claim limits: benchmark_screen/THESIS_STORY.md. Next candidates: phone latency, accuracy-compute
+and per-object-count figures, context-frame selection. Laptop safety rules: docs/HOST_RESEARCH_COMPUTE.md.
