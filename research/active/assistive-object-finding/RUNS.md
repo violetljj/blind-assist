@@ -172,3 +172,22 @@ specified-instance role, existence/rejection or BLV operation-success evidence.
 | Date | Run | Inputs / changes | Results | Decision / evidence |
 | --- | --- | --- | --- | --- |
 | 2026-10-16 | functional-parts-full / PLSP complete and UMD reader repair | Fixed40epoch PLSP, micro10/effective20; full Seen1710 rows. UMD original post failed on native−1; author code excludes negatives. Full9939-mask encoding census and narrow scorer repair; original exports/labels/checkpoints/softmax/seed/bootstrap unchanged. | PLSP13880updates COMPLETE,35042.45wall_s; Seen1674 EVALUATED/36NOT_EVAL, fresh without trainRGB overlap213 rows/111 groups. Native−1 only184 UMD masks/13928pixels; split from scoop ignore counts. Synthetic and real2image canary pass. | Repaired post RUNNING, no final cross-source conclusion yet. Old failures and original request archived; Seg9939 predictions reused, next DINO export remains frozen. [Progress/recovery](functional_parts/FULL_BASELINE_PROGRESS.md), [census correction](functional_parts/FULL_DATA_CENSUS.md). |
+
+
+| Date | Run | Inputs / changes | Results | Decision / evidence |
+| --- | --- | --- | --- | --- |
+| 2026-10-16 | functional-parts-full / COMPLETE | SegFormer and original DINO-S/16 80epochs on IIT4417/cleanval1757; PLSP fixed40epochs; full Seen1710 rows; all9939 UMD author-manual frames/108 groups. Original10 channels retained, native−1/scoop separately ignored. Frozen predictions reused for full CPU diagnostics. | Main/post SUCCESS. UMD shared6 mIoU22.816%/24.573%; paired difference CI crosses0. Conservative points12499/10647 of19370; DINO−Seg −9.561pp CI[−13.146,−6.004],95.73% net deficit in small areas. PLSP KLD.962095/SIM.515668/NSS1.538031,1674 EVALUATED/36 NOT_EVAL. All6929 train pseudo labels audited: knife cut_with/stick135/135 pairs identical. | COMPLETE, no new structure gain or thesis selection. Prioritize real local evidence/new candidates plus point quality, compared with stable/interior readout and ordinary high-resolution heads. PLSP action structure conditional on independent train supervision. [Full analysis](functional_parts/FULL_BASELINE_RESULTS.md). |
+
+Both models'100 confusion cells, point/ignore counts and original UMD grouped CIs
+independently reproduced to1e−12; PLSP row means/exposure/train-overlap groups
+reproduced to1e−12. Additional all1674-map conditioning analysis matched original
+SIM within1.184e−7, with no model rerun. Train pseudo audit covers6082 different-action
+pairs/2271 RGB groups,3547 exactly identical; test truth was not used to alter training.
+136 thin files and3 selected checkpoints SHA-verified on primary; full payload,
+original stopped/failed evidence and resume states retained on registered worker.
+No primary GPU or new training. Recorded training wall at least3.47h Seg,2.93h DINO,
+9.73h PLSP; these include data/validation/I/O, not isolated GPU kernel time.
+Complete curves,6 deterministic UMD cases and PLSP action pairs are saved with
+source hashes and checked rendering. Task processes released; hourly follow-up
+is removed on this completion delivery. All observed cohorts are Development;
+no specified-instance role, absence/reject or BLV operation-success claim.

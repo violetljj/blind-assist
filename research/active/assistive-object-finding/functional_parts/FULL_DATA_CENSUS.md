@@ -4,7 +4,7 @@
 
 ## 当前可用性判断
 
-PACO支持规模化同实例语义部位监督，但没有动作/交互角色真值。InstructPart当前官方发布内容不足以兑现原先拟定的完整1,800/600训练评估；必须修复发布依赖或重新设计语言监督来源。IIT全量原生mask可用于先做充分训练的功能类别基线，但mask属于全图语义标注，框内共现不自动等于同实例双角色。
+PACO支持规模化同实例语义部位监督，但没有动作/交互角色真值。InstructPart当前官方发布内容不足以兑现原先拟定的完整1,800/600训练评估；必须修复发布依赖或重新设计语言监督来源。IIT全量原生mask支持功能类别训练，但mask属于全图语义标注，框内共现不自动等于同实例双角色。2026-10-16三套全量训练与评估均已完成，见[完整结果](FULL_BASELINE_RESULTS.md)；PLSP完整训练目标审计还显示部分动作区别没有进入空间伪标签，不能只靠模型结构弥补缺失监督。
 
 ## PACO-LVIS：完整train/val
 
@@ -102,13 +102,21 @@ train1800/masks有550路径；按相同stem与375张RGB匹配仅125对。train18
 
 复用镜像打包时已有的逐文件SHA完成RGB字节普查：手标子集9,939个文件对应**9,939个不同RGB SHA256**，内部完全重复组0；与IIT train4,417行/4,400唯一RGB、cleanval1,757行/1,754唯一RGB的完全相同RGB交叉组均为0。只验证了字节相等性，没有排除近重复、相似视角或物理对象关联；本次检查没有重新解码RGB或GT像素。证据为`data/umd/rgb_byte_census.json`、`migration/audit_umd_rgb_bytes.py`与镜像逐文件manifest，均记录输入SHA。
 
-副机已校验并接收19,898份文件，冻结records原始字节未改；supervisor成功证据在全部文件验证后最后发布。共享功能类为contain、cut、grasp、pound、support、wrap-grasp；UMD scoop没有IIT对应，GT映射为ignore255，不作为背景；保留全部10类模型输出，不能按GT屏蔽不共享预测。本轮尚未进行跨源像素评分，逐类有效分母需待授权评估实际解码后报告。完整终态、索引和镜像收据在`data/umd/`及`migration/umd_mirror_receipt.json`，此前前缀/失败证据保留。
+副机已校验并接收19,898份文件，冻结records原始字节未改；supervisor成功证据在全部文件验证后最后发布。共享功能类为contain、cut、grasp、pound、support、wrap-grasp；UMD scoop没有IIT对应，GT映射为ignore255，不作为背景；保留全部10类模型输出，不能按GT屏蔽不共享预测。2026-10-16已完成全部9,939手标帧跨源像素评分，19,370正类查询；Seg／DINO各有241／171落点在ignore而保持UNKNOWN，逐类分母与配对差区间见完整结果。完整终态、索引和镜像收据在`data/umd/`及`migration/umd_mirror_receipt.json`，此前前缀/失败证据保留。
 
 来源：[UMD官方README](https://users.umiacs.umd.edu/~fermulcm/affordance/part-affordance-dataset/README.txt)。
 
 2026-10-16完整评估时首次解码全部9,939份手标mask，发现原生整数编码除0–7外还有**−1：184图、13,928像素**，没有其他额外编码；scoop3为4,723,700像素。原严格映射因此中止评分，失败证据保留。作者`author_hmp_source/part_affordance_release/src/util/get_seg_info.m`第25–26行明确只保留非负标签，因此−1按void忽略，不能当背景或新功能类别。修复评分适配器仅接受额外−1→255，并把native void、unsupported scoop及总忽略像素/落点分开计数；原生0–7映射、全部10通道预测、未按GT屏蔽的原始softmax点选择和分组bootstrap不变。全量编码普查收据为`migration/umd_actual_label_census_a1.json`，旧请求/失败输出在副机`migration/recovery_void_a1/`；没有重跑已完成的SegFormer推理。
 
 PLSP完整Seen测试已完成：1,710行中1,674可评，35缺GT和1个GT全零/无效保持NOT_EVAL。按底图传播历史消费后，未消费217行/113 RGB组；再排除与训练同RGB的4行后为**213行/111组**，不以1710行冒充独立新图。完整测试共有18行与训练底图重叠，均保留标记。最终固定epoch40模型测试结果在`plsp/final_seen_test/metrics.json`，原作者指标函数未改；未用此测试选模型。
+
+### PLSP全量空间训练目标是否区分动作
+
+2026-10-16按官方loader的实际refined／initial fallback选择读取全部6,929 ego伪标签，对原生uint8≥128目标作完整形状与二值像素SHA比较。此为高斯、resize、随机裁剪／翻转和四图增强之前的输入审计；815 refined、6,114 initial、无空目标，与训练资源覆盖统计一致。
+
+2,271个多动作RGB组共6,082对不同动作，3,547对（58.32%）二值目标完全相同；1,917对（31.52%）、859 RGB组SIM<0.5，确有部分可用于空间动作区分的训练目标。刀具cut_with／stick **135/135对目标完全相同**，全用initial fallback；杯子drink_with／hold有100/101对SIM<0.5。refined／refined的707对也全部相同，不能按文件名假定更有动作区分性。相同伪标签不证明真实动作等价，不同伪标签也不证明正确语义部位。
+
+此发现限制PLSP结构解释：测试中刀具切割／刺入预测高度相同，至少伴随明确的空间监督缺口。应先区分现有目标有差异仍未学会与目标根本不提供区别；不能从刚消费的测试GT反向补训练后称独立泛化。完整6,929行／6,082对与源码SHA在payload `diagnostics/full_final/plsp_agent/train_pseudo_*`，机制与强对照建议见完整结果。
 
 ## 对研究设计的实际影响
 
