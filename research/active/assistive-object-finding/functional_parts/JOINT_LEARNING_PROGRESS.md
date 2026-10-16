@@ -54,6 +54,7 @@ CPU Torch只用于与旧结果完全一致的原生双线性插值，隐藏CUDA�
 - [模型](full_joint_models.py)、[训练](full_joint_train.py)、[统一评估](full_joint_evaluate.py)、[完整汇总](full_joint_report.py)的副机CPU合成自检均已实际PASS；实际本地预训练DINO＋joint模型在CPU合成64px上的forward／backward亦PASS、未初始化CUDA。这些只证明工程兼容，尚无新训练效果。
 - [持久campaign](full_joint_campaign.py)当前权威runner为`functional-parts-joint-20261016-campaign-a2`，request `dispatch/campaign_request_a2.json` SHA `81ebad39f057ec8766b08637c64b5cd489476d53691fcc5926ace81096074612`；controller源SHA `b2a2bc545f55b44ef6c067404c93e8e107b63d0348b2233c4e19fb9e87c9e9d9`。先实际逐SHA核对12,348个IIT RGB／mask文件、准备训练几何缓存，UMD强对照成功前不启动GPU训练。
 - 原campaign-a1在prepare阶段检查了不应访问的val_duplicate路径，副机按原范围没有迁移该排除项，因而停止，未运行profile或训练。原manifest同时保留2,651个test元数据；已修正为先按train／val过滤再stat／hash，排除项与test仅保留元数据，不新增下载、不读test像素。核原进程／锁释放后，旧campaign目录、终态、request及source保存在`attempts/campaign_prepare_a1/`与dispatch，a2仅修路径准备逻辑，模型／训练／评估／报告源及科学输入未变；累计训练消耗仍为0。
+- a2已实际完成12,348份训练／干净验证RGB和mask的逐SHA复核，原预训练权重SHA也一致。`inputs/receipt.json`记录原IIT清单SHA `2d6304cbb8ed91d769ad7bdb37599afbbfb1e6dae3d7acd91792f3648006e68d`、路径派生清单SHA `8bf25fb2cea887b6c5d468af969b52902f31319fb1e7ed9cbd3902d38192634e`，只有image／mask字符串重定位，其他字段一致；test及排除项未访问。当前实际campaign1948／launcher28704，正在准备仅训练几何缓存；状态仅为此时快照，后续以实时owner／terminal为准。
 - source五文件冻结，原始UMD规则源单独冻结；预部署报告更新的a1因缺目标dispatch目录失败，源未改写，a2创建目录后更新并实际自测PASS，原日志保留。活跃源码不再修改；故障按owner和完整断点修复，不能重启旧baseline队列。
 - 每小时由既有线程heartbeat检查，正常进度静默，完成／失败或改变决定的发现才通知。自动跟进记录归本run；只有两项持久任务，严禁因同步超时或旧终态重复派发。
 
