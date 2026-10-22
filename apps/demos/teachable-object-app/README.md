@@ -22,4 +22,7 @@ adb shell am instrument -w -e class com.linnan.blindassist.teachable.M0DeviceTes
 ```
 
 Native code cannot open adb-pushed files under `Android/data` on the SM-S9280, hence the app-internal copy.
-Results of the first run: Graduation `phone_m0_20261022/RESULTS.md`.
+M1 (live, `LiveActivity` / `M1LiveTest -e durationSec 600 -e user P189`): CameraX 30 fps -> centre crop 224 -> identify -> EMA30 ->
+speak once stable for 15 frames; logs to filesDir/m1/live_<user>.json.
+
+Results: Graduation `phone_m0_20261022/RESULTS.md` (M0) and `RESULTS_M1.md` (M1).

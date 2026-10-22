@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:extractNativeLibs="true"
-        android:label="Teachable objects (M0)"
+        android:label="Teachable objects"
         android:largeHeap="true">
         <uses-native-library android:name="libcdsprpc.so" android:required="false" />
+        <activity
+            android:name=".LiveActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

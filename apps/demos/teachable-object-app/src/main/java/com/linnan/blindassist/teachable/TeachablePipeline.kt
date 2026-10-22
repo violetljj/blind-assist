@@ -20,15 +20,20 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String) : Closeable
     /** Memory padded to OMAX objects; [valid] marks the user's real objects. */
     class Memory(val objects: Int, val parts: FloatArray, val protos: FloatArray, val valid: FloatArray)
 
-    class Result(val pred: Int, val looked: Boolean, val firstLogits: FloatArray, val ms: Map<String, Double>)
+    /** [scores]: the final per-object z-scores (main readout), the input to temporal smoothing. */
+    class Result(val pred: Int, val looked: Boolean, val firstLogits: FloatArray, val ms: Map<String, Double>, val scores: FloatArray)
 
     fun image(file: File): FloatArray {
         val bitmap = requireNotNull(BitmapFactory.decodeFile(file.path, BitmapFactory.Options().apply {
             inPreferredConfig = Bitmap.Config.ARGB_8888; inScaled = false
         })) { "decode $file" }
         require(bitmap.width == SIZE && bitmap.height == SIZE) { "$file is ${bitmap.width}x${bitmap.height}" }
+        return image(bitmap).also { bitmap.recycle() }
+    }
+
+    /** SIZE x SIZE ARGB bitmap -> CHW float RGB 0..255 (the backbone folds the normalisation in). */
+    fun image(bitmap: Bitmap): FloatArray {
         val px = IntArray(SIZE * SIZE).also { bitmap.getPixels(it, 0, SIZE, 0, 0, SIZE, SIZE) }
-        bitmap.recycle()
         val plane = SIZE * SIZE
         return FloatArray(3 * plane).also { x ->
             for (i in 0 until plane) {
@@ -80,7 +85,7 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String) : Closeable
             ms["head2"] = (System.nanoTime() - t) / 1e6
             s = z(FloatArray(s.size) { s[it] + z2[it] })
         }
-        return Result(s.indices.maxBy { s[it] }, looked, logits, ms)
+        return Result(s.indices.maxBy { s[it] }, looked, logits, ms, s)
     }
 
     override fun close() {
