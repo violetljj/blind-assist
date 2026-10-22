@@ -27,6 +27,7 @@ class M0DeviceTest {
     private val results = File(root, "results").apply { mkdirs() }
     private var peakNative = 0L
     private var simmax: SnpeEngine? = null
+    private var simtop: SnpeEngine? = null
 
     private fun ms(start: Long) = (System.nanoTime() - start) / 1e6
     private fun raw(file: File) = FloatArray((file.length() / 4).toInt()).also {
@@ -48,6 +49,8 @@ class M0DeviceTest {
             // HTP simmax engine for the memory build's other-object max (optional) and its sanity check
             val simmaxFile = File(root, "simmax.dlc")
             simmax = if (simmaxFile.isFile) SnpeEngine(simmaxFile.path, true, context.applicationInfo.nativeLibraryDir, listOf("mx")) else null
+            val simtopFile = File(root, "simtop.dlc")
+            simtop = if (simtopFile.isFile) SnpeEngine(simtopFile.path, true, context.applicationInfo.nativeLibraryDir, listOf("tv")) else null
             simmax?.let { e ->
                 val a = raw(File(ref, "simmax_a.raw")); val b = raw(File(ref, "simmax_b.raw")); val want = raw(File(ref, "simmax_ref.raw"))
                 val t = System.nanoTime(); val got = e.run(mapOf("a" to a, "b" to b)).values.single()
@@ -59,7 +62,7 @@ class M0DeviceTest {
             repeat(5) { p.tokens(warm) }
             val users = root.listFiles { f -> File(f, "meta.json").isFile }!!.sortedBy { it.name }
             for (u in users) runUser(p, u)
-            simmax?.close()
+            simmax?.close(); simtop?.close()
             sample()
             device.put("users", JSONArray(users.map { it.name })).put("peak_native_heap_bytes", peakNative)
                 .put("total_ms", ms(t0))
@@ -98,9 +101,15 @@ class M0DeviceTest {
             .put("memory_build_breakdown_ms", JSONArray(listOf(cpu.otherMs, cpu.ownMs, cpu.kmeansMs)))
             .put("memory_bytes", objects * TeachablePipeline.PARTS * TeachablePipeline.D * 4)
         val arms = linkedMapOf("phone" to p.memory(objects, phoneParts, cls), "pc" to p.memory(objects, raw(File(dir, "pc_parts.raw")), cls))
-        simmax?.let { e ->
+        simmax?.let { e ->                                               // other-object max on the HTP, own top-6 on the CPU
             t = System.nanoTime()
             val htp = Native.build(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS, e)
+            out.put("memory_build_htpmax_ms", ms(t)).put("memory_build_htpmax_breakdown_ms", JSONArray(listOf(htp.otherMs, htp.ownMs, htp.kmeansMs)))
+            arms["phone_htpmax"] = p.memory(objects, htp.parts, cls)
+        }
+        if (simmax != null && simtop != null) {                          // both similarity terms on the HTP
+            t = System.nanoTime()
+            val htp = Native.build(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS, simmax, simtop)
             out.put("memory_build_htp_ms", ms(t)).put("memory_build_htp_breakdown_ms", JSONArray(listOf(htp.otherMs, htp.ownMs, htp.kmeansMs)))
             arms["phone_htp"] = p.memory(objects, htp.parts, cls)
         }

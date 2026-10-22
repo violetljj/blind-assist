@@ -61,6 +61,7 @@ class TeachActivity : ComponentActivity() {
     private lateinit var nameField: EditText
     private var pipeline: TeachablePipeline? = null
     private var simmax: SnpeEngine? = null                  // HTP other-object max for the memory build; CPU if absent
+    private var simtop: SnpeEngine? = null                  // HTP own top-6 for the memory build; CPU if absent
     private var memory: TeachablePipeline.Memory? = null
     private var names: List<String> = emptyList()
     private var tts: TextToSpeech? = null
@@ -107,6 +108,7 @@ class TeachActivity : ComponentActivity() {
             val m0 = File(filesDir, "m0")
             pipeline = TeachablePipeline(File(m0, "backbone_fp32.dlc"), File(m0, "head_dyn.dlc"), applicationInfo.nativeLibraryDir)
             File(m0, "simmax.dlc").takeIf { it.isFile }?.let { simmax = SnpeEngine(it.path, true, applicationInfo.nativeLibraryDir, listOf("mx")) }
+            File(m0, "simtop.dlc").takeIf { it.isFile }?.let { simtop = SnpeEngine(it.path, true, applicationInfo.nativeLibraryDir, listOf("tv")) }
             loadMemory()
             show(summary())
         }
@@ -171,7 +173,7 @@ class TeachActivity : ComponentActivity() {
         show("建记忆中（${dirs.size} 件，每件 ≤$k 帧）…")
         val patches = FloatArray(chunks.sumOf { it.size }).also { a -> var i = 0; for (c in chunks) { c.copyInto(a, i); i += c.size } }
         val t1 = SystemClock.elapsedRealtimeNanos()
-        val parts = Native.build(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS, simmax).parts
+        val parts = Native.build(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS, simmax, simtop).parts
         val buildMs = (SystemClock.elapsedRealtimeNanos() - t1) / 1e6
         names = dirs.map { it.name.substringAfter('_') }
         memory = p.memory(dirs.size, parts, cls)
@@ -324,7 +326,7 @@ class TeachActivity : ComponentActivity() {
     }
 
     override fun onDestroy() {
-        tts?.shutdown(); worker.shutdown(); worker.awaitTermination(2, java.util.concurrent.TimeUnit.SECONDS); simmax?.close(); pipeline?.close()
+        tts?.shutdown(); worker.shutdown(); worker.awaitTermination(2, java.util.concurrent.TimeUnit.SECONDS); simmax?.close(); simtop?.close(); pipeline?.close()
         super.onDestroy()
     }
 

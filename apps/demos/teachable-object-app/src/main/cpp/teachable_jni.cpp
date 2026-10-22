@@ -190,36 +190,89 @@ void htp_other_max(Engine* e, const float* P, int n, const float* all, const std
     }
 }
 
+// HTP simtop6 graph a [rows, D], b [cols, D] -> tv [rows, 6] (descending). Same blocking as htp_other_max, but b blocks
+// are padded with zero vectors (similarity 0), not repeated rows, which would duplicate values in a top-6; each
+// block's top-6 is merged into the row's running top-6. On the SM8650 HTP TopK limits this to ~60-80 GMAC/s at any
+// tested width; 1024 x 2560 was the best trade-off.
+void htp_own_top6(Engine* e, const float* P, int n, const float* all, const std::vector<int>& own,
+                  std::vector<std::array<float, 6>>& top) {
+    const size_t ia = std::find(e->inputs.begin(), e->inputs.end(), "a") - e->inputs.begin();
+    const size_t ib = std::find(e->inputs.begin(), e->inputs.end(), "b") - e->inputs.begin();
+    require(ia < e->inputs.size() && ib < e->inputs.size(), "simtop inputs a, b");
+    const size_t rows = Snpe_ITensor_GetSize(e->tensors[ia]) / D, cols = Snpe_ITensor_GetSize(e->tensors[ib]) / D;
+    auto* A = static_cast<float*>(Snpe_ITensor_GetData(e->tensors[ia]));
+    auto* B = static_cast<float*>(Snpe_ITensor_GetData(e->tensors[ib]));
+    Owned<Snpe_TensorMap_Delete> in{Snpe_TensorMap_Create()};
+    Snpe_TensorMap_Add(in.value, "a", e->tensors[ia]); Snpe_TensorMap_Add(in.value, "b", e->tensors[ib]);
+    for (size_t c0 = 0; c0 < own.size(); c0 += cols) {
+        for (size_t c = 0; c < cols; ++c) {
+            if (c0 + c < own.size()) std::copy_n(all + size_t(own[c0 + c]) * D, D, B + c * D);
+            else std::fill(B + c * D, B + (c + 1) * D, 0.f);
+        }
+        for (int r0 = 0; r0 < n; r0 += int(rows)) {
+            const int m = std::min<int>(rows, n - r0);
+            std::copy_n(P + size_t(r0) * D, size_t(m) * D, A);
+            std::fill(A + size_t(m) * D, A + rows * D, 0.f);
+            Owned<Snpe_TensorMap_Delete> out{Snpe_TensorMap_Create()};
+            require(Snpe_SNPE_ExecuteITensors(e->snpe, in.value, out.value) == SNPE_SUCCESS, "Execute simtop");
+            auto t = Snpe_TensorMap_GetTensor_Ref(out.value, "tv");
+            require(t && Snpe_ITensor_GetSize(t) == rows * 6, "simtop output");
+            const float* tv = static_cast<const float*>(Snpe_ITensor_GetData(t));
+            for (int i = 0; i < m; ++i) {
+                auto& tr = top[r0 + i];
+                for (int k = 0; k < 6; ++k) {
+                    const float v = tv[i * 6 + k];
+                    if (v <= tr[5]) break;                                  // block values are descending
+                    int j = 5; while (j > 0 && tr[j - 1] < v) { tr[j] = tr[j - 1]; --j; } tr[j] = v;
+                }
+            }
+        }
+    }
+}
+
 double since(std::chrono::steady_clock::time_point t) {
     return std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t).count();
 }
 
 std::vector<float> build_memory(const std::vector<float>& patches, const std::vector<int>& counts, float keep, int parts,
-                                const OtherMax& other_max, double* ms) {
+                                const OtherMax& other_max, double* ms, Engine* simtop = nullptr) {
     const int O = counts.size();
     std::vector<int> offs(O + 1, 0);
     for (int o = 0; o < O; ++o) offs[o + 1] = offs[o] + counts[o];
     std::vector<float> out(size_t(O) * parts * D);
+    // phase 1: other-object max for every object; phase 2: own top-6 for every object. Running each graph over all
+    // objects before switching avoids alternating two HTP graphs per object.
+    std::vector<std::vector<float>> s_others(O);
+    auto t = std::chrono::steady_clock::now();
     for (int o = 0; o < O; ++o) {
-        const int n = counts[o];
-        const float* P = patches.data() + size_t(offs[o]) * D;
         std::vector<int> others;
         for (int j = 0; j < O; ++j) if (j != o) for (int i = offs[j]; i < offs[j + 1]; ++i) others.push_back(i);
         others = sample(others, 30000, 2ull * o);
+        s_others[o].assign(counts[o], -INFINITY);
+        other_max(patches.data() + size_t(offs[o]) * D, counts[o], patches.data(), others, s_others[o]);
+    }
+    ms[0] += since(t); t = std::chrono::steady_clock::now();
+    std::vector<std::vector<std::array<float, 6>>> tops(O);
+    for (int o = 0; o < O; ++o) {
+        const int n = counts[o];
+        const float* P = patches.data() + size_t(offs[o]) * D;
         std::vector<int> own(n); std::iota(own.begin(), own.end(), offs[o]);
         own = sample(own, 30000, 2ull * o + 1);
-        std::vector<float> s_other(n, -INFINITY);
-        auto t = std::chrono::steady_clock::now();
-        other_max(P, n, patches.data(), others, s_other);
-        ms[0] += since(t); t = std::chrono::steady_clock::now();
-        std::vector<std::array<float, 6>> top(n);
-        for (auto& t : top) t.fill(-INFINITY);
-        all_dots(P, n, patches.data(), own, [&](int r, int, float v) {
-            auto& t = top[r];
-            if (v <= t[5]) return;
-            int i = 5; while (i > 0 && t[i - 1] < v) { t[i] = t[i - 1]; --i; } t[i] = v;
+        auto& top = tops[o]; top.resize(n);
+        for (auto& tr : top) tr.fill(-INFINITY);
+        if (simtop) htp_own_top6(simtop, P, n, patches.data(), own, top);
+        else all_dots(P, n, patches.data(), own, [&](int r, int, float v) {
+            auto& tr = top[r];
+            if (v <= tr[5]) return;
+            int i = 5; while (i > 0 && tr[i - 1] < v) { tr[i] = tr[i - 1]; --i; } tr[i] = v;
         });
-        ms[1] += since(t); t = std::chrono::steady_clock::now();
+    }
+    ms[1] += since(t);
+    for (int o = 0; o < O; ++o) {
+        t = std::chrono::steady_clock::now();
+        const int n = counts[o];
+        const float* P = patches.data() + size_t(offs[o]) * D;
+        const auto& s_other = s_others[o]; const auto& top = tops[o];
         std::vector<float> d(n);
         for (int r = 0; r < n; ++r) d[r] = (top[r][1] + top[r][2] + top[r][3] + top[r][4] + top[r][5]) / 5.f - s_other[r];
         std::vector<float> sorted = d; std::sort(sorted.begin(), sorted.end());
@@ -350,10 +403,10 @@ extern "C" JNIEXPORT void JNICALL JFN(engineDestroy)(JNIEnv*, jobject, jlong han
     delete reinterpret_cast<Engine*>(handle);
 }
 
-// simmax: handle of an HTP simmax engine for the other-object max, or 0 for the CPU. Returns the memory
+// simmax / simtop: handles of HTP engines for the other-object max and the own top-6, or 0 for the CPU. Returns the memory
 // [objects * parts * D] followed by 3 timings in ms (other-object max, own top-6, k-means).
 extern "C" JNIEXPORT jfloatArray JNICALL JFN(buildMemory)(JNIEnv* env, jobject, jfloatArray patches, jintArray counts, jfloat keep,
-                                                          jint parts, jlong simmax) {
+                                                          jint parts, jlong simmax, jlong simtop) {
     try {
         std::vector<float> p(env->GetArrayLength(patches));
         env->GetFloatArrayRegion(patches, 0, p.size(), p.data());
@@ -365,7 +418,7 @@ extern "C" JNIEXPORT jfloatArray JNICALL JFN(buildMemory)(JNIEnv* env, jobject, 
         OtherMax om = engine ? OtherMax([engine](const float* P, int n, const float* all, const std::vector<int>& o, std::vector<float>& s) {
                                    htp_other_max(engine, P, n, all, o, s); })
                              : OtherMax(cpu_other_max);
-        auto mem = build_memory(p, c, keep, parts, om, ms);
+        auto mem = build_memory(p, c, keep, parts, om, ms, reinterpret_cast<Engine*>(simtop));
         for (double v : ms) mem.push_back(float(v));
         auto result = env->NewFloatArray(mem.size());
         env->SetFloatArrayRegion(result, 0, mem.size(), mem.data());

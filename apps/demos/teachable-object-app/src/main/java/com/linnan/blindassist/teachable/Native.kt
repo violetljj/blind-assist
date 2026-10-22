@@ -14,16 +14,16 @@ internal object Native {
     external fun engineDestroy(handle: Long)
 
     /**
-     * patches: all teaching patches grouped by object ([sum(counts), 384]). simmax: handle of an HTP simmax engine for
-     * the other-object max term, 0 for the CPU. Returns [objects, parts, 384] followed by 3 timings in ms.
+     * patches: all teaching patches grouped by object ([sum(counts), 384]). simmax / simtop: handles of HTP engines for
+     * the other-object max and the own top-6 terms, 0 for the CPU. Returns [objects, parts, 384] followed by 3 timings in ms.
      */
-    external fun buildMemory(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: Long): FloatArray
+    external fun buildMemory(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: Long, simtop: Long): FloatArray
 
     /** Memory and its timing breakdown (ms): other-object max, own top-6, k-means. */
     class Built(val parts: FloatArray, val otherMs: Double, val ownMs: Double, val kmeansMs: Double)
 
-    fun build(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: SnpeEngine? = null): Built {
-        val r = buildMemory(patches, counts, keep, parts, simmax?.handle ?: 0L)
+    fun build(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: SnpeEngine? = null, simtop: SnpeEngine? = null): Built {
+        val r = buildMemory(patches, counts, keep, parts, simmax?.handle ?: 0L, simtop?.handle ?: 0L)
         val n = r.size - 3
         return Built(r.copyOf(n), r[n].toDouble(), r[n + 1].toDouble(), r[n + 2].toDouble())
     }
