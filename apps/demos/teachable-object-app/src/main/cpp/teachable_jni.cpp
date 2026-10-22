@@ -8,7 +8,9 @@
 #include <arm_neon.h>
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cmath>
+#include <functional>
 #include <cstdint>
 #include <cstdlib>
 #include <memory>
@@ -148,7 +150,52 @@ std::vector<float> kmeans(const std::vector<float>& x, int n, int k, uint64_t se
 // user's other objects, s_own = mean of the 2nd..6th best similarity to <= 30,000 own patches; keep d = s_own - s_other
 // at or above its (1 - keep) quantile (linear interpolation, as torch.quantile); k-means into <= 32 parts. Output is
 // padded to 32 parts per object by repeating parts (the max over parts is unchanged).
-std::vector<float> build_memory(const std::vector<float>& patches, const std::vector<int>& counts, float keep, int parts) {
+// other_max(P, n, all, others, s_other): s_other[r] = max_c P_r . all[others[c]] (CPU or HTP). ms[3] receives the time
+// spent in the other-object max, the own top-6 and k-means.
+using OtherMax = std::function<void(const float*, int, const float*, const std::vector<int>&, std::vector<float>&)>;
+
+void cpu_other_max(const float* P, int n, const float* all, const std::vector<int>& others, std::vector<float>& s) {
+    all_dots(P, n, all, others, [&](int r, int, float v) { if (v > s[r]) s[r] = v; });
+}
+
+// HTP simmax graph a [rows, D], b [cols, D] -> mx [rows]. The other-object patches are split into column blocks of
+// `cols` (outer loop: each block uploaded once, the last one padded by repeating its first row, max unchanged); the
+// object's patches are streamed through a in row chunks (last chunk zero-padded, outputs ignored); s keeps the running
+// max. Short blocks matter: on the SM8650 HTP a 1024 x 7500 call runs about 7x more efficiently per MAC than 1024 x 30000.
+void htp_other_max(Engine* e, const float* P, int n, const float* all, const std::vector<int>& others, std::vector<float>& s) {
+    const size_t ia = std::find(e->inputs.begin(), e->inputs.end(), "a") - e->inputs.begin();
+    const size_t ib = std::find(e->inputs.begin(), e->inputs.end(), "b") - e->inputs.begin();
+    require(ia < e->inputs.size() && ib < e->inputs.size(), "simmax inputs a, b");
+    const size_t rows = Snpe_ITensor_GetSize(e->tensors[ia]) / D, cols = Snpe_ITensor_GetSize(e->tensors[ib]) / D;
+    auto* A = static_cast<float*>(Snpe_ITensor_GetData(e->tensors[ia]));
+    auto* B = static_cast<float*>(Snpe_ITensor_GetData(e->tensors[ib]));
+    Owned<Snpe_TensorMap_Delete> in{Snpe_TensorMap_Create()};
+    Snpe_TensorMap_Add(in.value, "a", e->tensors[ia]); Snpe_TensorMap_Add(in.value, "b", e->tensors[ib]);
+    for (size_t c0 = 0; c0 < others.size(); c0 += cols) {
+        for (size_t c = 0; c < cols; ++c) {
+            const size_t k = c0 + c < others.size() ? c0 + c : c0;
+            std::copy_n(all + size_t(others[k]) * D, D, B + c * D);
+        }
+        for (int r0 = 0; r0 < n; r0 += int(rows)) {
+            const int m = std::min<int>(rows, n - r0);
+            std::copy_n(P + size_t(r0) * D, size_t(m) * D, A);
+            std::fill(A + size_t(m) * D, A + rows * D, 0.f);
+            Owned<Snpe_TensorMap_Delete> out{Snpe_TensorMap_Create()};
+            require(Snpe_SNPE_ExecuteITensors(e->snpe, in.value, out.value) == SNPE_SUCCESS, "Execute simmax");
+            auto t = Snpe_TensorMap_GetTensor_Ref(out.value, "mx");
+            require(t && Snpe_ITensor_GetSize(t) == rows, "simmax output");
+            const float* mx = static_cast<const float*>(Snpe_ITensor_GetData(t));
+            for (int i = 0; i < m; ++i) s[r0 + i] = std::max(s[r0 + i], mx[i]);
+        }
+    }
+}
+
+double since(std::chrono::steady_clock::time_point t) {
+    return std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t).count();
+}
+
+std::vector<float> build_memory(const std::vector<float>& patches, const std::vector<int>& counts, float keep, int parts,
+                                const OtherMax& other_max, double* ms) {
     const int O = counts.size();
     std::vector<int> offs(O + 1, 0);
     for (int o = 0; o < O; ++o) offs[o + 1] = offs[o] + counts[o];
@@ -162,7 +209,9 @@ std::vector<float> build_memory(const std::vector<float>& patches, const std::ve
         std::vector<int> own(n); std::iota(own.begin(), own.end(), offs[o]);
         own = sample(own, 30000, 2ull * o + 1);
         std::vector<float> s_other(n, -INFINITY);
-        all_dots(P, n, patches.data(), others, [&](int r, int, float v) { if (v > s_other[r]) s_other[r] = v; });
+        auto t = std::chrono::steady_clock::now();
+        other_max(P, n, patches.data(), others, s_other);
+        ms[0] += since(t); t = std::chrono::steady_clock::now();
         std::vector<std::array<float, 6>> top(n);
         for (auto& t : top) t.fill(-INFINITY);
         all_dots(P, n, patches.data(), own, [&](int r, int, float v) {
@@ -170,6 +219,7 @@ std::vector<float> build_memory(const std::vector<float>& patches, const std::ve
             if (v <= t[5]) return;
             int i = 5; while (i > 0 && t[i - 1] < v) { t[i] = t[i - 1]; --i; } t[i] = v;
         });
+        ms[1] += since(t); t = std::chrono::steady_clock::now();
         std::vector<float> d(n);
         for (int r = 0; r < n; ++r) d[r] = (top[r][1] + top[r][2] + top[r][3] + top[r][4] + top[r][5]) / 5.f - s_other[r];
         std::vector<float> sorted = d; std::sort(sorted.begin(), sorted.end());
@@ -180,6 +230,7 @@ std::vector<float> build_memory(const std::vector<float>& patches, const std::ve
         const int nk = kept.size() / D, k = std::min(parts, nk);
         auto c = kmeans(kept, nk, k, 0);
         for (int j = 0; j < parts; ++j) std::copy_n(c.data() + size_t(j % k) * D, D, out.data() + (size_t(o) * parts + j) * D);
+        ms[2] += since(t);
     }
     return out;
 }
@@ -299,14 +350,23 @@ extern "C" JNIEXPORT void JNICALL JFN(engineDestroy)(JNIEnv*, jobject, jlong han
     delete reinterpret_cast<Engine*>(handle);
 }
 
-extern "C" JNIEXPORT jfloatArray JNICALL JFN(buildMemory)(JNIEnv* env, jobject, jfloatArray patches, jintArray counts, jfloat keep, jint parts) {
+// simmax: handle of an HTP simmax engine for the other-object max, or 0 for the CPU. Returns the memory
+// [objects * parts * D] followed by 3 timings in ms (other-object max, own top-6, k-means).
+extern "C" JNIEXPORT jfloatArray JNICALL JFN(buildMemory)(JNIEnv* env, jobject, jfloatArray patches, jintArray counts, jfloat keep,
+                                                          jint parts, jlong simmax) {
     try {
         std::vector<float> p(env->GetArrayLength(patches));
         env->GetFloatArrayRegion(patches, 0, p.size(), p.data());
         std::vector<int> c(env->GetArrayLength(counts));
         env->GetIntArrayRegion(counts, 0, c.size(), reinterpret_cast<jint*>(c.data()));
         require(size_t(std::accumulate(c.begin(), c.end(), 0)) * D == p.size(), "Patch count");
-        auto mem = build_memory(p, c, keep, parts);
+        double ms[3] = {0, 0, 0};
+        auto* engine = reinterpret_cast<Engine*>(simmax);
+        OtherMax om = engine ? OtherMax([engine](const float* P, int n, const float* all, const std::vector<int>& o, std::vector<float>& s) {
+                                   htp_other_max(engine, P, n, all, o, s); })
+                             : OtherMax(cpu_other_max);
+        auto mem = build_memory(p, c, keep, parts, om, ms);
+        for (double v : ms) mem.push_back(float(v));
         auto result = env->NewFloatArray(mem.size());
         env->SetFloatArrayRegion(result, 0, mem.size(), mem.data());
         return result;

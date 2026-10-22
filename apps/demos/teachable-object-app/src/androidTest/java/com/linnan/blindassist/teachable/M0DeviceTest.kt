@@ -26,6 +26,7 @@ class M0DeviceTest {
     private val root = File(context.filesDir, "m0")
     private val results = File(root, "results").apply { mkdirs() }
     private var peakNative = 0L
+    private var simmax: SnpeEngine? = null
 
     private fun ms(start: Long) = (System.nanoTime() - start) / 1e6
     private fun raw(file: File) = FloatArray((file.length() / 4).toInt()).also {
@@ -44,11 +45,21 @@ class M0DeviceTest {
                 val m = TeachablePipeline.Memory(7, raw(File(ref, "ref_parts.raw")), raw(File(ref, "ref_protos.raw")), raw(File(ref, "ref_valid.raw")))
                 device.put("head_ref_first_logits", JSONArray(p.identify(FloatArray(3 * 224 * 224), raw(File(ref, "ref_tokens.raw")), m).firstLogits.toList()))
             }
+            // HTP simmax engine for the memory build's other-object max (optional) and its sanity check
+            val simmaxFile = File(root, "simmax.dlc")
+            simmax = if (simmaxFile.isFile) SnpeEngine(simmaxFile.path, true, context.applicationInfo.nativeLibraryDir, listOf("mx")) else null
+            simmax?.let { e ->
+                val a = raw(File(ref, "simmax_a.raw")); val b = raw(File(ref, "simmax_b.raw")); val want = raw(File(ref, "simmax_ref.raw"))
+                val t = System.nanoTime(); val got = e.run(mapOf("a" to a, "b" to b)).values.single()
+                device.put("simmax_first_run_ms", ms(t)).put("simmax_ref_max_abs_diff", got.indices.maxOf { kotlin.math.abs(got[it] - want[it]) })
+                val t2 = System.nanoTime(); repeat(5) { e.run(mapOf("a" to a, "b" to b)) }; device.put("simmax_run_ms_mean", ms(t2) / 5)
+            }
             // warm-up of both graphs
             val warm = FloatArray(3 * 224 * 224) { 128f }
             repeat(5) { p.tokens(warm) }
             val users = root.listFiles { f -> File(f, "meta.json").isFile }!!.sortedBy { it.name }
             for (u in users) runUser(p, u)
+            simmax?.close()
             sample()
             device.put("users", JSONArray(users.map { it.name })).put("peak_native_heap_bytes", peakNative)
                 .put("total_ms", ms(t0))
@@ -79,12 +90,20 @@ class M0DeviceTest {
         val patches = FloatArray(patchChunks.sumOf { it.size }).also { a -> var k = 0; for (c in patchChunks) { c.copyInto(a, k); k += c.size } }
         patchChunks.clear(); sample()
         var t = System.nanoTime()
-        val phoneParts = Native.buildMemory(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS)
+        val cpu = Native.build(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS)
         val buildMs = ms(t); sample()
+        val phoneParts = cpu.parts
         out.put("teach_frames", decodeMs.size).put("teach_total_ms", teachMs).put("teach_decode_ms_mean", decodeMs.average())
             .put("teach_backbone_ms_mean", bbMs.average()).put("memory_build_ms", buildMs)
+            .put("memory_build_breakdown_ms", JSONArray(listOf(cpu.otherMs, cpu.ownMs, cpu.kmeansMs)))
             .put("memory_bytes", objects * TeachablePipeline.PARTS * TeachablePipeline.D * 4)
-        val arms = mapOf("phone" to p.memory(objects, phoneParts, cls), "pc" to p.memory(objects, raw(File(dir, "pc_parts.raw")), cls))
+        val arms = linkedMapOf("phone" to p.memory(objects, phoneParts, cls), "pc" to p.memory(objects, raw(File(dir, "pc_parts.raw")), cls))
+        simmax?.let { e ->
+            t = System.nanoTime()
+            val htp = Native.build(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS, e)
+            out.put("memory_build_htp_ms", ms(t)).put("memory_build_htp_breakdown_ms", JSONArray(listOf(htp.otherMs, htp.ownMs, htp.kmeansMs)))
+            arms["phone_htp"] = p.memory(objects, htp.parts, cls)
+        }
         File(results, "${meta.getString("user")}_phone_parts.raw").writeBytes(
             ByteBuffer.allocate(phoneParts.size * 4).order(ByteOrder.LITTLE_ENDIAN).also { it.asFloatBuffer().put(phoneParts) }.array())
         // identification
