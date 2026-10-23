@@ -14,7 +14,7 @@ import java.io.File
 
 /**
  * M1 live run: LiveActivity on the back camera for durationSec (instrumentation argument, default 600 s) with the PC
- * memory of `user` (default P189). Writes filesDir/m1/live_<user>.json. Measures; asserts only that frames were analysed.
+ * memory of `user` (default P189); `-e r10 true` uses the r10 relook on the HTP. Writes filesDir/m1/live_<user>[_r10].json. Measures; asserts only that frames were analysed.
  */
 @RunWith(AndroidJUnit4::class)
 class M1LiveTest {
@@ -27,6 +27,7 @@ class M1LiveTest {
         val user = args.getString("user") ?: "P189"
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val intent = Intent(context, LiveActivity::class.java).putExtra(LiveActivity.EXTRA_USER, user)
+            .putExtra(LiveActivity.EXTRA_R10, args.getString("r10") == "true")
         ActivityScenario.launch<LiveActivity>(intent).use { scenario ->
             Thread.sleep(seconds * 1000)
             var out: File? = null

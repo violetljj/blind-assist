@@ -55,6 +55,7 @@ class LiveActivity : ComponentActivity() {
     private val main = Handler(Looper.getMainLooper())
     private lateinit var label: TextView
     private lateinit var user: String
+    private var useR10 = false
     @Volatile private var pipeline: TeachablePipeline? = null
     private var memory: TeachablePipeline.Memory? = null
     private var objects: List<String> = emptyList()
@@ -78,6 +79,7 @@ class LiveActivity : ComponentActivity() {
         setShowWhenLocked(true); setTurnScreenOn(true)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         user = intent.getStringExtra(EXTRA_USER) ?: "P189"
+        useR10 = intent.getBooleanExtra(EXTRA_R10, false)
         val preview = PreviewView(this)
         label = TextView(this).apply { textSize = 22f; setTextColor(0xFFFFFFFF.toInt()); setBackgroundColor(0x88000000.toInt()); setPadding(24, 16, 24, 16) }
         setContentView(FrameLayout(this).apply {
@@ -103,7 +105,9 @@ class LiveActivity : ComponentActivity() {
         val root = File(filesDir, "m0"); val dir = File(root, user)
         val meta = JSONObject(File(dir, "meta.json").readText())
         objects = List(meta.getJSONArray("objects").length()) { meta.getJSONArray("objects").getString(it) }
-        val p = TeachablePipeline(File(root, "backbone_fp32.dlc"), File(root, "head_dyn.dlc"), applicationInfo.nativeLibraryDir)
+        // r10 relook (Graduation phone_r10_20261024): the HTP localiser graph, run only on frames that look again
+        val p = TeachablePipeline(File(root, "backbone_fp32.dlc"), File(root, "head_dyn.dlc"), applicationInfo.nativeLibraryDir,
+                                  if (useR10) File(root, "loc_r10_htp.dlc") else null, r10Htp = useR10)
         val teach = meta.getJSONArray("teach"); val cls = List(objects.size) { FloatArray(TeachablePipeline.D) }
         for (o in objects.indices) {
             val frames = teach.getJSONArray(o)
@@ -162,7 +166,7 @@ class LiveActivity : ComponentActivity() {
         val prep = (System.nanoTime() - t) / 1e6; t = System.nanoTime()
         val tok = p.tokens(x)
         val bb = (System.nanoTime() - t) / 1e6; t = System.nanoTime()
-        val r = p.identify(x, tok, m)
+        val r = p.identify(x, tok, m, useR10)
         val id = (System.nanoTime() - t) / 1e6
         // causal EMA over z-scores, half-life 30 analysed frames, bias corrected
         val e = ema ?: DoubleArray(r.scores.size).also { ema = it }
@@ -202,9 +206,9 @@ class LiveActivity : ComponentActivity() {
         main.removeCallbacksAndMessages(null)
         provider?.unbindAll()
         sampleThermal(); main.removeCallbacksAndMessages(null)
-        val out = File(filesDir, "m1").apply { mkdirs() }.let { File(it, "live_$user.json") }
+        val out = File(filesDir, "m1").apply { mkdirs() }.let { File(it, if (useR10) "live_${user}_r10.json" else "live_$user.json") }
         synchronized(this) {
-            val j = JSONObject().put("user", user).put("objects", JSONArray(objects)).put("setup_ms", setupMs)
+            val j = JSONObject().put("user", user).put("objects", JSONArray(objects)).put("setup_ms", setupMs).put("relook", if (useR10) "r10" else "loc50")
                 .put("timestamp_source", timestampSource).put("stable_frames", STABLE_FRAMES).put("ema_half_life", HALF_LIFE)
                 .put("frame_ts_ns", JSONArray(frameTs)).put("entry_ns", JSONArray(entryTs)).put("done_ns", JSONArray(doneTs))
                 .put("prep_ms", JSONArray(prepMs)).put("backbone_ms", JSONArray(backboneMs)).put("identify_ms", JSONArray(identifyMs))
@@ -224,6 +228,7 @@ class LiveActivity : ComponentActivity() {
 
     companion object {
         const val EXTRA_USER = "user"
+        const val EXTRA_R10 = "r10"
         const val TAG = "TeachableM1"
         const val HALF_LIFE = 30
         const val STABLE_FRAMES = 15
