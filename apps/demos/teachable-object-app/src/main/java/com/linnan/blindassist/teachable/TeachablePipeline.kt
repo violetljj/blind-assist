@@ -9,11 +9,16 @@ import kotlin.math.sqrt
 /**
  * Teach -> build memory -> identify, as the Graduation thesis main method (S config, local <= 1.5T budget variant):
  * DINOv2-S/14 backbone on the HTP, matching + pooling head + localiser on the CPU in FP32, one zoomed second look when
- * the top-two z-score gap is below TAU (loc0.5 box, roi_align crop).
+ * the top-two z-score gap is below TAU (loc0.5 box, roi_align crop). With [locR10] (Graduation relook_loc_20261023
+ * round 3: the 224-px dilated exemplar-conditioned localiser, loc_r10.dlc on the CPU), identify(useR10 = true) centres
+ * the same half-frame relook crop on that localiser's box instead; it runs only on frames that look again.
  */
-class TeachablePipeline(backbone: File, head: File, dspPath: String) : Closeable {
+class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: File? = null, r10Htp: Boolean = false) : Closeable {
     private val backbone = SnpeEngine(backbone.path, htp = true, dspPath = dspPath)
     private val head = SnpeEngine(head.path, htp = false, dspPath = "", outputTensors = listOf("logits", "loc"))
+    private val loc10 = locR10?.let {
+        SnpeEngine(it.path, htp = r10Htp, dspPath = if (r10Htp) dspPath else "", outputTensors = listOf("heat", "reg"))
+    }
     /** Output names as SNPE reports them (they need not match the ONNX names); outputs are picked by size in [look]. */
     val headOutputs: List<String> get() = head.outputs
 
@@ -66,7 +71,35 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String) : Closeable
         return logits.copyOf(m.objects) to loc
     }
 
-    fun identify(image: FloatArray, tok: FloatArray, m: Memory): Result {
+    /** r10 outputs on the given inputs: heat [OMAX, 256] (invalid objects masked in the graph), reg [OMAX, 4, 256]. */
+    fun r10Raw(tok: FloatArray, parts: FloatArray, valid: FloatArray): Pair<FloatArray, FloatArray> {
+        val out = requireNotNull(loc10) { "no loc_r10.dlc" }.run(mapOf("tokens" to tok, "parts" to parts, "valid" to valid))
+        return out.values.single { it.size == OMAX * GRID * GRID } to out.values.single { it.size == OMAX * 4 * GRID * GRID }
+    }
+
+    /** exloc.predict + relook.centre_half: peak of logsumexp over objects, strongest object there, its box centre;
+     *  half-frame square around it, kept inside the frame (x0, y0, x1, y1 px). */
+    fun r10Box(tok: FloatArray, m: Memory): FloatArray {
+        val (heat, reg) = r10Raw(tok, m.parts, m.valid)
+        val T = GRID * GRID; var k = 0; var best = -Double.MAX_VALUE
+        for (t in 0 until T) {
+            var mx = -Float.MAX_VALUE
+            for (o in 0 until OMAX) mx = maxOf(mx, heat[o * T + t])
+            var sum = 0.0
+            for (o in 0 until OMAX) sum += kotlin.math.exp((heat[o * T + t] - mx).toDouble())
+            val lse = mx + kotlin.math.ln(sum)
+            if (lse > best) { best = lse; k = t }
+        }
+        var ob = 0
+        for (o in 1 until OMAX) if (heat[o * T + k] > heat[ob * T + k]) ob = o
+        val dx = reg[(ob * 4 + 0) * T + k]; val dy = reg[(ob * 4 + 1) * T + k]
+        val cx = (((k % GRID) + .5f + dx) / GRID).coerceIn(.25f, .75f) * SIZE
+        val cy = (((k / GRID) + .5f + dy) / GRID).coerceIn(.25f, .75f) * SIZE
+        val half = ZOOM * SIZE / 2
+        return floatArrayOf(cx - half, cy - half, cx + half, cy + half)
+    }
+
+    fun identify(image: FloatArray, tok: FloatArray, m: Memory, useR10: Boolean = false): Result {
         val ms = LinkedHashMap<String, Double>()
         var t = System.nanoTime()
         val (logits, loc) = look(tok, m)
@@ -76,7 +109,7 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String) : Closeable
         val looked = sorted[0] - sorted[1] < TAU
         if (looked) {
             t = System.nanoTime()
-            val b = zoomBox(loc)
+            val b = if (useR10) r10Box(tok, m).also { ms["loc_r10"] = (System.nanoTime() - t) / 1e6; t = System.nanoTime() } else zoomBox(loc)
             val crop = Native.roiAlign(image, SIZE, b[0], b[1], b[2], b[3], SIZE)
             ms["crop"] = (System.nanoTime() - t) / 1e6; t = System.nanoTime()
             val tok2 = tokens(crop)
@@ -89,7 +122,7 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String) : Closeable
     }
 
     override fun close() {
-        backbone.close(); head.close()
+        backbone.close(); head.close(); loc10?.close()
     }
 
     companion object {

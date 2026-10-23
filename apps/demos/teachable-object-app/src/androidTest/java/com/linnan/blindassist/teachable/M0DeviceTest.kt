@@ -38,13 +38,21 @@ class M0DeviceTest {
     @Test
     fun offlineChain() {
         val t0 = System.nanoTime()
-        TeachablePipeline(File(root, "backbone_fp32.dlc"), File(root, "head_dyn.dlc"), context.applicationInfo.nativeLibraryDir).use { p ->
+        val r10File = File(root, if (File(root, "r10_htp").isFile) "loc_r10_htp.dlc" else "loc_r10.dlc")
+        TeachablePipeline(File(root, "backbone_fp32.dlc"), File(root, "head_dyn.dlc"), context.applicationInfo.nativeLibraryDir,
+                          if (r10File.isFile) r10File else null, r10Htp = File(root, "r10_htp").isFile).use { p ->
             val device = JSONObject().put("init_ms", ms(t0)).put("head_outputs", JSONArray(p.headOutputs))
             // head sanity on the PC reference inputs
             val ref = File(root, "head_ref")
             if (ref.isDirectory) {
                 val m = TeachablePipeline.Memory(7, raw(File(ref, "ref_parts.raw")), raw(File(ref, "ref_protos.raw")), raw(File(ref, "ref_valid.raw")))
                 device.put("head_ref_first_logits", JSONArray(p.identify(FloatArray(3 * 224 * 224), raw(File(ref, "ref_tokens.raw")), m).firstLogits.toList()))
+            }
+            // r10 localiser sanity on its PC reference inputs (Graduation phone_r10_20261024/export_r10.py)
+            if (r10File.isFile && File(ref, "r10ref_tokens.raw").isFile) {
+                val (h, r) = p.r10Raw(raw(File(ref, "r10ref_tokens.raw")), raw(File(ref, "r10ref_parts.raw")), raw(File(ref, "r10ref_valid.raw")))
+                File(results, "r10_ref_heat.raw").writeBytes(ByteBuffer.allocate(h.size * 4).order(ByteOrder.LITTLE_ENDIAN).also { it.asFloatBuffer().put(h) }.array())
+                File(results, "r10_ref_reg.raw").writeBytes(ByteBuffer.allocate(r.size * 4).order(ByteOrder.LITTLE_ENDIAN).also { it.asFloatBuffer().put(r) }.array())
             }
             // HTP simmax engine for the memory build's other-object max (optional) and its sanity check
             val simmaxFile = File(root, "simmax.dlc")
@@ -101,13 +109,15 @@ class M0DeviceTest {
             .put("memory_build_breakdown_ms", JSONArray(listOf(cpu.otherMs, cpu.ownMs, cpu.kmeansMs)))
             .put("memory_bytes", objects * TeachablePipeline.PARTS * TeachablePipeline.D * 4)
         val arms = linkedMapOf("phone" to p.memory(objects, phoneParts, cls), "pc" to p.memory(objects, raw(File(dir, "pc_parts.raw")), cls))
-        simmax?.let { e ->                                               // other-object max on the HTP, own top-6 on the CPU
+        val r10 = File(root, "loc_r10.dlc").isFile || File(root, "loc_r10_htp.dlc").isFile
+        val r10Only = File(root, "r10_only").isFile                      // skip the HTP memory-build arms (r10 runs)
+        if (!r10Only) simmax?.let { e ->                                 // other-object max on the HTP, own top-6 on the CPU
             t = System.nanoTime()
             val htp = Native.build(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS, e)
             out.put("memory_build_htpmax_ms", ms(t)).put("memory_build_htpmax_breakdown_ms", JSONArray(listOf(htp.otherMs, htp.ownMs, htp.kmeansMs)))
             arms["phone_htpmax"] = p.memory(objects, htp.parts, cls)
         }
-        if (simmax != null && simtop != null) {                          // both similarity terms on the HTP
+        if (!r10Only && simmax != null && simtop != null) {              // both similarity terms on the HTP
             t = System.nanoTime()
             val htp = Native.build(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS, simmax, simtop)
             out.put("memory_build_htp_ms", ms(t)).put("memory_build_htp_breakdown_ms", JSONArray(listOf(htp.otherMs, htp.ownMs, htp.kmeansMs)))
@@ -126,6 +136,14 @@ class M0DeviceTest {
                 t = System.nanoTime(); val r = p.identify(x, tok, m); val total = ms(t)
                 row.put("${arm}_pred", r.pred).put("${arm}_looked", r.looked).put("${arm}_ms", JSONObject(r.ms as Map<*, *>))
                     .put("${arm}_identify_ms", total).put("${arm}_first_logits", JSONArray(r.firstLogits.toList()))
+                if (r10 && arm in setOf("phone", "pc")) {                   // same memory, relook crop centred on the r10 box
+                    t = System.nanoTime(); val r2 = p.identify(x, tok, m, useR10 = true); val total2 = ms(t)
+                    row.put("${arm}_r10_pred", r2.pred).put("${arm}_r10_looked", r2.looked).put("${arm}_r10_ms", JSONObject(r2.ms as Map<*, *>))
+                        .put("${arm}_r10_identify_ms", total2)
+                    if (r2.looked) {
+                        t = System.nanoTime(); val b = p.r10Box(tok, m); row.put("${arm}_r10_loc_ms", ms(t)).put("${arm}_r10_box", JSONArray(b.toList()))
+                    }
+                }
             }
             rows.put(row)
         }

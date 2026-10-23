@@ -26,3 +26,8 @@ M1 (live, `LiveActivity` / `M1LiveTest -e durationSec 600 -e user P189`): Camera
 speak once stable for 15 frames; logs to filesDir/m1/live_<user>.json.
 
 Results: Graduation `phone_m0_20261022/RESULTS.md` (M0) and `RESULTS_M1.md` (M1).
+
+r10 relook (optional): put `loc_r10_htp.dlc` (HTP; or `loc_r10.dlc` for the CPU) and an empty `r10_htp` marker in files/m0;
+`TeachablePipeline(..., locR10, r10Htp)` + `identify(useR10 = true)` centre the half-frame relook crop on the 224-px dilated
+exemplar-conditioned localiser's box (only on frames that look again; ~2.4 ms on the HTP). An `r10_only` marker skips the
+HTP memory-build arms in `M0DeviceTest`. Export and results: Graduation `phone_r10_20261024/` (`export_r10.py deploy`, RESULTS.md).
