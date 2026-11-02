@@ -13,6 +13,10 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".WclLiveActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".TeachActivity"
             android:exported="true"
             android:screenOrientation="portrait"

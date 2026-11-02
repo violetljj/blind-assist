@@ -1,0 +1,81 @@
+package com.linnan.blindassist.teachable
+
+import android.Manifest
+import android.content.Intent
+import android.util.Log
+import androidx.test.core.app.ActivityScenario
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.GrantPermissionRule
+import org.json.JSONArray
+import org.json.JSONObject
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.io.File
+
+/**
+ * WCL on the phone (Graduation orbit_wcl_phone_20261102). offlineChain: teach and identify on the M0 validation-user
+ * packages with filesDir/wcl/wcl_cached.dlc, writes filesDir/wcl/results/<user>.json. liveRun: WclLiveActivity for
+ * durationSec (default 600) at rate frames per second (default 3). Both measure; they assert only that the chain ran.
+ */
+@RunWith(AndroidJUnit4::class)
+class WclDeviceTest {
+    @get:Rule val camera: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA)
+    private val context = InstrumentationRegistry.getInstrumentation().targetContext
+
+    private fun ms(start: Long) = (System.nanoTime() - start) / 1e6
+
+    @Test
+    fun offlineChain() {
+        val root = File(context.filesDir, "m0")
+        val results = File(context.filesDir, "wcl/results").apply { mkdirs() }
+        val t0 = System.nanoTime()
+        WclPipeline(File(context.filesDir, "wcl/wcl_cached.dlc"), context.applicationInfo.nativeLibraryDir).use { p ->
+            val loadMs = ms(t0)
+            for (dir in root.listFiles { f -> File(f, "meta.json").isFile }!!.sortedBy { it.name }) {
+                val meta = JSONObject(File(dir, "meta.json").readText())
+                val objects = meta.getJSONArray("objects").length()
+                val teach = meta.getJSONArray("teach")
+                val sums = List(objects) { FloatArray(WclPipeline.D) }
+                val teachStart = System.nanoTime(); var teachFrames = 0
+                for (o in 0 until objects) {
+                    val frames = teach.getJSONArray(o)
+                    for (i in 0 until frames.length()) {
+                        val e = p.embed(p.image(File(dir, "img/" + frames.getString(i))))
+                        for (d in 0 until WclPipeline.D) sums[o][d] += e[d]
+                        teachFrames++
+                    }
+                }
+                val protos = p.prototypes(sums)
+                val teachMs = ms(teachStart)
+                val queries = meta.getJSONArray("queries"); val rows = JSONArray()
+                for (i in 0 until queries.length()) {
+                    val q = queries.getJSONObject(i)
+                    var t = System.nanoTime(); val x = p.image(File(dir, "img/" + q.getString("name"))); val dec = ms(t)
+                    t = System.nanoTime(); val e = p.embed(x); val em = ms(t)
+                    val s = p.scores(e, protos)
+                    rows.put(JSONObject().put("name", q.getString("name")).put("decode_ms", dec).put("embed_ms", em)
+                        .put("pred", s.indices.maxBy { s[it] }).put("scores", JSONArray(s.map { it.toDouble() })))
+                }
+                File(results, "${dir.name}.json").writeText(JSONObject().put("user", dir.name).put("load_ms", loadMs).put("teach_frames", teachFrames)
+                    .put("teach_ms", teachMs).put("queries", rows).toString())
+                Log.i(WclLiveActivity.TAG, "${dir.name}: teach $teachFrames frames ${"%.0f".format(teachMs)} ms, ${queries.length()} queries")
+            }
+        }
+    }
+
+    @Test
+    fun liveRun() {
+        val args = InstrumentationRegistry.getArguments()
+        val seconds = args.getString("durationSec")?.toLong() ?: 600L
+        val intent = Intent(context, WclLiveActivity::class.java).putExtra(WclLiveActivity.EXTRA_USER, args.getString("user") ?: "P189")
+            .putExtra(WclLiveActivity.EXTRA_RATE, args.getString("rate")?.toDouble() ?: 3.0)
+        ActivityScenario.launch<WclLiveActivity>(intent).use { scenario ->
+            Thread.sleep(seconds * 1000)
+            var out: File? = null
+            scenario.onActivity { out = it.stopAndDump() }
+            check(out!!.length() > 1000) { "no frames analysed" }
+        }
+    }
+}

@@ -27,6 +27,10 @@ speak once stable for 15 frames; logs to filesDir/m1/live_<user>.json.
 
 Results: Graduation `phone_m0_20261022/RESULTS.md` (M0) and `RESULTS_M1.md` (M1).
 
+WCL chain (optional, separate from the main method): `WclPipeline` + `WclLiveActivity` run the ORBIT-adapted SigLIP2-So400m
+whole-frame prototypes on the HTP at 3 frames per second. Copy the offline-prepared `wcl_cached.dlc` (2.57 GB, Graduation
+`orbit_wcl_phone_20261102`) to `files/wcl/`, then `WclDeviceTest#offlineChain` or `WclDeviceTest#liveRun -e durationSec 600 -e rate 3`.
+
 r10 relook (optional): put `loc_r10_htp.dlc` (HTP; or `loc_r10.dlc` for the CPU) and an empty `r10_htp` marker in files/m0;
 `TeachablePipeline(..., locR10, r10Htp)` + `identify(useR10 = true)` centre the half-frame relook crop on the 224-px dilated
 exemplar-conditioned localiser's box (only on frames that look again; ~2.4 ms on the HTP). An `r10_only` marker skips the
