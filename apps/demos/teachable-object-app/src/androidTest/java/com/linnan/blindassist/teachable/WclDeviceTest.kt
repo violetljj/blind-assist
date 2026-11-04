@@ -17,7 +17,9 @@ import java.io.File
 /**
  * WCL on the phone (Graduation orbit_wcl_phone_20261102). offlineChain: teach and identify on the M0 validation-user
  * packages with filesDir/wcl/wcl_cached.dlc, writes filesDir/wcl/results/<user>.json. liveRun: WclLiveActivity for
- * durationSec (default 600) at rate frames per second (default 3). Both measure; they assert only that the chain ran.
+ * durationSec (default 600) at rate frames per second (default 3), -e spatial true for the spatial readout. offlineSpatial:
+ * the same packages with PfPipeline (Graduation orbit_wcl_protofull_phone_20261104), writes filesDir/wcl/results_pf/<user>.json.
+ * All measure; they assert only that the chain ran.
  */
 @RunWith(AndroidJUnit4::class)
 class WclDeviceTest {
@@ -66,11 +68,53 @@ class WclDeviceTest {
     }
 
     @Test
+    fun offlineSpatial() {
+        val root = File(context.filesDir, "m0")
+        val results = File(context.filesDir, "wcl/results_pf").apply { mkdirs() }
+        val t0 = System.nanoTime()
+        PfPipeline(File(context.filesDir, "wcl/pf_body_cached.dlc"), File(context.filesDir, "wcl/pf_head_m20_cached.dlc"), context.applicationInfo.nativeLibraryDir).use { p ->
+            val loadMs = ms(t0)
+            for (dir in root.listFiles { f -> File(f, "meta.json").isFile }!!.sortedBy { it.name }) {
+                val meta = JSONObject(File(dir, "meta.json").readText())
+                val objects = meta.getJSONArray("objects").length()
+                val teach = meta.getJSONArray("teach")
+                val sums = List(objects) { FloatArray(WclPipeline.D) }
+                val teachStart = System.nanoTime(); var teachFrames = 0
+                for (o in 0 until objects) {
+                    val frames = teach.getJSONArray(o)
+                    for (i in 0 until frames.length()) {
+                        val e = p.embed(WclPipeline.imageOf(File(dir, "img/" + frames.getString(i))))
+                        for (d in 0 until WclPipeline.D) sums[o][d] += e[d]
+                        teachFrames++
+                    }
+                }
+                val protos = WclPipeline.prototypesOf(sums); p.setPrototypes(protos)
+                val teachMs = ms(teachStart)
+                val queries = meta.getJSONArray("queries"); val rows = JSONArray()
+                for (i in 0 until queries.length()) {
+                    val q = queries.getJSONObject(i)
+                    var t = System.nanoTime(); val x = WclPipeline.imageOf(File(dir, "img/" + q.getString("name"))); val dec = ms(t)
+                    t = System.nanoTime(); val tok = p.tokens(x); val body = ms(t)
+                    t = System.nanoTime(); val r = p.read(tok); val read = ms(t)
+                    val plain = WclPipeline.cosine(r.embedding, protos)
+                    rows.put(JSONObject().put("name", q.getString("name")).put("decode_ms", dec).put("body_ms", body).put("read_ms", read)
+                        .put("pred", r.scores.indices.maxBy { r.scores[it] }).put("wcl_pred", plain.indices.maxBy { plain[it] })
+                        .put("scores", JSONArray(r.scores.map { it.toDouble() })).put("wcl_scores", JSONArray(plain.map { it.toDouble() })))
+                }
+                File(results, "${dir.name}.json").writeText(JSONObject().put("user", dir.name).put("load_ms", loadMs).put("teach_frames", teachFrames)
+                    .put("teach_ms", teachMs).put("queries", rows).toString())
+                Log.i(WclLiveActivity.TAG, "${dir.name} spatial: teach $teachFrames frames ${"%.0f".format(teachMs)} ms, ${queries.length()} queries")
+            }
+        }
+    }
+
+    @Test
     fun liveRun() {
         val args = InstrumentationRegistry.getArguments()
         val seconds = args.getString("durationSec")?.toLong() ?: 600L
         val intent = Intent(context, WclLiveActivity::class.java).putExtra(WclLiveActivity.EXTRA_USER, args.getString("user") ?: "P189")
             .putExtra(WclLiveActivity.EXTRA_RATE, args.getString("rate")?.toDouble() ?: 3.0)
+            .putExtra(WclLiveActivity.EXTRA_SPATIAL, args.getString("spatial") == "true")
         ActivityScenario.launch<WclLiveActivity>(intent).use { scenario ->
             Thread.sleep(seconds * 1000)
             var out: File? = null

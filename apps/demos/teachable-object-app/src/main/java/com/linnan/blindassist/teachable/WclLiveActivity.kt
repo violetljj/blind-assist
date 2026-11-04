@@ -43,7 +43,8 @@ import kotlin.math.pow
  * Live WCL chain: CameraX 30 fps, frames scored at [EXTRA_RATE] per second -> centre square -> 224 -> So400m on the HTP ->
  * cosine to the teaching prototypes -> causal EMA with a 1 s half-life -> speak once the smoothed top-1 has held for 1 s.
  * Prototypes come from one ORBIT validation user's teaching frames (filesDir/m0/<user>), computed on the phone.
- * [stopAndDump] writes filesDir/wcl/live_<user>_<rate>.json with per-frame timings and thermal samples.
+ * [EXTRA_SPATIAL] replaces the cosine with the prototype-guided spatial readout ([PfPipeline]) and logs the paired plain WCL top-1.
+ * [stopAndDump] writes filesDir/wcl/live_<user>_<rate>[_pf].json with per-frame timings and thermal samples.
  */
 class WclLiveActivity : ComponentActivity() {
     private val worker = Executors.newSingleThreadExecutor()
@@ -54,6 +55,8 @@ class WclLiveActivity : ComponentActivity() {
     private var alpha = 0.0
     private var stableFrames = 3
     @Volatile private var pipeline: WclPipeline? = null
+    @Volatile private var pf: PfPipeline? = null
+    private var spatial = false
     private var protos = FloatArray(0)
     private var objects: List<String> = emptyList()
     private var tts: TextToSpeech? = null
@@ -66,6 +69,7 @@ class WclLiveActivity : ComponentActivity() {
     private val frameTs = ArrayList<Long>(); private val doneTs = ArrayList<Long>()
     private val prepMs = ArrayList<Double>(); private val embedMs = ArrayList<Double>()
     private val smoothTop = ArrayList<Int>()
+    private val readMs = ArrayList<Double>(); private val wclTop = ArrayList<Int>()
     private val thermal = JSONArray(); private val announcements = JSONArray()
     private var ema: DoubleArray? = null
     private var runTop = -1; private var runLen = 0; private var lastSpoken = -1
@@ -77,6 +81,7 @@ class WclLiveActivity : ComponentActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         user = intent.getStringExtra(EXTRA_USER) ?: "P189"
         rate = intent.getDoubleExtra(EXTRA_RATE, 3.0)
+        spatial = intent.getBooleanExtra(EXTRA_SPATIAL, false)
         alpha = 0.5.pow(1.0 / rate)
         stableFrames = ceil(rate).toInt()
         val preview = PreviewView(this)
@@ -93,7 +98,8 @@ class WclLiveActivity : ComponentActivity() {
 
     private fun setup() {
         var t = System.nanoTime()
-        val p = WclPipeline(File(filesDir, "wcl/wcl_cached.dlc"), applicationInfo.nativeLibraryDir)
+        val w = if (spatial) null else WclPipeline(File(filesDir, "wcl/wcl_cached.dlc"), applicationInfo.nativeLibraryDir)
+        val s = if (spatial) PfPipeline(File(filesDir, "wcl/pf_body_cached.dlc"), File(filesDir, "wcl/pf_head_m20_cached.dlc"), applicationInfo.nativeLibraryDir) else null
         loadMs = (System.nanoTime() - t) / 1e6
         t = System.nanoTime()
         val dir = File(filesDir, "m0/$user")
@@ -104,14 +110,16 @@ class WclLiveActivity : ComponentActivity() {
         for (o in objects.indices) {
             val frames = teach.getJSONArray(o)
             for (i in 0 until frames.length()) {
-                val e = p.embed(p.image(File(dir, "img/" + frames.getString(i))))
+                val x = WclPipeline.imageOf(File(dir, "img/" + frames.getString(i)))
+                val e = w?.embed(x) ?: s!!.embed(x)
                 for (d in 0 until WclPipeline.D) sums[o][d] += e[d]
                 teachFrames++
             }
         }
-        protos = p.prototypes(sums)
+        protos = WclPipeline.prototypesOf(sums)
+        s?.setPrototypes(protos)
         teachMs = (System.nanoTime() - t) / 1e6
-        pipeline = p
+        pipeline = w; pf = s
         Log.i(TAG, "ready: $user ${objects.size} objects, load ${"%.0f".format(loadMs)} ms, teach $teachFrames frames ${"%.0f".format(teachMs)} ms")
     }
 
@@ -138,9 +146,9 @@ class WclLiveActivity : ComponentActivity() {
 
     private fun analyze(image: ImageProxy) {
         val now = SystemClock.elapsedRealtimeNanos()
-        val p = pipeline
+        val w = pipeline; val spatialChain = pf
         seen++
-        if (p == null || now < nextNs) { image.close(); return }
+        if ((w == null && spatialChain == null) || now < nextNs) { image.close(); return }
         nextNs = maxOf(nextNs + (1e9 / rate).toLong(), now)
         val ts = image.imageInfo.timestamp
         var t = System.nanoTime()
@@ -150,17 +158,27 @@ class WclLiveActivity : ComponentActivity() {
         val s = WclPipeline.SIZE.toFloat() / side
         val crop = Bitmap.createBitmap(bmp, (bmp.width - side) / 2, (bmp.height - side) / 2, side, side,
             Matrix().apply { postScale(s, s); postRotate(rot.toFloat()) }, true)
-        val x = p.image(crop); crop.recycle(); bmp.recycle()
+        val x = WclPipeline.imageOf(crop); crop.recycle(); bmp.recycle()
         val prep = (System.nanoTime() - t) / 1e6; t = System.nanoTime()
-        val e = p.embed(x)
+        var read = 0.0; var plainTop = -1
+        val score: FloatArray
+        if (spatialChain != null) {
+            val tok = spatialChain.tokens(x)
+            val tr = System.nanoTime()
+            val r = spatialChain.read(tok)
+            read = (System.nanoTime() - tr) / 1e6
+            score = r.scores
+            val plain = WclPipeline.cosine(r.embedding, protos); plainTop = plain.indices.maxBy { plain[it] }
+        } else {
+            score = WclPipeline.cosine(w!!.embed(x), protos)
+        }
         val em = (System.nanoTime() - t) / 1e6
-        val score = p.scores(e, protos)
         val smooth = ema ?: DoubleArray(score.size).also { ema = it }
         for (i in smooth.indices) smooth[i] = alpha * smooth[i] + (1 - alpha) * score[i]
         val top = smooth.indices.maxBy { smooth[it] }
         if (top == runTop) runLen++ else { runTop = top; runLen = 1 }
         val done = SystemClock.elapsedRealtimeNanos()
-        synchronized(this) { frameTs += ts; doneTs += done; prepMs += prep; embedMs += em; smoothTop += top }
+        synchronized(this) { frameTs += ts; doneTs += done; prepMs += prep; embedMs += em; smoothTop += top; readMs += read; wclTop += plainTop }
         if (runLen == stableFrames && top != lastSpoken && ttsReady) {
             lastSpoken = top
             announcements.put(JSONObject().put("frame", frameTs.size - 1).put("object", objects[top]))
@@ -186,10 +204,10 @@ class WclLiveActivity : ComponentActivity() {
         main.removeCallbacksAndMessages(null)
         provider?.unbindAll()
         sampleThermal(); main.removeCallbacksAndMessages(null)
-        val out = File(filesDir, "wcl").apply { mkdirs() }.let { File(it, "live_${user}_${rate}.json") }
+        val out = File(filesDir, "wcl").apply { mkdirs() }.let { File(it, "live_${user}_${rate}${if (spatial) "_pf" else ""}.json") }
         synchronized(this) {
             out.writeText(JSONObject().put("user", user).put("rate", rate).put("objects", JSONArray(objects)).put("load_ms", loadMs).put("teach_ms", teachMs).put("teach_frames", teachFrames)
-                .put("camera_frames_seen", seen).put("frame_ts_ns", JSONArray(frameTs)).put("done_ns", JSONArray(doneTs)).put("prep_ms", JSONArray(prepMs)).put("embed_ms", JSONArray(embedMs))
+                .put("camera_frames_seen", seen).put("frame_ts_ns", JSONArray(frameTs)).put("done_ns", JSONArray(doneTs)).put("prep_ms", JSONArray(prepMs)).put("embed_ms", JSONArray(embedMs)).put("spatial", spatial).put("read_ms", JSONArray(readMs)).put("wcl_top", JSONArray(wclTop))
                 .put("smooth_top", JSONArray(smoothTop)).put("thermal", thermal).put("announcements", announcements).toString())
         }
         return out
@@ -198,13 +216,14 @@ class WclLiveActivity : ComponentActivity() {
     override fun onDestroy() {
         tts?.shutdown(); worker.shutdown()
         worker.awaitTermination(2, java.util.concurrent.TimeUnit.SECONDS)
-        pipeline?.close()
+        pipeline?.close(); pf?.close()
         super.onDestroy()
     }
 
     companion object {
         const val EXTRA_USER = "user"
         const val EXTRA_RATE = "rate"
+        const val EXTRA_SPATIAL = "spatial"
         const val TAG = "TeachableWcl"
     }
 }
