@@ -17,7 +17,7 @@ import java.io.File
 /**
  * WCL on the phone (Graduation orbit_wcl_phone_20261102). offlineChain: teach and identify on the M0 validation-user
  * packages with filesDir/wcl/wcl_cached.dlc, writes filesDir/wcl/results/<user>.json. liveRun: WclLiveActivity for
- * durationSec (default 600) at rate frames per second (default 3), -e spatial true for the spatial readout, -e confPower 0 for the plain EMA. offlineSpatial:
+ * durationSec (default 600) at rate frames per second (default 3), -e spatial true for the spatial readout, -e confPower 0 -e halfLife 1 for the old plain EMA. offlineSpatial:
  * the same packages with PfPipeline (Graduation orbit_wcl_protofull_phone_20261104), writes filesDir/wcl/results_pf/<user>.json.
  * smootherReplay: ConfidenceEma over the stored per-frame scores of filesDir/wcl/results, writes filesDir/wcl/smoother_replay.json to compare with the offline code.
  * All measure; they assert only that the chain ran.
@@ -111,10 +111,10 @@ class WclDeviceTest {
 
     @Test
     fun smootherReplay() {
-        val out = JSONObject(); val alpha = Math.pow(0.5, 1.0 / 3)
+        val out = JSONObject()
         for (f in File(context.filesDir, "wcl/results").listFiles { x -> x.name.endsWith(".json") }!!.sortedBy { it.name }) {
             val q = JSONObject(f.readText()).getJSONArray("queries")
-            val weighted = ConfidenceEma(alpha); val plain = ConfidenceEma(alpha, 0); val wt = JSONArray(); val pt = JSONArray()
+            val weighted = ConfidenceEma(ConfidenceEma.alphaOf(3.0)); val plain = ConfidenceEma(ConfidenceEma.alphaOf(3.0, 1.0), 0); val wt = JSONArray(); val pt = JSONArray()
             for (i in 0 until q.length()) {
                 val a = q.getJSONObject(i).getJSONArray("scores"); val s = FloatArray(a.length()) { a.getDouble(it).toFloat() }
                 wt.put(weighted.update(s)); pt.put(plain.update(s))
@@ -132,6 +132,7 @@ class WclDeviceTest {
             .putExtra(WclLiveActivity.EXTRA_RATE, args.getString("rate")?.toDouble() ?: 3.0)
             .putExtra(WclLiveActivity.EXTRA_SPATIAL, args.getString("spatial") == "true")
             .putExtra(WclLiveActivity.EXTRA_CONF_POWER, args.getString("confPower")?.toInt() ?: ConfidenceEma.DEFAULT_POWER)
+            .putExtra(WclLiveActivity.EXTRA_HALF_LIFE, args.getString("halfLife")?.toDouble() ?: ConfidenceEma.DEFAULT_HALF_LIFE_S)
         ActivityScenario.launch<WclLiveActivity>(intent).use { scenario ->
             Thread.sleep(seconds * 1000)
             var out: File? = null

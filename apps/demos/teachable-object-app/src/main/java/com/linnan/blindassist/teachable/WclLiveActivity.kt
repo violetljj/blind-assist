@@ -37,12 +37,11 @@ import java.io.File
 import java.util.Locale
 import java.util.concurrent.Executors
 import kotlin.math.ceil
-import kotlin.math.pow
 
 /**
  * Live WCL chain: CameraX 30 fps, frames scored at [EXTRA_RATE] per second -> centre square -> 224 -> So400m on the HTP ->
- * cosine to the teaching prototypes -> causal confidence-weighted EMA with a 1 s half-life ([ConfidenceEma]) -> speak once the smoothed top-1 has held for 1 s.
- * [EXTRA_CONF_POWER] 0 restores the plain EMA; the plain EMA's top-1 is always logged next to it.
+ * cosine to the teaching prototypes -> causal confidence-weighted EMA with a 0.5 s half-life ([ConfidenceEma]) -> speak once the smoothed top-1 has held for 1 s.
+ * [EXTRA_CONF_POWER] 0 with [EXTRA_HALF_LIFE] 1 restores the old plain EMA, whose top-1 is always logged next to it.
  * Prototypes come from one ORBIT validation user's teaching frames (filesDir/m0/<user>), computed on the phone.
  * [EXTRA_SPATIAL] replaces the cosine with the prototype-guided spatial readout ([PfPipeline]) and logs the paired plain WCL top-1.
  * [stopAndDump] writes filesDir/wcl/live_<user>_<rate>[_pf].json with per-frame timings and thermal samples.
@@ -86,8 +85,8 @@ class WclLiveActivity : ComponentActivity() {
         rate = intent.getDoubleExtra(EXTRA_RATE, 3.0)
         spatial = intent.getBooleanExtra(EXTRA_SPATIAL, false)
         confPower = intent.getIntExtra(EXTRA_CONF_POWER, ConfidenceEma.DEFAULT_POWER)
-        val alpha = 0.5.pow(1.0 / rate)
-        smoother = ConfidenceEma(alpha, confPower); plainSmoother = ConfidenceEma(alpha, 0)
+        val halfLife = intent.getDoubleExtra(EXTRA_HALF_LIFE, ConfidenceEma.DEFAULT_HALF_LIFE_S)
+        smoother = ConfidenceEma(ConfidenceEma.alphaOf(rate, halfLife), confPower); plainSmoother = ConfidenceEma(ConfidenceEma.alphaOf(rate, 1.0), 0)
         stableFrames = ceil(rate).toInt()
         val preview = PreviewView(this)
         label = TextView(this).apply { textSize = 22f; setTextColor(0xFFFFFFFF.toInt()); setBackgroundColor(0x88000000.toInt()); setPadding(24, 16, 24, 16) }
@@ -228,6 +227,7 @@ class WclLiveActivity : ComponentActivity() {
         const val EXTRA_RATE = "rate"
         const val EXTRA_SPATIAL = "spatial"
         const val EXTRA_CONF_POWER = "confPower"
+        const val EXTRA_HALF_LIFE = "halfLife"
         const val TAG = "TeachableWcl"
     }
 }

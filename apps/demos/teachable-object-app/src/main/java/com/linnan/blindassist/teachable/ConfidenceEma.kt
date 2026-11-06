@@ -6,7 +6,7 @@ import kotlin.math.pow
 /**
  * Causal smoothing of the per-object scores: each frame enters the EMA weighted by its confidence, p_max^[power], where p is the
  * softmax of score / [temperature]. power = 0 is the plain EMA. Only the argmax is used, so the weights need no normalisation.
- * Graduation orbit_wcl_clip_20261106: t = 16 was chosen on development users, then registered on stored ORBIT test scores.
+ * Graduation orbit_wcl_stream_20261106: half-life 0.5 s with power 64 was chosen on development users, then registered on stored ORBIT test scores.
  */
 class ConfidenceEma(private val alpha: Double, private val power: Int = DEFAULT_POWER, private val temperature: Double = 0.05) {
     private var state: DoubleArray? = null
@@ -20,7 +20,11 @@ class ConfidenceEma(private val alpha: Double, private val power: Int = DEFAULT_
     }
 
     companion object {
-        const val DEFAULT_POWER = 16
+        const val DEFAULT_POWER = 64
+        const val DEFAULT_HALF_LIFE_S = 0.5
+
+        /** Per-frame EMA factor for [rate] frames per second. */
+        fun alphaOf(rate: Double, halfLifeS: Double = DEFAULT_HALF_LIFE_S): Double = 0.5.pow(1.0 / (rate * halfLifeS))
 
         fun weight(score: FloatArray, power: Int, temperature: Double = 0.05): Double {
             if (power == 0) return 1.0
