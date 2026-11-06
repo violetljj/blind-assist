@@ -30,6 +30,7 @@ Results: Graduation `phone_m0_20261022/RESULTS.md` (M0) and `RESULTS_M1.md` (M1)
 WCL chain (optional, separate from the main method): `WclPipeline` + `WclLiveActivity` run the ORBIT-adapted SigLIP2-So400m
 whole-frame prototypes on the HTP at 3 frames per second. Copy the offline-prepared `wcl_cached.dlc` (2.57 GB, Graduation
 `orbit_wcl_phone_20261102`) to `files/wcl/`, then `WclDeviceTest#offlineChain` or `WclDeviceTest#liveRun -e durationSec 600 -e rate 3`.
+Scores are smoothed by a confidence-weighted EMA (`ConfidenceEma`, power 16, Graduation `orbit_wcl_clip_20261106`); `-e confPower 0` restores the plain EMA.
 
 Spatial readout (optional, on the same chain): `PfPipeline` runs the WCL body and the prototype-guided read head as two HTP graphs,
 with up to 20 objects per graph and a mask. Copy `pf_body_cached.dlc` (2.49 GB) and `pf_head_m20_cached.dlc` (Graduation

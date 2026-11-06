@@ -41,7 +41,8 @@ import kotlin.math.pow
 
 /**
  * Live WCL chain: CameraX 30 fps, frames scored at [EXTRA_RATE] per second -> centre square -> 224 -> So400m on the HTP ->
- * cosine to the teaching prototypes -> causal EMA with a 1 s half-life -> speak once the smoothed top-1 has held for 1 s.
+ * cosine to the teaching prototypes -> causal confidence-weighted EMA with a 1 s half-life ([ConfidenceEma]) -> speak once the smoothed top-1 has held for 1 s.
+ * [EXTRA_CONF_POWER] 0 restores the plain EMA; the plain EMA's top-1 is always logged next to it.
  * Prototypes come from one ORBIT validation user's teaching frames (filesDir/m0/<user>), computed on the phone.
  * [EXTRA_SPATIAL] replaces the cosine with the prototype-guided spatial readout ([PfPipeline]) and logs the paired plain WCL top-1.
  * [stopAndDump] writes filesDir/wcl/live_<user>_<rate>[_pf].json with per-frame timings and thermal samples.
@@ -52,7 +53,9 @@ class WclLiveActivity : ComponentActivity() {
     private lateinit var label: TextView
     private lateinit var user: String
     private var rate = 3.0
-    private var alpha = 0.0
+    private var confPower = ConfidenceEma.DEFAULT_POWER
+    private lateinit var smoother: ConfidenceEma
+    private lateinit var plainSmoother: ConfidenceEma
     private var stableFrames = 3
     @Volatile private var pipeline: WclPipeline? = null
     @Volatile private var pf: PfPipeline? = null
@@ -70,8 +73,8 @@ class WclLiveActivity : ComponentActivity() {
     private val prepMs = ArrayList<Double>(); private val embedMs = ArrayList<Double>()
     private val smoothTop = ArrayList<Int>()
     private val readMs = ArrayList<Double>(); private val wclTop = ArrayList<Int>()
+    private val plainEmaTop = ArrayList<Int>(); private val frameWeight = ArrayList<Double>()
     private val thermal = JSONArray(); private val announcements = JSONArray()
-    private var ema: DoubleArray? = null
     private var runTop = -1; private var runLen = 0; private var lastSpoken = -1
     private var loadMs = 0.0; private var teachMs = 0.0; private var teachFrames = 0
 
@@ -82,7 +85,9 @@ class WclLiveActivity : ComponentActivity() {
         user = intent.getStringExtra(EXTRA_USER) ?: "P189"
         rate = intent.getDoubleExtra(EXTRA_RATE, 3.0)
         spatial = intent.getBooleanExtra(EXTRA_SPATIAL, false)
-        alpha = 0.5.pow(1.0 / rate)
+        confPower = intent.getIntExtra(EXTRA_CONF_POWER, ConfidenceEma.DEFAULT_POWER)
+        val alpha = 0.5.pow(1.0 / rate)
+        smoother = ConfidenceEma(alpha, confPower); plainSmoother = ConfidenceEma(alpha, 0)
         stableFrames = ceil(rate).toInt()
         val preview = PreviewView(this)
         label = TextView(this).apply { textSize = 22f; setTextColor(0xFFFFFFFF.toInt()); setBackgroundColor(0x88000000.toInt()); setPadding(24, 16, 24, 16) }
@@ -173,12 +178,10 @@ class WclLiveActivity : ComponentActivity() {
             score = WclPipeline.cosine(w!!.embed(x), protos)
         }
         val em = (System.nanoTime() - t) / 1e6
-        val smooth = ema ?: DoubleArray(score.size).also { ema = it }
-        for (i in smooth.indices) smooth[i] = alpha * smooth[i] + (1 - alpha) * score[i]
-        val top = smooth.indices.maxBy { smooth[it] }
+        val top = smoother.update(score); val plainEma = plainSmoother.update(score); val weight = ConfidenceEma.weight(score, confPower)
         if (top == runTop) runLen++ else { runTop = top; runLen = 1 }
         val done = SystemClock.elapsedRealtimeNanos()
-        synchronized(this) { frameTs += ts; doneTs += done; prepMs += prep; embedMs += em; smoothTop += top; readMs += read; wclTop += plainTop }
+        synchronized(this) { frameTs += ts; doneTs += done; prepMs += prep; embedMs += em; smoothTop += top; readMs += read; wclTop += plainTop; plainEmaTop += plainEma; frameWeight += weight }
         if (runLen == stableFrames && top != lastSpoken && ttsReady) {
             lastSpoken = top
             announcements.put(JSONObject().put("frame", frameTs.size - 1).put("object", objects[top]))
@@ -208,7 +211,7 @@ class WclLiveActivity : ComponentActivity() {
         synchronized(this) {
             out.writeText(JSONObject().put("user", user).put("rate", rate).put("objects", JSONArray(objects)).put("load_ms", loadMs).put("teach_ms", teachMs).put("teach_frames", teachFrames)
                 .put("camera_frames_seen", seen).put("frame_ts_ns", JSONArray(frameTs)).put("done_ns", JSONArray(doneTs)).put("prep_ms", JSONArray(prepMs)).put("embed_ms", JSONArray(embedMs)).put("spatial", spatial).put("read_ms", JSONArray(readMs)).put("wcl_top", JSONArray(wclTop))
-                .put("smooth_top", JSONArray(smoothTop)).put("thermal", thermal).put("announcements", announcements).toString())
+                .put("smooth_top", JSONArray(smoothTop)).put("conf_power", confPower).put("plain_ema_top", JSONArray(plainEmaTop)).put("frame_weight", JSONArray(frameWeight)).put("thermal", thermal).put("announcements", announcements).toString())
         }
         return out
     }
@@ -224,6 +227,7 @@ class WclLiveActivity : ComponentActivity() {
         const val EXTRA_USER = "user"
         const val EXTRA_RATE = "rate"
         const val EXTRA_SPATIAL = "spatial"
+        const val EXTRA_CONF_POWER = "confPower"
         const val TAG = "TeachableWcl"
     }
 }

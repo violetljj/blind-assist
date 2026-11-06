@@ -17,8 +17,9 @@ import java.io.File
 /**
  * WCL on the phone (Graduation orbit_wcl_phone_20261102). offlineChain: teach and identify on the M0 validation-user
  * packages with filesDir/wcl/wcl_cached.dlc, writes filesDir/wcl/results/<user>.json. liveRun: WclLiveActivity for
- * durationSec (default 600) at rate frames per second (default 3), -e spatial true for the spatial readout. offlineSpatial:
+ * durationSec (default 600) at rate frames per second (default 3), -e spatial true for the spatial readout, -e confPower 0 for the plain EMA. offlineSpatial:
  * the same packages with PfPipeline (Graduation orbit_wcl_protofull_phone_20261104), writes filesDir/wcl/results_pf/<user>.json.
+ * smootherReplay: ConfidenceEma over the stored per-frame scores of filesDir/wcl/results, writes filesDir/wcl/smoother_replay.json to compare with the offline code.
  * All measure; they assert only that the chain ran.
  */
 @RunWith(AndroidJUnit4::class)
@@ -109,12 +110,28 @@ class WclDeviceTest {
     }
 
     @Test
+    fun smootherReplay() {
+        val out = JSONObject(); val alpha = Math.pow(0.5, 1.0 / 3)
+        for (f in File(context.filesDir, "wcl/results").listFiles { x -> x.name.endsWith(".json") }!!.sortedBy { it.name }) {
+            val q = JSONObject(f.readText()).getJSONArray("queries")
+            val weighted = ConfidenceEma(alpha); val plain = ConfidenceEma(alpha, 0); val wt = JSONArray(); val pt = JSONArray()
+            for (i in 0 until q.length()) {
+                val a = q.getJSONObject(i).getJSONArray("scores"); val s = FloatArray(a.length()) { a.getDouble(it).toFloat() }
+                wt.put(weighted.update(s)); pt.put(plain.update(s))
+            }
+            out.put(f.name, JSONObject().put("weighted", wt).put("plain", pt))
+        }
+        File(context.filesDir, "wcl/smoother_replay.json").writeText(out.toString())
+    }
+
+    @Test
     fun liveRun() {
         val args = InstrumentationRegistry.getArguments()
         val seconds = args.getString("durationSec")?.toLong() ?: 600L
         val intent = Intent(context, WclLiveActivity::class.java).putExtra(WclLiveActivity.EXTRA_USER, args.getString("user") ?: "P189")
             .putExtra(WclLiveActivity.EXTRA_RATE, args.getString("rate")?.toDouble() ?: 3.0)
             .putExtra(WclLiveActivity.EXTRA_SPATIAL, args.getString("spatial") == "true")
+            .putExtra(WclLiveActivity.EXTRA_CONF_POWER, args.getString("confPower")?.toInt() ?: ConfidenceEma.DEFAULT_POWER)
         ActivityScenario.launch<WclLiveActivity>(intent).use { scenario ->
             Thread.sleep(seconds * 1000)
             var out: File? = null
