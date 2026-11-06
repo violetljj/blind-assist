@@ -8,6 +8,7 @@ import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CaptureRequest
 import android.os.BatteryManager
 import android.os.Bundle
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
@@ -34,6 +35,7 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.core.content.ContextCompat
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -76,7 +78,7 @@ class LiveActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setShowWhenLocked(true); setTurnScreenOn(true)
+        if (Build.VERSION.SDK_INT >= 27) { setShowWhenLocked(true); setTurnScreenOn(true) }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         user = intent.getStringExtra(EXTRA_USER) ?: "P189"
         useR10 = intent.getBooleanExtra(EXTRA_R10, false)
@@ -147,7 +149,7 @@ class LiveActivity : ComponentActivity() {
                 CameraCharacteristics.SENSOR_INFO_TIMESTAMP_SOURCE_UNKNOWN -> "UNKNOWN_MONOTONIC"
                 else -> "OTHER"
             }
-        }, mainExecutor)
+        }, ContextCompat.getMainExecutor(this))
     }
 
     private fun analyze(image: ImageProxy) {
@@ -196,7 +198,8 @@ class LiveActivity : ComponentActivity() {
         val pm = getSystemService(PowerManager::class.java)
         thermal.put(JSONObject().put("t_s", (SystemClock.elapsedRealtimeNanos() - t0) / 1e9)
             .put("battery_c", (battery?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) ?: -1) / 10.0)
-            .put("thermal_status", pm.currentThermalStatus).put("headroom_10s", pm.getThermalHeadroom(10).toDouble())
+            .put("thermal_status", if (Build.VERSION.SDK_INT >= 29) pm.currentThermalStatus else -1)
+            .put("headroom_10s", if (Build.VERSION.SDK_INT >= 30) pm.getThermalHeadroom(10).toDouble().let { if (it.isNaN()) -1.0 else it } else -1.0)
             .put("frames", frameTs.size))
         main.postDelayed(::sampleThermal, 5000)
     }

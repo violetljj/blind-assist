@@ -31,6 +31,7 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.core.content.ContextCompat
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -235,7 +236,7 @@ class TeachActivity : ComponentActivity() {
             Camera2Interop.Extender(ab).setCaptureRequestOption(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, fps)
             val analysis = ab.build().also { it.setAnalyzer(worker, ::analyze) }
             cp.unbindAll(); cp.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis)
-        }, mainExecutor)
+        }, ContextCompat.getMainExecutor(this))
     }
 
     private fun crop(image: ImageProxy): Bitmap {
