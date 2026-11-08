@@ -46,7 +46,7 @@ import kotlin.math.ceil
  * cosine to the teaching prototypes -> causal confidence-weighted EMA with a 0.5 s half-life ([ConfidenceEma]) -> speak after ceil(rate) consecutive analysed frames agree (3 by default).
  * [EXTRA_CONF_POWER] 0 with [EXTRA_HALF_LIFE] 1 restores the old plain EMA, whose top-1 is always logged next to it.
  * [EXTRA_LIBRARY] uses saved personal teaching. Without it, the existing explicit ORBIT replay path is retained.
- * [EXTRA_SIBLING_WHITEN] (default on) re-orders objects whose prototypes are alike by sibling-group whitening ([SiblingWhitening]); no group, no change.
+ * [EXTRA_SIBLING_WHITEN] (default off) re-orders objects whose prototypes are alike by sibling-group whitening ([SiblingWhitening]); no group, no change.
  * [EXTRA_SPATIAL] replaces the cosine with the prototype-guided spatial readout ([PfPipeline]) and logs the paired plain WCL top-1.
  * [stopAndDump] writes filesDir/wcl/live_<user>_<rate>[_pf].json with per-frame timings and thermal samples.
  */
@@ -290,8 +290,9 @@ class WclLiveActivity : ComponentActivity() {
         const val EXTRA_CONF_POWER = "confPower"
         const val EXTRA_HALF_LIFE = "halfLife"
         const val EXTRA_SIBLING_WHITEN = "siblingWhiten"
-        /** Graduation orbit_wcl_whiten_20261108: on unless the registered ORBIT test shows harm. */
-        const val DEFAULT_SIBLING_WHITEN = true
+        /** Graduation orbit_wcl_whiten_20261108: off by default. ORBIT test -0.20 [-0.70, 0.02] and 44 development users -1.06
+         *  [-2.32, -0.02] (cluttered queries); it helps only where teaching and query share capture conditions (ToyBox, CUTE). */
+        const val DEFAULT_SIBLING_WHITEN = false
         const val TAG = "TeachableWcl"
     }
 }
