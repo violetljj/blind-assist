@@ -10,7 +10,7 @@ import java.util.UUID
 /** Personal teaching is independent of the ORBIT replay packages and of the S local memory. */
 class WclTeachingStore(val root: File) {
     data class ObjectFrames(val directory: File, val name: String, val frames: List<File>)
-    data class Library(val names: List<String>, val prototypes: FloatArray, val counts: List<Int>)
+    data class Library(val names: List<String>, val prototypes: FloatArray, val counts: List<Int>, val whitening: SiblingWhitening? = null)
 
     fun objects(): List<ObjectFrames> = File(root, "objects").listFiles().orEmpty()
         .filter { it.isDirectory && File(it, "name.txt").isFile && File(it, "complete").isFile }
@@ -51,10 +51,25 @@ class WclTeachingStore(val root: File) {
             .put("preprocessing", PREPROCESSING).put("source_identity", sourceIdentity())
             .put("names", JSONArray(library.names)).put("counts", JSONArray(library.counts))
             .put("prototypes", JSONArray(library.prototypes.toList())).toString()
+        library.whitening?.let { w ->                                    // written first: a stale prototypes.json never pairs with new groups
+            val wf = AtomicFile(File(root, "whitening.bin")); val out = wf.startWrite()
+            try { w.write(out, whiteningIdentity(modelIdentity)); finish(wf, out) } catch (error: Throwable) { wf.failWrite(out); throw error }
+        }
         val file = AtomicFile(File(root, "prototypes.json"))
         val output = file.startWrite()
         try { output.write(json.toByteArray(Charsets.UTF_8)); file.finishWrite(output) }
         catch (error: Throwable) { file.failWrite(output); throw error }
+    }
+
+    private fun finish(f: AtomicFile, out: java.io.FileOutputStream) { out.flush(); f.finishWrite(out) }
+
+    private fun whiteningIdentity(modelIdentity: String): String = MessageDigest.getInstance("SHA-256")
+        .digest((modelIdentity + "|" + PREPROCESSING + "|" + sourceIdentity()).toByteArray(Charsets.UTF_8)).joinToString("") { "%02x".format(it) }
+
+    /** Sibling-group whitening saved with this library, or null when absent or built for other teaching (then scores stay raw). */
+    fun loadWhitening(modelIdentity: String): SiblingWhitening? {
+        val f = File(root, "whitening.bin"); if (!f.isFile) return null
+        return AtomicFile(f).openRead().use { SiblingWhitening.read(it, whiteningIdentity(modelIdentity)) }
     }
 
     fun load(modelIdentity: String): Library {
@@ -66,7 +81,7 @@ class WclTeachingStore(val root: File) {
         val names = json.getJSONArray("names"); val counts = json.getJSONArray("counts"); val values = json.getJSONArray("prototypes")
         check(names.length() > 0 && values.length() == names.length() * WclPipeline.D && counts.length() == names.length()) { "教学记录不完整，请重新保存" }
         return Library(List(names.length()) { names.getString(it) }, FloatArray(values.length()) { values.getDouble(it).toFloat() },
-            List(counts.length()) { counts.getInt(it) }).also {
+            List(counts.length()) { counts.getInt(it) }, loadWhitening(modelIdentity)).also {
             check(it.prototypes.all { value -> value.isFinite() } && it.counts.all { count -> count > 0 }) { "教学记录无效，请重新保存" }
         }
     }
@@ -75,17 +90,14 @@ class WclTeachingStore(val root: File) {
     fun build(pipeline: WclPipeline, modelIdentity: String, progress: (String) -> Unit = {}): Library {
         val taught = objects()
         require(taught.isNotEmpty()) { "请先录制至少一件物品" }
-        val sums = taught.mapIndexed { i, obj ->
+        val embeddings = taught.mapIndexed { i, obj ->
             require(obj.frames.size >= MIN_FRAMES) { "${obj.name}只有${obj.frames.size}帧，请重新录制至少2秒" }
             progress("正在保存第 ${i + 1}/${taught.size} 件：${obj.name}")
-            FloatArray(WclPipeline.D).also { sum ->
-                for (frame in obj.frames) {
-                    val embedding = pipeline.embed(WclPipeline.imageOf(frame))
-                    for (d in sum.indices) sum[d] += embedding[d]
-                }
-            }
+            obj.frames.map { frame -> pipeline.embed(WclPipeline.imageOf(frame)) }
         }
-        return Library(taught.map { it.name }, WclPipeline.prototypesOf(sums), taught.map { it.frames.size })
+        val sums = embeddings.map { rows -> FloatArray(WclPipeline.D).also { sum -> for (e in rows) for (d in sum.indices) sum[d] += e[d] } }
+        progress("正在比较相似的物品")
+        return Library(taught.map { it.name }, WclPipeline.prototypesOf(sums), taught.map { it.frames.size }, SiblingWhitening.build(embeddings))
             .also { save(it, modelIdentity) }
     }
 

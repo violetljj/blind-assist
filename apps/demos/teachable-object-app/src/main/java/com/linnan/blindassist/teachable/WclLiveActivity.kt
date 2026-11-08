@@ -46,6 +46,7 @@ import kotlin.math.ceil
  * cosine to the teaching prototypes -> causal confidence-weighted EMA with a 0.5 s half-life ([ConfidenceEma]) -> speak after ceil(rate) consecutive analysed frames agree (3 by default).
  * [EXTRA_CONF_POWER] 0 with [EXTRA_HALF_LIFE] 1 restores the old plain EMA, whose top-1 is always logged next to it.
  * [EXTRA_LIBRARY] uses saved personal teaching. Without it, the existing explicit ORBIT replay path is retained.
+ * [EXTRA_SIBLING_WHITEN] (default on) re-orders objects whose prototypes are alike by sibling-group whitening ([SiblingWhitening]); no group, no change.
  * [EXTRA_SPATIAL] replaces the cosine with the prototype-guided spatial readout ([PfPipeline]) and logs the paired plain WCL top-1.
  * [stopAndDump] writes filesDir/wcl/live_<user>_<rate>[_pf].json with per-frame timings and thermal samples.
  */
@@ -64,6 +65,8 @@ class WclLiveActivity : ComponentActivity() {
     @Volatile private var pf: PfPipeline? = null
     private var spatial = false
     private var protos = FloatArray(0)
+    private var siblingWhiten = true
+    private var whitening: SiblingWhitening? = null
     private var objects: List<String> = emptyList()
     private var tts: TextToSpeech? = null
     @Volatile private var ttsReady = false
@@ -93,6 +96,7 @@ class WclLiveActivity : ComponentActivity() {
         user = library?.let { "library_$it" } ?: (intent.getStringExtra(EXTRA_USER) ?: "P189")
         rate = intent.getDoubleExtra(EXTRA_RATE, 3.0)
         spatial = intent.getBooleanExtra(EXTRA_SPATIAL, false)
+        siblingWhiten = intent.getBooleanExtra(EXTRA_SIBLING_WHITEN, DEFAULT_SIBLING_WHITEN)
         confPower = intent.getIntExtra(EXTRA_CONF_POWER, ConfidenceEma.DEFAULT_POWER)
         val halfLife = intent.getDoubleExtra(EXTRA_HALF_LIFE, ConfidenceEma.DEFAULT_HALF_LIFE_S)
         smoother = ConfidenceEma(ConfidenceEma.alphaOf(rate, halfLife), confPower); plainSmoother = ConfidenceEma(ConfidenceEma.alphaOf(rate, 1.0), 0)
@@ -131,27 +135,30 @@ class WclLiveActivity : ComponentActivity() {
         t = System.nanoTime()
         try {
         if (personal != null) {
-            objects = personal.names; protos = personal.prototypes; teachFrames = personal.counts.sum()
+            objects = personal.names; protos = personal.prototypes; teachFrames = personal.counts.sum(); whitening = personal.whitening
         } else {
         val dir = File(filesDir, "m0/$user")
         val meta = JSONObject(File(dir, "meta.json").readText())
         objects = List(meta.getJSONArray("objects").length()) { meta.getJSONArray("objects").getString(it) }
         val teach = meta.getJSONArray("teach")
         val sums = List(objects.size) { FloatArray(WclPipeline.D) }
+        val rows = List(objects.size) { ArrayList<FloatArray>() }
         for (o in objects.indices) {
             val frames = teach.getJSONArray(o)
             for (i in 0 until frames.length()) {
                 val x = WclPipeline.imageOf(File(dir, "img/" + frames.getString(i)))
                 val e = w?.embed(x) ?: s!!.embed(x)
                 for (d in 0 until WclPipeline.D) sums[o][d] += e[d]
-                teachFrames++
+                rows[o] += e; teachFrames++
             }
         }
         protos = WclPipeline.prototypesOf(sums)
+        if (w != null) whitening = SiblingWhitening.build(rows)
         }
         s?.setPrototypes(protos)
         teachMs = (System.nanoTime() - t) / 1e6
         pipeline = w; pf = s
+        Log.i(TAG, "sibling whitening ${if (siblingWhiten) "on" else "off"}: ${whitening?.groups?.map { g -> g.members.map { objects[it] } } ?: "not built"}")
         Log.i(TAG, "ready: $user ${objects.size} objects, load ${"%.0f".format(loadMs)} ms, teach $teachFrames frames ${"%.0f".format(teachMs)} ms")
         } catch (error: Throwable) { w?.close(); s?.close(); throw error }
     }
@@ -205,7 +212,8 @@ class WclLiveActivity : ComponentActivity() {
             score = r.scores
             val plain = WclPipeline.cosine(r.embedding, protos); plainTop = plain.indices.maxBy { plain[it] }
         } else {
-            score = WclPipeline.cosine(w!!.embed(x), protos)
+            val e = w!!.embed(x); val raw = WclPipeline.cosine(e, protos)
+            score = whitening?.takeIf { siblingWhiten }?.apply(e, raw) ?: raw
         }
         val em = (System.nanoTime() - t) / 1e6
         val top = smoother.update(score); val plainEma = plainSmoother.update(score); val weight = ConfidenceEma.weight(score, confPower)
@@ -256,7 +264,7 @@ class WclLiveActivity : ComponentActivity() {
         val out = File(filesDir, "wcl").apply { mkdirs() }.let { File(it, "live_${user}_${rate}${if (spatial) "_pf" else ""}.json") }
         synchronized(this) {
             out.writeText(JSONObject().put("user", user).put("personal_library", library ?: JSONObject.NULL).put("rate", rate).put("objects", JSONArray(objects)).put("load_ms", loadMs).put("teach_ms", teachMs).put("teach_frames", teachFrames)
-                .put("camera_frames_seen", seen).put("frame_ts_ns", JSONArray(frameTs)).put("done_ns", JSONArray(doneTs)).put("prep_ms", JSONArray(prepMs)).put("embed_ms", JSONArray(embedMs)).put("spatial", spatial).put("read_ms", JSONArray(readMs)).put("wcl_top", JSONArray(wclTop))
+                .put("camera_frames_seen", seen).put("frame_ts_ns", JSONArray(frameTs)).put("done_ns", JSONArray(doneTs)).put("prep_ms", JSONArray(prepMs)).put("embed_ms", JSONArray(embedMs)).put("spatial", spatial).put("sibling_whiten", siblingWhiten).put("sibling_groups", JSONArray(whitening?.groups?.map { g -> JSONArray(g.members.toList()) } ?: emptyList<JSONArray>())).put("read_ms", JSONArray(readMs)).put("wcl_top", JSONArray(wclTop))
                 .put("smooth_top", JSONArray(smoothTop)).put("conf_power", confPower).put("plain_ema_top", JSONArray(plainEmaTop)).put("frame_weight", JSONArray(frameWeight)).put("thermal", thermal).put("announcements", announcements).toString())
         }
         return out
@@ -281,6 +289,9 @@ class WclLiveActivity : ComponentActivity() {
         const val EXTRA_SPATIAL = "spatial"
         const val EXTRA_CONF_POWER = "confPower"
         const val EXTRA_HALF_LIFE = "halfLife"
+        const val EXTRA_SIBLING_WHITEN = "siblingWhiten"
+        /** Graduation orbit_wcl_whiten_20261108: on unless the registered ORBIT test shows harm. */
+        const val DEFAULT_SIBLING_WHITEN = true
         const val TAG = "TeachableWcl"
     }
 }

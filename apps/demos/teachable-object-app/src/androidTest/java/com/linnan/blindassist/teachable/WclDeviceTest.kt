@@ -68,6 +68,38 @@ class WclDeviceTest {
         }
     }
 
+    /** Sibling-group whitening on the M0 packages (Graduation orbit_wcl_whiten_20261108): per user, teach/query embeddings as float32
+     *  files and raw plus whitened scores at tau 0.70, 0.5 and the full panel, for an exact comparison with group_white.py. */
+    @Test
+    fun offlineWhiten() {
+        val root = File(context.filesDir, "m0")
+        val results = File(context.filesDir, "wcl/results_whiten").apply { mkdirs() }
+        WclPipeline(File(context.filesDir, "wcl/wcl_cached.dlc"), context.applicationInfo.nativeLibraryDir).use { p ->
+            for (dir in root.listFiles { f -> File(f, "meta.json").isFile }!!.sortedBy { it.name }) {
+                val meta = JSONObject(File(dir, "meta.json").readText())
+                val teach = meta.getJSONArray("teach"); val objects = teach.length()
+                val rows = List(objects) { o -> List(teach.getJSONArray(o).length()) { i -> p.embed(p.image(File(dir, "img/" + teach.getJSONArray(o).getString(i)))) } }
+                val sums = rows.map { r -> FloatArray(WclPipeline.D).also { s -> for (e in r) for (d in s.indices) s[d] += e[d] } }
+                val protos = p.prototypes(sums)
+                val taus = listOf(0.70, 0.5, -1.0); val buildMs = ArrayList<Double>()
+                val whitenings = taus.map { t -> val t0 = System.nanoTime(); SiblingWhitening.build(rows, t).also { buildMs += ms(t0) } }
+                val queries = meta.getJSONArray("queries"); val out = JSONArray(); val qEmb = ArrayList<FloatArray>(); val applyMs = ArrayList<Double>()
+                for (i in 0 until queries.length()) {
+                    val e = p.embed(p.image(File(dir, "img/" + queries.getJSONObject(i).getString("name")))); qEmb += e
+                    val raw = p.scores(e, protos); val row = JSONObject().put("raw", JSONArray(raw.map { it.toDouble() }))
+                    for ((k, w) in whitenings.withIndex()) { val t0 = System.nanoTime(); val s = w.apply(e, raw); if (k == 2) applyMs += ms(t0); row.put("tau_${taus[k]}", JSONArray(s.map { it.toDouble() })) }
+                    out.put(row)
+                }
+                fun dump(name: String, v: List<FloatArray>) = java.io.DataOutputStream(File(results, name).outputStream().buffered()).use { o -> v.forEach { e -> e.forEach(o::writeFloat) } }
+                dump("${dir.name}_teach.f32", rows.flatten()); dump("${dir.name}_query.f32", qEmb)
+                File(results, "${dir.name}.json").writeText(JSONObject().put("user", dir.name).put("teach_counts", JSONArray(rows.map { it.size }))
+                    .put("groups", JSONArray(whitenings.map { w -> JSONArray(w.groups.map { g -> JSONArray(g.members.toList()) }) }))
+                    .put("build_ms", JSONArray(buildMs)).put("apply_full_panel_ms_median", applyMs.sorted()[applyMs.size / 2]).put("queries", out).toString())
+                Log.i(WclLiveActivity.TAG, "${dir.name} whitening: groups ${whitenings.map { it.groups.size }}, build ms $buildMs")
+            }
+        }
+    }
+
     @Test
     fun offlineSpatial() {
         val root = File(context.filesDir, "m0")
