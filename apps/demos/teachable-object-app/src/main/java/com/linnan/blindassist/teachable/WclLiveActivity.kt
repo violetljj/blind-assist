@@ -13,6 +13,7 @@ import android.os.Looper
 import android.os.PowerManager
 import android.os.SystemClock
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import android.util.Range
 import android.util.Size
@@ -86,6 +87,8 @@ class WclLiveActivity : ComponentActivity() {
     private val plainEmaTop = ArrayList<Int>(); private val frameWeight = ArrayList<Double>()
     private val thermal = JSONArray(); private val announcements = JSONArray()
     private var runTop = -1; private var runLen = 0; private var lastSpoken = -1
+    /** utteranceId -> elapsedRealtimeNanos of TextToSpeech onStart (timing only; Graduation phone_latency_power_20261110). */
+    private val speechStartNs = HashMap<String, Long>()
     private var loadMs = 0.0; private var teachMs = 0.0; private var teachFrames = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,6 +118,11 @@ class WclLiveActivity : ComponentActivity() {
             ttsReady = status == TextToSpeech.SUCCESS
             if (!ttsReady) speechWarning = "语音服务不可用，当前仅显示识别结果。"
         }
+        tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+            override fun onStart(utteranceId: String) { synchronized(speechStartNs) { speechStartNs[utteranceId] = SystemClock.elapsedRealtimeNanos() } }
+            override fun onDone(utteranceId: String) {}
+            @Deprecated("Deprecated in Java") override fun onError(utteranceId: String) {}
+        })
         worker.execute {
             try { setup(); main.post { if (!isDestroyed) label.text = "准备好了，请把已教物品放到镜头前。" } }
             catch (error: Exception) { Log.e(TAG, "setup failed", error); main.post { if (!isDestroyed) label.text = error.message ?: "无法开始识别，请返回教学页。" } }
@@ -226,7 +234,7 @@ class WclLiveActivity : ComponentActivity() {
             val available = tts?.setLanguage(if (chinese) Locale.SIMPLIFIED_CHINESE else Locale.US) ?: TextToSpeech.LANG_NOT_SUPPORTED
             if (available >= TextToSpeech.LANG_AVAILABLE) {
                 speechWarning = null; lastSpoken = top
-                announcements.put(JSONObject().put("frame", frameTs.size - 1).put("object", objects[top]))
+                announcements.put(JSONObject().put("frame", frameTs.size - 1).put("object", objects[top]).put("utterance", "a${announcements.length() + 1}").put("speak_ns", SystemClock.elapsedRealtimeNanos()))
                 if (tts?.speak(name, TextToSpeech.QUEUE_FLUSH, null, "a${announcements.length()}") == TextToSpeech.ERROR)
                     speechWarning = "语音播放失败，当前仅显示识别结果。"
             } else {
@@ -262,8 +270,10 @@ class WclLiveActivity : ComponentActivity() {
         analysisUseCase?.let { provider?.unbind(it) }; previewUseCase?.let { provider?.unbind(it) }
         sampleThermal(); main.removeCallbacksAndMessages(null)
         val out = File(filesDir, "wcl").apply { mkdirs() }.let { File(it, "live_${user}_${rate}${if (spatial) "_pf" else ""}.json") }
+        val starts = synchronized(speechStartNs) { JSONObject(speechStartNs.mapValues { it.value }) }
+        val clockPair = JSONObject().put("wall_ms", System.currentTimeMillis()).put("elapsed_ns", SystemClock.elapsedRealtimeNanos())
         synchronized(this) {
-            out.writeText(JSONObject().put("user", user).put("personal_library", library ?: JSONObject.NULL).put("rate", rate).put("objects", JSONArray(objects)).put("load_ms", loadMs).put("teach_ms", teachMs).put("teach_frames", teachFrames)
+            out.writeText(JSONObject().put("speech_start_ns", starts).put("clock_pair", clockPair).put("user", user).put("personal_library", library ?: JSONObject.NULL).put("rate", rate).put("objects", JSONArray(objects)).put("load_ms", loadMs).put("teach_ms", teachMs).put("teach_frames", teachFrames)
                 .put("camera_frames_seen", seen).put("frame_ts_ns", JSONArray(frameTs)).put("done_ns", JSONArray(doneTs)).put("prep_ms", JSONArray(prepMs)).put("embed_ms", JSONArray(embedMs)).put("spatial", spatial).put("sibling_whiten", siblingWhiten).put("sibling_groups", JSONArray(whitening?.groups?.map { g -> JSONArray(g.members.toList()) } ?: emptyList<JSONArray>())).put("read_ms", JSONArray(readMs)).put("wcl_top", JSONArray(wclTop))
                 .put("smooth_top", JSONArray(smoothTop)).put("conf_power", confPower).put("plain_ema_top", JSONArray(plainEmaTop)).put("frame_weight", JSONArray(frameWeight)).put("thermal", thermal).put("announcements", announcements).toString())
         }
