@@ -163,6 +163,7 @@ class WclDeviceTest {
         val intent = Intent(context, WclLiveActivity::class.java).putExtra(WclLiveActivity.EXTRA_USER, args.getString("user") ?: "P189")
             .putExtra(WclLiveActivity.EXTRA_RATE, args.getString("rate")?.toDouble() ?: 3.0)
             .putExtra(WclLiveActivity.EXTRA_SPATIAL, args.getString("spatial") == "true")
+            .putExtra(WclLiveActivity.EXTRA_BWCL, args.getString("bwcl") == "true")
             .putExtra(WclLiveActivity.EXTRA_CONF_POWER, args.getString("confPower")?.toInt() ?: ConfidenceEma.DEFAULT_POWER)
             .putExtra(WclLiveActivity.EXTRA_HALF_LIFE, args.getString("halfLife")?.toDouble() ?: ConfidenceEma.DEFAULT_HALF_LIFE_S)
         ActivityScenario.launch<WclLiveActivity>(intent).use { scenario ->

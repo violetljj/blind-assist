@@ -29,6 +29,10 @@ class WclPipeline(model: File, dspPath: String) : Closeable {
     companion object {
         const val SIZE = 224
         const val D = 1152
+        /** App default model under filesDir: W8A16 (Graduation wcl_phone_quant_20261111, 847 MB, 93.76 vs FP16 93.45 on the
+         *  validation users; the confidence-EMA temperature 0.05 still holds on its scores, wcl_q1_default_20261111).
+         *  The FP16 `wcl/wcl_cached.dlc` stays the reference for the device tests. */
+        const val MODEL = "wcl/wcl_w8a16_cached.dlc"
 
         fun imageOf(file: File): FloatArray {
             val bitmap = requireNotNull(BitmapFactory.decodeFile(file.path, BitmapFactory.Options().apply {

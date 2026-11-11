@@ -49,7 +49,10 @@ import kotlin.math.ceil
  * [EXTRA_LIBRARY] uses saved personal teaching. Without it, the existing explicit ORBIT replay path is retained.
  * [EXTRA_SIBLING_WHITEN] (default off) re-orders objects whose prototypes are alike by sibling-group whitening ([SiblingWhitening]); no group, no change.
  * [EXTRA_SPATIAL] replaces the cosine with the prototype-guided spatial readout ([PfPipeline]) and logs the paired plain WCL top-1.
- * [stopAndDump] writes filesDir/wcl/live_<user>_<rate>[_pf].json with per-frame timings and thermal samples.
+ * [EXTRA_BWCL] (default off) runs the thesis full system B+WCL live: the DINOv2-B local-memory branch from filesDir/bwcl/
+ * (memory built on the phone from the same teaching frames) fused per frame as z(B) + z(WCL cosine), as in BwclDeviceTest
+ * (Graduation bwcl_phone_chain_20261111, bwcl_live_20261111; W8A16 default: wcl_q1_default_20261111). Sibling whitening does not apply to the fused score.
+ * [stopAndDump] writes filesDir/wcl/live_<user>_<rate>[_pf|_bwcl].json with per-frame timings and thermal samples.
  */
 class WclLiveActivity : ComponentActivity() {
     private val worker = Executors.newSingleThreadExecutor()
@@ -65,6 +68,10 @@ class WclLiveActivity : ComponentActivity() {
     @Volatile private var pipeline: WclPipeline? = null
     @Volatile private var pf: PfPipeline? = null
     private var spatial = false
+    private var bwcl = false
+    @Volatile private var bBranch: TeachablePipeline? = null
+    private var bMemory: TeachablePipeline.Memory? = null
+    private var bBuildMs = 0.0
     private var protos = FloatArray(0)
     private var siblingWhiten = true
     private var whitening: SiblingWhitening? = null
@@ -84,6 +91,7 @@ class WclLiveActivity : ComponentActivity() {
     private val prepMs = ArrayList<Double>(); private val embedMs = ArrayList<Double>()
     private val smoothTop = ArrayList<Int>()
     private val readMs = ArrayList<Double>(); private val wclTop = ArrayList<Int>()
+    private val bMs = ArrayList<Double>(); private val bLooked = ArrayList<Boolean>(); private val bTop = ArrayList<Int>()
     private val plainEmaTop = ArrayList<Int>(); private val frameWeight = ArrayList<Double>()
     private val thermal = JSONArray(); private val announcements = JSONArray()
     private var runTop = -1; private var runLen = 0; private var lastSpoken = -1
@@ -99,6 +107,7 @@ class WclLiveActivity : ComponentActivity() {
         user = library?.let { "library_$it" } ?: (intent.getStringExtra(EXTRA_USER) ?: "P189")
         rate = intent.getDoubleExtra(EXTRA_RATE, 3.0)
         spatial = intent.getBooleanExtra(EXTRA_SPATIAL, false)
+        bwcl = intent.getBooleanExtra(EXTRA_BWCL, false)
         siblingWhiten = intent.getBooleanExtra(EXTRA_SIBLING_WHITEN, DEFAULT_SIBLING_WHITEN)
         confPower = intent.getIntExtra(EXTRA_CONF_POWER, ConfidenceEma.DEFAULT_POWER)
         val halfLife = intent.getDoubleExtra(EXTRA_HALF_LIFE, ConfidenceEma.DEFAULT_HALF_LIFE_S)
@@ -133,28 +142,35 @@ class WclLiveActivity : ComponentActivity() {
 
     private fun setup() {
         var t = System.nanoTime()
-        val personal = library?.let {
+        check(!(spatial && bwcl)) { "空间读取与完整系统不能同时开启。" }
+        val store = library?.let {
             check(!spatial) { "个人教学当前使用整帧识别，请关闭空间读取。" }
-            WclTeachingStore(WclTeachingStore.directory(filesDir, it)).load(WclTeachingStore.modelIdentity(File(filesDir, "wcl/wcl_cached.dlc")))
+            WclTeachingStore(WclTeachingStore.directory(filesDir, it))
         }
-        val w = if (spatial) null else WclPipeline(File(filesDir, "wcl/wcl_cached.dlc"), applicationInfo.nativeLibraryDir)
+        val personal = store?.load(WclTeachingStore.modelIdentity(File(filesDir, WclPipeline.MODEL)))
+        val w = if (spatial) null else WclPipeline(File(filesDir, WclPipeline.MODEL), applicationInfo.nativeLibraryDir)
         val s = if (spatial) PfPipeline(File(filesDir, "wcl/pf_body_cached.dlc"), File(filesDir, "wcl/pf_head_m20_cached.dlc"), applicationInfo.nativeLibraryDir) else null
+        val b = if (bwcl) File(filesDir, "bwcl").let { TeachablePipeline(File(it, "backbone_b_cached.dlc"), File(it, "bhead_fp32.dlc"), applicationInfo.nativeLibraryDir, dim = B_DIM) } else null
         loadMs = (System.nanoTime() - t) / 1e6
         t = System.nanoTime()
         try {
+        // Teaching frames per object, for the B branch (the WCL prototypes of a personal library are already saved).
+        val teachFiles: List<List<File>>
         if (personal != null) {
             objects = personal.names; protos = personal.prototypes; teachFrames = personal.counts.sum(); whitening = personal.whitening
+            teachFiles = store!!.objects().map { it.frames }
+            check(teachFiles.map { it.size } == personal.counts) { "教学内容有更新，请先保存教学" }
         } else {
         val dir = File(filesDir, "m0/$user")
         val meta = JSONObject(File(dir, "meta.json").readText())
         objects = List(meta.getJSONArray("objects").length()) { meta.getJSONArray("objects").getString(it) }
         val teach = meta.getJSONArray("teach")
+        teachFiles = List(objects.size) { o -> teach.getJSONArray(o).let { a -> List(a.length()) { File(dir, "img/" + a.getString(it)) } } }
         val sums = List(objects.size) { FloatArray(WclPipeline.D) }
         val rows = List(objects.size) { ArrayList<FloatArray>() }
         for (o in objects.indices) {
-            val frames = teach.getJSONArray(o)
-            for (i in 0 until frames.length()) {
-                val x = WclPipeline.imageOf(File(dir, "img/" + frames.getString(i)))
+            for (f in teachFiles[o]) {
+                val x = WclPipeline.imageOf(f)
                 val e = w?.embed(x) ?: s!!.embed(x)
                 for (d in 0 until WclPipeline.D) sums[o][d] += e[d]
                 rows[o] += e; teachFrames++
@@ -163,12 +179,28 @@ class WclLiveActivity : ComponentActivity() {
         protos = WclPipeline.prototypesOf(sums)
         if (w != null) whitening = SiblingWhitening.build(rows)
         }
+        if (b != null) {
+            check(objects.size in 2..TeachablePipeline.OMAX) { "完整系统需要2到${TeachablePipeline.OMAX}件已教物品。" }
+            main.post { if (!isDestroyed) label.text = "正在建立局部记忆，约半分钟。" }
+            val cls = List(objects.size) { FloatArray(B_DIM) }; val counts = IntArray(objects.size); val chunks = ArrayList<FloatArray>()
+            for (o in objects.indices) for (f in teachFiles[o]) {
+                val tok = b.tokens(WclPipeline.imageOf(f))
+                for (d in 0 until B_DIM) cls[o][d] += tok[d]
+                chunks += tok.copyOfRange(B_DIM, tok.size); counts[o] += TeachablePipeline.GRID * TeachablePipeline.GRID
+            }
+            val patches = FloatArray(chunks.sumOf { it.size }).also { a -> var k = 0; for (c in chunks) { c.copyInto(a, k); k += c.size } }
+            val tb = System.nanoTime()
+            val built = Native.build(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS, dim = B_DIM)
+            bBuildMs = (System.nanoTime() - tb) / 1e6
+            bMemory = b.memory(objects.size, built.parts, cls)
+        }
         s?.setPrototypes(protos)
         teachMs = (System.nanoTime() - t) / 1e6
-        pipeline = w; pf = s
+        pipeline = w; pf = s; bBranch = b
         Log.i(TAG, "sibling whitening ${if (siblingWhiten) "on" else "off"}: ${whitening?.groups?.map { g -> g.members.map { objects[it] } } ?: "not built"}")
-        Log.i(TAG, "ready: $user ${objects.size} objects, load ${"%.0f".format(loadMs)} ms, teach $teachFrames frames ${"%.0f".format(teachMs)} ms")
-        } catch (error: Throwable) { w?.close(); s?.close(); throw error }
+        Log.i(TAG, "ready: $user ${objects.size} objects, load ${"%.0f".format(loadMs)} ms, teach $teachFrames frames ${"%.0f".format(teachMs)} ms" +
+            if (b != null) ", B memory ${"%.0f".format(bBuildMs)} ms" else "")
+        } catch (error: Throwable) { w?.close(); s?.close(); b?.close(); throw error }
     }
 
     @OptIn(ExperimentalCamera2Interop::class)
@@ -221,7 +253,17 @@ class WclLiveActivity : ComponentActivity() {
             val plain = WclPipeline.cosine(r.embedding, protos); plainTop = plain.indices.maxBy { plain[it] }
         } else {
             val e = w!!.embed(x); val raw = WclPipeline.cosine(e, protos)
-            score = whitening?.takeIf { siblingWhiten }?.apply(e, raw) ?: raw
+            val b = bBranch; val mem = bMemory
+            if (b != null && mem != null) {
+                plainTop = raw.indices.maxBy { raw[it] }
+                val tb = System.nanoTime()
+                val r = b.identify(x, b.tokens(x), mem)
+                synchronized(this) { bMs += (System.nanoTime() - tb) / 1e6; bLooked += r.looked; bTop += r.pred }
+                val zb = TeachablePipeline.z(r.scores); val zw = TeachablePipeline.z(raw)
+                score = FloatArray(zb.size) { zb[it] + zw[it] }
+            } else {
+                score = whitening?.takeIf { siblingWhiten }?.apply(e, raw) ?: raw
+            }
         }
         val em = (System.nanoTime() - t) / 1e6
         val top = smoother.update(score); val plainEma = plainSmoother.update(score); val weight = ConfidenceEma.weight(score, confPower)
@@ -269,12 +311,13 @@ class WclLiveActivity : ComponentActivity() {
         main.removeCallbacksAndMessages(null)
         analysisUseCase?.let { provider?.unbind(it) }; previewUseCase?.let { provider?.unbind(it) }
         sampleThermal(); main.removeCallbacksAndMessages(null)
-        val out = File(filesDir, "wcl").apply { mkdirs() }.let { File(it, "live_${user}_${rate}${if (spatial) "_pf" else ""}.json") }
+        val out = File(filesDir, "wcl").apply { mkdirs() }.let { File(it, "live_${user}_${rate}${if (spatial) "_pf" else if (bwcl) "_bwcl" else ""}.json") }
         val starts = synchronized(speechStartNs) { JSONObject(speechStartNs.mapValues { it.value }) }
         val clockPair = JSONObject().put("wall_ms", System.currentTimeMillis()).put("elapsed_ns", SystemClock.elapsedRealtimeNanos())
         synchronized(this) {
             out.writeText(JSONObject().put("speech_start_ns", starts).put("clock_pair", clockPair).put("user", user).put("personal_library", library ?: JSONObject.NULL).put("rate", rate).put("objects", JSONArray(objects)).put("load_ms", loadMs).put("teach_ms", teachMs).put("teach_frames", teachFrames)
                 .put("camera_frames_seen", seen).put("frame_ts_ns", JSONArray(frameTs)).put("done_ns", JSONArray(doneTs)).put("prep_ms", JSONArray(prepMs)).put("embed_ms", JSONArray(embedMs)).put("spatial", spatial).put("sibling_whiten", siblingWhiten).put("sibling_groups", JSONArray(whitening?.groups?.map { g -> JSONArray(g.members.toList()) } ?: emptyList<JSONArray>())).put("read_ms", JSONArray(readMs)).put("wcl_top", JSONArray(wclTop))
+                .put("model", WclPipeline.MODEL).put("bwcl", bwcl).put("b_memory_build_ms", bBuildMs).put("b_ms", JSONArray(bMs)).put("b_looked", JSONArray(bLooked)).put("b_top", JSONArray(bTop))
                 .put("smooth_top", JSONArray(smoothTop)).put("conf_power", confPower).put("plain_ema_top", JSONArray(plainEmaTop)).put("frame_weight", JSONArray(frameWeight)).put("thermal", thermal).put("announcements", announcements).toString())
         }
         return out
@@ -287,7 +330,7 @@ class WclLiveActivity : ComponentActivity() {
         analysisUseCase?.let { provider?.unbind(it) }; previewUseCase?.let { provider?.unbind(it) }
         tts?.shutdown()
         // Close after an in-flight load/inference finishes, on the same serial executor.
-        worker.execute { pipeline?.close(); pf?.close(); pipeline = null; pf = null }
+        worker.execute { pipeline?.close(); pf?.close(); bBranch?.close(); pipeline = null; pf = null; bBranch = null }
         worker.shutdown()
         super.onDestroy()
     }
@@ -300,6 +343,8 @@ class WclLiveActivity : ComponentActivity() {
         const val EXTRA_CONF_POWER = "confPower"
         const val EXTRA_HALF_LIFE = "halfLife"
         const val EXTRA_SIBLING_WHITEN = "siblingWhiten"
+        const val EXTRA_BWCL = "bwcl"
+        const val B_DIM = 768
         /** Graduation orbit_wcl_whiten_20261108: off by default. ORBIT test -0.20 [-0.70, 0.02] and 44 development users -1.06
          *  [-2.32, -0.02] (cluttered queries); it helps only where teaching and query share capture conditions (ToyBox, CUTE). */
         const val DEFAULT_SIBLING_WHITEN = false

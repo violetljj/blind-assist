@@ -137,7 +137,7 @@ class WclTeachActivity : ComponentActivity() {
         busy = true; refresh(); show("正在准备识别模型并保存教学，请稍候。")
         worker.execute {
             try {
-                val model = File(filesDir, "wcl/wcl_cached.dlc")
+                val model = File(filesDir, WclPipeline.MODEL)
                 val identity = WclTeachingStore.modelIdentity(model)
                 WclPipeline(model, applicationInfo.nativeLibraryDir).use { store.build(it, identity, ::show) }
                 runOnUiThread {

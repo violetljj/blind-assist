@@ -13,9 +13,9 @@ has not yet been evaluated. **继续识别已保存的物品** reuses the saved 
 
 Personal images and the atomically saved prototype library live in `files/wcl/libraries/personal/`, separate from
 the old `m0` validation packages and `m2` local-memory teaching. Prototypes are tied to the SHA256 of the actual
-`files/wcl/wcl_cached.dlc` and the preprocessing version; changing either requires rebuilding the library.
+app model `WclPipeline.MODEL` (`files/wcl/wcl_w8a16_cached.dlc`) and the preprocessing version; changing either requires rebuilding the library.
 New teaching invalidates the previous library until saving completes. The model must already be provisioned;
-this change does not bundle or download the 2.57 GB model. The light local-memory demo remains available through
+the app does not bundle or download the model. The light local-memory demo remains available through
 **打开轻量识别演示**. Personal teaching currently uses WCL only; PF remains the separate validation/research path.
 
 The live chain keeps the existing confidence-weighted EMA and announces after three consecutive analysed frames
@@ -61,8 +61,10 @@ speak once stable for 15 frames; logs to filesDir/m1/live_<user>.json.
 Results: Graduation `phone_m0_20261022/RESULTS.md` (M0) and `RESULTS_M1.md` (M1).
 
 WCL chain (optional, separate from the main method): `WclPipeline` + `WclLiveActivity` run the ORBIT-adapted SigLIP2-So400m
-whole-frame prototypes on the HTP at 3 frames per second. Copy the offline-prepared `wcl_cached.dlc` (2.57 GB, Graduation
-`orbit_wcl_phone_20261102`) to `files/wcl/`, then `WclDeviceTest#offlineChain` or `WclDeviceTest#liveRun -e durationSec 600 -e rate 3`.
+whole-frame prototypes on the HTP at 3 frames per second. The app model is the W8A16 cache (847 MB, Graduation
+`wcl_phone_quant_20261111` `wcl_q1_cached.dlc`, copied as `files/wcl/wcl_w8a16_cached.dlc`; default since Graduation `wcl_q1_default_20261111`).
+The device tests (`offlineChain` etc.) keep the FP16 reference `files/wcl/wcl_cached.dlc` (2.57 GB, Graduation `orbit_wcl_phone_20261102`);
+`WclDeviceTest#liveRun -e durationSec 600 -e rate 3` runs the app model.
 Scores are smoothed by a confidence-weighted EMA (`ConfidenceEma`, half-life 0.5 s, power 64, Graduation `orbit_wcl_stream_20261106`); `-e confPower 0 -e halfLife 1` restores the old plain EMA.
 
 Spatial readout (optional, on the same chain): `PfPipeline` runs the WCL body and the prototype-guided read head as two HTP graphs,
@@ -74,9 +76,11 @@ r10 relook (optional): put `loc_r10_htp.dlc` (HTP; or `loc_r10.dlc` for the CPU)
 exemplar-conditioned localiser's box (only on frames that look again; ~2.4 ms on the HTP). An `r10_only` marker skips the
 HTP memory-build arms in `M0DeviceTest`. Export and results: Graduation `phone_r10_20261024/` (`export_r10.py deploy`, RESULTS.md).
 
-Full system B+WCL (offline and replay tests only; no live activity, the app default is unchanged): `BwclDeviceTest` runs the
+Full system B+WCL (optional; the app default stays WCL alone): `BwclDeviceTest` runs the
 DINOv2-B local-memory branch (`TeachablePipeline(..., dim = 768)`: B backbone on the HTP, B pooling head + localiser on the CPU,
 memory built on the phone by `Native.build(..., dim = 768)` on the CPU) next to the WCL branch and fuses z(B) + z(WCL) per frame.
 Copy `backbone_b_cached.dlc`, `bhead_fp32.dlc` and `<user>_pc_parts_b.raw` (Graduation `bwcl_phone_chain_20261111`) to `files/bwcl/`,
 then `BwclDeviceTest#offlineChain` (results in `files/bwcl/results/`) or `BwclDeviceTest#replay -e durationSec 600 -e rate 3`.
 The HTP memory-build graphs (`simmax`, `simtop`) stay 384-wide; the 768-wide build runs on the CPU.
+Live: `WclLiveActivity` with `EXTRA_BWCL` (`WclDeviceTest#liveRun -e bwcl true`) needs only `backbone_b_cached.dlc` and `bhead_fp32.dlc`
+in `files/bwcl/`; it builds the B memory from the same teaching frames (about 40 s) and fuses per frame (Graduation `bwcl_live_20261111`).
