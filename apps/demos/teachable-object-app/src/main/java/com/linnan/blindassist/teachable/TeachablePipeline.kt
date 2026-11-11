@@ -13,7 +13,9 @@ import kotlin.math.sqrt
  * round 3: the 224-px dilated exemplar-conditioned localiser, loc_r10.dlc on the CPU), identify(useR10 = true) centres
  * the same half-frame relook crop on that localiser's box instead; it runs only on frames that look again.
  */
-class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: File? = null, r10Htp: Boolean = false) : Closeable {
+class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: File? = null, r10Htp: Boolean = false,
+                        /** Token width: [D] for DINOv2-S; 768 for the DINOv2-B precision tier (Graduation bwcl_phone_chain_20261111). */
+                        val dim: Int = D) : Closeable {
     private val backbone = SnpeEngine(backbone.path, htp = true, dspPath = dspPath)
     private val head = SnpeEngine(head.path, htp = false, dspPath = "", outputTensors = listOf("logits", "loc"))
     private val loc10 = locR10?.let {
@@ -52,14 +54,14 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: Fil
     fun tokens(image: FloatArray): FloatArray = backbone.run(mapOf(backbone.inputs.single() to image)).values.single()
 
     fun memory(objects: Int, parts: FloatArray, cls: List<FloatArray>): Memory {
-        require(objects in 2..OMAX && parts.size == objects * PARTS * D)
-        val p = FloatArray(OMAX * PARTS * D).also { parts.copyInto(it) }
-        val protos = FloatArray(OMAX * D)
+        require(objects in 2..OMAX && parts.size == objects * PARTS * dim)
+        val p = FloatArray(OMAX * PARTS * dim).also { parts.copyInto(it) }
+        val protos = FloatArray(OMAX * dim)
         for (o in 0 until objects) {
             val c = cls[o]; var n = 0f
-            for (d in 0 until D) n += c[d] * c[d]
+            for (d in 0 until dim) n += c[d] * c[d]
             n = sqrt(n).coerceAtLeast(1e-12f)
-            for (d in 0 until D) protos[o * D + d] = c[d] / n
+            for (d in 0 until dim) protos[o * dim + d] = c[d] / n
         }
         return Memory(objects, p, protos, FloatArray(OMAX) { if (it < objects) 1f else 0f })
     }

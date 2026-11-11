@@ -73,3 +73,10 @@ r10 relook (optional): put `loc_r10_htp.dlc` (HTP; or `loc_r10.dlc` for the CPU)
 `TeachablePipeline(..., locR10, r10Htp)` + `identify(useR10 = true)` centre the half-frame relook crop on the 224-px dilated
 exemplar-conditioned localiser's box (only on frames that look again; ~2.4 ms on the HTP). An `r10_only` marker skips the
 HTP memory-build arms in `M0DeviceTest`. Export and results: Graduation `phone_r10_20261024/` (`export_r10.py deploy`, RESULTS.md).
+
+Full system B+WCL (offline and replay tests only; no live activity, the app default is unchanged): `BwclDeviceTest` runs the
+DINOv2-B local-memory branch (`TeachablePipeline(..., dim = 768)`: B backbone on the HTP, B pooling head + localiser on the CPU,
+memory built on the phone by `Native.build(..., dim = 768)` on the CPU) next to the WCL branch and fuses z(B) + z(WCL) per frame.
+Copy `backbone_b_cached.dlc`, `bhead_fp32.dlc` and `<user>_pc_parts_b.raw` (Graduation `bwcl_phone_chain_20261111`) to `files/bwcl/`,
+then `BwclDeviceTest#offlineChain` (results in `files/bwcl/results/`) or `BwclDeviceTest#replay -e durationSec 600 -e rate 3`.
+The HTP memory-build graphs (`simmax`, `simtop`) stay 384-wide; the 768-wide build runs on the CPU.

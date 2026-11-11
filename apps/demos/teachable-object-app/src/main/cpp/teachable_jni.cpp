@@ -68,7 +68,9 @@ std::vector<std::string> names(Snpe_StringList_Handle_t list) {
 }
 
 // ---- memory build ----------------------------------------------------------------------------------------------------
-constexpr int D = 384;
+// Feature width: 384 for DINOv2-S, 768 for DINOv2-B (Graduation bwcl_phone_chain_20261111). Set per buildMemory call;
+// the memory build is single-threaded at that level, so a file-scope value is enough. Must stay a multiple of 16 (dot).
+static int D = 384;
 
 struct Rng {
     uint64_t s;
@@ -403,11 +405,15 @@ extern "C" JNIEXPORT void JNICALL JFN(engineDestroy)(JNIEnv*, jobject, jlong han
     delete reinterpret_cast<Engine*>(handle);
 }
 
-// simmax / simtop: handles of HTP engines for the other-object max and the own top-6, or 0 for the CPU. Returns the memory
-// [objects * parts * D] followed by 3 timings in ms (other-object max, own top-6, k-means).
+// simmax / simtop: handles of HTP engines for the other-object max and the own top-6, or 0 for the CPU (the HTP graphs are
+// 384-wide). dim: feature width. Returns the memory [objects * parts * dim] followed by 3 timings in ms (other-object max,
+// own top-6, k-means).
 extern "C" JNIEXPORT jfloatArray JNICALL JFN(buildMemory)(JNIEnv* env, jobject, jfloatArray patches, jintArray counts, jfloat keep,
-                                                          jint parts, jlong simmax, jlong simtop) {
+                                                          jint parts, jlong simmax, jlong simtop, jint dim) {
     try {
+        require(dim > 0 && dim % 16 == 0, "Feature width must be a positive multiple of 16");
+        require((simmax == 0 && simtop == 0) || dim == 384, "HTP memory graphs are 384-wide");
+        D = dim;
         std::vector<float> p(env->GetArrayLength(patches));
         env->GetFloatArrayRegion(patches, 0, p.size(), p.data());
         std::vector<int> c(env->GetArrayLength(counts));
