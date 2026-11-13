@@ -84,12 +84,15 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: Fil
         return finishTeaching(features, start, cutoff, captureEvidence, captureFeatureHash = captureFeatureHash)
     }
 
-    internal fun prepareTeachingAppend(teachFiles: List<List<File>>, captureEvidence: Boolean = false): PreparedTeachingAppend {
+    internal fun prepareTeachingAppend(
+        teachFiles: List<List<File>>, captureEvidence: Boolean = false, captureFeatureHash: Boolean = captureEvidence,
+    ): PreparedTeachingAppend {
         require(teachFiles.size in 2 until OMAX)
         val start = System.nanoTime()
         val features = encodeTeaching(teachFiles)
         val cache = Native.TeachingCache(features.counts)
-        val initial = finishTeaching(features, start, cutoff = true, captureEvidence, nextCache = cache)
+        val initial = finishTeaching(features, start, cutoff = true, captureEvidence, nextCache = cache,
+            captureFeatureHash = captureFeatureHash)
         return PreparedTeachingAppend(this, features, cache, initial)
     }
 

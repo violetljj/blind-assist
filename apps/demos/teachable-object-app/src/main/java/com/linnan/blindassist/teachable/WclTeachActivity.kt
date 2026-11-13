@@ -2,6 +2,7 @@ package com.linnan.blindassist.teachable
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -13,6 +14,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -32,7 +34,14 @@ import java.util.concurrent.Executors
 /** User-operated WCL teaching: explicit capture, persistent prototypes, then the existing live chain. */
 class WclTeachActivity : ComponentActivity() {
     private val worker = Executors.newSingleThreadExecutor()
-    private val store by lazy { WclTeachingStore(WclTeachingStore.directory(filesDir, WclTeachingStore.PERSONAL)) }
+    private val testLibrary by lazy {
+        intent.getStringExtra(EXTRA_TEST_LIBRARY)?.takeIf {
+            applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0 && it.startsWith("bui_")
+        }
+    }
+    private val library by lazy { testLibrary ?: WclTeachingStore.PERSONAL }
+    private val store by lazy { WclTeachingStore(WclTeachingStore.directory(filesDir, library)) }
+    private val settings by lazy { getSharedPreferences("personal_teaching", MODE_PRIVATE) }
     private lateinit var preview: PreviewView
     private lateinit var status: TextView
     private lateinit var objectList: TextView
@@ -41,6 +50,7 @@ class WclTeachActivity : ComponentActivity() {
     private lateinit var save: Button
     private lateinit var resume: Button
     private lateinit var trial: Button
+    private lateinit var useB: CheckBox
     private var provider: ProcessCameraProvider? = null
     private var analysis: ImageAnalysis? = null
     private var previewUseCase: Preview? = null
@@ -60,14 +70,24 @@ class WclTeachActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        if (testLibrary != null && android.os.Build.VERSION.SDK_INT >= 27) {
+            setShowWhenLocked(true); setTurnScreenOn(true)
+        }
         preview = PreviewView(this).apply { importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }
         status = TextView(this).apply { textSize = 18f; setTextColor(Color.BLACK); accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE }
         objectList = TextView(this).apply { textSize = 18f; setTextColor(Color.BLACK) }
         name = EditText(this).apply { hint = "物品名字，例如我的钥匙"; contentDescription = "物品名字"; setSingleLine(); setTextColor(Color.BLACK); setHintTextColor(Color.DKGRAY) }
         record = Button(this).apply { text = "录制 10 秒"; setOnClickListener { if (recording) finishRecording() else startRecording() } }
-        save = Button(this).apply { text = "保存教学并开始识别"; setOnClickListener { buildAndRecognize() } }
+        save = Button(this).apply { id = SAVE_BUTTON_ID; text = "保存教学并开始识别"; setOnClickListener { buildAndRecognize() } }
         resume = Button(this).apply { text = "继续识别已保存的物品"; setOnClickListener { openLive() } }
         trial = Button(this).apply { text = "打开呈现对照试验"; setOnClickListener { openLive(presentationTrials = true) } }
+        useB = CheckBox(this).apply {
+            text = "使用完整识别（B＋WCL）"
+            isChecked = testLibrary != null || settings.getBoolean("bwcl", false)
+            setOnCheckedChangeListener { _, checked ->
+                if (testLibrary == null) settings.edit().putBoolean("bwcl", checked).apply()
+            }
+        }
         val controls = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.WHITE)
@@ -75,7 +95,7 @@ class WclTeachActivity : ComponentActivity() {
             addView(TextView(this@WclTeachActivity).apply {
                 text = "教我的物品\n给物品起名字，再单独放在镜头前慢慢转动。每件录制10秒，可随时结束。\n目前只在教过的物品中选择；没有这些物品时也可能误报。"; textSize = 20f; setTextColor(Color.BLACK)
             })
-            addView(objectList); addView(name); addView(record); addView(status); addView(save); addView(resume); addView(trial)
+            addView(objectList); addView(name); addView(record); addView(status); addView(useB); addView(save); addView(resume); addView(trial)
             addView(Button(this@WclTeachActivity).apply {
                 text = "打开轻量识别演示"
                 setOnClickListener { if (!busy && !recording) startActivity(Intent(this@WclTeachActivity, TeachActivity::class.java)) }
@@ -102,6 +122,7 @@ class WclTeachActivity : ComponentActivity() {
         val objects = store.objects()
         objectList.text = if (objects.isEmpty()) "还没有教学物品" else "已录制 ${objects.size} 件：" + objects.joinToString { "${it.name}，${it.frames.size}帧" }
         record.isEnabled = !busy; name.isEnabled = !busy && !recording
+        useB.isEnabled = !busy && !recording && testLibrary == null
         save.isEnabled = !busy && !recording && objects.isNotEmpty()
         resume.isEnabled = !busy && !recording && store.hasSavedLibrary()
         trial.isEnabled = resume.isEnabled
@@ -136,7 +157,17 @@ class WclTeachActivity : ComponentActivity() {
     }
 
     private fun buildAndRecognize() {
+        val saveNs = SystemClock.elapsedRealtimeNanos()
         if (busy || recording) return
+        val bwcl = useB.isChecked
+        if (bwcl && store.objects().size !in 2..TeachablePipeline.OMAX) {
+            show("完整识别需要2到${TeachablePipeline.OMAX}件已教物品。")
+            return
+        }
+        if (bwcl && !listOf("backbone_b_cached.dlc", "bhead_fp32.dlc").all { File(filesDir, "bwcl/$it").isFile }) {
+            show("完整识别模型尚未安装。可以取消勾选后保存。")
+            return
+        }
         busy = true; refresh(); show("正在准备识别模型并保存教学，请稍候。")
         worker.execute {
             try {
@@ -146,7 +177,7 @@ class WclTeachActivity : ComponentActivity() {
                 runOnUiThread {
                     if (isDestroyed) return@runOnUiThread
                     busy = false; refresh(); show("教学已保存。")
-                    if (lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)) openLive()
+                    if (lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)) openLive(saveNs = saveNs)
                 }
             } catch (error: Exception) {
                 runOnUiThread { if (!isDestroyed) { busy = false; refresh(); show(error.message ?: "保存失败，已有教学记录仍保留。") } }
@@ -154,14 +185,20 @@ class WclTeachActivity : ComponentActivity() {
         }
     }
 
-    private fun openLive(presentationTrials: Boolean = false) {
+    private fun openLive(presentationTrials: Boolean = false, saveNs: Long = 0L) {
         if (busy || recording) return
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             cameraPermission.launch(Manifest.permission.CAMERA); return
         }
         startActivity(Intent(this, WclLiveActivity::class.java)
-            .putExtra(WclLiveActivity.EXTRA_LIBRARY, WclTeachingStore.PERSONAL)
-            .putExtra(WclLiveActivity.EXTRA_PRESENTATION_TRIALS, presentationTrials))
+            .putExtra(WclLiveActivity.EXTRA_LIBRARY, library)
+            .putExtra(WclLiveActivity.EXTRA_BWCL, !presentationTrials && useB.isChecked)
+            .putExtra(WclLiveActivity.EXTRA_PRESENTATION_TRIALS, presentationTrials).apply {
+                if (testLibrary != null && saveNs != 0L) {
+                    putExtra(EXTRA_TEST_SAVE_NS, saveNs)
+                    putExtra(EXTRA_TEST_FORCE_FULL_B, intent.getBooleanExtra(EXTRA_TEST_FORCE_FULL_B, false))
+                }
+            })
     }
 
     internal fun isCameraReady(): Boolean = analysis?.let { provider?.isBound(it) == true } == true
@@ -213,5 +250,12 @@ class WclTeachActivity : ComponentActivity() {
     override fun onDestroy() {
         worker.shutdown()
         super.onDestroy()
+    }
+
+    companion object {
+        internal val SAVE_BUTTON_ID = View.generateViewId()
+        internal const val EXTRA_TEST_LIBRARY = "testPersonalLibrary"
+        internal const val EXTRA_TEST_FORCE_FULL_B = "testForceFullB"
+        internal const val EXTRA_TEST_SAVE_NS = "testSaveNs"
     }
 }

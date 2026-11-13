@@ -2,6 +2,7 @@ package com.linnan.blindassist.teachable
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ApplicationInfo
 import android.graphics.Color
 import android.graphics.Bitmap
 import android.graphics.Matrix
@@ -46,6 +47,9 @@ import org.json.JSONArray
 import org.json.JSONObject
 import android.util.AtomicFile
 import java.io.File
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+import java.security.MessageDigest
 import java.util.Locale
 import java.util.UUID
 import java.util.concurrent.Executors
@@ -101,6 +105,10 @@ class WclLiveActivity : ComponentActivity() {
     @Volatile private var bBranch: TeachablePipeline? = null
     private var bMemory: TeachablePipeline.Memory? = null
     private var bBuildMs = 0.0
+    private var saveClickNs = 0L
+    private var personalBResult: PersonalBTeaching.Result? = null
+    private var personalBReadyNs = 0L
+    private var personalBReceiptQueued = false
     private var protos = FloatArray(0)
     private var siblingWhiten = true
     private var whitening: SiblingWhitening? = null
@@ -139,6 +147,9 @@ class WclLiveActivity : ComponentActivity() {
         rate = if (presentationTrials) WclPresentationTrial.RATE else intent.getDoubleExtra(EXTRA_RATE, 3.0)
         spatial = !presentationTrials && intent.getBooleanExtra(EXTRA_SPATIAL, false)
         bwcl = !presentationTrials && intent.getBooleanExtra(EXTRA_BWCL, false)
+        if (bwcl && library?.startsWith("bui_") == true && applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0) {
+            saveClickNs = intent.getLongExtra(WclTeachActivity.EXTRA_TEST_SAVE_NS, 0)
+        }
         siblingWhiten = !presentationTrials && intent.getBooleanExtra(EXTRA_SIBLING_WHITEN, DEFAULT_SIBLING_WHITEN)
         confPower = intent.getIntExtra(EXTRA_CONF_POWER, ConfidenceEma.DEFAULT_POWER)
         val halfLife = intent.getDoubleExtra(EXTRA_HALF_LIFE, ConfidenceEma.DEFAULT_HALF_LIFE_S)
@@ -221,7 +232,11 @@ class WclLiveActivity : ComponentActivity() {
                     refreshTrialButtons()
                 }
             } }
-            catch (error: Exception) { Log.e(TAG, "setup failed", error); main.post { if (!isDestroyed) label.text = error.message ?: "无法开始识别，请返回教学页。" } }
+            catch (error: Exception) {
+                Log.e(TAG, "setup failed", error)
+                if (saveClickNs != 0L) writePersonalBReceipt(JSONObject().put("save_ns", saveClickNs).put("error", error.toString()))
+                main.post { if (!isDestroyed) label.text = error.message ?: "无法开始识别，请返回教学页。" }
+            }
         }
         if (!presentationTrials) sampleThermal()
         startCamera(preview)
@@ -243,7 +258,10 @@ class WclLiveActivity : ComponentActivity() {
         }
         val w = if (spatial) null else WclPipeline(File(filesDir, WclPipeline.MODEL), applicationInfo.nativeLibraryDir)
         val s = if (spatial) PfPipeline(File(filesDir, "wcl/pf_body_cached.dlc"), File(filesDir, "wcl/pf_head_m20_cached.dlc"), applicationInfo.nativeLibraryDir) else null
-        val b = if (bwcl) File(filesDir, "bwcl").let { TeachablePipeline(File(it, "backbone_b_cached.dlc"), File(it, "bhead_fp32.dlc"), applicationInfo.nativeLibraryDir, dim = B_DIM) } else null
+        val bModels = File(filesDir, "bwcl")
+        val bBackbone = File(bModels, "backbone_b_cached.dlc")
+        val bHead = File(bModels, "bhead_fp32.dlc")
+        val b = if (bwcl) TeachablePipeline(bBackbone, bHead, applicationInfo.nativeLibraryDir, dim = B_DIM) else null
         loadMs = (System.nanoTime() - t) / 1e6
         t = System.nanoTime()
         try {
@@ -275,13 +293,20 @@ class WclLiveActivity : ComponentActivity() {
         if (b != null) {
             check(objects.size in 2..TeachablePipeline.OMAX) { "完整系统需要2到${TeachablePipeline.OMAX}件已教物品。" }
             main.post { if (!isDestroyed) label.text = "正在建立局部记忆。" }
-            val taught = b.buildTeachingMemory(teachFiles)
+            val taught = if (store != null) {
+                val result = PersonalBTeaching.build(store, b, bBackbone, bHead, teachFiles,
+                    forceFull = saveClickNs != 0L && intent.getBooleanExtra(WclTeachActivity.EXTRA_TEST_FORCE_FULL_B, false),
+                    captureEvidence = saveClickNs != 0L)
+                if (saveClickNs != 0L) personalBResult = result
+                result.taught
+            } else b.buildTeachingMemory(teachFiles)
             bBuildMs = taught.nativeMs
             bMemory = taught.memory
         }
         s?.setPrototypes(protos)
         teachMs = (System.nanoTime() - t) / 1e6
         pipeline = w; pf = s; bBranch = b
+        if (personalBResult != null) personalBReadyNs = SystemClock.elapsedRealtimeNanos()
         Log.i(TAG, "sibling whitening ${if (siblingWhiten) "on" else "off"}: ${whitening?.groups?.map { g -> g.members.map { objects[it] } } ?: "not built"}")
         Log.i(TAG, "ready: $user ${objects.size} objects, load ${"%.0f".format(loadMs)} ms, teach $teachFrames frames ${"%.0f".format(teachMs)} ms" +
             if (b != null) ", B memory ${"%.0f".format(bBuildMs)} ms" else "")
@@ -410,7 +435,56 @@ class WclLiveActivity : ComponentActivity() {
             if (!isDestroyed) {
                 val result = if (library != null) objects[top] else "${objects[top]}  ${"%.0f".format(em)} ms"
                 label.text = result + (speechWarning?.let { "\n$it" } ?: "")
+                if (saveClickNs != 0L && !personalBReceiptQueued) {
+                    personalBReceiptQueued = true
+                    val displayed = SystemClock.elapsedRealtimeNanos()
+                    worker.execute { recordPersonalBResult(done, displayed) }
+                }
             }
+        }
+    }
+
+    private fun recordPersonalBResult(firstResultNs: Long, displayedNs: Long) {
+        val result = requireNotNull(personalBResult)
+        val taught = result.taught
+        val retained = requireNotNull(taught.retained).filter { it >= 0 }
+        val counts = requireNotNull(taught.diagnostics)
+        val report = JSONObject().put("objects", taught.memory.objects).put("pid", android.os.Process.myPid())
+            .put("save_ns", saveClickNs).put("ready_ns", personalBReadyNs).put("first_result_ns", firstResultNs)
+            .put("displayed_ns", displayedNs).put("mode", result.mode)
+            .put("restore_ms", result.restoreMs).put("cache_save_ms", result.saveMs).put("cache_bytes", result.cacheBytes)
+            .put("native_ms", taught.nativeMs).put("b_total_ms", taught.totalMs).put("load_ms", loadMs)
+            .put("negative_dots", counts[0]).put("positive_dots", counts[1])
+            .put("reused_witness_rows", counts.getOrElse(3) { 0 }).put("evicted_witness_rows", counts.getOrElse(4) { 0 })
+            .put("retained_count", retained.size).put("retained_sha256", teachingWordsSha256(retained.size) { retained[it] })
+        val arrays = mapOf("parts" to taught.built.parts, "cls" to taught.memory.protos,
+            "padded_parts" to taught.memory.parts, "valid" to taught.memory.valid)
+        for ((name, values) in arrays) report.put("${name}_sha256", teachingWordsSha256(values.size) { values[it].toRawBits() })
+        writePersonalBReceipt(report)
+        personalBResult = null
+    }
+
+    private fun teachingWordsSha256(size: Int, word: (Int) -> Int): String {
+        val hash = MessageDigest.getInstance("SHA-256")
+        val buffer = ByteBuffer.allocate(16_384).order(ByteOrder.LITTLE_ENDIAN)
+        for (index in 0 until size) {
+            if (!buffer.hasRemaining()) { hash.update(buffer.array()); buffer.clear() }
+            buffer.putInt(word(index))
+        }
+        hash.update(buffer.array(), 0, buffer.position())
+        return hash.digest().joinToString("") { "%02x".format(it) }
+    }
+
+    private fun writePersonalBReceipt(report: JSONObject) {
+        val root = WclTeachingStore.directory(filesDir, requireNotNull(library))
+        val file = AtomicFile(File(root, "b_ui_result.json"))
+        val stream = file.startWrite()
+        try {
+            stream.write(report.toString().toByteArray(Charsets.UTF_8))
+            file.finishWrite(stream)
+        } catch (error: Exception) {
+            file.failWrite(stream)
+            throw error
         }
     }
 
