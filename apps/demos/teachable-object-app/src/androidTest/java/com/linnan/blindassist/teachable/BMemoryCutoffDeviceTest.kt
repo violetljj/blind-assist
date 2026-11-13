@@ -6,6 +6,8 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Build
 import android.os.PowerManager
+import android.os.Process
+import android.os.SystemClock
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.json.JSONArray
@@ -287,6 +289,163 @@ class BMemoryCutoffDeviceTest {
         }
     }
 
+    @Test
+    fun prepareRestart() {
+        val output = restartDirectory()
+        check(output.mkdir()) { "Expected a fresh test output directory: $output" }
+        val assetsStart = System.nanoTime()
+        val input = loadP189()
+        val receipt = File(output, "prepare.json")
+        val identity = restartIdentity(input)
+        val result = input.summary
+            .put("run_id", output.name)
+            .put("process", processIdentity())
+            .put("cache_identity_sha256", identity)
+            .put("assets_check_ms", (System.nanoTime() - assetsStart) / 1e6)
+            .put("completed", false)
+        receipt.writeText(result.toString(2))
+        withWarmPipeline(input) { b ->
+            val start = thermalSnapshot()
+            val three = b.prepareTeachingAppend(input.teachFiles.take(3), captureEvidence = true)
+            result.put("initial", arm("initial", three.initial, start).summary
+                .put("encoded_jpegs", 90).put("cache_bytes", three.cacheBytes))
+            val appendStart = thermalSnapshot()
+            val four = b.appendTeachingAndCache(three, input.teachFiles[3], captureEvidence = true)
+            check(four.initial.memory.objects == 4)
+            result.put("append", arm("append", four.initial, appendStart).summary
+                .put("encoded_jpegs", 30).put("cache_bytes", four.cacheBytes))
+
+            val cache = File(output, "four_objects.cache")
+            val saveStart = System.nanoTime()
+            b.saveTeachingAppend(four, cache, identity)
+            result.put("save_ms", (System.nanoTime() - saveStart) / 1e6)
+                .put("cache_payload_bytes", four.cacheBytes)
+                .put("cache_file_bytes", cache.length())
+                .put("completed", true)
+            check(cache.length() >= four.cacheBytes)
+            receipt.writeText(result.toString(2))
+        }
+    }
+
+    @Test
+    fun measureRestart() {
+        val args = InstrumentationRegistry.getArguments()
+        val pair = requireNotNull(args.getString("pair")).toInt()
+        val mode = requireNotNull(args.getString("arm"))
+        require(pair in 1..3 && mode in setOf("full", "restored"))
+        val root = restartDirectory()
+        val prepared = JSONObject(File(root, "prepare.json").readText())
+        check(prepared.getBoolean("completed"))
+        val folder = File(root, "pair_$pair").apply { mkdir() }
+        val receipt = File(folder, "$mode.json")
+        check(receipt.createNewFile()) { "Expected a fresh arm receipt: $receipt" }
+        val process = processIdentity()
+        val oldProcess = prepared.getJSONObject("process")
+        check(process.getInt("pid") != oldProcess.getInt("pid") ||
+            process.getLong("stat_start_ticks") != oldProcess.getLong("stat_start_ticks")) {
+            "The prepare process is still running"
+        }
+        val assetsStart = System.nanoTime()
+        val input = loadP189()
+        val identity = restartIdentity(input)
+        check(identity == prepared.getString("cache_identity_sha256")) { "Teaching assets changed after saving the cache" }
+        val result = input.summary.put("run_id", root.name).put("pair", pair).put("arm", mode)
+            .put("process", process).put("prepare_process", oldProcess)
+            .put("cache_identity_sha256", identity)
+            .put("assets_check_ms", (System.nanoTime() - assetsStart) / 1e6)
+            .put("completed", false)
+        receipt.writeText(result.toString(2))
+
+        withWarmPipeline(input, input.teachFiles.last().first()) { b ->
+            val thermalBefore = thermalSnapshot()
+            val before = memorySnapshot()
+            val build: TeachablePipeline.TeachingMemory
+            val restoreMs: Double
+            result.put("memory_before", before)
+            if (mode == "restored") {
+                val cache = File(root, "four_objects.cache")
+                val restoreStart = System.nanoTime()
+                val restored = b.restoreTeachingAppend(cache, identity)
+                restoreMs = (System.nanoTime() - restoreStart) / 1e6
+                result.put("memory_after_restore", memorySnapshot())
+                    .put("restore_ms", restoreMs)
+                    .put("restored_cache_bytes", restored.cacheBytes)
+                check(restored.cacheBytes == prepared.getLong("cache_payload_bytes"))
+                val successor = b.appendTeachingAndCache(restored, input.teachFiles.last(), captureEvidence = true,
+                    captureFeatureHash = false)
+                build = successor.initial
+                result.put("successor_cache_bytes", successor.cacheBytes)
+            } else {
+                restoreMs = 0.0
+                build = b.buildTeachingMemory(input.teachFiles, captureEvidence = true, captureFeatureHash = false)
+            }
+            result.put("memory_after_build", memorySnapshot())
+            val measured = arm(mode, build, thermalBefore)
+            val retained = requireNotNull(build.retained)
+            val diagnostics = requireNotNull(build.diagnostics)
+            check(build.memory.objects == 5 && retained.count { it >= 0 } == 5760 && build.built.parts.size == 160 * B_DIM)
+            check(if (mode == "restored") diagnostics[3] > 0 && diagnostics[4] > 0 && diagnostics[5] > 0
+                else diagnostics[2] > 0)
+            result.put("restore_ms", restoreMs)
+                .put("restore_plus_teaching_ms", restoreMs + build.totalMs)
+                .put("result", measured.summary.put("encoded_jpegs", if (mode == "restored") 30 else 150))
+            receipt.writeText(result.toString(2))
+            writeRaw(folder, measured, retained)
+            writeFloats(File(folder, "${mode}_padded_parts.f32"), build.memory.parts)
+            writeFloats(File(folder, "${mode}_valid.f32"), build.memory.valid)
+            receipt.writeText(result.put("completed", true).toString(2))
+        }
+    }
+
+    private fun restartDirectory(): File {
+        val runId = InstrumentationRegistry.getArguments().getString("runId") ?: "restart_p189"
+        require(runId.matches(Regex("[a-zA-Z0-9_-]+")))
+        return File(File(context.filesDir, "b_memory_restart").apply { mkdir() }, runId)
+    }
+
+    private fun restartIdentity(input: Input): String {
+        val images = input.summary.getJSONObject("teaching_jpeg_sha256")
+        val models = File(context.filesDir, "bwcl")
+        val identities = buildList {
+            add(input.summary.getString("manifest_sha256"))
+            add(sha256File(File(models, "backbone_b_cached.dlc")))
+            add(sha256File(File(models, "bhead_fp32.dlc")))
+            for (objectFiles in input.teachFiles.take(4)) {
+                add(objectFiles.joinToString(",") { images.getString(it.name) })
+            }
+        }
+        return sha256(identities.joinToString("\n").toByteArray(Charsets.UTF_8))
+    }
+
+    private fun processIdentity(): JSONObject {
+        // The comm field in /proc/self/stat can contain spaces. Field 22 is the process start in kernel ticks.
+        val startTicks = File("/proc/self/stat").readText().substringAfterLast(") ").split(' ')[19].toLong()
+        return JSONObject().put("pid", Process.myPid())
+            .put("start_elapsed_realtime_ms", Process.getStartElapsedRealtime())
+            .put("stat_start_ticks", startTicks)
+            .put("sample_elapsed_realtime_ms", SystemClock.elapsedRealtime())
+    }
+
+    private fun memorySnapshot(): JSONObject {
+        val status = File("/proc/self/status").readLines()
+        fun read(key: String) = status.single { it.startsWith("$key:") }.substringAfter(':').trim()
+            .substringBefore(' ').toLong()
+        return JSONObject().put("vm_hwm_kib", read("VmHWM")).put("vm_rss_kib", read("VmRSS"))
+    }
+
+    private fun sha256File(file: File): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        file.inputStream().use { stream ->
+            val buffer = ByteArray(1024 * 1024)
+            while (true) {
+                val length = stream.read(buffer)
+                if (length < 0) break
+                digest.update(buffer, 0, length)
+            }
+        }
+        return digest.digest().joinToString("") { "%02x".format(it) }
+    }
+
     private class Input(val teachFiles: List<List<File>>, val summary: JSONObject)
 
     private fun oldRetainedChanges(before: Set<Int>, after: IntArray, counts: List<Int>): JSONArray {
@@ -330,7 +489,9 @@ class BMemoryCutoffDeviceTest {
             .put("dim", B_DIM))
     }
 
-    private fun withWarmPipeline(input: Input, run: (TeachablePipeline) -> Unit) {
+    private fun withWarmPipeline(
+        input: Input, warmFile: File = input.teachFiles.first().first(), run: (TeachablePipeline) -> Unit,
+    ) {
         val models = File(context.filesDir, "bwcl")
         val initStart = System.nanoTime()
         TeachablePipeline(
@@ -338,8 +499,10 @@ class BMemoryCutoffDeviceTest {
             context.applicationInfo.nativeLibraryDir, dim = B_DIM,
         ).use { b ->
             input.summary.put("init_ms", (System.nanoTime() - initStart) / 1e6)
-            val warm = WclPipeline.imageOf(input.teachFiles.first().first())
+            val warmStart = System.nanoTime()
+            val warm = WclPipeline.imageOf(warmFile)
             repeat(3) { b.tokens(warm) }
+            input.summary.put("warmup_ms", (System.nanoTime() - warmStart) / 1e6)
             run(b)
         }
     }
