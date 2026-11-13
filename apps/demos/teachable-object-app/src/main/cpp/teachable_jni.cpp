@@ -201,13 +201,25 @@ struct MemoryDiagnostics {
 
 struct TeachingCache {
     int objects = 0;
-    // Per row: exact own score and maximum negative score over the checked prefix of its sampled negatives.
+    // Per row: exact own score and maximum negative score over the covered prefix of its sampled negatives.
     std::vector<float> scores;
-    // Per row: global index attaining that maximum and the length of the checked prefix.
+    // Per row: global index attaining that maximum and the length of the covered prefix.
     std::vector<jint> coverage;
+    // Actual negative traversal order, packed in class order with one slice per sampled set.
+    std::vector<jint> order;
 };
 
 constexpr int patch_sample_cap = 30000;
+
+int negative_sample_count(int total_rows, int own_rows) {
+    return std::min(patch_sample_cap, total_rows - own_rows);
+}
+
+int negative_order_size(const std::vector<int>& counts, int objects, int rows) {
+    int size = 0;
+    for (int o = 0; o < objects; ++o) size += negative_sample_count(rows, counts[o]);
+    return size;
+}
 
 std::vector<int> sample_negatives(const std::vector<int>& offsets, int objects, int object) {
     std::vector<int> others;
@@ -219,52 +231,52 @@ std::vector<int> sample_negatives(const std::vector<int>& offsets, int objects, 
     return sample(std::move(others), patch_sample_cap, 2ull * object);
 }
 
-struct NegativeReuse {
-    int first_old;
-    std::vector<int> skip_until;
-};
-
-NegativeReuse prepare_negative_reuse(std::vector<int>& others, const std::vector<int>& offsets, int object,
-                                     const TeachingCache& cache, std::vector<float>& maxima,
-                                     MemoryDiagnostics& diagnostics) {
-    const auto old_sample = sample_negatives(offsets, cache.objects, object);
+std::vector<int> prepare_negative_reuse(std::vector<int>& others, const std::vector<int>& offsets, int object,
+                                        const TeachingCache& cache, int order_offset, std::vector<float>& maxima,
+                                        MemoryDiagnostics& diagnostics, jint* next_coverage) {
     const int old_rows = offsets[cache.objects];
+    const int old_size = negative_sample_count(old_rows, offsets[object + 1] - offsets[object]);
+    const jint* old_order = cache.order.data() + order_offset;
     std::vector<int> old_position(old_rows, -1);
-    for (size_t i = 0; i < old_sample.size(); ++i) old_position[old_sample[i]] = static_cast<int>(i);
+    for (int i = 0; i < old_size; ++i) {
+        const int col = old_order[i];
+        require(col >= 0 && col < old_rows && old_position[col] < 0, "Invalid cached negative order");
+        old_position[col] = i;
+    }
     std::vector<uint8_t> in_new_sample(offsets.back());
+    for (int col : others) in_new_sample[col] = 1;
     std::vector<int> ordered;
     ordered.reserve(others.size());
-    for (int col : others) {
-        in_new_sample[col] = 1;
-        if (col >= old_rows || old_position[col] < 0) ordered.push_back(col);
-    }
 
-    // Keep the new sample membership. Put uncached columns first, then the intersection in the old sample order.
-    // Intersecting a checked old prefix with the new sample therefore gives one contiguous block to skip.
-    const int first_old = static_cast<int>(ordered.size());
-    std::vector<int> surviving_prefix(old_sample.size() + 1);
-    for (size_t i = 0; i < old_sample.size(); ++i) {
-        const int col = old_sample[i];
+    // Visit the intersection in old order, then newly sampled columns. A surviving covered prefix stays a prefix.
+    std::vector<int> surviving_prefix(old_size + 1);
+    for (int i = 0; i < old_size; ++i) {
+        const int col = old_order[i];
         if (in_new_sample[col]) ordered.push_back(col);
-        surviving_prefix[i + 1] = static_cast<int>(ordered.size()) - first_old;
+        surviving_prefix[i + 1] = static_cast<int>(ordered.size());
     }
+    for (int col : others) if (col >= old_rows || old_position[col] < 0) ordered.push_back(col);
     others = std::move(ordered);
 
-    NegativeReuse reuse{first_old, std::vector<int>(maxima.size(), first_old)};
+    std::vector<int> covered(maxima.size());
     for (size_t r = 0; r < maxima.size(); ++r) {
         const size_t i = 2 * (size_t(offsets[object]) + r);
         const int witness = cache.coverage[i];
         const int checked = cache.coverage[i + 1];
         if (witness >= 0 && witness < old_rows && in_new_sample[witness] && old_position[witness] >= 0 &&
-            old_position[witness] < checked && size_t(checked) <= old_sample.size()) {
+            old_position[witness] < checked && checked <= old_size) {
             maxima[r] = cache.scores[i + 1];
-            reuse.skip_until[r] += surviving_prefix[checked];
+            covered[r] = surviving_prefix[checked];
+            if (next_coverage) {
+                next_coverage[2 * r] = witness;
+                next_coverage[2 * r + 1] = covered[r];
+            }
             ++diagnostics.reused_witness_rows;
         } else {
             ++diagnostics.ineligible_witness_rows;
         }
     }
-    return reuse;
+    return covered;
 }
 
 // A partial negative maximum gives an upper bound on the final margin. The k-th highest complete margin is a lower
@@ -272,7 +284,7 @@ NegativeReuse prepare_negative_reuse(std::vector<int>& others, const std::vector
 template<bool Capture = false, bool Reuse = false>
 void cutoff_other_max(const float* queries, const float* all, const std::vector<int>& others,
                       const std::vector<float>& own, float keep, std::vector<float>& maxima,
-                      MemoryDiagnostics& diagnostics, jint* coverage = nullptr, const NegativeReuse* reuse = nullptr) {
+                      MemoryDiagnostics& diagnostics, jint* coverage = nullptr, const int* covered = nullptr) {
     const int n = static_cast<int>(own.size());
     const int columns = static_cast<int>(others.size());
     const int prefix = std::min(256, columns);
@@ -286,31 +298,21 @@ void cutoff_other_max(const float* queries, const float* all, const std::vector<
         float maximum = maxima[row];
         int witness = -1;
         if constexpr (Capture) witness = coverage[2 * row];
-        auto compare = [&](int lo, int hi) {
-            for (int col = lo; col < hi; ++col) {
-                const float similarity = dot(query, packed.data() + size_t(col) * D);
-                if (similarity > maximum) {
-                    maximum = similarity;
-                    if constexpr (Capture) witness = others[col];
-                }
+        int begin = first;
+        if constexpr (Reuse) begin = std::clamp(covered[row], first, last);
+        for (int col = begin; col < last; ++col) {
+            const float similarity = dot(query, packed.data() + size_t(col) * D);
+            if (similarity > maximum) {
+                maximum = similarity;
+                if constexpr (Capture) witness = others[col];
             }
-        };
-        int skipped = 0;
-        if constexpr (Reuse) {
-            const int skip_begin = std::clamp(reuse->first_old, first, last);
-            const int skip_end = std::clamp(reuse->skip_until[row], first, last);
-            compare(first, skip_begin);
-            compare(skip_end, last);
-            skipped = skip_end - skip_begin;
-        } else {
-            compare(first, last);
         }
         maxima[row] = maximum;
         if constexpr (Capture) {
             coverage[2 * row] = witness;
-            coverage[2 * row + 1] = last;
+            coverage[2 * row + 1] = std::max(coverage[2 * row + 1], last);
         }
-        return skipped;
+        return begin - first;
     };
     std::array<jlong, max_memory_threads> prefix_skips{};
     memory_workers(threads, [&](int t) {
@@ -448,7 +450,8 @@ double since(std::chrono::steady_clock::time_point t) {
 
 std::vector<float> build_memory(const std::vector<float>& patches, const std::vector<int>& counts, float keep, int parts,
                                 const OtherMax& other_max, double* ms, Engine* simtop, bool cutoff,
-                                std::vector<jint>* retained, MemoryDiagnostics& diagnostics, TeachingCache* cache) {
+                                std::vector<jint>* retained, MemoryDiagnostics& diagnostics,
+                                const TeachingCache& cache, TeachingCache* next_cache) {
     const int O = counts.size();
     std::vector<int> offs(O + 1, 0);
     for (int o = 0; o < O; ++o) offs[o + 1] = offs[o] + counts[o];
@@ -457,31 +460,42 @@ std::vector<float> build_memory(const std::vector<float>& patches, const std::ve
     // objects before switching avoids alternating two HTP graphs per object. The CPU cutoff needs top-6 first.
     std::vector<std::vector<float>> s_others(O);
     std::vector<std::vector<float>> s_owns(O);
-    const bool capture = cache && cache->objects == 0;
     auto negatives = [&] {
         const auto t = std::chrono::steady_clock::now();
+        int old_order_offset = 0, next_order_offset = 0;
         for (int o = 0; o < O; ++o) {
             auto others = sample_negatives(offs, O, o);
             auto& maxima = s_others[o];
             maxima.assign(counts[o], -INFINITY);
-            const float* P = patches.data() + size_t(offs[o]) * D;
-            if (capture) {
-                const size_t offset = 2 * size_t(offs[o]);
-                cutoff_other_max<true>(P, patches.data(), others, s_owns[o], keep, maxima, diagnostics,
-                                       cache->coverage.data() + offset);
-                for (int r = 0; r < counts[o]; ++r) {
-                    cache->scores[offset + 2 * r] = s_owns[o][r];
-                    cache->scores[offset + 2 * r + 1] = maxima[r];
+            const float* query = patches.data() + size_t(offs[o]) * D;
+            const size_t score_offset = 2 * size_t(offs[o]);
+            auto* next_coverage = next_cache ? next_cache->coverage.data() + score_offset : nullptr;
+            if (o < cache.objects) {
+                const auto covered = prepare_negative_reuse(others, offs, o, cache, old_order_offset, maxima,
+                                                            diagnostics, next_coverage);
+                old_order_offset += negative_sample_count(offs[cache.objects], counts[o]);
+                if (next_cache) {
+                    cutoff_other_max<true, true>(query, patches.data(), others, s_owns[o], keep, maxima, diagnostics,
+                                                next_coverage, covered.data());
+                } else {
+                    cutoff_other_max<false, true>(query, patches.data(), others, s_owns[o], keep, maxima, diagnostics,
+                                                 nullptr, covered.data());
                 }
-            } else if (cache && o < cache->objects) {
-                const auto reuse = prepare_negative_reuse(others, offs, o, *cache, maxima, diagnostics);
-                cutoff_other_max<false, true>(P, patches.data(), others, s_owns[o], keep, maxima, diagnostics,
-                                              nullptr, &reuse);
+            } else if (next_cache) {
+                cutoff_other_max<true>(query, patches.data(), others, s_owns[o], keep, maxima, diagnostics, next_coverage);
             } else if (cutoff) {
-                cutoff_other_max(P, patches.data(), others, s_owns[o], keep, maxima, diagnostics);
+                cutoff_other_max(query, patches.data(), others, s_owns[o], keep, maxima, diagnostics);
             } else {
-                other_max(P, counts[o], patches.data(), others, maxima);
+                other_max(query, counts[o], patches.data(), others, maxima);
                 diagnostics.negative_dots += jlong(counts[o]) * others.size();
+            }
+            if (next_cache) {
+                std::copy(others.begin(), others.end(), next_cache->order.data() + next_order_offset);
+                next_order_offset += static_cast<int>(others.size());
+                for (int r = 0; r < counts[o]; ++r) {
+                    next_cache->scores[score_offset + 2 * r] = s_owns[o][r];
+                    next_cache->scores[score_offset + 2 * r + 1] = maxima[r];
+                }
             }
         }
         ms[0] += since(t);
@@ -492,8 +506,8 @@ std::vector<float> build_memory(const std::vector<float>& patches, const std::ve
         const int n = counts[o];
         auto& scores = s_owns[o];
         scores.resize(n);
-        if (cache && o < cache->objects) {
-            for (int r = 0; r < n; ++r) scores[r] = cache->scores[2 * (size_t(offs[o]) + r)];
+        if (o < cache.objects) {
+            for (int r = 0; r < n; ++r) scores[r] = cache.scores[2 * (size_t(offs[o]) + r)];
             continue;
         }
         const float* P = patches.data() + size_t(offs[o]) * D;
@@ -653,12 +667,13 @@ extern "C" JNIEXPORT void JNICALL JFN(engineDestroy)(JNIEnv*, jobject, jlong han
 // simmax / simtop: handles of HTP engines for the other-object max and the own top-6, or 0 for the CPU (the HTP graphs are
 // 384-wide). dim: feature width. Returns the memory [objects * parts * dim] followed by 3 timings in ms (other-object max,
 // own top-6, selection and k-means). Optional outputs hold retained row indices padded with -1 and CPU comparison counts.
-// Non-null cache arrays capture the original sampled-prefix state when cached_objects is 0. A positive cached_objects
-// appends to that same unchanged feature prefix and reads, but never writes, the previously captured arrays.
+// Cache input describes the unchanged teaching prefix. Next-cache output captures the actual traversal and covered
+// prefixes of this build, so an append can provide the input for another append without modifying the old cache.
 extern "C" JNIEXPORT jfloatArray JNICALL JFN(buildMemory)(JNIEnv* env, jobject, jfloatArray patches, jintArray counts, jfloat keep,
                                                           jint parts, jlong simmax, jlong simtop, jint dim, jboolean cutoff,
                                                           jintArray retained, jlongArray diagnostics, jfloatArray cache_scores,
-                                                          jintArray cache_witness, jint cached_objects) {
+                                                          jintArray cache_witness, jintArray cache_order, jint cached_objects,
+                                                          jfloatArray next_scores, jintArray next_witness, jintArray next_order) {
     try {
         require(dim > 0 && dim % 16 == 0, "Feature width must be a positive multiple of 16");
         require((simmax == 0 && simtop == 0) || dim == 384, "HTP memory graphs are 384-wide");
@@ -677,25 +692,37 @@ extern "C" JNIEXPORT jfloatArray JNICALL JFN(buildMemory)(JNIEnv* env, jobject, 
         const bool use_cutoff = cutoff && c.size() >= 2 && keep > 0 && keep <= 1 &&
             std::all_of(c.begin(), c.end(), [](int n) { return n >= 6; }) &&
             std::all_of(p.begin(), p.end(), [](float v) { return std::abs(v) <= 1e15f; });
-        require((cache_scores != nullptr) == (cache_witness != nullptr), "Both teaching cache arrays are required");
-        require(cached_objects == 0 || (cache_scores && cached_objects >= 2 && cached_objects < int(c.size())),
-                "Cached objects must precede appended objects");
+        require(cached_objects == 0 ? !cache_scores && !cache_witness && !cache_order :
+                cache_scores && cache_witness && cache_order && cached_objects >= 2 && cached_objects < int(c.size()),
+                "Teaching cache input must describe the objects before the append");
+        require(next_scores ? next_witness && next_order : !next_witness && !next_order,
+                "All next teaching cache arrays are required");
+        require((!cache_scores && !next_scores) || use_cutoff, "Teaching cache requires the B CPU cutoff build");
         TeachingCache cache;
         if (cache_scores) {
-            require(use_cutoff, "Teaching cache requires the B CPU cutoff build");
             cache.objects = cached_objects;
-            const int cached_rows = cached_objects == 0 ? rows : std::accumulate(c.begin(), c.begin() + cached_objects, 0);
+            const int cached_rows = std::accumulate(c.begin(), c.begin() + cached_objects, 0);
             const int slots = 2 * cached_rows;
-            require(env->GetArrayLength(cache_scores) == slots && env->GetArrayLength(cache_witness) == slots,
-                    "Teaching cache arrays must match the cached rows");
+            const int order_size = negative_order_size(c, cached_objects, cached_rows);
+            require(env->GetArrayLength(cache_scores) == slots && env->GetArrayLength(cache_witness) == slots &&
+                    env->GetArrayLength(cache_order) == order_size, "Teaching cache input size");
             cache.scores.resize(slots);
             cache.coverage.resize(slots);
-            if (cached_objects > 0) {
-                env->GetFloatArrayRegion(cache_scores, 0, slots, cache.scores.data());
-                env->GetIntArrayRegion(cache_witness, 0, slots, cache.coverage.data());
-            } else {
-                for (int i = 0; i < slots; i += 2) cache.coverage[i] = -1;
-            }
+            cache.order.resize(order_size);
+            env->GetFloatArrayRegion(cache_scores, 0, slots, cache.scores.data());
+            env->GetIntArrayRegion(cache_witness, 0, slots, cache.coverage.data());
+            env->GetIntArrayRegion(cache_order, 0, order_size, cache.order.data());
+        }
+        TeachingCache next;
+        if (next_scores) {
+            const int slots = 2 * rows;
+            const int order_size = negative_order_size(c, int(c.size()), rows);
+            require(env->GetArrayLength(next_scores) == slots && env->GetArrayLength(next_witness) == slots &&
+                    env->GetArrayLength(next_order) == order_size, "Next teaching cache output size");
+            next.scores.resize(slots);
+            next.coverage.resize(slots);
+            next.order.resize(order_size);
+            for (int i = 0; i < slots; i += 2) next.coverage[i] = -1;
         }
         double ms[3] = {0, 0, 0};
         auto* engine = reinterpret_cast<Engine*>(simmax);
@@ -705,11 +732,12 @@ extern "C" JNIEXPORT jfloatArray JNICALL JFN(buildMemory)(JNIEnv* env, jobject, 
         std::vector<jint> indices;
         MemoryDiagnostics counts_out;
         auto mem = build_memory(p, c, keep, parts, om, ms, reinterpret_cast<Engine*>(simtop), use_cutoff,
-                                retained ? &indices : nullptr, counts_out, cache_scores ? &cache : nullptr);
-        if (cache_scores && cached_objects == 0) {
-            const int slots = static_cast<int>(cache.scores.size());
-            env->SetFloatArrayRegion(cache_scores, 0, slots, cache.scores.data());
-            env->SetIntArrayRegion(cache_witness, 0, slots, cache.coverage.data());
+                                retained ? &indices : nullptr, counts_out, cache, next_scores ? &next : nullptr);
+        if (next_scores) {
+            const int slots = static_cast<int>(next.scores.size());
+            env->SetFloatArrayRegion(next_scores, 0, slots, next.scores.data());
+            env->SetIntArrayRegion(next_witness, 0, slots, next.coverage.data());
+            env->SetIntArrayRegion(next_order, 0, next.order.size(), next.order.data());
         }
         if (retained) {
             indices.resize(rows, -1);

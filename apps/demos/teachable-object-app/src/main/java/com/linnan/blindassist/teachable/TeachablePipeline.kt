@@ -37,7 +37,7 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: Fil
 
     internal class TeachingFeatures(val patches: FloatArray, val counts: IntArray, val cls: List<FloatArray>)
 
-    /** A snapshot for one tail append against this loaded model. It can be reused for independent comparisons. */
+    /** An immutable teaching snapshot whose successor can be used for another tail append on this loaded model. */
     internal class PreparedTeachingAppend(
         internal val pipeline: TeachablePipeline, internal val features: TeachingFeatures,
         internal val cache: Native.TeachingCache, val initial: TeachingMemory,
@@ -85,8 +85,8 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: Fil
         require(teachFiles.size in 2 until OMAX)
         val start = System.nanoTime()
         val features = encodeTeaching(teachFiles)
-        val cache = Native.TeachingCache(features.counts.sum())
-        val initial = finishTeaching(features, start, cutoff = true, captureEvidence, cache)
+        val cache = Native.TeachingCache(features.counts)
+        val initial = finishTeaching(features, start, cutoff = true, captureEvidence, nextCache = cache)
         return PreparedTeachingAppend(this, features, cache, initial)
     }
 
@@ -97,6 +97,18 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: Fil
         val start = System.nanoTime()
         val features = encodeTeaching(listOf(newTeachFiles), prepared.features)
         return finishTeaching(features, start, cutoff = true, captureEvidence, prepared.cache, prepared.features.counts.size)
+    }
+
+    internal fun appendTeachingAndCache(
+        prepared: PreparedTeachingAppend, newTeachFiles: List<File>, captureEvidence: Boolean = false,
+    ): PreparedTeachingAppend {
+        require(prepared.pipeline === this && newTeachFiles.isNotEmpty())
+        val start = System.nanoTime()
+        val features = encodeTeaching(listOf(newTeachFiles), prepared.features)
+        val next = Native.TeachingCache(features.counts)
+        val memory = finishTeaching(features, start, cutoff = true, captureEvidence, prepared.cache,
+            prepared.features.counts.size, next)
+        return PreparedTeachingAppend(this, features, next, memory)
     }
 
     private fun encodeTeaching(teachFiles: List<List<File>>, prefix: TeachingFeatures? = null): TeachingFeatures {
@@ -128,14 +140,14 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: Fil
 
     private fun finishTeaching(
         features: TeachingFeatures, start: Long, cutoff: Boolean, captureEvidence: Boolean,
-        cache: Native.TeachingCache? = null, cachedObjects: Int = 0,
+        cache: Native.TeachingCache? = null, cachedObjects: Int = 0, nextCache: Native.TeachingCache? = null,
     ): TeachingMemory {
         val encoded = System.nanoTime()
         val retained = if (captureEvidence) IntArray(features.counts.sum()) else null
         val diagnostics = if (captureEvidence) LongArray(if (cachedObjects > 0) 6 else 3) else null
         val nativeStart = System.nanoTime()
         val built = Native.build(features.patches, features.counts, KEEP, PARTS, dim = dim, cutoff = cutoff,
-            retained = retained, diagnostics = diagnostics, cache = cache, cachedObjects = cachedObjects)
+            retained = retained, diagnostics = diagnostics, cache = cache, cachedObjects = cachedObjects, nextCache = nextCache)
         val nativeEnd = System.nanoTime()
         val memory = memory(features.counts.size, built.parts, features.cls)
         val end = System.nanoTime()

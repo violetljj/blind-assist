@@ -172,6 +172,121 @@ class BMemoryCutoffDeviceTest {
         }
     }
 
+    @Test
+    fun pairedAppendChain() {
+        val runId = InstrumentationRegistry.getArguments().getString("runId") ?: "chain_p189"
+        require(runId.matches(Regex("[a-zA-Z0-9_-]+")))
+        val root = File(context.filesDir, "b_memory_incremental").apply { mkdir() }
+        val output = File(root, runId)
+        check(output.mkdir()) { "Expected a fresh test output directory: $output" }
+        val json = File(output, "p189.json")
+        val input = loadP189()
+        val teachFiles = input.teachFiles
+        val patchCounts = teachFiles.map { it.size * TeachablePipeline.GRID * TeachablePipeline.GRID }
+        val runs = JSONArray()
+        val result = input.summary
+            .put("run_id", runId)
+            .put("initial_objects", 3)
+            .put("cache_scope", "process_resident")
+            .put("incremental_timing_includes_successor_cache", true)
+            .put("pairs", runs)
+            .put("completed", false)
+        json.writeText(result.toString(2))
+        withWarmPipeline(input) { b ->
+            val seedStart = thermalSnapshot()
+            val seed = b.prepareTeachingAppend(teachFiles.take(3), captureEvidence = true)
+            check(seed.initial.memory.objects == 3 && seed.cacheBytes > 0)
+            result.put("initial", arm("initial", seed.initial, seedStart).summary
+                .put("encoded_jpegs", teachFiles.take(3).sumOf { it.size })
+                .put("cache_bytes", seed.cacheBytes))
+            json.writeText(result.toString(2))
+
+            val featureHashes = mutableMapOf<Int, String>()
+            repeat(3) { pair ->
+                var current = seed
+                val steps = JSONArray()
+                runs.put(JSONObject().put("pair", pair + 1).put("steps", steps))
+                val incrementalFirst = pair % 2 == 1
+                for (objects in 4..5) {
+                    val fromObjects = objects - 1
+                    check(current.initial.memory.objects == fromObjects)
+                    val previousRetained = requireNotNull(current.initial.retained).filter { it >= 0 }.toSet()
+                    val incomingHash = requireNotNull(current.initial.featureSha256)
+                    val incomingBytes = current.cacheBytes
+                    val newFiles = teachFiles[fromObjects]
+                    val allFiles = teachFiles.take(objects)
+                    fun measure(incremental: Boolean): Arm {
+                        if (!incremental) {
+                            val full = measured("full_cutoff") { b.buildTeachingMemory(allFiles, captureEvidence = true) }
+                            full.summary.put("encoded_jpegs", allFiles.sumOf { it.size })
+                            return full
+                        }
+                        val start = thermalSnapshot()
+                        current = b.appendTeachingAndCache(current, newFiles, captureEvidence = true)
+                        val append = arm("incremental", current.initial, start)
+                        append.summary.put("encoded_jpegs", newFiles.size)
+                            .put("cache_source", if (fromObjects == 3) "initial" else "3_to_4_incremental")
+                            .put("input_feature_sha256", incomingHash)
+                            .put("input_cache_bytes", incomingBytes)
+                            .put("cache_bytes", current.cacheBytes)
+                        return append
+                    }
+                    val step = JSONObject().put("from_objects", fromObjects).put("to_objects", objects)
+                        .put("execution_order", JSONArray(if (incrementalFirst) listOf("incremental", "full_cutoff")
+                            else listOf("full_cutoff", "incremental")))
+                    steps.put(step)
+                    val first = measure(incrementalFirst)
+                    step.put(first.name, first.summary)
+                    json.writeText(result.toString(2))
+                    val second = measure(!incrementalFirst)
+                    step.put(second.name, second.summary)
+                    val full = if (incrementalFirst) second else first
+                    val append = if (incrementalFirst) first else second
+
+                    val fullRetained = requireNotNull(full.value.retained)
+                    val appendRetained = requireNotNull(append.value.retained)
+                    val sameRetained = fullRetained.contentEquals(appendRetained)
+                    val sameParts = rawEqual(full.value.built.parts, append.value.built.parts)
+                    val sameCls = rawEqual(full.value.memory.protos, append.value.memory.protos)
+                    val sameMemory = full.value.memory.objects == objects && append.value.memory.objects == objects &&
+                        rawEqual(full.value.memory.parts, append.value.memory.parts) && sameCls &&
+                        rawEqual(full.value.memory.valid, append.value.memory.valid)
+                    val fullHash = requireNotNull(full.value.featureSha256)
+                    val firstHash = featureHashes.getOrPut(objects) { fullHash }
+                    val sameFeatures = fullHash == append.value.featureSha256 && fullHash == firstHash
+                    val equal = sameRetained && sameParts && sameMemory && sameFeatures
+                    step.put("saved_ms", full.value.totalMs - append.value.totalMs)
+                        .put("retained_bit_equal", sameRetained)
+                        .put("parts_bit_equal", sameParts)
+                        .put("cls_bit_equal", sameCls)
+                        .put("memory_bit_equal", sameMemory)
+                        .put("old_retained_changes", oldRetainedChanges(previousRetained, appendRetained, patchCounts.take(fromObjects)))
+                        .put("feature_sha256_equal_across_all_runs", sameFeatures)
+                    json.writeText(result.toString(2))
+                    if (pair == 0 || !equal) {
+                        val folder = File(output, "pair_${pair + 1}/${fromObjects}_to_$objects").apply { check(mkdirs()) }
+                        writeRaw(folder, full, fullRetained)
+                        writeRaw(folder, append, appendRetained)
+                    }
+                    check(equal) { "Pair ${pair + 1}, $fromObjects to $objects disagrees. See ${json.path}" }
+                    val fullDiagnostics = requireNotNull(full.value.diagnostics)
+                    val appendDiagnostics = requireNotNull(append.value.diagnostics)
+                    check(fullDiagnostics[2] > 0 && appendDiagnostics[1] < fullDiagnostics[1] &&
+                        appendDiagnostics[3] > 0 && appendDiagnostics[5] > 0 && current.cacheBytes > incomingBytes) {
+                        "Pair ${pair + 1}, $fromObjects to $objects did not exercise reuse and successor capture. See ${json.path}"
+                    }
+                    val oldRows = patchCounts.take(fromObjects).sum().toLong()
+                    check(appendDiagnostics[3] + appendDiagnostics[4] == oldRows &&
+                        if (objects == 4) appendDiagnostics[4] == 0L else appendDiagnostics[4] > 0) {
+                        "Pair ${pair + 1}, $fromObjects to $objects has unexpected witness coverage. See ${json.path}"
+                    }
+                }
+            }
+            result.put("completed", true)
+            json.writeText(result.toString(2))
+        }
+    }
+
     private class Input(val teachFiles: List<List<File>>, val summary: JSONObject)
 
     private fun oldRetainedChanges(before: Set<Int>, after: IntArray, counts: List<Int>): JSONArray {

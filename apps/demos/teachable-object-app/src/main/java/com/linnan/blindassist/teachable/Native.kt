@@ -21,13 +21,17 @@ internal object Native {
      */
     private external fun buildMemory(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: Long, simtop: Long,
                                      dim: Int, cutoff: Boolean, retained: IntArray?, diagnostics: LongArray?,
-                                     cacheScores: FloatArray?, cacheWitness: IntArray?, cachedObjects: Int): FloatArray
+                                     cacheScores: FloatArray?, cacheWitness: IntArray?, cacheOrder: IntArray?, cachedObjects: Int,
+                                     nextScores: FloatArray?, nextWitness: IntArray?, nextOrder: IntArray?): FloatArray
 
-    /** Per-row own score and negative maximum, plus the winning column and the covered sample prefix. */
-    class TeachingCache(rows: Int) {
+    /** Per-row scores and coverage, and the actual negative traversal order for each object. */
+    class TeachingCache(counts: IntArray) {
+        private val rows = counts.sum()
         val scores = FloatArray(2 * rows)
         val witness = IntArray(2 * rows)
-        val bytes: Long get() = (scores.size.toLong() + witness.size) * Float.SIZE_BYTES
+        val order = IntArray(counts.sumOf { minOf(30_000, rows - it) })
+        val bytes: Long get() = scores.size.toLong() * Float.SIZE_BYTES +
+            (witness.size.toLong() + order.size) * Int.SIZE_BYTES
     }
 
     /** Memory and its timing breakdown (ms): other-object max, own top-6, k-means. */
@@ -35,9 +39,11 @@ internal object Native {
 
     fun build(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: SnpeEngine? = null, simtop: SnpeEngine? = null,
               dim: Int = TeachablePipeline.D, cutoff: Boolean = false, retained: IntArray? = null,
-              diagnostics: LongArray? = null, cache: TeachingCache? = null, cachedObjects: Int = 0): Built {
+              diagnostics: LongArray? = null, cache: TeachingCache? = null, cachedObjects: Int = 0,
+              nextCache: TeachingCache? = null): Built {
         val r = buildMemory(patches, counts, keep, parts, simmax?.handle ?: 0L, simtop?.handle ?: 0L, dim, cutoff,
-            retained, diagnostics, cache?.scores, cache?.witness, cachedObjects)
+            retained, diagnostics, cache?.scores, cache?.witness, cache?.order, cachedObjects,
+            nextCache?.scores, nextCache?.witness, nextCache?.order)
         val n = r.size - 3
         return Built(r.copyOf(n), r[n].toDouble(), r[n + 1].toDouble(), r[n + 2].toDouble())
     }
