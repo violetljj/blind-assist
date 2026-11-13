@@ -34,6 +34,14 @@ adb shell am instrument -w -r -e class com.linnan.blindassist.teachable.WclPerso
 The model bytes are hashed on saving and on reopening before recognition, so startup includes that verification.
 The demo version changes because the launcher and user teaching flow changed; the obstacle app version is unchanged.
 
+## Presentation trials
+
+Save a teaching library with at least two objects, return to the teaching page, and choose **打开呈现对照试验**.
+Choose **普通拍摄** or **单独呈现** according to the trial order. Both start at the same sound cue, use the same saved
+library and W8A16 WCL model at 3 fps, and run for six seconds. Each trial starts with fresh smoothing and speech state.
+The trial log records model and library hashes, camera and decision timestamps, and TTS callbacks in
+`files/wcl/presentation_trials/<session>/<number>.json`. Use an external audio recording to score what was heard.
+
 ## Earlier research and replay paths
 
 M0 (offline chain, `M0DeviceTest`): teach -> build memory on the phone -> identify, on ORBIT validation-user packages

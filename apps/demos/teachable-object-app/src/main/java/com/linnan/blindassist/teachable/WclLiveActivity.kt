@@ -2,9 +2,13 @@ package com.linnan.blindassist.teachable
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CaptureRequest
+import android.media.AudioManager
+import android.media.ToneGenerator
 import android.os.BatteryManager
 import android.os.Bundle
 import android.os.Build
@@ -18,13 +22,16 @@ import android.util.Log
 import android.util.Range
 import android.util.Size
 import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.annotation.OptIn
 import androidx.camera.camera2.interop.Camera2Interop
+import androidx.camera.camera2.interop.Camera2CameraInfo
 import androidx.camera.camera2.interop.ExperimentalCamera2Interop
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -37,8 +44,10 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import org.json.JSONArray
 import org.json.JSONObject
+import android.util.AtomicFile
 import java.io.File
 import java.util.Locale
+import java.util.UUID
 import java.util.concurrent.Executors
 import kotlin.math.ceil
 
@@ -65,6 +74,26 @@ class WclLiveActivity : ComponentActivity() {
     private lateinit var smoother: ConfidenceEma
     private lateinit var plainSmoother: ConfidenceEma
     private var stableFrames = 3
+    private var presentationTrials = false
+    private var cameraBound = false
+    private var cameraReady = false
+    @Volatile private var cameraUsesElapsedTime = false
+    private lateinit var naturalButton: Button
+    private lateinit var guidedButton: Button
+    private var tone: ToneGenerator? = null
+    private var trialNumber = 0
+    private val trialSession = UUID.randomUUID().toString()
+    private var trialModelIdentity = ""
+    private var trialLibraryIdentity = ""
+    private data class ActiveTrial(
+        val number: Int,
+        val guided: Boolean,
+        val window: WclPresentationTrial,
+        val cueStarted: Boolean,
+        val frames: JSONArray = JSONArray(),
+        val speech: MutableMap<String, JSONObject> = linkedMapOf(),
+    )
+    private var activeTrial: ActiveTrial? = null
     @Volatile private var pipeline: WclPipeline? = null
     @Volatile private var pf: PfPipeline? = null
     private var spatial = false
@@ -85,6 +114,7 @@ class WclLiveActivity : ComponentActivity() {
     @Volatile private var stopping = false
     private val t0 = SystemClock.elapsedRealtimeNanos()
     private var nextNs = 0L
+    private var samplingTrialStartNs = 0L
     private var seen = 0L
 
     private val frameTs = ArrayList<Long>(); private val doneTs = ArrayList<Long>()
@@ -104,16 +134,17 @@ class WclLiveActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= 27) { setShowWhenLocked(true); setTurnScreenOn(true) }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         library = intent.getStringExtra(EXTRA_LIBRARY)
+        presentationTrials = intent.getBooleanExtra(EXTRA_PRESENTATION_TRIALS, false)
         user = library?.let { "library_$it" } ?: (intent.getStringExtra(EXTRA_USER) ?: "P189")
-        rate = intent.getDoubleExtra(EXTRA_RATE, 3.0)
-        spatial = intent.getBooleanExtra(EXTRA_SPATIAL, false)
-        bwcl = intent.getBooleanExtra(EXTRA_BWCL, false)
-        siblingWhiten = intent.getBooleanExtra(EXTRA_SIBLING_WHITEN, DEFAULT_SIBLING_WHITEN)
+        rate = if (presentationTrials) WclPresentationTrial.RATE else intent.getDoubleExtra(EXTRA_RATE, 3.0)
+        spatial = !presentationTrials && intent.getBooleanExtra(EXTRA_SPATIAL, false)
+        bwcl = !presentationTrials && intent.getBooleanExtra(EXTRA_BWCL, false)
+        siblingWhiten = !presentationTrials && intent.getBooleanExtra(EXTRA_SIBLING_WHITEN, DEFAULT_SIBLING_WHITEN)
         confPower = intent.getIntExtra(EXTRA_CONF_POWER, ConfidenceEma.DEFAULT_POWER)
         val halfLife = intent.getDoubleExtra(EXTRA_HALF_LIFE, ConfidenceEma.DEFAULT_HALF_LIFE_S)
         smoother = ConfidenceEma(ConfidenceEma.alphaOf(rate, halfLife), confPower); plainSmoother = ConfidenceEma(ConfidenceEma.alphaOf(rate, 1.0), 0)
         stableFrames = ceil(rate).toInt()
-        val preview = PreviewView(this)
+        val preview = PreviewView(this).apply { importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }
         label = TextView(this).apply { text = "正在准备识别，请稍候。"; textSize = 22f; setTextColor(0xFFFFFFFF.toInt()); setBackgroundColor(0x88000000.toInt()); setPadding(24, 16, 24, 16) }
         setContentView(FrameLayout(this).apply {
             addView(preview)
@@ -122,21 +153,77 @@ class WclLiveActivity : ComponentActivity() {
                 text = "结束识别，返回教学"
                 setOnClickListener { finish() }
             }, FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.TOP or Gravity.CENTER_HORIZONTAL))
+            if (presentationTrials) {
+                naturalButton = Button(this@WclLiveActivity).apply {
+                    text = "普通拍摄，开始 6 秒试次"
+                    isEnabled = false
+                    setOnClickListener { startTrial(guided = false) }
+                }
+                guidedButton = Button(this@WclLiveActivity).apply {
+                    text = "单独呈现，开始 6 秒试次"
+                    isEnabled = false
+                    setOnClickListener { startTrial(guided = true) }
+                }
+                val controls = LinearLayout(this@WclLiveActivity).apply {
+                    orientation = LinearLayout.VERTICAL
+                    setBackgroundColor(Color.WHITE)
+                    addView(TextView(this@WclLiveActivity).apply {
+                        text = "听到提示音后开始。普通拍摄按平常方式操作。单独呈现时，把待识别物拿到镜头前，尽量与其他物品分开。"
+                        setTextColor(Color.BLACK)
+                        textSize = 17f
+                        setPadding(24, 16, 24, 8)
+                    })
+                    addView(naturalButton)
+                    addView(guidedButton)
+                }
+                addView(controls, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM))
+                removeView(label)
+                controls.addView(label)
+            }
         })
+        if (presentationTrials) {
+            tone = runCatching { ToneGenerator(AudioManager.STREAM_MUSIC, 70) }.getOrNull()
+        }
         tts = TextToSpeech(this) { status ->
             ttsReady = status == TextToSpeech.SUCCESS
             if (!ttsReady) speechWarning = "语音服务不可用，当前仅显示识别结果。"
+            if (presentationTrials) main.post {
+                if (!isDestroyed) {
+                    if (!ttsReady) label.text = "语音服务不可用，请检查手机的文字转语音设置。"
+                    refreshTrialButtons()
+                }
+            }
         }
         tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-            override fun onStart(utteranceId: String) { synchronized(speechStartNs) { speechStartNs[utteranceId] = SystemClock.elapsedRealtimeNanos() } }
-            override fun onDone(utteranceId: String) {}
-            @Deprecated("Deprecated in Java") override fun onError(utteranceId: String) {}
+            override fun onStart(utteranceId: String) {
+                val time = SystemClock.elapsedRealtimeNanos()
+                if (presentationTrials) logTrialSpeech(utteranceId, "tts_start_ns", time)
+                else synchronized(speechStartNs) { speechStartNs[utteranceId] = time }
+            }
+            override fun onDone(utteranceId: String) {
+                if (presentationTrials) logTrialSpeech(utteranceId, "tts_done_ns", SystemClock.elapsedRealtimeNanos())
+            }
+            @Deprecated("Deprecated in Java") override fun onError(utteranceId: String) {
+                if (presentationTrials) logTrialSpeech(utteranceId, "tts_error_ns", SystemClock.elapsedRealtimeNanos())
+            }
+            override fun onError(utteranceId: String, errorCode: Int) {
+                if (presentationTrials) logTrialSpeech(utteranceId, "tts_error_ns", SystemClock.elapsedRealtimeNanos())
+            }
+            override fun onStop(utteranceId: String, interrupted: Boolean) {
+                if (presentationTrials) logTrialSpeech(utteranceId, "tts_stop_ns", SystemClock.elapsedRealtimeNanos())
+            }
         })
         worker.execute {
-            try { setup(); main.post { if (!isDestroyed) label.text = "准备好了，请把已教物品放到镜头前。" } }
+            try { setup(); main.post {
+                if (!isDestroyed) {
+                    label.text = if (presentationTrials) "正在检查试次所需的相机和语音。" else "准备好了，请把已教物品放到镜头前。"
+                    refreshTrialButtons()
+                }
+            } }
             catch (error: Exception) { Log.e(TAG, "setup failed", error); main.post { if (!isDestroyed) label.text = error.message ?: "无法开始识别，请返回教学页。" } }
         }
-        sampleThermal()
+        if (!presentationTrials) sampleThermal()
         startCamera(preview)
     }
 
@@ -147,7 +234,13 @@ class WclLiveActivity : ComponentActivity() {
             check(!spatial) { "个人教学当前使用整帧识别，请关闭空间读取。" }
             WclTeachingStore(WclTeachingStore.directory(filesDir, it))
         }
-        val personal = store?.load(WclTeachingStore.modelIdentity(File(filesDir, WclPipeline.MODEL)))
+        val modelIdentity = store?.let { WclTeachingStore.modelIdentity(File(filesDir, WclPipeline.MODEL)) }
+        val personal = store?.load(requireNotNull(modelIdentity))
+        if (presentationTrials) {
+            check((personal?.names?.size ?: 0) >= 2) { "试次需要先保存至少两件已教物品。" }
+            trialModelIdentity = requireNotNull(modelIdentity)
+            trialLibraryIdentity = WclTeachingStore.modelIdentity(File(requireNotNull(store).root, "prototypes.json"))
+        }
         val w = if (spatial) null else WclPipeline(File(filesDir, WclPipeline.MODEL), applicationInfo.nativeLibraryDir)
         val s = if (spatial) PfPipeline(File(filesDir, "wcl/pf_body_cached.dlc"), File(filesDir, "wcl/pf_head_m20_cached.dlc"), applicationInfo.nativeLibraryDir) else null
         val b = if (bwcl) File(filesDir, "bwcl").let { TeachablePipeline(File(it, "backbone_b_cached.dlc"), File(it, "bhead_fp32.dlc"), applicationInfo.nativeLibraryDir, dim = B_DIM) } else null
@@ -158,7 +251,7 @@ class WclLiveActivity : ComponentActivity() {
         val teachFiles: List<List<File>>
         if (personal != null) {
             objects = personal.names; protos = personal.prototypes; teachFrames = personal.counts.sum(); whitening = personal.whitening
-            teachFiles = store!!.objects().map { it.frames }
+            teachFiles = requireNotNull(store).objects().map { it.frames }
             check(teachFiles.map { it.size } == personal.counts) { "教学内容有更新，请先保存教学" }
         } else {
         val dir = File(filesDir, "m0/$user")
@@ -222,7 +315,19 @@ class WclLiveActivity : ComponentActivity() {
             Camera2Interop.Extender(analysisBuilder).setCaptureRequestOption(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, fps)
             val analysis = analysisBuilder.build().also { it.setAnalyzer(worker, ::analyze) }
             analysisUseCase = analysis
-            cp.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis)
+            try {
+                val camera = cp.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis)
+                if (presentationTrials) {
+                    cameraBound = true
+                    cameraUsesElapsedTime = Camera2CameraInfo.from(camera.cameraInfo)
+                        .getCameraCharacteristic(CameraCharacteristics.SENSOR_INFO_TIMESTAMP_SOURCE) ==
+                        CameraCharacteristics.SENSOR_INFO_TIMESTAMP_SOURCE_REALTIME
+                    refreshTrialButtons()
+                }
+            } catch (error: RuntimeException) {
+                Log.e(TAG, "camera bind failed", error)
+                label.text = "相机暂时不可用。"
+            }
         }, ContextCompat.getMainExecutor(this))
     }
 
@@ -230,9 +335,30 @@ class WclLiveActivity : ComponentActivity() {
         val now = SystemClock.elapsedRealtimeNanos()
         val w = pipeline; val spatialChain = pf
         seen++
-        if (stopping || (w == null && spatialChain == null) || now < nextNs) { image.close(); return }
-        nextNs = maxOf(nextNs + (1e9 / rate).toLong(), now)
+        val trialStart = trialStartNs
+        if (presentationTrials && trialStart == 0L) {
+            image.close()
+            if (!cameraFrameSeen) {
+                cameraFrameSeen = true
+                main.post { if (!isDestroyed) { cameraReady = true; refreshTrialButtons() } }
+            }
+            return
+        }
+        if (stopping || (w == null && spatialChain == null)) { image.close(); return }
         val ts = image.imageInfo.timestamp
+        val captured = if (presentationTrials && cameraUsesElapsedTime) ts else now
+        if (presentationTrials && samplingTrialStartNs != trialStart) {
+            samplingTrialStartNs = trialStart
+            nextNs = trialStart
+        }
+        if (now < nextNs || (presentationTrials && (captured < trialStart ||
+                    now >= trialStart + WclPresentationTrial.WINDOW_MS * 1_000_000L))) {
+            image.close()
+            return
+        }
+        val interval = (1e9 / rate).toLong()
+        nextNs = if (presentationTrials) trialStart + ((now - trialStart) / interval + 1) * interval
+            else maxOf(nextNs + interval, now)
         var t = System.nanoTime()
         val bmp = image.toBitmap(); val rot = image.imageInfo.rotationDegrees
         image.close()
@@ -265,6 +391,11 @@ class WclLiveActivity : ComponentActivity() {
                 score = whitening?.takeIf { siblingWhiten }?.apply(e, raw) ?: raw
             }
         }
+        if (presentationTrials) {
+            val finished = SystemClock.elapsedRealtimeNanos()
+            main.post { handleTrialFrame(trialStart, captured, finished, score) }
+            return
+        }
         val em = (System.nanoTime() - t) / 1e6
         val top = smoother.update(score); val plainEma = plainSmoother.update(score); val weight = ConfidenceEma.weight(score, confPower)
         if (top == runTop) runLen++ else { runTop = top; runLen = 1 }
@@ -294,6 +425,95 @@ class WclLiveActivity : ComponentActivity() {
     private fun rssKb(): Long = File("/proc/self/status").readLines().firstOrNull { it.startsWith("VmRSS") }?.filter { it.isDigit() }?.toLongOrNull() ?: -1
 
     internal fun analyzedFrameCount(): Int = synchronized(this) { frameTs.size }
+
+    @Volatile private var trialStartNs = 0L
+    private var cameraFrameSeen = false
+    private val endTrial = Runnable { finishTrial("deadline") }
+
+    private fun refreshTrialButtons() {
+        if (!presentationTrials) return
+        val ready = pipeline != null && cameraBound && cameraReady && ttsReady && tone != null && activeTrial == null
+        naturalButton.isEnabled = ready
+        guidedButton.isEnabled = ready
+        if (ready && trialNumber == 0) label.text = "准备好了，请按试次顺序选择拍摄方式。"
+        if (tone == null) label.text = "无法播放开始提示音，请检查手机音频。"
+    }
+
+    internal fun trialControlsReady(): Boolean = presentationTrials && naturalButton.isEnabled
+
+    internal fun startTrial(guided: Boolean) {
+        if (!naturalButton.isEnabled) return
+        tts?.stop()
+        val number = ++trialNumber
+        val started = SystemClock.elapsedRealtimeNanos()
+        val cueStarted = tone?.startTone(ToneGenerator.TONE_PROP_BEEP, 90) == true
+        if (!cueStarted) {
+            trialNumber--
+            label.text = "开始提示音播放失败，请重试。"
+            return
+        }
+        activeTrial = ActiveTrial(number, guided, WclPresentationTrial(started), cueStarted)
+        trialStartNs = started
+        main.postDelayed(endTrial, WclPresentationTrial.WINDOW_MS)
+        label.text = "第 $number 次 · ${if (guided) "单独呈现" else "普通拍摄"}"
+        refreshTrialButtons()
+    }
+
+    private fun handleTrialFrame(started: Long, captured: Long, finished: Long, scores: FloatArray) {
+        val trial = activeTrial ?: return
+        if (trial.window.startedNs != started) return
+        val now = SystemClock.elapsedRealtimeNanos()
+        val decision = trial.window.onFrame(scores, captured, now) ?: return
+        trial.frames.put(JSONObject().put("capture_ns", captured).put("inference_done_ns", finished)
+            .put("decision_ns", now).put("top", decision.top))
+        if (!decision.announce) return
+        val name = objects[decision.top].replace('-', ' ')
+        val id = "t${trial.number}_${trial.speech.size + 1}"
+        val chinese = name.any { Character.UnicodeScript.of(it.code) == Character.UnicodeScript.HAN }
+        val language = tts?.setLanguage(if (chinese) Locale.SIMPLIFIED_CHINESE else Locale.US)
+            ?: TextToSpeech.LANG_NOT_SUPPORTED
+        val speech = JSONObject().put("utterance", id).put("object", objects[decision.top])
+            .put("decision_ns", now).put("language_status", language)
+        trial.speech[id] = speech
+        val speakNs = SystemClock.elapsedRealtimeNanos()
+        if (language >= TextToSpeech.LANG_AVAILABLE && trial.window.contains(speakNs)) {
+            speech.put("speak_ns", speakNs)
+            speech.put("speak_status", tts?.speak(name, TextToSpeech.QUEUE_FLUSH, null, id) ?: TextToSpeech.ERROR)
+        }
+    }
+
+    private fun logTrialSpeech(id: String, key: String, time: Long) {
+        main.post { activeTrial?.speech?.get(id)?.put(key, time) }
+    }
+
+    private fun finishTrial(reason: String) {
+        val trial = activeTrial ?: return
+        activeTrial = null
+        trialStartNs = 0L
+        main.removeCallbacks(endTrial)
+        tts?.stop()
+        val row = JSONObject().put("session", trialSession).put("number", trial.number)
+            .put("arm", if (trial.guided) "guided" else "natural")
+            .put("started_ns", trial.window.startedNs).put("deadline_ns", trial.window.deadlineNs)
+            .put("ended_ns", SystemClock.elapsedRealtimeNanos()).put("end_reason", reason).put("cue_started", trial.cueStarted)
+            .put("timestamp_source", if (cameraUsesElapsedTime) "sensor_realtime" else "analyzer_elapsed")
+            .put("rate", rate).put("model_sha256", trialModelIdentity).put("library_sha256", trialLibraryIdentity)
+            .put("objects", JSONArray(objects)).put("frames", trial.frames).put("speech", JSONArray(trial.speech.values))
+        val saved = runCatching {
+            val dir = File(filesDir, "wcl/presentation_trials/$trialSession").apply { mkdirs() }
+            val file = AtomicFile(File(dir, "${trial.number}.json"))
+            val stream = file.startWrite()
+            try {
+                stream.write(row.toString().toByteArray(Charsets.UTF_8))
+                file.finishWrite(stream)
+            } catch (error: Throwable) {
+                file.failWrite(stream)
+                throw error
+            }
+        }.onFailure { Log.e(TAG, "trial write failed", it) }
+        label.text = if (saved.isSuccess) "第 ${trial.number} 次已记录。" else "试次记录保存失败。"
+        refreshTrialButtons()
+    }
 
     private fun sampleThermal() {
         val battery = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
@@ -329,10 +549,16 @@ class WclLiveActivity : ComponentActivity() {
         analysisUseCase?.clearAnalyzer()
         analysisUseCase?.let { provider?.unbind(it) }; previewUseCase?.let { provider?.unbind(it) }
         tts?.shutdown()
+        tone?.release()
         // Close after an in-flight load/inference finishes, on the same serial executor.
         worker.execute { pipeline?.close(); pf?.close(); bBranch?.close(); pipeline = null; pf = null; bBranch = null }
         worker.shutdown()
         super.onDestroy()
+    }
+
+    override fun onStop() {
+        if (presentationTrials) finishTrial("interrupted")
+        super.onStop()
     }
 
     companion object {
@@ -344,6 +570,7 @@ class WclLiveActivity : ComponentActivity() {
         const val EXTRA_HALF_LIFE = "halfLife"
         const val EXTRA_SIBLING_WHITEN = "siblingWhiten"
         const val EXTRA_BWCL = "bwcl"
+        const val EXTRA_PRESENTATION_TRIALS = "presentationTrials"
         const val B_DIM = 768
         /** Graduation orbit_wcl_whiten_20261108: off by default. ORBIT test -0.20 [-0.70, 0.02] and 44 development users -1.06
          *  [-2.32, -0.02] (cluttered queries); it helps only where teaching and query share capture conditions (ToyBox, CUTE). */

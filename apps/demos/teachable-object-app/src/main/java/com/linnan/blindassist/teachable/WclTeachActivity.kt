@@ -40,6 +40,7 @@ class WclTeachActivity : ComponentActivity() {
     private lateinit var record: Button
     private lateinit var save: Button
     private lateinit var resume: Button
+    private lateinit var trial: Button
     private var provider: ProcessCameraProvider? = null
     private var analysis: ImageAnalysis? = null
     private var previewUseCase: Preview? = null
@@ -66,6 +67,7 @@ class WclTeachActivity : ComponentActivity() {
         record = Button(this).apply { text = "录制 10 秒"; setOnClickListener { if (recording) finishRecording() else startRecording() } }
         save = Button(this).apply { text = "保存教学并开始识别"; setOnClickListener { buildAndRecognize() } }
         resume = Button(this).apply { text = "继续识别已保存的物品"; setOnClickListener { openLive() } }
+        trial = Button(this).apply { text = "打开呈现对照试验"; setOnClickListener { openLive(presentationTrials = true) } }
         val controls = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.WHITE)
@@ -73,7 +75,7 @@ class WclTeachActivity : ComponentActivity() {
             addView(TextView(this@WclTeachActivity).apply {
                 text = "教我的物品\n给物品起名字，再单独放在镜头前慢慢转动。每件录制10秒，可随时结束。\n目前只在教过的物品中选择；没有这些物品时也可能误报。"; textSize = 20f; setTextColor(Color.BLACK)
             })
-            addView(objectList); addView(name); addView(record); addView(status); addView(save); addView(resume)
+            addView(objectList); addView(name); addView(record); addView(status); addView(save); addView(resume); addView(trial)
             addView(Button(this@WclTeachActivity).apply {
                 text = "打开轻量识别演示"
                 setOnClickListener { if (!busy && !recording) startActivity(Intent(this@WclTeachActivity, TeachActivity::class.java)) }
@@ -102,6 +104,7 @@ class WclTeachActivity : ComponentActivity() {
         record.isEnabled = !busy; name.isEnabled = !busy && !recording
         save.isEnabled = !busy && !recording && objects.isNotEmpty()
         resume.isEnabled = !busy && !recording && store.hasSavedLibrary()
+        trial.isEnabled = resume.isEnabled
         record.text = if (recording) "结束本次录制" else "录制 10 秒"
     }
 
@@ -151,12 +154,14 @@ class WclTeachActivity : ComponentActivity() {
         }
     }
 
-    private fun openLive() {
+    private fun openLive(presentationTrials: Boolean = false) {
         if (busy || recording) return
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             cameraPermission.launch(Manifest.permission.CAMERA); return
         }
-        startActivity(Intent(this, WclLiveActivity::class.java).putExtra(WclLiveActivity.EXTRA_LIBRARY, WclTeachingStore.PERSONAL))
+        startActivity(Intent(this, WclLiveActivity::class.java)
+            .putExtra(WclLiveActivity.EXTRA_LIBRARY, WclTeachingStore.PERSONAL)
+            .putExtra(WclLiveActivity.EXTRA_PRESENTATION_TRIALS, presentationTrials))
     }
 
     internal fun isCameraReady(): Boolean = analysis?.let { provider?.isBound(it) == true } == true
