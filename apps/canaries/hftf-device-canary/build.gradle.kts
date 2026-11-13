@@ -116,5 +116,5 @@ dependencies {
         implementation(libs.qnn.runtime)
         implementation(libs.qnn.litert.delegate)
     }
-    implementation("org.opencv:opencv:4.10.0")
+    implementation("org.opencv:opencv:5.0.0.1")
 }
