@@ -20,15 +20,24 @@ internal object Native {
      * retained global patch indices (unused slots are -1) and counts of negative dots, positive dots and pruned rows.
      */
     private external fun buildMemory(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: Long, simtop: Long,
-                                     dim: Int, cutoff: Boolean, retained: IntArray?, diagnostics: LongArray?): FloatArray
+                                     dim: Int, cutoff: Boolean, retained: IntArray?, diagnostics: LongArray?,
+                                     cacheScores: FloatArray?, cacheWitness: IntArray?, cachedObjects: Int): FloatArray
+
+    /** Per-row own score and negative maximum, plus the winning column and the covered sample prefix. */
+    class TeachingCache(rows: Int) {
+        val scores = FloatArray(2 * rows)
+        val witness = IntArray(2 * rows)
+        val bytes: Long get() = (scores.size.toLong() + witness.size) * Float.SIZE_BYTES
+    }
 
     /** Memory and its timing breakdown (ms): other-object max, own top-6, k-means. */
     class Built(val parts: FloatArray, val otherMs: Double, val ownMs: Double, val kmeansMs: Double)
 
     fun build(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: SnpeEngine? = null, simtop: SnpeEngine? = null,
               dim: Int = TeachablePipeline.D, cutoff: Boolean = false, retained: IntArray? = null,
-              diagnostics: LongArray? = null): Built {
-        val r = buildMemory(patches, counts, keep, parts, simmax?.handle ?: 0L, simtop?.handle ?: 0L, dim, cutoff, retained, diagnostics)
+              diagnostics: LongArray? = null, cache: TeachingCache? = null, cachedObjects: Int = 0): Built {
+        val r = buildMemory(patches, counts, keep, parts, simmax?.handle ?: 0L, simtop?.handle ?: 0L, dim, cutoff,
+            retained, diagnostics, cache?.scores, cache?.witness, cachedObjects)
         val n = r.size - 3
         return Built(r.copyOf(n), r[n].toDouble(), r[n + 1].toDouble(), r[n + 2].toDouble())
     }
