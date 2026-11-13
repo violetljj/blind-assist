@@ -11,6 +11,7 @@ import java.util.UUID
 class WclTeachingStore(val root: File) {
     data class ObjectFrames(val directory: File, val name: String, val frames: List<File>)
     data class Library(val names: List<String>, val prototypes: FloatArray, val counts: List<Int>, val whitening: SiblingWhitening? = null)
+    internal data class BuildResult(val library: Library, val encodedFrames: Int, val reusedFrames: Int, val buildMs: Double)
 
     fun objects(): List<ObjectFrames> = File(root, "objects").listFiles().orEmpty()
         .filter { it.isDirectory && File(it, "name.txt").isFile && File(it, "complete").isFile }
@@ -87,18 +88,39 @@ class WclTeachingStore(val root: File) {
     }
 
     /** Same normalised-frame embeddings and mean prototype as WclDeviceTest; no local-memory budget applies. */
-    fun build(pipeline: WclPipeline, modelIdentity: String, progress: (String) -> Unit = {}): Library {
+    fun build(pipeline: WclPipeline, modelIdentity: String, progress: (String) -> Unit = {}): Library =
+        buildWithStats(pipeline, modelIdentity, progress = progress).library
+
+    internal fun buildWithStats(
+        pipeline: WclPipeline, modelIdentity: String, reuseEmbeddings: Boolean = true, progress: (String) -> Unit = {},
+    ): BuildResult {
+        val start = System.nanoTime()
         val taught = objects()
         require(taught.isNotEmpty()) { "请先录制至少一件物品" }
+        var encodedFrames = 0
+        var reusedFrames = 0
         val embeddings = taught.mapIndexed { i, obj ->
             require(obj.frames.size >= MIN_FRAMES) { "${obj.name}只有${obj.frames.size}帧，请重新录制至少2秒" }
             progress("正在保存第 ${i + 1}/${taught.size} 件：${obj.name}")
-            obj.frames.map { frame -> pipeline.embed(WclPipeline.imageOf(frame)) }
+            val cache = File(obj.directory, WclEmbeddingCache.FILE_NAME)
+            val identity = if (reuseEmbeddings) WclEmbeddingCache.identity(modelIdentity, obj.frames) else null
+            val cached = identity?.let { WclEmbeddingCache.read(cache, it, obj.frames.size) }
+            if (cached != null) {
+                reusedFrames += cached.size
+                cached
+            } else {
+                val rows = obj.frames.map { frame ->
+                    pipeline.embed(WclPipeline.imageOf(frame)).also { encodedFrames++ }
+                }
+                if (identity != null) WclEmbeddingCache.write(cache, identity, rows)
+                rows
+            }
         }
         val sums = embeddings.map { rows -> FloatArray(WclPipeline.D).also { sum -> for (e in rows) for (d in sum.indices) sum[d] += e[d] } }
         progress("正在比较相似的物品")
-        return Library(taught.map { it.name }, WclPipeline.prototypesOf(sums), taught.map { it.frames.size }, SiblingWhitening.build(embeddings))
+        val library = Library(taught.map { it.name }, WclPipeline.prototypesOf(sums), taught.map { it.frames.size }, SiblingWhitening.build(embeddings))
             .also { save(it, modelIdentity) }
+        return BuildResult(library, encodedFrames, reusedFrames, (System.nanoTime() - start) / 1e6)
     }
 
     companion object {

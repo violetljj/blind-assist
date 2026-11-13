@@ -402,8 +402,7 @@ class WclLiveActivity : ComponentActivity() {
                 val tb = System.nanoTime()
                 val r = b.identify(x, b.tokens(x), mem)
                 synchronized(this) { bMs += (System.nanoTime() - tb) / 1e6; bLooked += r.looked; bTop += r.pred }
-                val zb = TeachablePipeline.z(r.scores); val zw = TeachablePipeline.z(raw)
-                score = FloatArray(zb.size) { zb[it] + zw[it] }
+                score = fuseBwcl(r.scores, raw)
             } else {
                 score = whitening?.takeIf { siblingWhiten }?.apply(e, raw) ?: raw
             }
@@ -438,10 +437,23 @@ class WclLiveActivity : ComponentActivity() {
                 if (saveClickNs != 0L && !personalBReceiptQueued) {
                     personalBReceiptQueued = true
                     val displayed = SystemClock.elapsedRealtimeNanos()
-                    worker.execute { recordPersonalBResult(done, displayed) }
+                    worker.execute {
+                        try {
+                            recordPersonalBResult(done, displayed)
+                        } catch (error: Exception) {
+                            Log.e(TAG, "Personal teaching evidence failed", error)
+                            writePersonalBReceipt(JSONObject().put("save_ns", saveClickNs).put("error", error.toString()))
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private fun fuseBwcl(bScores: FloatArray, wclScores: FloatArray): FloatArray {
+        val zb = TeachablePipeline.z(bScores)
+        val zw = TeachablePipeline.z(wclScores)
+        return FloatArray(zb.size) { zb[it] + zw[it] }
     }
 
     private fun recordPersonalBResult(firstResultNs: Long, displayedNs: Long) {
@@ -460,8 +472,39 @@ class WclLiveActivity : ComponentActivity() {
         val arrays = mapOf("parts" to taught.built.parts, "cls" to taught.memory.protos,
             "padded_parts" to taught.memory.parts, "valid" to taught.memory.valid)
         for ((name, values) in arrays) report.put("${name}_sha256", teachingWordsSha256(values.size) { values[it].toRawBits() })
+        report.put("wcl_encoded_frames", intent.getIntExtra(WclTeachActivity.EXTRA_TEST_WCL_ENCODED, -1))
+            .put("wcl_reused_frames", intent.getIntExtra(WclTeachActivity.EXTRA_TEST_WCL_REUSED, -1))
+            .put("wcl_build_ms", intent.getDoubleExtra(WclTeachActivity.EXTRA_TEST_WCL_BUILD_MS, 0.0))
+            .put("wcl_save_phase_ms", intent.getDoubleExtra(WclTeachActivity.EXTRA_TEST_WCL_SAVE_PHASE_MS, 0.0))
+        intent.getStringArrayListExtra(WclTeachActivity.EXTRA_TEST_FIXED_QUERY)?.let { paths ->
+            report.put("wcl_prototype_bits", rawFloatWords(protos))
+            report.put("fixed_queries", fixedQueryScores(paths, taught.memory))
+        }
         writePersonalBReceipt(report)
         personalBResult = null
+    }
+
+    private fun fixedQueryScores(paths: List<String>, memory: TeachablePipeline.Memory): JSONArray {
+        val root = File(filesDir, "m0/P189/img").canonicalFile
+        val w = requireNotNull(pipeline)
+        val b = requireNotNull(bBranch)
+        val reports = JSONArray()
+        for (path in paths) {
+            val file = File(path).canonicalFile
+            require(file.parentFile == root && file.extension == "jpg") { "Invalid P189 query path" }
+            val x = WclPipeline.imageOf(file)
+            val wcl = WclPipeline.cosine(w.embed(x), protos)
+            val bs = b.identify(x, b.tokens(x), memory).scores
+            val sha = MessageDigest.getInstance("SHA-256").digest(file.readBytes())
+                .joinToString("") { "%02x".format(it) }
+            reports.put(JSONObject().put("sha256", sha).put("wcl_score_bits", rawFloatWords(wcl))
+                .put("b_score_bits", rawFloatWords(bs)).put("fused_score_bits", rawFloatWords(fuseBwcl(bs, wcl))))
+        }
+        return reports
+    }
+
+    private fun rawFloatWords(values: FloatArray): JSONArray = JSONArray().apply {
+        for (value in values) put(value.toRawBits())
     }
 
     private fun teachingWordsSha256(size: Int, word: (Int) -> Int): String {

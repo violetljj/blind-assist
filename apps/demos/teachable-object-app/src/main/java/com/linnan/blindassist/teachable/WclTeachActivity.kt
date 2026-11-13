@@ -173,11 +173,17 @@ class WclTeachActivity : ComponentActivity() {
             try {
                 val model = File(filesDir, WclPipeline.MODEL)
                 val identity = WclTeachingStore.modelIdentity(model)
-                WclPipeline(model, applicationInfo.nativeLibraryDir).use { store.build(it, identity, ::show) }
+                val reuse = testLibrary == null || !intent.getBooleanExtra(EXTRA_TEST_FORCE_FULL_WCL, false)
+                val built = WclPipeline(model, applicationInfo.nativeLibraryDir).use {
+                    store.buildWithStats(it, identity, reuse, ::show)
+                }
+                val wclSavePhaseMs = (SystemClock.elapsedRealtimeNanos() - saveNs) / 1e6
                 runOnUiThread {
                     if (isDestroyed) return@runOnUiThread
                     busy = false; refresh(); show("教学已保存。")
-                    if (lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)) openLive(saveNs = saveNs)
+                    if (lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)) {
+                        openLive(saveNs = saveNs, built = built, wclSavePhaseMs = wclSavePhaseMs)
+                    }
                 }
             } catch (error: Exception) {
                 runOnUiThread { if (!isDestroyed) { busy = false; refresh(); show(error.message ?: "保存失败，已有教学记录仍保留。") } }
@@ -185,7 +191,10 @@ class WclTeachActivity : ComponentActivity() {
         }
     }
 
-    private fun openLive(presentationTrials: Boolean = false, saveNs: Long = 0L) {
+    private fun openLive(
+        presentationTrials: Boolean = false, saveNs: Long = 0L,
+        built: WclTeachingStore.BuildResult? = null, wclSavePhaseMs: Double = 0.0,
+    ) {
         if (busy || recording) return
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             cameraPermission.launch(Manifest.permission.CAMERA); return
@@ -194,9 +203,14 @@ class WclTeachActivity : ComponentActivity() {
             .putExtra(WclLiveActivity.EXTRA_LIBRARY, library)
             .putExtra(WclLiveActivity.EXTRA_BWCL, !presentationTrials && useB.isChecked)
             .putExtra(WclLiveActivity.EXTRA_PRESENTATION_TRIALS, presentationTrials).apply {
-                if (testLibrary != null && saveNs != 0L) {
+                if (testLibrary != null && saveNs != 0L && built != null) {
                     putExtra(EXTRA_TEST_SAVE_NS, saveNs)
                     putExtra(EXTRA_TEST_FORCE_FULL_B, intent.getBooleanExtra(EXTRA_TEST_FORCE_FULL_B, false))
+                    putExtra(EXTRA_TEST_WCL_ENCODED, built.encodedFrames)
+                    putExtra(EXTRA_TEST_WCL_REUSED, built.reusedFrames)
+                    putExtra(EXTRA_TEST_WCL_BUILD_MS, built.buildMs)
+                    putExtra(EXTRA_TEST_WCL_SAVE_PHASE_MS, wclSavePhaseMs)
+                    putStringArrayListExtra(EXTRA_TEST_FIXED_QUERY, intent.getStringArrayListExtra(EXTRA_TEST_FIXED_QUERY))
                 }
             })
     }
@@ -256,6 +270,12 @@ class WclTeachActivity : ComponentActivity() {
         internal val SAVE_BUTTON_ID = View.generateViewId()
         internal const val EXTRA_TEST_LIBRARY = "testPersonalLibrary"
         internal const val EXTRA_TEST_FORCE_FULL_B = "testForceFullB"
+        internal const val EXTRA_TEST_FORCE_FULL_WCL = "testForceFullWcl"
         internal const val EXTRA_TEST_SAVE_NS = "testSaveNs"
+        internal const val EXTRA_TEST_WCL_ENCODED = "testWclEncoded"
+        internal const val EXTRA_TEST_WCL_REUSED = "testWclReused"
+        internal const val EXTRA_TEST_WCL_BUILD_MS = "testWclBuildMs"
+        internal const val EXTRA_TEST_WCL_SAVE_PHASE_MS = "testWclSavePhaseMs"
+        internal const val EXTRA_TEST_FIXED_QUERY = "testFixedQuery"
     }
 }
