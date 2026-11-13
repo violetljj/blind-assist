@@ -14,7 +14,9 @@
 #include <cstdint>
 #include <cstdlib>
 #include <memory>
+#include <mutex>
 #include <numeric>
+#include <queue>
 #include <stdexcept>
 #include <string>
 #include <thread>
@@ -68,9 +70,9 @@ std::vector<std::string> names(Snpe_StringList_Handle_t list) {
 }
 
 // ---- memory build ----------------------------------------------------------------------------------------------------
-// Feature width: 384 for DINOv2-S, 768 for DINOv2-B (Graduation bwcl_phone_chain_20261111). Set per buildMemory call;
-// the memory build is single-threaded at that level, so a file-scope value is enough. Must stay a multiple of 16 (dot).
+// Feature width: 384 for DINOv2-S, 768 for DINOv2-B. JNI serializes builds while the worker threads use this width.
 static int D = 384;
+std::mutex memory_build_lock;
 
 struct Rng {
     uint64_t s;
@@ -100,15 +102,33 @@ inline float dot(const float* a, const float* b) {
     return vaddvq_f32(vaddq_f32(vaddq_f32(s0, s1), vaddq_f32(s2, s3)));
 }
 
+constexpr int max_memory_threads = 8;
+
+int memory_threads() {
+    return std::max(1u, std::min(unsigned(max_memory_threads), std::thread::hardware_concurrency()));
+}
+
+std::vector<float> pack_columns(const float* features, const std::vector<int>& columns) {
+    std::vector<float> packed(columns.size() * D);
+    for (size_t i = 0; i < columns.size(); ++i) {
+        std::copy_n(features + size_t(columns[i]) * D, D, packed.data() + i * D);
+    }
+    return packed;
+}
+
+template<class Work> void memory_workers(int threads, Work work) {
+    std::vector<std::thread> pool;
+    for (int t = 0; t < threads; ++t) pool.emplace_back(work, t);
+    for (auto& worker : pool) worker.join();
+}
+
 // For every row r of A (rows x D) visit dot(A_r, B_c) for all columns c of B (cols x D, gathered by index), tiled so a
 // block of B stays in cache; visit(row, col, value) must be thread-safe per row. Rows are split over threads.
 template<class Visit> void all_dots(const float* A, int rows, const float* B, const std::vector<int>& cols, Visit visit) {
-    const int threads = std::max(1u, std::min(8u, std::thread::hardware_concurrency()));
+    const int threads = memory_threads();
     constexpr int tile = 256;
-    std::vector<float> packed(cols.size() * D);
-    for (size_t c = 0; c < cols.size(); ++c) std::copy_n(B + size_t(cols[c]) * D, D, packed.data() + c * D);
-    std::vector<std::thread> pool;
-    for (int t = 0; t < threads; ++t) pool.emplace_back([&, t] {
+    const auto packed = pack_columns(B, cols);
+    memory_workers(threads, [&](int t) {
         const int lo = rows * t / threads, hi = rows * (t + 1) / threads;
         for (size_t c0 = 0; c0 < cols.size(); c0 += tile) {
             const size_t c1 = std::min(cols.size(), c0 + tile);
@@ -116,7 +136,6 @@ template<class Visit> void all_dots(const float* A, int rows, const float* B, co
                 for (size_t c = c0; c < c1; ++c) visit(r, int(c), dot(A + size_t(r) * D, packed.data() + c * D));
         }
     });
-    for (auto& p : pool) p.join();
 }
 
 void normalize(float* v) {
@@ -160,6 +179,99 @@ void cpu_other_max(const float* P, int n, const float* all, const std::vector<in
     all_dots(P, n, all, others, [&](int r, int, float v) { if (v > s[r]) s[r] = v; });
 }
 
+using TopSix = std::array<float, 6>;
+
+float own_score(const TopSix& top) {
+    return (top[1] + top[2] + top[3] + top[4] + top[5]) / 5.f;
+}
+
+double quantile_position(int n, float keep) {
+    return (n - 1) * (1.0 - keep);
+}
+
+struct MemoryDiagnostics {
+    jlong negative_dots = 0;
+    jlong positive_dots = 0;
+    jlong pruned_rows = 0;
+};
+
+// A partial negative maximum gives an upper bound on the final margin. The k-th highest complete margin is a lower
+// bound on the lower endpoint of the target quantile. Rows strictly below it may keep their partial maximum.
+void cutoff_other_max(const float* queries, const float* all, const std::vector<int>& others,
+                      const std::vector<TopSix>& tops, float keep, std::vector<float>& maxima,
+                      MemoryDiagnostics& diagnostics) {
+    const int n = static_cast<int>(tops.size());
+    const int columns = static_cast<int>(others.size());
+    const int prefix = std::min(256, columns);
+    const int threads = memory_threads();
+    constexpr int tile = 128;
+    constexpr int row_batch = 512;
+    const auto packed = pack_columns(all, others);
+    std::vector<float> own(n), upper(n);
+    auto accumulate = [&](int row, int first, int last) {
+        const float* query = queries + size_t(row) * D;
+        float maximum = maxima[row];
+        for (int col = first; col < last; ++col) {
+            const float similarity = dot(query, packed.data() + size_t(col) * D);
+            if (similarity > maximum) maximum = similarity;
+        }
+        maxima[row] = maximum;
+    };
+    memory_workers(threads, [&](int t) {
+        const int lo = n * t / threads, hi = n * (t + 1) / threads;
+        for (int first = 0; first < prefix; first += tile) {
+            for (int row = lo; row < hi; ++row) accumulate(row, first, std::min(first + tile, prefix));
+        }
+        for (int row = lo; row < hi; ++row) {
+            own[row] = own_score(tops[row]);
+            upper[row] = own[row] - maxima[row];
+        }
+    });
+    diagnostics.negative_dots += jlong(n) * prefix;
+    if (prefix == columns) return;
+
+    std::vector<int> order(n);
+    std::iota(order.begin(), order.end(), 0);
+    std::sort(order.begin(), order.end(), [&](int a, int b) { return upper[a] > upper[b]; });
+    const int k = n - static_cast<int>(std::floor(quantile_position(n, keep)));
+    std::priority_queue<float, std::vector<float>, std::greater<float>> best;
+    std::vector<uint8_t> complete(n);
+    for (int lo = 0; lo < n;) {
+        const float cutoff = static_cast<int>(best.size()) == k ? best.top() : -INFINITY;
+        if (upper[order[lo]] < cutoff) break;
+        const int hi = std::min(lo + (lo == 0 ? k : row_batch), n);
+        std::array<jlong, max_memory_threads> dots{};
+        memory_workers(threads, [&](int t) {
+            std::vector<int> active;
+            for (int i = lo + t; i < hi && upper[order[i]] >= cutoff; i += threads) active.push_back(order[i]);
+            for (int first = prefix; first < columns && !active.empty(); first += tile) {
+                const int last = std::min(first + tile, columns);
+                dots[t] += jlong(active.size()) * (last - first);
+                size_t survivors = 0;
+                for (int row : active) {
+                    accumulate(row, first, last);
+                    if (last == columns) complete[row] = 1;
+                    else if (own[row] - maxima[row] >= cutoff) active[survivors++] = row;
+                }
+                active.resize(survivors);
+            }
+        });
+        diagnostics.negative_dots += std::accumulate(dots.begin(), dots.end(), jlong{0});
+        for (int i = lo; i < hi; ++i) {
+            const int row = order[i];
+            if (!complete[row]) continue;
+            const float score = own[row] - maxima[row];
+            if (static_cast<int>(best.size()) < k) best.push(score);
+            else if (score > best.top()) {
+                best.pop();
+                best.push(score);
+            }
+        }
+        lo = hi;
+    }
+    diagnostics.pruned_rows += std::count(complete.begin(), complete.end(), 0);
+}
+
 // HTP simmax graph a [rows, D], b [cols, D] -> mx [rows]. The other-object patches are split into column blocks of
 // `cols` (outer loop: each block uploaded once, the last one padded by repeating its first row, max unchanged); the
 // object's patches are streamed through a in row chunks (last chunk zero-padded, outputs ignored); s keeps the running
@@ -197,7 +309,7 @@ void htp_other_max(Engine* e, const float* P, int n, const float* all, const std
 // block's top-6 is merged into the row's running top-6. On the SM8650 HTP TopK limits this to ~60-80 GMAC/s at any
 // tested width; 1024 x 2560 was the best trade-off.
 void htp_own_top6(Engine* e, const float* P, int n, const float* all, const std::vector<int>& own,
-                  std::vector<std::array<float, 6>>& top) {
+                  std::vector<TopSix>& top) {
     const size_t ia = std::find(e->inputs.begin(), e->inputs.end(), "a") - e->inputs.begin();
     const size_t ib = std::find(e->inputs.begin(), e->inputs.end(), "b") - e->inputs.begin();
     require(ia < e->inputs.size() && ib < e->inputs.size(), "simtop inputs a, b");
@@ -237,24 +349,34 @@ double since(std::chrono::steady_clock::time_point t) {
 }
 
 std::vector<float> build_memory(const std::vector<float>& patches, const std::vector<int>& counts, float keep, int parts,
-                                const OtherMax& other_max, double* ms, Engine* simtop = nullptr) {
+                                const OtherMax& other_max, double* ms, Engine* simtop, bool cutoff,
+                                std::vector<jint>* retained, MemoryDiagnostics& diagnostics) {
     const int O = counts.size();
     std::vector<int> offs(O + 1, 0);
     for (int o = 0; o < O; ++o) offs[o + 1] = offs[o] + counts[o];
     std::vector<float> out(size_t(O) * parts * D);
     // phase 1: other-object max for every object; phase 2: own top-6 for every object. Running each graph over all
-    // objects before switching avoids alternating two HTP graphs per object.
+    // objects before switching avoids alternating two HTP graphs per object. The CPU cutoff needs top-6 first.
     std::vector<std::vector<float>> s_others(O);
+    std::vector<std::vector<TopSix>> tops(O);
+    auto negatives = [&] {
+        const auto t = std::chrono::steady_clock::now();
+        for (int o = 0; o < O; ++o) {
+            std::vector<int> others;
+            for (int j = 0; j < O; ++j) if (j != o) for (int i = offs[j]; i < offs[j + 1]; ++i) others.push_back(i);
+            others = sample(others, 30000, 2ull * o);
+            s_others[o].assign(counts[o], -INFINITY);
+            const float* P = patches.data() + size_t(offs[o]) * D;
+            if (cutoff) cutoff_other_max(P, patches.data(), others, tops[o], keep, s_others[o], diagnostics);
+            else {
+                other_max(P, counts[o], patches.data(), others, s_others[o]);
+                diagnostics.negative_dots += jlong(counts[o]) * others.size();
+            }
+        }
+        ms[0] += since(t);
+    };
+    if (!cutoff) negatives();
     auto t = std::chrono::steady_clock::now();
-    for (int o = 0; o < O; ++o) {
-        std::vector<int> others;
-        for (int j = 0; j < O; ++j) if (j != o) for (int i = offs[j]; i < offs[j + 1]; ++i) others.push_back(i);
-        others = sample(others, 30000, 2ull * o);
-        s_others[o].assign(counts[o], -INFINITY);
-        other_max(patches.data() + size_t(offs[o]) * D, counts[o], patches.data(), others, s_others[o]);
-    }
-    ms[0] += since(t); t = std::chrono::steady_clock::now();
-    std::vector<std::vector<std::array<float, 6>>> tops(O);
     for (int o = 0; o < O; ++o) {
         const int n = counts[o];
         const float* P = patches.data() + size_t(offs[o]) * D;
@@ -268,20 +390,25 @@ std::vector<float> build_memory(const std::vector<float>& patches, const std::ve
             if (v <= tr[5]) return;
             int i = 5; while (i > 0 && tr[i - 1] < v) { tr[i] = tr[i - 1]; --i; } tr[i] = v;
         });
+        diagnostics.positive_dots += jlong(n) * own.size();
     }
     ms[1] += since(t);
+    if (cutoff) negatives();
     for (int o = 0; o < O; ++o) {
         t = std::chrono::steady_clock::now();
         const int n = counts[o];
         const float* P = patches.data() + size_t(offs[o]) * D;
         const auto& s_other = s_others[o]; const auto& top = tops[o];
         std::vector<float> d(n);
-        for (int r = 0; r < n; ++r) d[r] = (top[r][1] + top[r][2] + top[r][3] + top[r][4] + top[r][5]) / 5.f - s_other[r];
+        for (int r = 0; r < n; ++r) d[r] = own_score(top[r]) - s_other[r];
         std::vector<float> sorted = d; std::sort(sorted.begin(), sorted.end());
-        const double pos = (n - 1) * (1.0 - keep); const int lo = int(std::floor(pos)); const int hi = std::min(lo + 1, n - 1);
+        const double pos = quantile_position(n, keep); const int lo = int(std::floor(pos)); const int hi = std::min(lo + 1, n - 1);
         const float q = float(sorted[lo] + (pos - lo) * (sorted[hi] - sorted[lo]));
         std::vector<float> kept;
-        for (int r = 0; r < n; ++r) if (d[r] >= q) kept.insert(kept.end(), P + size_t(r) * D, P + size_t(r + 1) * D);
+        for (int r = 0; r < n; ++r) if (d[r] >= q) {
+            kept.insert(kept.end(), P + size_t(r) * D, P + size_t(r + 1) * D);
+            if (retained) retained->push_back(offs[o] + r);
+        }
         const int nk = kept.size() / D, k = std::min(parts, nk);
         auto c = kmeans(kept, nk, k, 0);
         for (int j = 0; j < parts; ++j) std::copy_n(c.data() + size_t(j % k) * D, D, out.data() + (size_t(o) * parts + j) * D);
@@ -407,24 +534,45 @@ extern "C" JNIEXPORT void JNICALL JFN(engineDestroy)(JNIEnv*, jobject, jlong han
 
 // simmax / simtop: handles of HTP engines for the other-object max and the own top-6, or 0 for the CPU (the HTP graphs are
 // 384-wide). dim: feature width. Returns the memory [objects * parts * dim] followed by 3 timings in ms (other-object max,
-// own top-6, k-means).
+// own top-6, selection and k-means). Optional outputs hold retained row indices padded with -1 and CPU comparison counts.
 extern "C" JNIEXPORT jfloatArray JNICALL JFN(buildMemory)(JNIEnv* env, jobject, jfloatArray patches, jintArray counts, jfloat keep,
-                                                          jint parts, jlong simmax, jlong simtop, jint dim) {
+                                                          jint parts, jlong simmax, jlong simtop, jint dim, jboolean cutoff,
+                                                          jintArray retained, jlongArray diagnostics) {
     try {
         require(dim > 0 && dim % 16 == 0, "Feature width must be a positive multiple of 16");
         require((simmax == 0 && simtop == 0) || dim == 384, "HTP memory graphs are 384-wide");
+        require(!cutoff || (dim == 768 && simmax == 0 && simtop == 0), "Cutoff requires the B CPU memory build");
+        require(!diagnostics || (env->GetArrayLength(diagnostics) >= 3 && simmax == 0 && simtop == 0), "CPU comparison diagnostics");
+        const std::lock_guard<std::mutex> lock(memory_build_lock);
         D = dim;
         std::vector<float> p(env->GetArrayLength(patches));
         env->GetFloatArrayRegion(patches, 0, p.size(), p.data());
         std::vector<int> c(env->GetArrayLength(counts));
         env->GetIntArrayRegion(counts, 0, c.size(), reinterpret_cast<jint*>(c.data()));
-        require(size_t(std::accumulate(c.begin(), c.end(), 0)) * D == p.size(), "Patch count");
+        const int rows = std::accumulate(c.begin(), c.end(), 0);
+        require(size_t(rows) * D == p.size(), "Patch count");
+        require(!retained || env->GetArrayLength(retained) == rows, "Retained index array must match patch rows");
+        // Features are unit-normalized. The looser bound admits any finite values that cannot overflow the dot or mean.
+        const bool use_cutoff = cutoff && c.size() >= 2 && keep > 0 && keep <= 1 &&
+            std::all_of(c.begin(), c.end(), [](int n) { return n >= 6; }) &&
+            std::all_of(p.begin(), p.end(), [](float v) { return std::abs(v) <= 1e15f; });
         double ms[3] = {0, 0, 0};
         auto* engine = reinterpret_cast<Engine*>(simmax);
         OtherMax om = engine ? OtherMax([engine](const float* P, int n, const float* all, const std::vector<int>& o, std::vector<float>& s) {
                                    htp_other_max(engine, P, n, all, o, s); })
                              : OtherMax(cpu_other_max);
-        auto mem = build_memory(p, c, keep, parts, om, ms, reinterpret_cast<Engine*>(simtop));
+        std::vector<jint> indices;
+        MemoryDiagnostics counts_out;
+        auto mem = build_memory(p, c, keep, parts, om, ms, reinterpret_cast<Engine*>(simtop), use_cutoff,
+                                retained ? &indices : nullptr, counts_out);
+        if (retained) {
+            indices.resize(rows, -1);
+            env->SetIntArrayRegion(retained, 0, rows, indices.data());
+        }
+        if (diagnostics) {
+            const jlong values[] = {counts_out.negative_dots, counts_out.positive_dots, counts_out.pruned_rows};
+            env->SetLongArrayRegion(diagnostics, 0, 3, values);
+        }
         for (double v : ms) mem.push_back(float(v));
         auto result = env->NewFloatArray(mem.size());
         env->SetFloatArrayRegion(result, 0, mem.size(), mem.data());

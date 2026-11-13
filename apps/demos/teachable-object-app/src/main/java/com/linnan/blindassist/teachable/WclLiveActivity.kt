@@ -274,18 +274,10 @@ class WclLiveActivity : ComponentActivity() {
         }
         if (b != null) {
             check(objects.size in 2..TeachablePipeline.OMAX) { "完整系统需要2到${TeachablePipeline.OMAX}件已教物品。" }
-            main.post { if (!isDestroyed) label.text = "正在建立局部记忆，约半分钟。" }
-            val cls = List(objects.size) { FloatArray(B_DIM) }; val counts = IntArray(objects.size); val chunks = ArrayList<FloatArray>()
-            for (o in objects.indices) for (f in teachFiles[o]) {
-                val tok = b.tokens(WclPipeline.imageOf(f))
-                for (d in 0 until B_DIM) cls[o][d] += tok[d]
-                chunks += tok.copyOfRange(B_DIM, tok.size); counts[o] += TeachablePipeline.GRID * TeachablePipeline.GRID
-            }
-            val patches = FloatArray(chunks.sumOf { it.size }).also { a -> var k = 0; for (c in chunks) { c.copyInto(a, k); k += c.size } }
-            val tb = System.nanoTime()
-            val built = Native.build(patches, counts, TeachablePipeline.KEEP, TeachablePipeline.PARTS, dim = B_DIM)
-            bBuildMs = (System.nanoTime() - tb) / 1e6
-            bMemory = b.memory(objects.size, built.parts, cls)
+            main.post { if (!isDestroyed) label.text = "正在建立局部记忆。" }
+            val taught = b.buildTeachingMemory(teachFiles)
+            bBuildMs = taught.nativeMs
+            bMemory = taught.memory
         }
         s?.setPrototypes(protos)
         teachMs = (System.nanoTime() - t) / 1e6

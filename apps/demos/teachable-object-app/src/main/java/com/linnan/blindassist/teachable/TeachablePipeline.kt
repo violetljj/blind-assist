@@ -4,6 +4,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import java.io.Closeable
 import java.io.File
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+import java.security.MessageDigest
 import kotlin.math.sqrt
 
 /**
@@ -26,6 +29,11 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: Fil
 
     /** Memory padded to OMAX objects; [valid] marks the user's real objects. */
     class Memory(val objects: Int, val parts: FloatArray, val protos: FloatArray, val valid: FloatArray)
+
+    internal class TeachingMemory(
+        val memory: Memory, val built: Native.Built, val encodingMs: Double, val nativeMs: Double, val totalMs: Double,
+        val retained: IntArray?, val diagnostics: LongArray?, val featureSha256: String?,
+    )
 
     /** [scores]: the final per-object z-scores (main readout), the input to temporal smoothing. */
     class Result(val pred: Int, val looked: Boolean, val firstLogits: FloatArray, val ms: Map<String, Double>, val scores: FloatArray)
@@ -52,6 +60,57 @@ class TeachablePipeline(backbone: File, head: File, dspPath: String, locR10: Fil
 
     /** L2-normalised tokens [257, 384]: CLS then 256 patches. */
     fun tokens(image: FloatArray): FloatArray = backbone.run(mapOf(backbone.inputs.single() to image)).values.single()
+
+    /** B teaching from the saved JPEGs, including CPU patch selection and construction of the padded memory. */
+    internal fun buildTeachingMemory(
+        teachFiles: List<List<File>>, cutoff: Boolean = true, captureEvidence: Boolean = false,
+    ): TeachingMemory {
+        require(dim == 768 && teachFiles.size in 2..OMAX)
+        val start = System.nanoTime()
+        val cls = List(teachFiles.size) { FloatArray(dim) }
+        val counts = IntArray(teachFiles.size)
+        val chunks = ArrayList<FloatArray>()
+        for ((o, files) in teachFiles.withIndex()) {
+            for (file in files) {
+                val tok = tokens(WclPipeline.imageOf(file))
+                for (d in 0 until dim) cls[o][d] += tok[d]
+                chunks += tok.copyOfRange(dim, tok.size)
+                counts[o] += GRID * GRID
+            }
+        }
+        val patches = FloatArray(chunks.sumOf { it.size })
+        var offset = 0
+        for (chunk in chunks) {
+            chunk.copyInto(patches, offset)
+            offset += chunk.size
+        }
+        val encoded = System.nanoTime()
+        val retained = if (captureEvidence) IntArray(counts.sum()) else null
+        val diagnostics = if (captureEvidence) LongArray(3) else null
+        val nativeStart = System.nanoTime()
+        val built = Native.build(patches, counts, KEEP, PARTS, dim = dim, cutoff = cutoff,
+            retained = retained, diagnostics = diagnostics)
+        val nativeEnd = System.nanoTime()
+        val memory = memory(teachFiles.size, built.parts, cls)
+        val end = System.nanoTime()
+        val featureSha256 = if (captureEvidence) patchSha256(patches) else null
+        return TeachingMemory(memory, built, (encoded - start) / 1e6, (nativeEnd - nativeStart) / 1e6,
+            (end - start) / 1e6, retained, diagnostics, featureSha256)
+    }
+
+    private fun patchSha256(patches: FloatArray): String {
+        val hash = MessageDigest.getInstance("SHA-256")
+        val buffer = ByteBuffer.allocate(32768).order(ByteOrder.LITTLE_ENDIAN)
+        for (value in patches) {
+            if (!buffer.hasRemaining()) {
+                hash.update(buffer.array())
+                buffer.clear()
+            }
+            buffer.putInt(value.toRawBits())
+        }
+        hash.update(buffer.array(), 0, buffer.position())
+        return hash.digest().joinToString("") { "%02x".format(it) }
+    }
 
     fun memory(objects: Int, parts: FloatArray, cls: List<FloatArray>): Memory {
         require(objects in 2..OMAX && parts.size == objects * PARTS * dim)

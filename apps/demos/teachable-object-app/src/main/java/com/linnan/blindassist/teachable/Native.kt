@@ -16,16 +16,19 @@ internal object Native {
     /**
      * patches: all teaching patches grouped by object ([sum(counts), dim]). simmax / simtop: handles of HTP engines for
      * the other-object max and the own top-6 terms (384-wide only), 0 for the CPU. Returns [objects, parts, dim] followed
-     * by 3 timings in ms.
+     * by 3 timings in ms. The B CPU cutoff is exact for the retained rows and parts. Optional diagnostics record the
+     * retained global patch indices (unused slots are -1) and counts of negative dots, positive dots and pruned rows.
      */
-    external fun buildMemory(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: Long, simtop: Long, dim: Int): FloatArray
+    private external fun buildMemory(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: Long, simtop: Long,
+                                     dim: Int, cutoff: Boolean, retained: IntArray?, diagnostics: LongArray?): FloatArray
 
     /** Memory and its timing breakdown (ms): other-object max, own top-6, k-means. */
     class Built(val parts: FloatArray, val otherMs: Double, val ownMs: Double, val kmeansMs: Double)
 
     fun build(patches: FloatArray, counts: IntArray, keep: Float, parts: Int, simmax: SnpeEngine? = null, simtop: SnpeEngine? = null,
-              dim: Int = TeachablePipeline.D): Built {
-        val r = buildMemory(patches, counts, keep, parts, simmax?.handle ?: 0L, simtop?.handle ?: 0L, dim)
+              dim: Int = TeachablePipeline.D, cutoff: Boolean = false, retained: IntArray? = null,
+              diagnostics: LongArray? = null): Built {
+        val r = buildMemory(patches, counts, keep, parts, simmax?.handle ?: 0L, simtop?.handle ?: 0L, dim, cutoff, retained, diagnostics)
         val n = r.size - 3
         return Built(r.copyOf(n), r[n].toDouble(), r[n + 1].toDouble(), r[n + 2].toDouble())
     }
