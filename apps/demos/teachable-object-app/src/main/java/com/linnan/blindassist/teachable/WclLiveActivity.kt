@@ -269,7 +269,7 @@ class WclLiveActivity : ComponentActivity() {
         val teachFiles: List<List<File>>
         if (personal != null) {
             objects = personal.names; protos = personal.prototypes; teachFrames = personal.counts.sum(); whitening = personal.whitening
-            teachFiles = requireNotNull(store).objects().map { it.frames }
+            teachFiles = requireNotNull(store).savedObjects().map { it.frames }
             check(teachFiles.map { it.size } == personal.counts) { "教学内容有更新，请先保存教学" }
         } else {
         val dir = File(filesDir, "m0/$user")
