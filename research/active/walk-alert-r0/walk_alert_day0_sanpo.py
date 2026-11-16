@@ -9,7 +9,8 @@ Rule fixed before counting:
   corridor  : |lateral| <= 0.30 m, forward 0.30-4.00 m along heading, height 0.15-1.90 m, non-walkable non-sky classes.
   positive  : >= 21 corridor points at stride 8; d_near = 5th percentile forward distance.
   event     : run of positive frames (gaps of 1 frame bridged); DYNAMIC if dominant class pedestrian/rider/animal/vehicle.
-This is evaluator-side labelling (uses future poses); it is not a detector. Usage: walk_alert_day0_sanpo.py <out_dir>
+This is evaluator-side labelling (uses future poses); it is not a detector. Usage: walk_alert_day0_sanpo.py <out_dir> [local|new]
+(new = sessions of artifacts.local/downloads/sanpo-synthetic-walk-alert-20261116/selection.json)
 """
 from __future__ import annotations
 
@@ -28,6 +29,7 @@ from scipy.spatial import cKDTree
 ROOT = Path(__file__).resolve().parents[3]
 DATA = ROOT / 'artifacts.local/datasets/sanpo-synthetic-ba-nfo'
 SELECTION = ROOT / 'artifacts.local/work/ba-nfo-20260919/sanpo-selection.json'
+NEW = ROOT / 'artifacts.local/downloads/sanpo-synthetic-walk-alert-20261116'
 NAMES = {v: k for k, v in json.loads((DATA / 'official-taxonomy/labelmap.json').read_text()).items()}
 WALK = [1, 2, 3, 5, 6, 17, 30]
 SKY = 27
@@ -43,9 +45,10 @@ def quat(x, y, z, w):
                      [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)]])
 
 
-def session(scene):
-    cam = next((DATA / scene).glob('camera_*'))
-    meta = json.loads((DATA / scene / 'description.json').read_text())['session_camera_details'][0]
+def session(arg):
+    root, scene = Path(arg[0]), arg[1]
+    cam = next((root / scene).glob('camera_*'))
+    meta = json.loads((root / scene / 'description.json').read_text())['session_camera_details'][0]
     p = meta['left_camera_params']; H, W = p['image_height'], p['image_width']; fps = float(meta.get('fps', 5.0))
     vv, uu = np.mgrid[0:H:S, 0:W:S]
     dirs = np.stack([(uu - p['cx']) / p['fx'], (vv - p['cy']) / p['fy'], np.ones(uu.shape)], -1).reshape(-1, 3)
@@ -61,7 +64,8 @@ def session(scene):
         ok = np.isfinite(d) & (d > .1) & (d < 30)
         pts.append((R @ (dirs[ok] * d[ok, None]).T).T + t); labs.append(seg[ok]); ps.append(t)
     n = len(ps); ps = np.array(ps)
-    base = dict(scene=scene, camera=cam.name, fps=fps, frames=n, seconds=n / fps)
+    base = dict(scene=scene, camera=cam.name, fps=fps, frames=n, seconds=n / fps,
+                path_m=float(np.linalg.norm(np.diff(ps[:, :2], axis=0), axis=1).sum()) if n > 1 else 0.)
     G = np.concatenate([P[np.isin(L, WALK)] for P, L in zip(pts, labs)]) if n else np.zeros((0, 3))
     if len(G) < 100 or n < 5:
         return dict(base, note='NOT_EVALUABLE: no walkable ground or too few frames', rows=[], events=[])
@@ -103,10 +107,14 @@ def session(scene):
     return dict(base, median_speed=float(np.median(moving)) if moving else None, rows=rows, events=ev)
 
 
-def main(out):
+def main(out, source='local'):
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     sel = json.loads(SELECTION.read_text())['sessions']
-    scenes = [s['scene'] for s in sel if s['split'] in ('train', 'val') and (DATA / s['scene']).is_dir()]
+    if source == 'new':
+        root = NEW; scenes = json.loads((NEW / 'selection.json').read_text())['sessions']
+    else:
+        root = DATA; scenes = [s['scene'] for s in sel if s['split'] in ('train', 'val')]
+    scenes = [(str(root), s) for s in scenes if (root / s).is_dir()]
     with ProcessPoolExecutor(6) as ex:
         res = list(ex.map(session, scenes))
     (out / 'sessions.json').write_text(json.dumps(res, indent=1))
@@ -120,11 +128,15 @@ def main(out):
                 events_first_seen_by_bin={f'{a}-{b}': sum(a <= e['d_first'] < b for e in ev) for a, b in BINS},
                 events_min_dist_by_bin={f'{a}-{b}': sum(a <= e['d_min'] < b for e in ev) for a, b in BINS},
                 static_classes=Counter(e['cls'] for e in ev if not e['dynamic']), dynamic_classes=Counter(e['cls'] for e in ev if e['dynamic']),
-                events_per_moving_min=round(len(ev) / (moving_s / 60), 2) if moving_s else None,
-                median_session_speed=float(np.median([s['median_speed'] for s in res if s.get('median_speed')])))
+                path_km=round(sum(s['path_m'] for s in res) / 1000, 3),
+                events_per_km=round(len(ev) / max(sum(s['path_m'] for s in res) / 1000, 1e-9), 1),
+                static_per_km=round(sum(not e['dynamic'] for e in ev) / max(sum(s['path_m'] for s in res) / 1000, 1e-9), 1),
+                sessions_with_static=sum(any(not e['dynamic'] for e in s['events']) for s in res),
+                static_min_dist_by_bin={f'{a}-{b}': sum(a <= e['d_min'] < b for e in ev if not e['dynamic']) for a, b in BINS},
+                median_speed_from_metadata_fps_UNRELIABLE=float(np.median([s['median_speed'] for s in res if s.get('median_speed')])))
     (out / 'summary.json').write_text(json.dumps(summ, indent=1, default=dict))
     print(json.dumps(summ, indent=1, default=dict))
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else 'local')
