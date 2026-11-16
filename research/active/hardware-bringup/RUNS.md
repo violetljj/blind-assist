@@ -2,6 +2,7 @@
 
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
 | --- | --- | --- | --- | --- |
+| 2026-11-16 | `host/lamar_navvis_corridor_dev_20261116.py`、`host/lamar_native_corridor_dev_20261116.py` | EXPLORE，CAB HoloLens 公开验证位姿与独立 NavVis，原生 5 Hz ToF 上比较相同头向判据与因果撤警 | 4 条 940 时刻，目标空 20 段/3 条、走廊占据 32 段/3 条。误报 15→15/20，漏报 15→15/32，新增漏报 0。近场配对深度绝对中位差 1.46–2.35 cm，另一录制 483 时刻未知。零自采 | 未产生撤警。首扫有空间覆盖缺口，二扫站位已确认可补路线。[筛查与配对结果](LAMAR_NAVVIS_CORRIDOR_DEV_20261116.md) |
 | 2026-11-16 | `host/scenefun_faro_corridor_screen_dev_20261116.py` | EXPLORE，SceneFun3D 公开训练录制、连续位姿及独立 FARO 投影，姿态筛选后标注两条走廊 | 16 访次、175 标注时刻。扩展视角复算得到朝向占据而行进为空 4 段/3 访次，行进占据 92 段/15 访次，其他空 4 段、未知 14 段。主要 Range 记账 234.52 MB，零自采 | 空走廊负例不足，算法对比 `NOT_RUN`。[样本分布与复现](INDEPENDENT_SCAN_CORRIDOR_SCREEN_20261116.md) |
 | 2026-11-16 | `host/arkit_selective_heading_dev_20261116.py`、`host/sanpo_known_geometry_heading_dev_20261116.py` | EXPLORE，ARKit 40 访次按访次划分，SANPO-Real 8 个头戴窗。因果位移稳定和空域门控，同规则对照 | ARKit 检验 334 正/1负，SANPO 2正/0负，两批零撤回。72 个几何摆位中头向与严格门控均误报38/52、漏报0/64；无保护平移36/52、0/64 | 保留头向。真实空域参照不足，严格条件未产生收益。零自采，公开下载158.18 MB。[数据和结果](SELECTIVE_HEADING_PUBLIC_PILOT_20261116.md) |
 | 2026-11-16 | `host/adt_causal_heading_dev_20261116.py` | EXPLORE，ADT 已消费 12 段，同深度和警戒区比较头向与因果平移，参考使用后续方向 | 头向→过去约 0.6 秒，漏报 414→421/1494，误报 134→141/1155。预定 10–20° 子集误报 68→57/488，漏报 162→163/586。CPU 1.23 秒，GPU/下载/自采 0 | 整体无升级，保留头向，选择性方向判断留作假设。[对照与公开数据库存](ADT_CAUSAL_HEADING_DEV_20261116.md) |
