@@ -2,6 +2,7 @@
 
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
 | --- | --- | --- | --- | --- |
+| 2026-11-17 | `host/real_multiframe_unknown_history_20261117.py` | EXPLORE，先用 Bonn 灰衣窗逐源确认未知旧点撑票，再配对比较只排运动与静物续报，另复核自然圆桌 | 9 未知旧点 0.00090821 sr。Bonn 完整及行人独立头部 4/7 → 4/7，身体 4/7 → 1/7，首静 0.801 → 0.200 s。圆桌身体 1/1 → 1/1 | 去掉的三帧与扣除未知旧点所得三帧一致。零自采。[双臂结果](REAL_MULTIFRAME_PILOT_20261117.md#身份未知的行人旧点对照) |
 | 2026-11-17 | `host/real_multiframe_static_history_20261117.py` | EXPLORE，两帧深度与位姿支持身体带历史，圆桌通过才跑横穿，原 5 Hz、角权和 2/3 | 自然圆桌身体带 1/1 → 1/1。横穿完整及行人独立头部 2/8 → 2/8，身体 2/8 → 1/8（首静 0.405 → 0.221 s） | 保住 #1101 圆桌，横穿去掉 #440 身体确认。零自采。[两窗结果](REAL_MULTIFRAME_PILOT_20261117.md#身体带静物历史续报) |
 | 2026-11-17 | `host/sanpo_pose_gravity_check_dev_20261117.py`（Claude执行） | EXPLORE，零下载；规则运行前提交（7718a9c5）；本地 SANPO 真实版 50 帧，枚举 16 种位姿约定，取一种统一约定 | 位姿重力与真值地面法向夹角：中位 8.04°，95 分位 13.87°（门槛 3° / 6°）。改用位姿重力后地面锚定成功 14/50，非地面 AbsRel 为真值重力的 1.52 倍。同一 B 臂两次运行 0.079 / 0.089 | SANPO 位姿不能当重力用，12 GB 下载暂不进行；需要有真实 IMU 的户外数据。[核对](SANPO_POSE_GRAVITY_CHECK_DEV_20261117.md) |
 | 2026-11-17 | `5a36782d` + 本地 `audit_surface.py` | EXPLORE，TUM 原生第 34–39 帧，原参数的 RGB-D 身份核对 | 源 18 个纹理点，15 个源深度有效。第 37–39 帧各 0 对通过往返与深度核对，三段 5 Hz 分带回放 `NOT_RUN` | 深度相容，局部纹理仍有歧义。按条件停止，零自采。[遮挡前后核对](REAL_MULTIFRAME_PILOT_20261117.md#tum-裤腿遮挡前后核对) |
