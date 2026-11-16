@@ -23,7 +23,7 @@
 - [真实片段行人历史过滤](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#行人历史过滤)：行人旧点缩至 0.25 秒后，TUM 三次尾报时间不变，LaMAR 唯一补回的正前段仍报警。掩码边缘残点仍够触发。
 - [掩码外扩一圈](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#行人掩码外扩一圈)：三次停报仍不变，正前补回仍在。新增提前失效的点中确认有走廊外的椅背等静态点。
 - [离场后静物记忆](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#行人离场后依靠历史的静物报警)：固定过滤保住自然 TUM 窗唯一可判桌腿报警，目标深度置零对照保住 9/10 帧。ETH3D 自然静物对照中，圆桌误标为行人使完整报警提前 0.184 秒结束。
-- [几何核对行人旧点](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#深度与位姿核对行人旧点)：同批实录上恢复自然圆桌 3/3 帧，受控缺测回到 10/10，保住桌腿。四段行人合并尾报均持平，3 帧独立身体带新增。
+- [几何核对](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#深度与位姿核对行人旧点)恢复旧圆桌 3/3 帧。冻结后[8 个新离场窗](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#冻结核对版在新离场片段的分带回放)有 2 段身体、1 段头部尾报增加，静物记忆分母为 0。
 
 后续诊断（主线）：[LaMAR 正前漏报原因拆解](../hardware-bringup/LAMAR_MISS_BREAKDOWN_DEV_20261117.md)，漏报主因是警戒区方向，不是看不到。
 
