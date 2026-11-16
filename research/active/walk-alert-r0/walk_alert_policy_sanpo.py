@@ -90,6 +90,7 @@ def prepare_one(arg):
     poses = list(csv.DictReader(open(cam / 'camera_poses.csv')))
     frames = sorted((cam / 'left/depth_maps').glob('*.float16.gz'))
     P_all, L_all, ps, cams, dimgs = [], [], [], [], []
+    comp_all, edge_all, ncomp = [], [], []
     rng = np.random.default_rng(int(hashlib.sha256(scene.encode()).hexdigest()[:8], 16))
     for f in frames:
         k = int(f.name[:6]); r = poses[k]
@@ -103,6 +104,10 @@ def prepare_one(arg):
         dn = ray * (np.exp(rng.normal(0, .10)) * (1 + rng.normal(0, .03, len(ray))))[:, None]
         P_all.append(((R @ ray.T).T + t, (R @ dn.T).T + t)); L_all.append(seg[ok]); ps.append(t); cams.append(R)
         dimgs.append(np.where(ok, d, np.inf).reshape(vv.shape))   # current-frame depth for free-space carving
+        if mem == 'degrade':   # MEMORY_DEGRADE_PROTOCOL_20261117.md: connected components of the GT dynamic mask as instances
+            from scipy import ndimage
+            m2 = np.isin(seg, DYN).reshape(vv.shape); lab, nc = ndimage.label(m2); er = ndimage.binary_erosion(m2)
+            comp_all.append(lab.reshape(-1)[ok]); edge_all.append((m2 & ~er).reshape(-1)[ok]); ncomp.append(nc)
     n = len(ps); ps = np.array(ps)
     if n < 5:
         np.savez_compressed(dst, n=0); return scene
@@ -133,6 +138,14 @@ def prepare_one(arg):
             c, s_ = np.cos(dth[j]), np.sin(dth[j]); Rz = np.array([[c, -s_, 0], [s_, c, 0], [0, 0, 1.]])
             return (P_all[j][1] - ps[j]) @ Rz.T + ps_d[j]
         cum = np.cumsum(seg_len)
+        if mem == 'degrade':
+            urng = np.random.default_rng(int(hashlib.sha256(('degrade:' + scene).encode()).hexdigest()[:8], 16))
+            u_all = [np.r_[2.0, urng.uniform(size=c)] for c in ncomp]   # index 0 = background, never 'detected'
+
+            def filt(j, recall, erode):
+                c = comp_all[j]; detected = (c > 0) & (u_all[j][c] <= recall)
+                remove = detected & ~(erode & edge_all[j])
+                return P_all[j][0][~remove]
 
         def carve(Pw, i_):
             c = (Pw - ps[i_]) @ cams[i_]; z_ = c[:, 2]; front = z_ > .3
@@ -149,7 +162,7 @@ def prepare_one(arg):
         v = (ps[b] - ps[a])[:2]
         vt = (ps[min(n - 1, i + 2)] - ps[max(0, i - 2)])[:2] if v2 else v   # truth heading (evaluator only)
         if np.linalg.norm(v) < .2 or np.linalg.norm(vt) < .2:   # standing/turning in place
-            rows.append([np.nan] * (4 + 6 * (4 if mem in ('diag', 'carve') else 3 if mem else 2))); continue
+            rows.append([np.nan] * (4 + 6 * (7 if mem == 'degrade' else 4 if mem in ('diag', 'carve') else 3 if mem else 2))); continue
         fwd = np.array([v[0], v[1], 0.]) / np.linalg.norm(v); right = np.array([fwd[1], -fwd[0], 0.])
         tf = np.array([vt[0], vt[1], 0.]) / np.linalg.norm(vt); tr_ = np.array([tf[1], -tf[0], 0.])
         rel = vc - ps[i]; x, z = rel @ tr_, rel @ tf
@@ -167,7 +180,12 @@ def prepare_one(arg):
             win = [j for j in range(i + 1) if cum[i] - cum[j] <= MEM_PATH]
             vd = (ps_d[b] - ps_d[a])[:2]; fd = np.array([vd[0], vd[1], 0.]) / max(np.linalg.norm(vd), 1e-9)
             M1 = np.concatenate([P_all[j][0] for j in win])
-            if mem == 'carve':   # MEMORY_CARVE_PROTOCOL_20261116.md: 2 = free-space carving vs current depth, 3 = oracle no-dynamic
+            if mem == 'degrade':   # 2 oracle, 3-6 = (recall, erode) degraded masks on past frames only
+                def mcloud(rc, er_):
+                    return np.concatenate([P_all[j][0] if j == i else filt(j, rc, er_) for j in win])
+                clouds = [clouds[0], (M1, ps[i], fwd, right)] + [(mcloud(rc, er_), ps[i], fwd, right) for rc, er_ in
+                                                                  ((1.0, False), (1.0, True), (.9, True), (.8, True), (.6, True))]
+            elif mem == 'carve':   # MEMORY_CARVE_PROTOCOL_20261116.md: 2 = free-space carving vs current depth, 3 = oracle no-dynamic
                 Mc = np.concatenate([P_all[i][0]] + [carve(P_all[j][0], i) for j in win if j != i])
                 M3 = np.concatenate([P_all[j][0] if j == i else P_all[j][0][~np.isin(L_all[j], DYN)] for j in win])
                 clouds = [clouds[0], (M1, ps[i], fwd, right), (Mc, ps[i], fwd, right), (M3, ps[i], fwd, right)]
@@ -530,9 +548,9 @@ def cmd_cv(work):
 
 def cmd_prepare_mem(work, diag=False):
     assert V2, 'memory cache uses v2 truth; run with the v2 flag'
-    sub = {False: 'cache_mem', True: 'cache_mem_diag', 'carve': 'cache_mem_carve'}[diag]
+    sub = {False: 'cache_mem', True: 'cache_mem_diag', 'carve': 'cache_mem_carve', 'degrade': 'cache_mem_degrade'}[diag]
     out = Path(work) / sub; out.mkdir(parents=True, exist_ok=True)
-    args = [(r, s, str(out), True, {False: True, True: 'diag', 'carve': 'carve'}[diag]) for r, s in sessions()]
+    args = [(r, s, str(out), True, {False: True, True: 'diag', 'carve': 'carve', 'degrade': 'degrade'}[diag]) for r, s in sessions()]
     t0 = time.time()
     with ProcessPoolExecutor(6) as ex:
         for k, _ in enumerate(ex.map(prepare_one, args), 1):
@@ -626,4 +644,5 @@ def weak_mask(ep):
 if __name__ == '__main__':
     V2 = len(sys.argv) > 3 and sys.argv[3] == 'v2'
     {'prepare': cmd_prepare, 'count': cmd_count, 'run': cmd_run, 'cv': cmd_cv, 'prepare_mem': cmd_prepare_mem, 'mem': cmd_mem,
-     'prepare_mem_diag': lambda w_: cmd_prepare_mem(w_, True), 'prepare_mem_carve': lambda w_: cmd_prepare_mem(w_, 'carve')}[sys.argv[1]](sys.argv[2])
+     'prepare_mem_diag': lambda w_: cmd_prepare_mem(w_, True), 'prepare_mem_carve': lambda w_: cmd_prepare_mem(w_, 'carve'),
+     'prepare_mem_degrade': lambda w_: cmd_prepare_mem(w_, 'degrade')}[sys.argv[1]](sys.argv[2])
