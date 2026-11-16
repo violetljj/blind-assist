@@ -106,19 +106,19 @@ def keep_triangle_cells(cells, grid):
     return inside
 
 
-def crop_mesh(path, centres, transform):
+def crop_mesh(path, centres, transform, cell_size=MAX_RANGE + .05):
     """Mmap the large raw PLY and copy only faces usable by range-limited rays."""
     start_time = perf_counter()
     data = PlyData.read(path, mmap="r", known_list_len={"face": {"vertex_indices": 3}})
     vertices = data["vertex"].data
     faces = data["face"].data["vertex_indices"]
     scan_centres = (centres - transform[:3, 3]) @ transform[:3, :3]
-    cell_size = MAX_RANGE + .05
-    origin = scan_centres.min(axis=0) - cell_size
+    padding = int(np.ceil(MAX_RANGE / cell_size))
+    origin = scan_centres.min(axis=0) - padding * cell_size
     indices = np.floor((scan_centres - origin) / cell_size).astype(int)
-    mask = np.zeros(tuple(indices.max(axis=0) + 2), dtype=bool)
+    mask = np.zeros(tuple(indices.max(axis=0) + padding + 1), dtype=bool)
     mask[tuple(indices.T)] = True
-    mask = binary_dilation(mask, structure=np.ones((3, 3, 3), dtype=bool))
+    mask = binary_dilation(mask, structure=np.ones((2 * padding + 1,) * 3, dtype=bool))
     print(f"Cropping {len(faces):,} NavVis triangles to {mask.sum()} occupied ray tiles", flush=True)
     batch = 750_000
     cells = np.empty((len(vertices), 3), dtype=np.int16)
@@ -250,7 +250,10 @@ def main():
     parser.add_argument("navvis", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("trajectory", nargs="+", type=Path)
+    parser.add_argument("--crop-tile-m", type=float, default=MAX_RANGE + .05, help="NavVis mesh crop tile size in metres")
     args = parser.parse_args()
+    if not np.isfinite(args.crop_tile_m) or args.crop_tile_m <= 0:
+        parser.error("--crop-tile-m must be positive and finite")
     start = perf_counter()
     self_check()
     inputs = []
@@ -266,7 +269,7 @@ def main():
     if not centres:
         raise ValueError("No independently aligned walk windows")
     transform = world_from_scan(args.navvis / "alignment_global.txt")
-    xyz, faces = crop_mesh(args.navvis / "mesh_simplified.ply", np.concatenate(centres), transform)
+    xyz, faces = crop_mesh(args.navvis / "mesh_simplified.ply", np.concatenate(centres), transform, args.crop_tile_m)
     scan = NavVis(xyz, faces)
     with (args.output / "cropped_mesh.npz").open("xb") as stream:
         np.savez(stream, vertices=xyz, faces=faces)
