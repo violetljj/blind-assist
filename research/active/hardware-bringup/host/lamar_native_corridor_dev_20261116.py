@@ -34,14 +34,16 @@ class DepthSensor:
         xyz = self.rays[::2, ::2][mask] * depth[::2, ::2][mask, None]
         return xyz @ pose[:3, :3].T + pose[:3, 3], 4. * self.weights[::2, ::2][mask]
 
-    def clear_fraction(self, points, depth, pose):
+    def clear_mask(self, points, depth, pose):
         coords = (points - pose[:3, 3]) @ pose[:3, :3]
         ratio = coords[..., :2] / np.maximum(coords[..., 2:], .1)
         mismatch, nearest = self.tree.query(ratio)
         found = depth[self.valid_pixel][nearest]
-        checked = ((coords[..., 2] > .1) & (mismatch <= .008) & (found >= .5)
-                   & (found <= np.float32(5.46)) & (found > np.linalg.norm(coords, axis=-1) + .08))
-        return checked.mean(axis=1)
+        return ((coords[..., 2] > .1) & (mismatch <= .008) & (found >= .5)
+                & (found <= np.float32(5.46)) & (found > np.linalg.norm(coords, axis=-1) + .08))
+
+    def clear_fraction(self, points, depth, pose):
+        return self.clear_mask(points, depth, pose).mean(axis=1)
 
 
 def summarize_errors(differences):
