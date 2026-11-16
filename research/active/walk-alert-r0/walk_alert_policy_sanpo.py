@@ -413,7 +413,7 @@ def cv_one(data, kind, arm):
     folds = {s: fold_of(s) for s in data}
     rules = {n: score_table(eps_by, n, arm) for n in ('B1', 'B2', 'B3')}
     pooled = {n: np.zeros(5) for n in ('B1', 'B2', 'B3', 'P1', 'best_rule')}
-    per_session, fold_info, ok = {}, [], True
+    per_session, fold_info, ok, missing = {}, [], True, set()
     for f in range(CV_K):
         tr = [s for s in data if folds[s] != f]; ho = [s for s in data if folds[s] == f]
         model, minfo = fit_model([e for s in tr for e in eps_by[s]], arm)
@@ -433,7 +433,9 @@ def cv_one(data, kind, arm):
         if best is None or sel['P1'] is None:
             ok = False; continue
         for n, i in sel.items():
-            if i is not None:
+            if i is None:
+                missing.add(n)
+            else:
                 pooled[n] += sum(tabs[n][s][i] for s in ho)
         for s in ho:
             a = tabs[best][s][sr[best]]; b = p1[s][sel['P1']]
@@ -441,7 +443,9 @@ def cv_one(data, kind, arm):
     res = dict(folds=fold_info, evaluable=ok)
     if not ok:
         return res
-    res['pooled'] = {n: _summ(t) for n, t in pooled.items()}
+    # a policy with no selectable threshold in some fold is not pooled (partial pooling would mix fold subsets)
+    res['pooled'] = {n: (None if n in missing else _summ(t)) for n, t in pooled.items()}
+    res['not_selected_in_some_fold'] = sorted(missing)
     pb, pp = res['pooled']['best_rule'], res['pooled']['P1']
     M = np.array(list(per_session.values())); rng = np.random.default_rng(20261116); red = []
     for _ in range(2000):
@@ -475,7 +479,8 @@ def cmd_cv(work):
                 r = cv_one(data, kind, arm); report[f'{kind}/{arm_name}'] = r
                 print(kind, arm_name, f'{time.time()-t0:.0f}s', json.dumps(dict(
                     evaluable=r['evaluable'], best=[f_['best_rule'] for f_ in r['folds']],
-                    pooled={n: (p['late'], p['avoidable'], p['fa'], round(p['fa_per_km'], 2)) for n, p in r.get('pooled', {}).items()},
+                    pooled={n: (p['late'], p['avoidable'], p['fa'], round(p['fa_per_km'], 2)) if p else None
+                            for n, p in r.get('pooled', {}).items()},
                     boot=r.get('bootstrap')), default=float), flush=True)
     (Path(work) / 'report_v3_cv.json').write_text(json.dumps(report, indent=1, default=float))
 
