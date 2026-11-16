@@ -47,6 +47,9 @@ V2 = False
 MIN_VOX_V2, MIN_EVENT_FRAMES_V2, CAP_MARGIN_V2 = 8, 2, .05
 # multi-frame memory (MEMORY_PROTOCOL_20261116.md)
 MEM_PATH, MEM_DRIFT_T, MEM_DRIFT_YAW_DEG = 6.0, .02, .8
+# log-odds occupancy memory (MEMORY_OCC_PROTOCOL_20261117.md)
+OCC_VOX, OCC_HIT, OCC_MISS, OCC_DECAY_M, OCC_CLIP, OCC_RANGE = .10, .85, .4, 4.0, (-2.0, 3.5), 8.0
+OCC_THRS, OCC_MIN_VOX = (2.0, 1.5, 3.0), 4
 CACHE_DIR = None   # overrides the cache sub-directory in load()
 
 
@@ -170,13 +173,46 @@ def prepare_one(arg):
             dcur = dimgs[i_][row, col]
             seen_through = inimg & (dcur > z_ + .10 + .03 * z_)   # inf (invalid/sky) also counts as seen through
             return Pw[~seen_through]
+    if mem == 'occ':   # MEMORY_OCC_PROTOCOL_20261117.md: recursive log-odds voxel map, past + current frames only
+        OFF = 1 << 19; M20 = (1 << 20) - 1
+        occ = dict(k=np.zeros(0, np.int64), L=np.zeros(0))
+
+        def enc(ix):
+            ix = ix + OFF
+            return (ix[:, 0] << 40) | (ix[:, 1] << 20) | ix[:, 2]
+
+        def dec(k):
+            return np.stack([(k >> 40) - OFF, ((k >> 20) & M20) - OFF, (k & M20) - OFF], 1)
+
+        def seen_through_mask(Pw, i_):
+            c = (Pw - ps[i_]) @ cams[i_]; z_ = c[:, 2]; front = z_ > .3
+            u = np.full(len(c), -1.); v_ = np.full(len(c), -1.)
+            u[front] = p['fx'] * c[front, 0] / z_[front] + p['cx']; v_[front] = p['fy'] * c[front, 1] / z_[front] + p['cy']
+            inimg = front & (u >= 0) & (u < Ww) & (v_ >= 0) & (v_ < Hh)
+            col = np.clip(np.rint(u / S).astype(int), 0, vv.shape[1] - 1); row = np.clip(np.rint(v_ / S).astype(int), 0, vv.shape[0] - 1)
+            return inimg & (dimgs[i_][row, col] > z_ + .10 + .03 * z_)
+
+        def occ_update(i_):
+            k, L = occ['k'], occ['L']
+            if len(L):
+                L = L * np.exp(-seg_len[i_] / OCC_DECAY_M); keep = np.abs(L) >= .05; k, L = k[keep], L[keep]
+                pos = np.nonzero(L > 0)[0]
+                if len(pos):
+                    st = seen_through_mask((dec(k[pos]) + .5) * OCC_VOX, i_); L[pos[st]] -= OCC_MISS
+            Pi = P_all[i_][0]; Pi = Pi[np.linalg.norm(Pi - ps[i_], axis=1) <= OCC_RANGE]
+            nk = np.unique(enc(np.floor(Pi / OCC_VOX).astype(np.int64)))
+            uk, inv = np.unique(np.concatenate([k, nk]), return_inverse=True); inv = inv.ravel()
+            L2 = np.zeros(len(uk)); L2[inv[:len(k)]] = L; L2[inv[len(k):]] += OCC_HIT
+            occ['k'], occ['L'] = uk, np.clip(L2, *OCC_CLIP)
     rows = []; wrong_del = [[] for _ in range(n)]
     for i in range(n):
+        if mem == 'occ':
+            occ_update(i)   # map advances on every frame, valid or not
         a = max(0, i - 2); b = i if i >= 2 else min(n - 1, 2)
         v = (ps[b] - ps[a])[:2]
         vt = (ps[min(n - 1, i + 2)] - ps[max(0, i - 2)])[:2] if v2 else v   # truth heading (evaluator only)
         if np.linalg.norm(v) < .2 or np.linalg.norm(vt) < .2:   # standing/turning in place
-            rows.append([np.nan] * (4 + 6 * (8 if mem == 'dilate' else 7 if mem == 'degrade' else 4 if mem in ('diag', 'carve') else 3 if mem else 2))); continue
+            rows.append([np.nan] * (4 + 6 * (6 if mem == 'occ' else 8 if mem == 'dilate' else 7 if mem == 'degrade' else 4 if mem in ('diag', 'carve') else 3 if mem else 2))); continue
         fwd = np.array([v[0], v[1], 0.]) / np.linalg.norm(v); right = np.array([fwd[1], -fwd[0], 0.])
         tf = np.array([vt[0], vt[1], 0.]) / np.linalg.norm(vt); tr_ = np.array([tf[1], -tf[0], 0.])
         rel = vc - ps[i]; x, z = rel @ tr_, rel @ tf
@@ -194,7 +230,10 @@ def prepare_one(arg):
             win = [j for j in range(i + 1) if cum[i] - cum[j] <= MEM_PATH]
             vd = (ps_d[b] - ps_d[a])[:2]; fd = np.array([vd[0], vd[1], 0.]) / max(np.linalg.norm(vd), 1e-9)
             M1 = np.concatenate([P_all[j][0] for j in win])
-            if mem == 'dilate':   # 2 oracle, 3-7 = (recall, dilate k) after 1-px erosion, past frames only
+            if mem == 'occ':   # 0 single, 1 raw memory, 2 oracle no-dynamic memory; grid arms appended below
+                Mo = np.concatenate([P_all[j][0] if j == i else P_all[j][0][~np.isin(L_all[j], DYN)] for j in win])
+                clouds = [clouds[0], (M1, ps[i], fwd, right), (Mo, ps[i], fwd, right)]
+            elif mem == 'dilate':   # 2 oracle, 3-7 = (recall, dilate k) after 1-px erosion, past frames only
                 Mo = np.concatenate([P_all[j][0] if j == i else P_all[j][0][comp_all[j] == 0] for j in win])
                 specs = ((1.0, 2), (1.0, 3), (.8, 2), (.8, 3), (.8, 5)); tot_pts = sum(len(P_all[j][0]) for j in win)
                 clouds = [clouds[0], (M1, ps[i], fwd, right), (Mo, ps[i], fwd, right)]
@@ -232,6 +271,15 @@ def prepare_one(arg):
             hn = hq[near]
             feats += [dh, near.sum(), c.sum(), np.mean(hn < .5) if len(hn) else 0, np.mean(hn > 1.2) if len(hn) else 0,
                       np.mean(np.abs(xq[near])) if near.any() else 0]
+        if mem == 'occ':   # grid arms: occupied voxel centres, current-frame ground, fused with the single-frame distance
+            Q0 = P_all[i][0]; r0 = Q0 - ps[i]; xs0, zs0 = r0 @ right, r0 @ fwd
+            st0 = (np.abs(xs0) <= 1.0) & (zs0 >= 1.0) & (zs0 <= H)
+            g0 = np.percentile(Q0[st0, 2], 5) if st0.sum() >= 50 else ps[i][2] - 1.5
+            for thr in OCC_THRS:
+                C = (dec(occ['k'][occ['L'] >= thr]) + .5) * OCC_VOX; rc = C - ps[i]; xc, zc = rc @ right, rc @ fwd; hc = C[:, 2] - g0
+                cc = (np.abs(xc) <= X_HALF) & (zc >= FWD0) & (zc <= H) & (hc >= HGT[0]) & (hc <= HGT[1])
+                dg = corridor_d(zc[cc], OCC_MIN_VOX)
+                feats += [min(feats[0], dg), cc.sum(), float(np.isfinite(dg)), 0, 0, 0]
         rows.append([D, cover, float(dyn), seg_len[i]] + feats)
     extra = dict(wrong_del=np.array([x if x else [np.nan] * 5 for x in wrong_del])) if mem == 'dilate' else {}
     np.savez_compressed(dst, n=n, rows=np.array(rows, dtype=np.float64), cam=str(cam.name), **extra)
@@ -571,9 +619,9 @@ def cmd_cv(work):
 
 def cmd_prepare_mem(work, diag=False):
     assert V2, 'memory cache uses v2 truth; run with the v2 flag'
-    sub = {False: 'cache_mem', True: 'cache_mem_diag', 'carve': 'cache_mem_carve', 'degrade': 'cache_mem_degrade', 'dilate': 'cache_mem_dilate'}[diag]
+    sub = {False: 'cache_mem', True: 'cache_mem_diag', 'carve': 'cache_mem_carve', 'degrade': 'cache_mem_degrade', 'dilate': 'cache_mem_dilate', 'occ': 'cache_mem_occ'}[diag]
     out = Path(work) / sub; out.mkdir(parents=True, exist_ok=True)
-    args = [(r, s, str(out), True, {False: True, True: 'diag', 'carve': 'carve', 'degrade': 'degrade', 'dilate': 'dilate'}[diag]) for r, s in sessions()]
+    args = [(r, s, str(out), True, {False: True, True: 'diag', 'carve': 'carve', 'degrade': 'degrade', 'dilate': 'dilate', 'occ': 'occ'}[diag]) for r, s in sessions()]
     t0 = time.time()
     with ProcessPoolExecutor(6) as ex:
         for k, _ in enumerate(ex.map(prepare_one, args), 1):
@@ -669,4 +717,5 @@ if __name__ == '__main__':
     {'prepare': cmd_prepare, 'count': cmd_count, 'run': cmd_run, 'cv': cmd_cv, 'prepare_mem': cmd_prepare_mem, 'mem': cmd_mem,
      'prepare_mem_diag': lambda w_: cmd_prepare_mem(w_, True), 'prepare_mem_carve': lambda w_: cmd_prepare_mem(w_, 'carve'),
      'prepare_mem_degrade': lambda w_: cmd_prepare_mem(w_, 'degrade'),
-     'prepare_mem_dilate': lambda w_: cmd_prepare_mem(w_, 'dilate')}[sys.argv[1]](sys.argv[2])
+     'prepare_mem_dilate': lambda w_: cmd_prepare_mem(w_, 'dilate'),
+     'prepare_mem_occ': lambda w_: cmd_prepare_mem(w_, 'occ')}[sys.argv[1]](sys.argv[2])

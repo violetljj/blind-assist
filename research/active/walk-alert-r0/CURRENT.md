@@ -1,6 +1,7 @@
 # walk-alert-r0 current
 
 更新：2026-11-17。状态：**已暂停**（EXPLORE 开发证据）。全貌见[阶段总结](STAGE_SUMMARY_20261117.md)。
+用户授权重启一轮：[占据栅格记忆](MEMORY_OCC_PROTOCOL_20261117.md)；成功则做真实录像复核，否则正式关闭。
 
 ## 方向
 
