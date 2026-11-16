@@ -107,7 +107,7 @@ def readout(arms_q, R_cc, Rct, ext, view):
 def main(root, out_json):
     root = Path(root); prep, bb = root / 'prep', root / 'bb'
     Rct = np.array(json.loads(V1.EXTRINSIC.read_text(encoding='utf8'))['rotation']); ext = tof_extent()
-    arms = ('R0s2', 'R0', 'R1', 'R2'); views = ('full', 'tof_fov')
+    arms = ('R0s2', 'R0', 'R1', 'R2'); views = ('full', 'tof_fov', 'tof_fov_px')   # tof_fov_px added after the run (descriptive)
     cnt = {(a, v): {k: [0, 0] for k in ('fa', 'rec', 'rec_head', 'rec_body')} for a in arms for v in views}
     agree = [0, 0]; r1_fallback = [0, 0]; seqs = sorted(p.stem for p in (bb / 'dav2s').glob('*.json'))
     rng = np.random.default_rng(20261117)
@@ -120,6 +120,8 @@ def main(root, out_json):
         assert len(zc) == len(frames) == len(T) == len(J2), seq
         vv, uu = np.mgrid[0:h:STEP, 0:w:STEP]; shape = vv.shape
         dirs = np.stack([(uu - cx) / fx, (vv - cy) / fy, np.ones_like(uu, float)], -1).reshape(-1, 3)
+        dt = dirs @ Rct   # pixel direction in the ToF frame (Rct.T @ d)
+        fov_px = (dt[:, 2] > 0) & (np.abs(np.arctan2(dt[:, 0], dt[:, 2])) <= ext[0]) & (np.abs(np.arctan2(dt[:, 1], dt[:, 2])) <= ext[1])
         raw = {(a, v): np.zeros((len(frames), 2), bool) for a in arms for v in views}
         last = None
         for i, f in enumerate(frames):
@@ -127,6 +129,7 @@ def main(root, out_json):
             z0 = zc[i].reshape(-1).astype(np.float64); ok0 = np.isfinite(z0) & (z0 > .05)
             pts0 = np.full((len(z0), 3), np.nan); pts0[ok0] = (R_cc @ (dirs[ok0] * z0[ok0, None]).T).T
             A = {'R0s2': blobs_s2(pts0, ok0, shape) if ok0.any() else None, 'R0': f['arms'].get('chain'), 'R2': J2[i]['arms'].get('raw')}
+            PX = {'R0s2': blobs_s2(pts0, ok0 & fov_px, shape) if ok0.any() else None}
             inv = np.where(ok0, 1 / np.where(ok0, z0, 1.), np.nan)
             fit = floor_anchor(inv, dirs, R_cc, height, rng) if ok0.any() else None
             r1_fallback[1] += 1
@@ -138,10 +141,13 @@ def main(root, out_json):
             if fit is not None and ok0.any():
                 iz = (inv - fit[1]) / fit[0]; z1 = np.where(np.isfinite(iz) & (iz > 1e-3), 1 / np.maximum(np.nan_to_num(iz, nan=1e-3), 1e-3), np.inf)
                 ok1 = np.isfinite(z1); pts1 = np.full((len(z1), 3), np.nan); pts1[ok1] = (R_cc @ (dirs[ok1] * z1[ok1, None]).T).T
-                A['R1'] = blobs_s2(pts1, ok1, shape)
+                A['R1'] = blobs_s2(pts1, ok1, shape); PX['R1'] = blobs_s2(pts1, ok1 & fov_px, shape)
             for a in arms:
                 for v in views:
-                    raw[(a, v)][i] = readout(A[a], R_cc, Rct, ext, v)
+                    if v == 'tof_fov_px':   # pixel-level crop: only arms with per-pixel depth (R0s2, R1)
+                        raw[(a, v)][i] = readout(PX.get(a), R_cc, Rct, ext, 'full')
+                    else:
+                        raw[(a, v)][i] = readout(A[a], R_cc, Rct, ext, v)
         conf = {k: np.stack([V2.confirm(x[:, 0]), V2.confirm(x[:, 1])], 1) for k, x in raw.items()}
         for i, f in enumerate(frames):
             for q in (0, 1):
