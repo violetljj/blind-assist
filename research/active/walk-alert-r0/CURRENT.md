@@ -24,7 +24,7 @@
 - [掩码外扩一圈](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#行人掩码外扩一圈)：三次停报仍不变，正前补回仍在。新增提前失效的点中确认有走廊外的椅背等静态点。
 - [离场后静物记忆](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#行人离场后依靠历史的静物报警)：固定过滤保住自然 TUM 窗唯一可判桌腿报警，目标深度置零对照保住 9/10 帧。ETH3D 自然静物对照中，圆桌误标为行人使完整报警提前 0.184 秒结束。
 - [几何核对](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#深度与位姿核对行人旧点)恢复旧圆桌报警。冻结版的[7 个位姿合格新离场窗](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#冻结核对版在新离场片段的分带回放)有 2 段身体、1 段头部尾报增加。
-- [可见前景关联](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#人还可见时关联移动前景)消掉 ETH3D 新增身体带一帧。TUM [原生补帧](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#原生帧补前景关联)接上主体，分离裤腿仍撑住尾报。合格圆桌自然 1/1、受控 2/3。
+- [可见前景关联](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#人还可见时关联移动前景)消掉 ETH3D 新增身体带一帧。TUM [原生补帧](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#原生帧补前景关联)接上主体，分离裤腿仍撑住尾报。[遮挡核对](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#tum-裤腿遮挡前后核对)未确认同一片表面，停在身份核对。上轮合格圆桌自然 1/1、受控 2/3。
 
 后续诊断（主线）：[LaMAR 正前漏报原因拆解](../hardware-bringup/LAMAR_MISS_BREAKDOWN_DEV_20261117.md)，漏报主因是警戒区方向，不是看不到。
 
