@@ -168,15 +168,21 @@ def associate(left, right, intrinsics):
             yield source, target, matched, motion
 
 
-def confirm_foreground(frames, views, intrinsics):
+def direct_links(left, right, intrinsics):
+    available_at = max(left.available_at, right.available_at)
+    return [(*pair, available_at) for pair in associate(left, right, intrinsics)]
+
+
+def confirm_foreground(frames, views, intrinsics, *, links_by_end=None):
     marked = [np.full(len(frame.cloud), np.inf) for frame in frames]
     tracks, evidence = {}, []
     for i in range(1, len(frames)):
         previous, current = frames[i - 1], frames[i]
         updated = {}
         if follows(previous, current):
-            available_at = max(views[i - 1].available_at, views[i].available_at)
-            for source, target, matched, motion in associate(views[i - 1], views[i], intrinsics):
+            links = (direct_links(views[i - 1], views[i], intrinsics)
+                     if links_by_end is None else links_by_end.get(i, ()))
+            for source, target, matched, motion, available_at in links:
                 members, last_moved = tracks.get(source, ([(i - 1, source)], -np.inf))
                 members = [(j, group) for j, group in members if current.time - frames[j].time <= HISTORY_S + 1e-8]
                 members.append((i, target))

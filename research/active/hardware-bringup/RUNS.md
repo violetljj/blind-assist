@@ -2,6 +2,7 @@
 
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
 | --- | --- | --- | --- | --- |
+| 2026-11-17 | `host/real_multiframe_dense_association_20261117.py` | EXPLORE，TUM 加 18 个原生关联帧，5 Hz 报警与运动判定照旧，ETH3D 合格原窗作对照 | 第 46 帧 61 主体点过期，12 个独立裤腿点仍达 0.001017 sr。TUM 头部 0.604、身体 0.400 s 均持平。ETH3D 横穿两带各 0.405 s，合格自然圆桌 1/1、受控 2/3 | 主体已接上，裤腿旧点仍够维持尾报。零新下载和自采。[原生关联](REAL_MULTIFRAME_PILOT_20261117.md#原生帧补前景关联) |
 | 2026-11-17 | `host/adt_fov_rgb_tof_dev_20261117.py`（Claude执行） | EXPLORE；规则运行前提交（7566c961）；ADT 13 段 5825 帧，原 RGB 和真值帧已清理，从 ToF 锚定深度（隔 2 采样）离线派生“只用地面锚定”的 DAV2-S；按像素裁剪 45° 是运行后追加的描述 | 重建复现 99.91%。全视场误报 / 检出：现 RGB 支路 5.93% / 80.6%，DAV2-S 不用 ToF 5.37% / 40.6%（19% 帧无地面拟合），UniDepth-L 不用 ToF 4.91% / 82.9%。45° 按像素裁剪：ToF 锚定 RGB 1.24% / 50.9%（仅 ToF 51.8%） | 小模型不用 ToF 不能顶替；RGB 的额外检出几乎全来自宽视场，ToF 的价值在于定尺度。[对照](ADT_RGB_VS_TOF_FOV_DEV_20261117.md) |
 | 2026-11-17 | `host/real_multiframe_foreground_20261117.py` | EXPLORE，5 个已知窗口，位姿补偿后的可见深度前景关联，旧报警参数 | 对两帧核对版，TUM 身体 0.400→0.400 s，ETH3D 身体 0.627→0.405 s，头部持平。合格自然圆桌维持 1/1，受控缺测 3→2/3，位姿缺口自然实录 2→0/2 | 消去 ETH3D 完整新增 1 帧，TUM 尾报仍在。位姿复查更正前轮合格分母。[逐带结果](REAL_MULTIFRAME_PILOT_20261117.md#人还可见时关联移动前景) |
 | 2026-11-17 | `host/real_multiframe_motion_transfer_20261117.py` | EXPLORE，冻结两帧核对，6 条录制的 8 个新离场窗，零自采 | 54 个离场样本，行人独立头部 23→25 帧（1/8 段），身体 11→13 帧（2/8 段）。ETH3D 新增 1 帧完整身体报警，Bonn 新增 3 帧完整头部报警；静物历史分母 0 | 身体尾报复现，新样本对静物历史不可判。[新窗逐段结果](REAL_MULTIFRAME_PILOT_20261117.md#冻结核对版在新离场片段的分带回放) |
