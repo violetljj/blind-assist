@@ -7,7 +7,9 @@ from pathlib import Path
 
 import numpy as np
 
-from real_multiframe_person_20261117 import PERSON_HISTORY_S, TUM_DILATION_PX, dilate_person, infer_person
+from real_multiframe_person_20261117 import (
+    PERSON_HISTORY_S, TUM_DILATION_PX, dilate_person, history_support, infer_person,
+)
 from real_multiframe_pilot_20261117 import HISTORY_S, MAX_GAP_S, corridor_bands, replay, save
 from real_multiframe_tum_20261117 import FR3_RGB, tum_frames
 
@@ -70,8 +72,9 @@ def score_clip(frames, expanded, person_reference, obstacle_reference, episodes)
     full = replay_arms(frames, expanded)
     people_frames = restrict(frames, person_reference)
     obstacle_frames = restrict(frames, obstacle_reference)
+    expanded_obstacle = restrict(expanded, obstacle_reference)
     people = replay_arms(people_frames, restrict(expanded, person_reference))
-    obstacle = replay_arms(obstacle_frames, restrict(expanded, obstacle_reference))
+    obstacle = replay_arms(obstacle_frames, expanded_obstacle)
     people_visible = {frame.row: sees_target(frame) for frame in people_frames}
     obstacle_visible = {frame.row: sees_target(frame) for frame in obstacle_frames}
     result = []
@@ -88,7 +91,14 @@ def score_clip(frames, expanded, person_reference, obstacle_reference, episodes)
         if not any(people_visible[row] for row in range(start, exit_row)):
             raise ValueError(f"Person reference never reaches the corridor before exit at row {exit_row}")
         observed_static_rows = [row for row in rows if obstacle_visible[row]]
-        if len(observed_static_rows) < 2:
+        hidden_rows = event.get("hidden_rows")
+        if hidden_rows is not None:
+            hidden = set(hidden_rows)
+            if not hidden or not hidden.issubset(rows) or not hidden.isdisjoint(observed_static_rows):
+                raise ValueError(f"Hidden obstacle rows must be after departure and have no target depth at {exit_row}")
+            if not any(obstacle_visible[row] for row in range(start, exit_row)):
+                raise ValueError(f"No in-corridor obstacle observation before departure at {exit_row}")
+        elif len(observed_static_rows) < 2:
             raise ValueError(f"Fewer than two post-departure frames observe the target obstacle from row {exit_row}")
 
         exposure = {}
@@ -103,10 +113,23 @@ def score_clip(frames, expanded, person_reference, obstacle_reference, episodes)
             for i, baseline in ((1, "memory"), (2, "person"))
         }
         memory_only = post["obstacle"][:, 1] & ~post["obstacle"][:, 0]
-        result.append(dict(event, rows=rows, times=times.tolist(), counts=exposure, lost_static_rows=lost_static,
-                           observed_static_rows=observed_static_rows,
-                           newly_expired_static_points=static_ring_hits(frames, expanded, obstacle_reference, rows),
-                           static_memory_only_rows=[row for row, used in zip(rows, memory_only) if used]))
+        summary = dict(event, rows=rows, times=times.tolist(), counts=exposure, lost_static_rows=lost_static,
+                       observed_static_rows=observed_static_rows,
+                       newly_expired_static_points=static_ring_hits(frames, expanded, obstacle_reference, rows),
+                       static_memory_only_rows=[row for row, used in zip(rows, memory_only, strict=True) if used])
+        if hidden_rows is not None:
+            eligible = [row for row in summary["static_memory_only_rows"] if row in hidden]
+            trace_rows = {vote for row in hidden for vote in range(row - 2, row + 1)}
+            source_votes = history_support(expanded_obstacle, trace_rows)
+            for vote in source_votes:
+                del vote["in_view_retained_sr"]  # No query-view projection was supplied to this trace.
+            summary["hidden_obstacle"] = dict(
+                memory_only_rows=eligible,
+                retained_rows=[row for row in eligible if any(obstacle[row]["alarm"][3])],
+                lost_rows=[row for row in eligible if not any(obstacle[row]["alarm"][3])],
+                source_votes=source_votes,
+            )
+        result.append(summary)
     return dict(events=result, full=full, people=people, obstacle=obstacle)
 
 

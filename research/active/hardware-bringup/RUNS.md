@@ -2,6 +2,7 @@
 
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
 | --- | --- | --- | --- | --- |
+| 2026-11-17 | `host/real_multiframe_mixed_20261117.py` | EXPLORE，原参数。TUM 新自然离场窗、三段真实混合窗目标深度置零对照、ETH3D 两段自然静物对照 | 自然混合静物确认逐帧 / 原记忆 / 固定过滤为 0/1、1/1、1/1；置零对照 0/10、10/10、9/10。ETH3D 静物误标让完整报警早停 0.184 秒。公开读取约 1.21 GB，零自采 | 一次自然离场案例保住桌腿；已复现掩码误标导致的静物报警损失。[结果与复现](REAL_MULTIFRAME_PILOT_20261117.md#行人离场后依靠历史的静物报警) |
 | 2026-11-17 | `host/real_multiframe_mixed_20261117.py` | EXPLORE，固定历史时限、外扩角宽和走廊。两段 TUM、一段 ETH3D，分别复算离场行人和仍在盒内的静物 | 行人尾报 0.77→0.40、0.60→0.20、1.00→1.00 秒，静物外扩后 18/18 帧仍报。ETH3D 133 个盒内圆桌旧点提前失效，静物仍有当帧支撑。零自采 | 2/3 段缩短行人尾报。[片段、静物证据和复现](REAL_MULTIFRAME_PILOT_20261117.md#行人离开后静物仍在走廊) |
 | 2026-11-17 | `host/real_multiframe_person_20261117.py --expand-from` | EXPLORE，同批片段。掩码圆盘外扩 TUM 6 px、LaMAR 灰图 4 px，行人旧点仍保留 0.25 秒 | TUM 三次停报 0.60／0.40／1.00 秒，离场报警 10/16、盒内 12/13，均与原掩码相同。156/3370 个新增提前失效源采样获固定家具佐证，确认点均在盒外。LaMAR 正前仍报 | 本次外扩有静态点损失，尾报未缩短。零新下载、零自采。[停报与静态点核对](REAL_MULTIFRAME_PILOT_20261117.md#行人掩码外扩一圈) |
 | 2026-11-17 | `host/real_multiframe_person_20261117.py` | EXPLORE，复用 TUM 三次离场和 LaMAR 唯一记忆补回片段。SegFormer 只把行人旧点保留时间从 0.80 秒缩到 0.25 秒 | TUM 逐帧／原记忆／过滤后离场告警 4／10／10 帧（16 帧），盒内 11／12／12 帧（13 帧）。LaMAR 正前头部高度带仍补回。新增 Range 5.77 MB，零自采 | 三次停报时刻都未提前，行人掩码周边残留足以达标。[片段结果与复现](REAL_MULTIFRAME_PILOT_20261117.md#行人历史过滤) |
