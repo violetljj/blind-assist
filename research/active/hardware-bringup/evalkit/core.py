@@ -3,8 +3,11 @@
 Conventions: camera frame x right, y down, z forward; depth = optical z in metres; `down` = gravity in the camera frame.
 Task definition (chosen for the walking user, independent of the App's camera-relative boxes):
   corridor   lateral +-0.35 m (half shoulder width 0.25 m + 0.10 m margin), forward 0.30-2.50 m along the horizontal heading
-  bands      height ABOVE GROUND: LOW 0.10-0.50 m (tripping), BODY 0.50-1.30 m, HEAD 1.30-2.00 m (overhanging)
-  occupied   obstacle surface area in the band >= 0.005 m^2 (about 5 x 10 cm), distance-invariant
+  bands      height ABOVE GROUND: LOW 0.15-0.50 m (tripping), BODY 0.50-1.30 m, HEAD 1.30-2.00 m (overhanging)
+  occupied   obstacle surface area in the band >= 0.005 m^2 (about 5 x 10 cm), distance-invariant, counted after a 3x3
+             morphological opening of the band mask (drops isolated stereo 'flying pixels'), same for truth and predictions
+  empty      no reference point at all in the band BEFORE the opening (strict); flying-pixel-only frames are ambiguous
+Version history: v0 (LOW from 0.10 m, no opening); v1 2026-11-17 (LOW from 0.15 m, opening, strict empty) - see EVALKIT.md.
 The ground plane and gravity axes used for evaluation come from the reference depth (RANSAC, normal within 15 deg of the
 device gravity when available). Reference grade and the independence unit (`block`) travel with every frame.
 """
@@ -12,10 +15,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+import cv2
 import numpy as np
 
+PROTOCOL_VERSION = 'v1'
+
 X_HALF, Z_NEAR, Z_FAR = .35, .30, 2.50
-BANDS = {'LOW': (.10, .50), 'BODY': (.50, 1.30), 'HEAD': (1.30, 2.00)}
+BANDS = {'LOW': (.15, .50), 'BODY': (.50, 1.30), 'HEAD': (1.30, 2.00)}
 MIN_AREA = .005
 DIST_BINS = ((.30, 1.0), (1.0, 2.0), (2.0, 2.5))
 NEAR = (.5, 3.)
@@ -130,6 +136,11 @@ def self_check(frames, rng, height_range=None):
     return res
 
 
+def _open(mask, h, w):
+    """3x3 morphological opening of a flat pixel mask (removes isolated flying pixels)."""
+    return cv2.morphologyEx(mask.reshape(h, w).astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8)).reshape(-1).astype(bool)
+
+
 def _corridor(pts, ok, axes, h0):
     dw, fwd, right = axes
     above = h0 - pts @ dw; along = pts @ fwd
@@ -155,10 +166,11 @@ def regions(f, rng):
     out['near_nonground'] = out['near'] & (above > BANDS['LOW'][0])
     area = pixel_area(f.K, h, w, np.where(valid, z, 0))
     for b, (lo, hi) in BANDS.items():
-        m = planar & (above >= lo) & (above < hi)
+        raw = planar & (above >= lo) & (above < hi); m = _open(raw, h, w)
         out[f'corridor_{b}'] = m
         a = float(area[m].sum())
-        out[f'truth_{b}'] = 1 if a >= MIN_AREA else (0 if a == 0 else -1)
+        out[f'truth_{b}'] = 1 if a >= MIN_AREA else (0 if not raw.any() else -1)          # strict empty (v1)
+        out[f'truth_opened_{b}'] = 1 if a >= MIN_AREA else (0 if a == 0 else -1)         # empty after opening (reported alongside)
         out[f'truth_dist_{b}'] = float(along[m].min()) if m.any() else None
     return out
 
@@ -172,7 +184,7 @@ def band_alert(pred, f, reg):
     pts = d * np.where(ok, p, 0)[:, None]
     above, _, planar = _corridor(pts, ok, reg['axes'], reg['ground'][1])
     area = pixel_area(f.K, h, w, np.where(ok, p, 0))
-    return {b: bool(area[planar & (above >= lo) & (above < hi)].sum() >= MIN_AREA) for b, (lo, hi) in BANDS.items()}
+    return {b: bool(area[_open(planar & (above >= lo) & (above < hi), h, w)].sum() >= MIN_AREA) for b, (lo, hi) in BANDS.items()}
 
 
 def depth_metrics(pred, ref, mask, min_px=200):
@@ -203,6 +215,11 @@ def summarize(rows, method):
                            absrel=float(np.median([p[0] for p in per])) if per else None,
                            delta1=float(np.median([p[1] for p in per])) if per else None)
     for band in BANDS:
+        fpo = tno = 0
+        for r in rows:
+            to, a = r.get('truth_opened', {}).get(band), r['alert'][method].get(band)
+            if a is not None and to == 0:
+                fpo += a; tno += (not a)
         tp = fn = fp = tn = 0; eps = 0; minutes = 0.; bins = {f'{lo}-{hi}': [0, 0] for lo, hi in DIST_BINS}
         for seq in sorted({r['seq'] for r in rows}):
             rs = sorted((r for r in rows if r['seq'] == seq), key=lambda r: r['t']); prev = False
@@ -224,5 +241,6 @@ def summarize(rows, method):
         out[f'detect_{band}'] = dict(positives=tp + fn, negatives=fp + tn, recall=tp / max(tp + fn, 1),
                                      recall_by_distance={k: (v[0] / v[1] if v[1] else None, v[1]) for k, v in bins.items()},
                                      fa_frame_rate=fp / max(fp + tn, 1), fa_episodes=int(eps),
-                                     fa_episodes_per_min=eps / max(minutes, 1e-9), minutes=minutes)
+                                     fa_episodes_per_min=eps / max(minutes, 1e-9), minutes=minutes,
+                                     negatives_opened=fpo + tno, fa_frame_rate_opened=fpo / max(fpo + tno, 1))
     return out

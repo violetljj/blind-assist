@@ -31,7 +31,10 @@ def sanpo_real_local():
         if not cams:
             continue
         cam = cams[0]; base = data / sess / cam / 'left'
-        p = json.loads((data / sess / 'description.json').read_text())['session_camera_details'][0]['left_camera_params']
+        desc = json.loads((data / sess / 'description.json').read_text())
+        # camera details are listed in `session_camera_location` order (chest ZED 2i, head ZED Mini); v0 took [0] for
+        # every session, i.e. ZED 2i intrinsics for head sessions (fx 1974 vs 1368) -> heights ~1.16 m instead of ~1.67 m
+        p = desc['session_camera_details'][desc['session_camera_location'].index(cam)]['left_camera_params']
         sc = W / p['image_width']
         K = np.array([[p['fx'] * sc, 0, p['cx'] * sc], [0, p['fy'] * sc, p['cy'] * sc], [0, 0, 1.]])
         for fr in sorted(q.name.split('.')[0] for q in (base / 'depth_maps').glob('*.float16.gz')):
