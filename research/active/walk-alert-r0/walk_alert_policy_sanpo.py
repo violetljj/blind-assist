@@ -40,6 +40,10 @@ LATE_CAP = .05
 SPLIT_SALT = 'walk-alert-r0-split:'
 EVAL_FRAC = .40
 SIGHTED = (1.35, .12, 1.0, 1.7)
+# v2 (POLICY_PROTOCOL_V2_20261116.md): centred truth heading, >= 8 truth voxels, events >= 2 hazard frames,
+# late cap = best rule's TRAIN late-rate floor + 5 pp.
+V2 = False
+MIN_VOX_V2, MIN_EVENT_FRAMES_V2, CAP_MARGIN_V2 = 8, 2, .05
 
 
 def quat(x, y, z, w):
@@ -70,7 +74,7 @@ def corridor_d(z, n_min):
 
 
 def prepare_one(arg):
-    root, scene, out = Path(arg[0]), arg[1], Path(arg[2])
+    root, scene, out = Path(arg[0]), arg[1], Path(arg[2]); v2 = len(arg) > 3 and arg[3]
     dst = out / f'{scene}.npz'
     if dst.exists():
         return scene
@@ -118,17 +122,19 @@ def prepare_one(arg):
     for i in range(n):
         a = max(0, i - 2); b = i if i >= 2 else min(n - 1, 2)
         v = (ps[b] - ps[a])[:2]
-        if np.linalg.norm(v) < .2:   # < 0.2 m over the window: standing/turning in place
+        vt = (ps[min(n - 1, i + 2)] - ps[max(0, i - 2)])[:2] if v2 else v   # truth heading (evaluator only)
+        if np.linalg.norm(v) < .2 or np.linalg.norm(vt) < .2:   # standing/turning in place
             rows.append([np.nan] * 16); continue
         fwd = np.array([v[0], v[1], 0.]) / np.linalg.norm(v); right = np.array([fwd[1], -fwd[0], 0.])
-        rel = vc - ps[i]; x, z = rel @ right, rel @ fwd
+        tf = np.array([vt[0], vt[1], 0.]) / np.linalg.norm(vt); tr_ = np.array([tf[1], -tf[0], 0.])
+        rel = vc - ps[i]; x, z = rel @ tr_, rel @ tf
         inc = (np.abs(x) <= X_HALF) & (z >= FWD0) & (z <= H)
-        D = corridor_d(z[inc], MIN_VOX)
+        D = corridor_d(z[inc], MIN_VOX_V2 if v2 else MIN_VOX)
         reach = min(D, H)
-        samp = ps[i][:2] + np.outer(np.arange(FWD0, reach + 1e-6, CELL), fwd[:2])
+        samp = ps[i][:2] + np.outer(np.arange(FWD0, reach + 1e-6, CELL), tf[:2])
         cover = np.mean([tuple(np.floor(s_ / CELL).astype(np.int64)) in cellset for s_ in samp]) if len(samp) else 1.0
         P0, Lc = P_all[i][0], L_all[i]
-        h0 = height(P0); rel0 = P0 - ps[i]; x0, z0 = rel0 @ right, rel0 @ fwd
+        h0 = height(P0); rel0 = P0 - ps[i]; x0, z0 = rel0 @ tr_, rel0 @ tf
         dyn = bool(((np.abs(x0) <= X_HALF) & (z0 >= FWD0) & (z0 <= H) & np.isin(Lc, DYN) & (h0 >= HGT[0]) & (h0 <= HGT[1])).sum() >= MIN_PTS)
         feats = []
         for arm in (0, 1):   # 0 = true depth no semantics, 1 = noisy depth proxy
@@ -174,7 +180,7 @@ BW_SPEEDS: dict = {}
 def load(work):
     data = {}
     for root, scene in sessions():
-        z = np.load(Path(work) / 'cache' / f'{scene}.npz')
+        z = np.load(Path(work) / ('cache_v2' if V2 else 'cache') / f'{scene}.npz')
         if int(z['n']) >= 5:
             data[scene] = z['rows']
     return data
@@ -206,6 +212,8 @@ def labels(ep):
     y = np.full(len(D), -1)
     y[D <= ep['dreq'] + ALERT_LEAD] = 1
     y[np.isinf(D) & ~dyn] = 0
+    if V2:
+        y[weak_mask(ep)] = -1
     y[~ep['valid']] = -1
     return y
 
@@ -223,6 +231,8 @@ def score(ep, alerts):
             while j + 1 < n and (haz[j + 1] or (j + 2 < n and haz[j + 2] and valid[j + 1])):
                 j += 1
             seg = slice(i, j + 1); ok = D[seg] >= ep['dreq']
+            if V2 and haz[seg].sum() < MIN_EVENT_FRAMES_V2:
+                i = j + 1; continue
             if ok.any():
                 avoid += 1; late += int(not (alerts[seg] & ok).any())
             else:
@@ -230,6 +240,7 @@ def score(ep, alerts):
             i = j + 1
         else:
             i += 1
+    weak = weak_mask(ep) if V2 else None
     fa = 0; idx = np.nonzero(alerts)[0]; refr = ep['v'] * REFRACTORY_S
     start = 0
     while start < len(idx):
@@ -237,7 +248,7 @@ def score(ep, alerts):
         while end + 1 < len(idx) and ds[idx[end] + 1:idx[end + 1] + 1].sum() <= refr:
             end += 1
         fr = idx[start:end + 1]
-        if not haz[fr].any() and not dyn[fr].any():
+        if not haz[fr].any() and not dyn[fr].any() and not (V2 and weak[fr].any()):
             fa += 1
         start = end + 1
     km = ds[valid].sum() / 1000
@@ -284,19 +295,19 @@ def fit_model(eps, arm):
     return clf, dict(n=int(len(y)), pos=int(y.sum()))
 
 
-def choose(eps, name, arm, model=None):
+def choose(eps, name, arm, model=None, cap=LATE_CAP):
     best = None
     for thr in GRIDS[name]:
         t = totals(eps, name, thr, arm, model)
-        if t['late_rate'] is not None and t['late_rate'] <= LATE_CAP:
+        if t['late_rate'] is not None and t['late_rate'] <= cap + 1e-12:
             if best is None or t['fa_per_km'] < best[1]['fa_per_km']:
                 best = (float(thr), t)
     return best
 
 
 def cmd_prepare(work):
-    out = Path(work) / 'cache'; out.mkdir(parents=True, exist_ok=True)
-    args = [(r, s, str(out)) for r, s in sessions()]
+    out = Path(work) / ('cache_v2' if V2 else 'cache'); out.mkdir(parents=True, exist_ok=True)
+    args = [(r, s, str(out), V2) for r, s in sessions()]
     t0 = time.time()
     with ProcessPoolExecutor(6) as ex:
         for k, _ in enumerate(ex.map(prepare_one, args), 1):
@@ -315,7 +326,7 @@ def cmd_count(work):
                                        avoidable_walker_events=z['avoidable'], unavoidable_walker_events=z['unavoidable'],
                                        km_per_walker=round(z['km'] / K_WALKERS, 3))
     res['bw_participants'] = {k: len(v) for k, v in BW_SPEEDS.items()}
-    (Path(work) / 'count.json').write_text(json.dumps(res, indent=1)); print(json.dumps(res, indent=1))
+    (Path(work) / ('count_v2.json' if V2 else 'count.json')).write_text(json.dumps(res, indent=1)); print(json.dumps(res, indent=1))
 
 
 def cmd_run(work):
@@ -325,7 +336,11 @@ def cmd_run(work):
             tr = [e for s, r in data.items() if split_of(s) == 'train' for e in episodes(s, r, kind)]
             ev = [e for s, r in data.items() if split_of(s) == 'eval' for e in episodes(s, r, kind)]
             model, minfo = fit_model(tr, arm)
-            sel = {n: choose(tr, n, arm, model if n == 'P1' else None) for n in ('B1', 'B2', 'B3', 'P1')}
+            cap, floors = LATE_CAP, None
+            if V2:
+                floors = {n: min(totals(tr, n, t, arm)['late_rate'] for t in GRIDS[n]) for n in ('B1', 'B2', 'B3')}
+                cap = min(floors.values()) + CAP_MARGIN_V2
+            sel = {n: choose(tr, n, arm, model if n == 'P1' else None, cap) for n in ('B1', 'B2', 'B3', 'P1')}
             rules = {n: s for n, s in sel.items() if n != 'P1' and s}
             best_rule = min(rules, key=lambda n: rules[n][1]['fa_per_km']) if rules else None
             evals = {n: (totals(ev, n, s[0], arm, model if n == 'P1' else None) if s else None) for n, s in sel.items()}
@@ -348,13 +363,31 @@ def cmd_run(work):
                             sessions=len(M))
             curves = {n: [dict(thr=float(t), **totals(ev, n, t, arm, model if n == 'P1' else None)) for t in GRIDS[n][::5]]
                       for n in ('B1', 'B2', 'B3', 'P1')}
-            report[f'{kind}/{arm_name}'] = dict(model=minfo, train_selected=sel, eval=evals, bootstrap=boot,
+            report[f'{kind}/{arm_name}'] = dict(late_cap=cap, train_rule_floors=floors, model=minfo, train_selected=sel, eval=evals, bootstrap=boot,
                                                 eval_curves_descriptive=curves)
             print(kind, arm_name, json.dumps(dict(sel={n: s[0] if s else None for n, s in sel.items()},
                                                   eval={n: (e['late'], e['avoidable'], e['fa'], round(e['fa_per_km'], 2)) if e else None
                                                         for n, e in evals.items()}, boot=boot), default=str), flush=True)
-    (Path(work) / 'report.json').write_text(json.dumps(report, indent=1, default=float))
+    (Path(work) / ('report_v2.json' if V2 else 'report.json')).write_text(json.dumps(report, indent=1, default=float))
+
+
+def weak_mask(ep):
+    """v2: hazard frames belonging to runs with < MIN_EVENT_FRAMES_V2 hazard frames (excluded from events and FA)."""
+    r = ep['rows']; valid = ep['valid']; haz = valid & (r[:, 0] <= H); w = np.zeros(len(haz), bool)
+    i, n = 0, len(haz)
+    while i < n:
+        if haz[i]:
+            j = i
+            while j + 1 < n and (haz[j + 1] or (j + 2 < n and haz[j + 2] and valid[j + 1])):
+                j += 1
+            if haz[i:j + 1].sum() < MIN_EVENT_FRAMES_V2:
+                w[i:j + 1] = haz[i:j + 1]
+            i = j + 1
+        else:
+            i += 1
+    return w
 
 
 if __name__ == '__main__':
+    V2 = len(sys.argv) > 3 and sys.argv[3] == 'v2'
     {'prepare': cmd_prepare, 'count': cmd_count, 'run': cmd_run}[sys.argv[1]](sys.argv[2])
