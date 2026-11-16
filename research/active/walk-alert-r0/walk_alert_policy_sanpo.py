@@ -89,7 +89,7 @@ def prepare_one(arg):
     dirs = np.stack([(uu - p['cx']) / p['fx'], (vv - p['cy']) / p['fy'], np.ones(uu.shape)], -1).reshape(-1, 3)
     poses = list(csv.DictReader(open(cam / 'camera_poses.csv')))
     frames = sorted((cam / 'left/depth_maps').glob('*.float16.gz'))
-    P_all, L_all, ps, cams = [], [], [], []
+    P_all, L_all, ps, cams, dimgs = [], [], [], [], []
     rng = np.random.default_rng(int(hashlib.sha256(scene.encode()).hexdigest()[:8], 16))
     for f in frames:
         k = int(f.name[:6]); r = poses[k]
@@ -102,6 +102,7 @@ def prepare_one(arg):
         # noisy-depth proxy (descriptive arm): per-frame scale exp(N(0,.10)) and 3% per-point noise
         dn = ray * (np.exp(rng.normal(0, .10)) * (1 + rng.normal(0, .03, len(ray))))[:, None]
         P_all.append(((R @ ray.T).T + t, (R @ dn.T).T + t)); L_all.append(seg[ok]); ps.append(t); cams.append(R)
+        dimgs.append(np.where(ok, d, np.inf).reshape(vv.shape))   # current-frame depth for free-space carving
     n = len(ps); ps = np.array(ps)
     if n < 5:
         np.savez_compressed(dst, n=0); return scene
@@ -132,13 +133,23 @@ def prepare_one(arg):
             c, s_ = np.cos(dth[j]), np.sin(dth[j]); Rz = np.array([[c, -s_, 0], [s_, c, 0], [0, 0, 1.]])
             return (P_all[j][1] - ps[j]) @ Rz.T + ps_d[j]
         cum = np.cumsum(seg_len)
+
+        def carve(Pw, i_):
+            c = (Pw - ps[i_]) @ cams[i_]; z_ = c[:, 2]; front = z_ > .3
+            u = np.full(len(c), -1.); v_ = np.full(len(c), -1.)
+            u[front] = p['fx'] * c[front, 0] / z_[front] + p['cx']; v_[front] = p['fy'] * c[front, 1] / z_[front] + p['cy']
+            inimg = front & (u >= 0) & (u < Ww) & (v_ >= 0) & (v_ < Hh)
+            col = np.clip(np.rint(u / S).astype(int), 0, vv.shape[1] - 1); row = np.clip(np.rint(v_ / S).astype(int), 0, vv.shape[0] - 1)
+            dcur = dimgs[i_][row, col]
+            seen_through = inimg & (dcur > z_ + .10 + .03 * z_)   # inf (invalid/sky) also counts as seen through
+            return Pw[~seen_through]
     rows = []
     for i in range(n):
         a = max(0, i - 2); b = i if i >= 2 else min(n - 1, 2)
         v = (ps[b] - ps[a])[:2]
         vt = (ps[min(n - 1, i + 2)] - ps[max(0, i - 2)])[:2] if v2 else v   # truth heading (evaluator only)
         if np.linalg.norm(v) < .2 or np.linalg.norm(vt) < .2:   # standing/turning in place
-            rows.append([np.nan] * (4 + 6 * (4 if mem == 'diag' else 3 if mem else 2))); continue
+            rows.append([np.nan] * (4 + 6 * (4 if mem in ('diag', 'carve') else 3 if mem else 2))); continue
         fwd = np.array([v[0], v[1], 0.]) / np.linalg.norm(v); right = np.array([fwd[1], -fwd[0], 0.])
         tf = np.array([vt[0], vt[1], 0.]) / np.linalg.norm(vt); tr_ = np.array([tf[1], -tf[0], 0.])
         rel = vc - ps[i]; x, z = rel @ tr_, rel @ tf
@@ -156,7 +167,11 @@ def prepare_one(arg):
             win = [j for j in range(i + 1) if cum[i] - cum[j] <= MEM_PATH]
             vd = (ps_d[b] - ps_d[a])[:2]; fd = np.array([vd[0], vd[1], 0.]) / max(np.linalg.norm(vd), 1e-9)
             M1 = np.concatenate([P_all[j][0] for j in win])
-            if mem == 'diag':   # post-hoc oracle diagnostics (MEMORY result): 2 = past-frame GT dynamic points removed, 3 = GT ground
+            if mem == 'carve':   # MEMORY_CARVE_PROTOCOL_20261116.md: 2 = free-space carving vs current depth, 3 = oracle no-dynamic
+                Mc = np.concatenate([P_all[i][0]] + [carve(P_all[j][0], i) for j in win if j != i])
+                M3 = np.concatenate([P_all[j][0] if j == i else P_all[j][0][~np.isin(L_all[j], DYN)] for j in win])
+                clouds = [clouds[0], (M1, ps[i], fwd, right), (Mc, ps[i], fwd, right), (M3, ps[i], fwd, right)]
+            elif mem == 'diag':   # post-hoc oracle diagnostics (MEMORY result): 2 = past-frame GT dynamic points removed, 3 = GT ground
                 M3 = np.concatenate([P_all[j][0] if j == i else P_all[j][0][~np.isin(L_all[j], DYN)] for j in win])
                 clouds = [clouds[0], (M1, ps[i], fwd, right), (M3, ps[i], fwd, right), (M1, ps[i], fwd, right, 'gt_ground')]
             else:
@@ -515,8 +530,9 @@ def cmd_cv(work):
 
 def cmd_prepare_mem(work, diag=False):
     assert V2, 'memory cache uses v2 truth; run with the v2 flag'
-    out = Path(work) / ('cache_mem_diag' if diag else 'cache_mem'); out.mkdir(parents=True, exist_ok=True)
-    args = [(r, s, str(out), True, 'diag' if diag else True) for r, s in sessions()]
+    sub = {False: 'cache_mem', True: 'cache_mem_diag', 'carve': 'cache_mem_carve'}[diag]
+    out = Path(work) / sub; out.mkdir(parents=True, exist_ok=True)
+    args = [(r, s, str(out), True, {False: True, True: 'diag', 'carve': 'carve'}[diag]) for r, s in sessions()]
     t0 = time.time()
     with ProcessPoolExecutor(6) as ex:
         for k, _ in enumerate(ex.map(prepare_one, args), 1):
@@ -610,4 +626,4 @@ def weak_mask(ep):
 if __name__ == '__main__':
     V2 = len(sys.argv) > 3 and sys.argv[3] == 'v2'
     {'prepare': cmd_prepare, 'count': cmd_count, 'run': cmd_run, 'cv': cmd_cv, 'prepare_mem': cmd_prepare_mem, 'mem': cmd_mem,
-     'prepare_mem_diag': lambda w_: cmd_prepare_mem(w_, True)}[sys.argv[1]](sys.argv[2])
+     'prepare_mem_diag': lambda w_: cmd_prepare_mem(w_, True), 'prepare_mem_carve': lambda w_: cmd_prepare_mem(w_, 'carve')}[sys.argv[1]](sys.argv[2])
