@@ -20,6 +20,9 @@ from real_multiframe_tum_20261117 import contact_sheet, score, tum_frames
 
 PERSON_HISTORY_S = .25
 PERSON_ARMS = (*ARMS, "person_history")
+EXPANDED_ARMS = (*ARMS, "expanded_history")
+TUM_DILATION_PX = 6  # One depth sample stride.
+LAMAR_DILATION_PX = 4  # Match the TUM angular width in the forward gray cameras.
 
 
 @torch.inference_mode()
@@ -51,6 +54,27 @@ def check_legacy(predictions, old):
             raise AssertionError(f"Confirmed person history outside single/memory at row {row}")
 
 
+def dilate_person(masks, radius):
+    offset = np.arange(-radius, radius + 1)
+    disk = (offset[:, None]**2 + offset[None, :]**2 <= radius**2).astype(np.uint8)
+    return np.stack([cv2.dilate(mask.astype(np.uint8), disk).astype(bool) for mask in masks])
+
+
+def check_expansion(predictions, prior):
+    if {str(row) for row in predictions} != set(prior):
+        raise AssertionError("Expanded masks changed the replay coverage")
+    for row, item in predictions.items():
+        original = prior[str(row)]
+        for key, value in item.items():
+            if key in ("raw", "alarm"):
+                if value[:len(ARMS)] != original[key][:len(ARMS)]:
+                    raise AssertionError(f"Expanded masks changed a reference arm at row {row}")
+                if np.any(np.array(value[-1]) & ~np.array(original[key][-1])):
+                    raise AssertionError(f"Expanded masks added person history support at row {row}")
+            elif value != original[key]:
+                raise AssertionError(f"Expanded masks changed {key} at row {row}")
+
+
 def history_support(frames, query_rows, visible=None):
     """Trace how much each eligible past frame contributes to each height band."""
     support = []
@@ -78,15 +102,15 @@ def history_support(frames, query_rows, visible=None):
     return support
 
 
-def run_tum(work, previous, snapshot):
+def run_tum(work, previous, snapshot, expand_from=None):
     intervals = json.loads((previous / "tum_reference.json").read_text(encoding="utf-8-sig"))
     old = json.loads((previous / "tum_predictions.json").read_text(encoding="utf-8"))
     with np.load(work / "tum_frames.npz", allow_pickle=False) as data:
         if not np.all(data["rgb_timestamp"][:-1] <= data["depth_timestamp"][1:]):
             raise ValueError("A history mask uses RGB captured after its query frame")
         bgr, times = data["bgr"], data["time"]
-        cache = work / "tum_person_masks.npz"
-        if cache.exists():
+        cache = (expand_from or work) / "tum_person_masks.npz"
+        if expand_from is not None or cache.exists():
             with np.load(cache, allow_pickle=False) as source:
                 if (source["snapshot"].item() != snapshot.name
                         or not np.array_equal(source["rgb_timestamp"], data["rgb_timestamp"])):
@@ -96,6 +120,8 @@ def run_tum(work, previous, snapshot):
             masks = infer_person(bgr, snapshot)
             with cache.open("xb") as stream:
                 np.savez_compressed(stream, mask=masks, snapshot=snapshot.name, rgb_timestamp=data["rgb_timestamp"])
+        if expand_from is not None:
+            masks = dilate_person(masks, TUM_DILATION_PX)
         frames = list(tum_frames(data, masks))
 
     predictions = replay(frames, keep_trace=True, person_history_s=PERSON_HISTORY_S)
@@ -117,7 +143,7 @@ def run_tum(work, previous, snapshot):
         pixels = bgr[i, masks[i]].astype(np.float32)
         bgr[i, masks[i]] = (.5 * pixels + [17, 110, 126]).astype(np.uint8)
     contact_sheet(bgr, times, work / "tum_person_overlay.jpg", example_rows)
-    comparison = score(predictions, intervals, PERSON_ARMS)
+    comparison = score(predictions, intervals, EXPANDED_ARMS if expand_from else PERSON_ARMS)
     exit_rows = {i for e in intervals if e["kind"] == "after_exit" for i in range(e["start"], e["end"] + 1)}
     result = dict(person_history_s=PERSON_HISTORY_S, model_snapshot=snapshot.name,
                   legacy_matches=len(predictions), no_shortening_matches=len(unshortened),
@@ -125,6 +151,10 @@ def run_tum(work, previous, snapshot):
                   samples_marked_person={str(i): int(np.count_nonzero(frames[i].person)) for i in example_rows},
                   history_support=history_support(frames, exit_rows),
                   intervals=comparison)
+    if expand_from is not None:
+        prior = json.loads((expand_from / "tum_person_predictions.json").read_text(encoding="utf-8"))
+        check_expansion(predictions, prior)
+        result["mask_dilation_px"] = TUM_DILATION_PX
     save(work / "tum_person_predictions.json", predictions)
     save(work / "tum_person_comparison.json", result)
     for item in comparison:
@@ -143,8 +173,8 @@ def project_to_gray(cloud, camera, view):
     return in_image, x, y
 
 
-def run_lamar(work, previous, snapshot, lamar):
-    gray = work / "lamar-gray"
+def run_lamar(work, previous, snapshot, lamar, expand_from=None):
+    gray = (expand_from or work) / "lamar-gray"
     manifest = json.loads((gray / "manifest.json").read_text(encoding="utf-8"))
     session = manifest["session"]
     source = lamar / "hololens" / "CAB"
@@ -156,6 +186,8 @@ def run_lamar(work, previous, snapshot, lamar):
     bgr = [cv2.imdecode(np.frombuffer((gray / view["relative_path"]).read_bytes(), dtype=np.uint8),
                         cv2.IMREAD_COLOR) for _, _, view in pairs]
     masks = infer_person(bgr, snapshot)
+    if expand_from is not None:
+        masks = dilate_person(masks, LAMAR_DILATION_PX)
     views = defaultdict(list)
     for (i, camera, view), image, mask in zip(pairs, bgr, masks, strict=True):
         intrinsics = manifest["cameras"][camera]
@@ -205,6 +237,10 @@ def run_lamar(work, previous, snapshot, lamar):
                   person_history_s=PERSON_HISTORY_S, model_snapshot=snapshot.name,
                   point_counts=point_counts, history_support=history_support(frames, range(10, target + 1), visible),
                   predictions=predictions)
+    if expand_from is not None:
+        prior = json.loads((expand_from / "lamar_person_comparison.json").read_text(encoding="utf-8"))
+        check_expansion(predictions, prior["predictions"])
+        result["mask_dilation_px"] = LAMAR_DILATION_PX
     save(work / "lamar_person_comparison.json", result)
     print(json.dumps({"target": predictions[target], "point_counts": point_counts,
                       "history_support": result["history_support"]}, indent=2))
@@ -216,11 +252,12 @@ def main():
     parser.add_argument("previous", type=Path, help="Original real-depth replay outputs")
     parser.add_argument("snapshot", type=Path, help="Local SegFormer B0 ADE20K snapshot")
     parser.add_argument("--lamar", type=Path, help="Replay only the original LaMAR rescue window")
+    parser.add_argument("--expand-from", type=Path, help="Use the prior person's pilot assets and expand its masks")
     args = parser.parse_args()
     if args.lamar:
-        run_lamar(args.work, args.previous, args.snapshot, args.lamar)
+        run_lamar(args.work, args.previous, args.snapshot, args.lamar, args.expand_from)
     else:
-        run_tum(args.work, args.previous, args.snapshot)
+        run_tum(args.work, args.previous, args.snapshot, args.expand_from)
 
 
 if __name__ == "__main__":
