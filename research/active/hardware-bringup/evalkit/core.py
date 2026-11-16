@@ -122,7 +122,11 @@ def self_check(frames, rng, height_range=None):
                 ang.append(a[1])
     mounts = sorted({m for _, m in hts})
     in_range = [height_range[m][0] <= h <= height_range[m][1] for h, m in hts]
-    res = dict(frames=len(q_z), mounts=mounts, sensor_height_in_range_share=float(np.mean(in_range)) if in_range else None, depth_median_m=float(np.median(med)) if med else None,
+    # v1 tooling fix: per-mount MEDIAN height must lie in range (walkers may pass raised surfaces, e.g. Aria walk 210-270 s
+    # sees a level plane ~1.15 m below the eye); still catches the v0 SANPO intrinsics bug (head median ~1.16 m)
+    mount_median = {m: float(np.median([h for h, mm in hts if mm == m])) for m in mounts}
+    res = dict(frames=len(q_z), mounts=mounts, sensor_height_in_range_share=float(np.mean(in_range)) if in_range else None,
+               sensor_height_median_by_mount=mount_median, depth_median_m=float(np.median(med)) if med else None,
                plane_share_as_optical_z=float(np.median(q_z)) if q_z else None,
                plane_share_if_range=float(np.median(q_r)) if q_r else None,
                sensor_height_m=float(np.median([h for h, _ in hts])) if hts else None,
@@ -130,7 +134,7 @@ def self_check(frames, rng, height_range=None):
     checks = dict(units=res['depth_median_m'] is not None and .5 <= res['depth_median_m'] <= 50,
                   meaning=bool(q_z) and res['plane_share_as_optical_z'] >= res['plane_share_if_range'] - .02,
                   planar=bool(q_z) and res['plane_share_as_optical_z'] >= .4,
-                  height=bool(in_range) and res['sensor_height_in_range_share'] >= .8,
+                  height=bool(mount_median) and all(height_range[m][0] <= v <= height_range[m][1] for m, v in mount_median.items()),
                   gravity=res['device_gravity_vs_ground_deg'] is None or res['device_gravity_vs_ground_deg'] <= 5)
     res['checks'] = checks; res['pass'] = all(checks.values())
     return res

@@ -37,6 +37,7 @@ def main(out_dir):
         n_all = sum(1 for _ in gen()); k = max(1, n_all // 20)
         sc = core.self_check([f for i, f in enumerate(gen()) if i % k == 0][:20], rng)
         report[name] = dict(self_check=sc)
+        print(name, 'self-check', json.dumps(sc), flush=True)
         if not sc['pass']:
             report[name]['status'] = 'STOPPED_AT_SELF_CHECK'; continue
         rows, t0 = [], time.time()
