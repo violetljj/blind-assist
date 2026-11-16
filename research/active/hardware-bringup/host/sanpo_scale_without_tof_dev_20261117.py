@@ -30,7 +30,7 @@ from fusion_anchor_candidates_dev_20261013 import fit_quality, robust_affine
 ROOT = V1.ROOT; A = ROOT / 'artifacts.local'
 DATA = A / 'datasets/sanpo-real-coverage-20260927'
 DAV2_SRC = A / 'work/corridor-depth-e1-20260917/upstream'
-UD_SRC = next((A / 'downloads/unidepth-src-8d8cfe4c-20261117').glob('UniDepth-*'))
+UD_SRC = next(p for p in (A / 'downloads/unidepth-src-8d8cfe4c-20261117').glob('UniDepth-*') if p.is_dir())
 W, H = 1280, 720
 WALK, SKY = [1, 2, 3, 5, 6, 17, 30], 27
 X_HALF, Z_NEAR, Z_FAR, HGT = .30, .30, 2.0, (.15, 1.90)
@@ -203,6 +203,7 @@ def main(out_json):
             zO = to_depth(disp, (a_, b_) if a_ > 0 else None)
             # regions
             near = valid & (g >= .5) & (g <= 3.)
+            near_ng = near & ~np.isin(f['seg'], WALK)   # added after the run (descriptive): near field without walkable ground
             corr = np.zeros_like(valid)
             if f['plane'] is not None:
                 n, h = f['plane']; down = -n
@@ -212,12 +213,13 @@ def main(out_json):
             row = dict(session=sess, cam=cam, frame=f['fr'], ground_plane=f['plane'] is not None, floor_fit=fitB is not None,
                        tof_fit=fitA is not None, corridor_px=int(corr.sum()), near_px=int(near.sum()))
             for arm, z in (('A', zA), ('B', zB), ('C', zC), ('D', zD), ('O', zO)):
-                row[arm] = dict(corridor=metrics(z, g, corr) if corr.sum() >= 200 else None, near=metrics(z, g, near))
+                row[arm] = dict(corridor=metrics(z, g, corr) if corr.sum() >= 200 else None, near=metrics(z, g, near),
+                                near_nonground=metrics(z, g, near_ng) if near_ng.sum() >= 200 else None)
             rows.append(row)
         print(sess, cam, len(F), 'h_sess', None if h_sess is None else round(h_sess, 3), flush=True)
     summ = {}
     sessions = sorted({r['session'] for r in rows})
-    for region in ('corridor', 'near'):
+    for region in ('corridor', 'near', 'near_nonground'):
         for arm in 'ABCDO':
             per = []
             for s in sessions:
