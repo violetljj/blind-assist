@@ -16,6 +16,7 @@ from lamar_native_corridor_dev_20261116 import DepthSensor, episode_pairs, walki
 ARMS = ("single", "memory", "cleared")
 HISTORY_S = 0.80
 MAX_GAP_S = 0.32
+BODY_BAND = 1
 
 
 @dataclass
@@ -44,9 +45,12 @@ def corridor_bands(points, origin, plane):
     return tuple(inside & (down >= low) & (down < high) for low, high in BANDS)
 
 
-def replay(frames, keep_trace=False, person_history_s=None):
+def replay(frames, keep_trace=False, person_history_s=None, *, body_history=None):
+    """Optionally filter body rays in the person-history arm for each source and query."""
     if person_history_s is not None and not 0 <= person_history_s <= HISTORY_S:
         raise ValueError("Person history must be between zero and the original history duration")
+    if body_history is not None and person_history_s is None:
+        raise ValueError("The body history filter requires the person-history arm")
     history = deque()
     recent_votes = deque(maxlen=3)
     result = {}
@@ -64,6 +68,7 @@ def replay(frames, keep_trace=False, person_history_s=None):
         raw_memory = single.copy()
         cleared_memory = single.copy()
         person_memory = single.copy()
+        body_sources = []
         for past, kept in history:
             past_bands = corridor_bands(past.cloud, frame.origin, frame.plane)
             expired_person = (person_history_s is not None and past.person is not None
@@ -73,13 +78,21 @@ def replay(frames, keep_trace=False, person_history_s=None):
                 if past.person_motion_at is not None:
                     expired = expired & (past.person_motion_at <= frame.time)
             for heights, band in enumerate(past_bands):
-                occupied = past.weights[band].sum() >= MIN_SOLID_ANGLE
+                total = past.weights[band].sum()
+                occupied = total >= MIN_SOLID_ANGLE
                 raw_memory[heights] |= occupied
-                if person_history_s is not None:
-                    retained = occupied
-                    if occupied and expired_person:
-                        retained = past.weights[band & ~expired].sum() >= MIN_SOLID_ANGLE
-                    person_memory[heights] |= retained
+                if person_history_s is not None and occupied:
+                    eligible = band & ~expired if expired_person else band
+                    support = past.weights[eligible].sum() if expired_person else total
+                    if heights == BODY_BAND and body_history is not None:
+                        allowed = body_history(past, frame)
+                        if allowed is not None:
+                            retained = past.weights[eligible & allowed].sum()
+                            if keep_trace:
+                                body_sources.append(dict(source_row=past.row, before_sr=float(support),
+                                                         retained_sr=float(retained)))
+                            support = retained
+                    person_memory[heights] |= support >= MIN_SOLID_ANGLE
                 candidate = np.flatnonzero(band & kept)
                 if len(candidate):
                     free = frame.witnessed_free(past.cloud[candidate])
@@ -100,6 +113,8 @@ def replay(frames, keep_trace=False, person_history_s=None):
             if keep_trace:
                 item["raw"] = recent_votes[-1].tolist()
                 item["history_frames"] = len(history)
+                if body_history is not None:
+                    item["body_history_sources"] = body_sources
             result[frame.row] = item
         history.append((frame, np.ones(len(frame.cloud), dtype=bool)))
     return result
