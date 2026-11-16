@@ -74,7 +74,7 @@ def main(out_json):
             dirs = np.stack([(uu - u0) / fu, (vv - v0) / fv, np.ones((H, W))], -1).reshape(-1, 3)
             i = p['index']
             r = cv2.imread(str(base / 'depth' / f'depth_{i:08d}.png'), cv2.IMREAD_UNCHANGED).reshape(-1).astype(np.float64) / 1000.
-            z = r / np.linalg.norm(dirs, axis=1)                    # optical depth
+            z = r   # the PNG stores optical z (checked 2026-11-17: ground planar 0.78 vs 0.24, 1.5 deg to VIO gravity, eye height ~1.5 m), despite the docs saying "along the ray"
             valid = (r > 0) & (z > .3) & (z < 10)
             down = Rotation.from_quat(p['T_world_camera']['QuaternionXYZW']).as_matrix().T @ np.array([0, 0, -1.])
             return K, dirs, z, valid, dirs * np.where(valid, z, 0)[:, None], down
