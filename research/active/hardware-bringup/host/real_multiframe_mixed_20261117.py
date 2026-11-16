@@ -137,7 +137,7 @@ def score_clip(frames, expanded, person_reference, obstacle_reference, episodes)
     return dict(events=result, full=full, people=people, obstacle=obstacle)
 
 
-def read_bundle(source, model, cached_masks=None):
+def read_bundle(source, model, cached_masks=None, *, include_pixel_masks=False):
     """NumPy observation bundle plus independent boolean person and obstacle pixel masks."""
     with np.load(source / "frames.npz", allow_pickle=False) as data, \
             np.load(source / "references.npz", allow_pickle=False) as reference:
@@ -165,11 +165,13 @@ def read_bundle(source, model, cached_masks=None):
             raise ValueError("Images, reference and person-mask sizes must match")
         options = dict(intrinsics=intrinsics, stride=radius, depth_scale=scale, planes=planes)
         frames = list(tum_frames(data, masks, **options))
-        expanded = list(tum_frames(data, dilate_person(masks, radius), **options))
+        expanded_masks = dilate_person(masks, radius)
+        expanded = list(tum_frames(data, expanded_masks, **options))
         # Reuse the observation adapter so annotation pixels follow the very same sampled/valid rays.
         person_reference = [f.person for f in tum_frames(data, human, **options)]
         static_reference = [f.person for f in tum_frames(data, obstacle, **options)]
-    return radius, frames, expanded, person_reference, static_reference
+    result = radius, frames, expanded, person_reference, static_reference
+    return (*result, expanded_masks) if include_pixel_masks else result
 
 
 def main():

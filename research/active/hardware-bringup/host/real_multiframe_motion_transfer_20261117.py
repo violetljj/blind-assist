@@ -18,13 +18,13 @@ def alarms(signal, rows):
     return np.asarray([signal[row]["alarm"] for row in rows], dtype=bool)
 
 
-def band_tails(people, rows, times):
+def band_tails(people, rows, times, methods=METHODS):
     active = alarms(people, rows)
     tails = {}
     for band, label in enumerate(BANDS):
         signal = active[:, :, band]
         metrics = {}
-        for i, name in enumerate(METHODS):
+        for i, name in enumerate(methods):
             first_quiet = np.flatnonzero(~signal[:, i])
             metrics[name] = dict(
                 first_quiet_s=float(times[first_quiet[0]] - times[0]) if first_quiet.size else None,
@@ -38,7 +38,7 @@ def band_tails(people, rows, times):
     return tails
 
 
-def score_event(event, frames, signals, person_present, static_present):
+def score_event(event, frames, signals, person_present, static_present, *, methods=METHODS):
     start, exit_row, end = (event[key] for key in ("start", "exit", "end"))
     if not 0 <= start < exit_row < end < len(frames):
         raise ValueError("Invalid raw-annotated departure window")
@@ -68,13 +68,13 @@ def score_event(event, frames, signals, person_present, static_present):
         rows=rows,
         times_s=times.tolist(),
         prior_coverage_s=float(times[0] - frames[0].time),
-        person=band_tails(signals["people"], rows, times),
+        person=band_tails(signals["people"], rows, times, methods),
         static=dict(
             in_corridor_rows=sorted(static_in_corridor),
             observed_rows=sorted(observed_static),
             memory_required_rows=[rows[i] for i in eligible],
             no_current_depth_rows=[rows[i] for i in hidden_eligible],
-            memory_confirmed={name: [rows[i] for i in eligible if target[i, j]] for j, name in enumerate(METHODS)},
+            memory_confirmed={name: [rows[i] for i in eligible if target[i, j]] for j, name in enumerate(methods)},
         ),
         full_band_added_rows={label: [row for row, added in zip(rows, full_added[:, i], strict=True) if added]
                               for i, label in enumerate(BANDS)},
