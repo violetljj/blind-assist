@@ -2,6 +2,7 @@
 
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
 | --- | --- | --- | --- | --- |
+| 2026-11-17 | `585d0fd0` + 本地筛查 | EXPLORE，查自然单次测距静物；复用实录并补读 ETH3D 19 对和 ARKitScenes 6 个原 5 Hz 小窗 | 计分帧 0，头部/身体双臂 `NOT_RUN`。ETH3D 单次深度最大 0.000219 sr，阈值 0.00083 sr | 自然单次实测静物保留仍待验证，静物续报维持候选。零自采。[筛查](REAL_MULTIFRAME_PILOT_20261117.md#自然单次测距静物筛查) |
 | 2026-11-17 | `host/aria_g2_floor_scale_dev_20261117.py`（Claude执行） | EXPLORE；规则运行前提交（39a1fc06）；Aria Gen 2 Pilot walk_0/1（用户同意 CC BY-NC 4.0，5 GB 已校验），FoundationStereo 伪真值，灰度输入，每 15 帧取 1；第 2 次运行因把光轴深度当射线距离而作废（输出保留），第 3 次有效（60cc1657） | 1201 帧 / 21 块；眼高 1.56 / 1.50 m；VIO 与地面夹角中位 1.56°。近场非地面 AbsRel：ToF 0.170，VIO 地面锚定 0.330（1.94 倍，成功 97%），完美重力 0.295，UniDepth-V2-S 0.213，形状上限 0.151；走廊障碍：ToF 0.114，VIO 地面 0.564，UniDepth-S 0.208 | 判据不确定；地面锚定在近处障碍物上外推失败，与重力无关；SANPO 乐观结论未复现。ToF 仍是更好的尺度锚，UniDepth-S 是最接近的无 ToF 退路。[检验](ARIA_G2_FLOOR_SCALE_DEV_20261117.md) |
 | 2026-11-17 | `host/real_multiframe_unknown_history_20261117.py` | EXPLORE，先用 Bonn 灰衣窗逐源确认未知旧点撑票，再配对比较只排运动与静物续报，另复核自然圆桌 | 9 未知旧点 0.00090821 sr。Bonn 完整及行人独立头部 4/7 → 4/7，身体 4/7 → 1/7，首静 0.801 → 0.200 s。圆桌身体 1/1 → 1/1 | 去掉的三帧与扣除未知旧点所得三帧一致。零自采。[双臂结果](REAL_MULTIFRAME_PILOT_20261117.md#身份未知的行人旧点对照) |
 | 2026-11-17 | `host/real_multiframe_static_history_20261117.py` | EXPLORE，两帧深度与位姿支持身体带历史，圆桌通过才跑横穿，原 5 Hz、角权和 2/3 | 自然圆桌身体带 1/1 → 1/1。横穿完整及行人独立头部 2/8 → 2/8，身体 2/8 → 1/8（首静 0.405 → 0.221 s） | 保住 #1101 圆桌，横穿去掉 #440 身体确认。零自采。[两窗结果](REAL_MULTIFRAME_PILOT_20261117.md#身体带静物历史续报) |

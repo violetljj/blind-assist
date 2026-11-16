@@ -26,6 +26,7 @@
 - [几何核对](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#深度与位姿核对行人旧点)恢复旧圆桌报警。冻结版的[7 个位姿合格新离场窗](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#冻结核对版在新离场片段的分带回放)有 2 段身体、1 段头部尾报增加。
 - [可见前景关联](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#人还可见时关联移动前景)消掉 ETH3D 新增身体带一帧。TUM [原生补帧](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#原生帧补前景关联)接上主体，分离裤腿仍撑住尾报。[遮挡核对](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#tum-裤腿遮挡前后核对)未确认同一片表面，停在身份核对。上轮合格圆桌自然 1/1、受控 2/3。
 - [身体带静物历史续报](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#身体带静物历史续报)保住 ETH3D 自然圆桌 1/1，横穿身体带 2→1/8。[Bonn 未知旧点](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#身份未知的行人旧点对照)配对显示身体带 4→1/7，头部带 4/7，圆桌复现。
+- [自然单次测距静物筛查](../hardware-bringup/REAL_MULTIFRAME_PILOT_20261117.md#自然单次测距静物筛查)计分帧 0，两臂未运行，静物续报维持开发候选。
 
 后续诊断（主线）：[LaMAR 正前漏报原因拆解](../hardware-bringup/LAMAR_MISS_BREAKDOWN_DEV_20261117.md)，漏报主因是警戒区方向，不是看不到。
 
