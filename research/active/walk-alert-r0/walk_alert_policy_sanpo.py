@@ -138,7 +138,7 @@ def prepare_one(arg):
         v = (ps[b] - ps[a])[:2]
         vt = (ps[min(n - 1, i + 2)] - ps[max(0, i - 2)])[:2] if v2 else v   # truth heading (evaluator only)
         if np.linalg.norm(v) < .2 or np.linalg.norm(vt) < .2:   # standing/turning in place
-            rows.append([np.nan] * (4 + 6 * (3 if mem else 2))); continue
+            rows.append([np.nan] * (4 + 6 * (4 if mem == 'diag' else 3 if mem else 2))); continue
         fwd = np.array([v[0], v[1], 0.]) / np.linalg.norm(v); right = np.array([fwd[1], -fwd[0], 0.])
         tf = np.array([vt[0], vt[1], 0.]) / np.linalg.norm(vt); tr_ = np.array([tf[1], -tf[0], 0.])
         rel = vc - ps[i]; x, z = rel @ tr_, rel @ tf
@@ -155,13 +155,22 @@ def prepare_one(arg):
         if mem:
             win = [j for j in range(i + 1) if cum[i] - cum[j] <= MEM_PATH]
             vd = (ps_d[b] - ps_d[a])[:2]; fd = np.array([vd[0], vd[1], 0.]) / max(np.linalg.norm(vd), 1e-9)
-            clouds = [clouds[0], (np.concatenate([P_all[j][0] for j in win]), ps[i], fwd, right),
-                      (np.concatenate([drifted(j) for j in win]), ps_d[i], fd, np.array([fd[1], -fd[0], 0.]))]
-        for Q, org, fwd_, right_ in clouds:   # v1/v2: 0 = true depth no semantics, 1 = noisy depth proxy
+            M1 = np.concatenate([P_all[j][0] for j in win])
+            if mem == 'diag':   # post-hoc oracle diagnostics (MEMORY result): 2 = past-frame GT dynamic points removed, 3 = GT ground
+                M3 = np.concatenate([P_all[j][0] if j == i else P_all[j][0][~np.isin(L_all[j], DYN)] for j in win])
+                clouds = [clouds[0], (M1, ps[i], fwd, right), (M3, ps[i], fwd, right), (M1, ps[i], fwd, right, 'gt_ground')]
+            else:
+                clouds = [clouds[0], (M1, ps[i], fwd, right),
+                          (np.concatenate([drifted(j) for j in win]), ps_d[i], fd, np.array([fd[1], -fd[0], 0.]))]
+        for cl in clouds:   # v1/v2: 0 = true depth no semantics, 1 = noisy depth proxy
+            Q, org, fwd_, right_ = cl[:4]
             rq = Q - org; xq, zq = rq @ right_, rq @ fwd_
-            strip = (np.abs(xq) <= 1.0) & (zq >= 1.0) & (zq <= H)
-            g = np.percentile(Q[strip, 2], 5) if strip.sum() >= 50 else org[2] - 1.5
-            hq = Q[:, 2] - g
+            if len(cl) > 4:
+                hq = height(Q)   # oracle GT ground (diagnostic only); NaN outside the ground grid -> excluded
+            else:
+                strip = (np.abs(xq) <= 1.0) & (zq >= 1.0) & (zq <= H)
+                g = np.percentile(Q[strip, 2], 5) if strip.sum() >= 50 else org[2] - 1.5
+                hq = Q[:, 2] - g
             c = (np.abs(xq) <= X_HALF) & (zq >= FWD0) & (zq <= H) & (hq >= HGT[0]) & (hq <= HGT[1])
             dh = corridor_d(zq[c], MIN_PTS)
             near = c & (zq <= (dh + .5 if np.isfinite(dh) else -1))
@@ -504,10 +513,10 @@ def cmd_cv(work):
     (Path(work) / 'report_v3_cv.json').write_text(json.dumps(report, indent=1, default=float))
 
 
-def cmd_prepare_mem(work):
+def cmd_prepare_mem(work, diag=False):
     assert V2, 'memory cache uses v2 truth; run with the v2 flag'
-    out = Path(work) / 'cache_mem'; out.mkdir(parents=True, exist_ok=True)
-    args = [(r, s, str(out), True, True) for r, s in sessions()]
+    out = Path(work) / ('cache_mem_diag' if diag else 'cache_mem'); out.mkdir(parents=True, exist_ok=True)
+    args = [(r, s, str(out), True, 'diag' if diag else True) for r, s in sessions()]
     t0 = time.time()
     with ProcessPoolExecutor(6) as ex:
         for k, _ in enumerate(ex.map(prepare_one, args), 1):
@@ -600,4 +609,5 @@ def weak_mask(ep):
 
 if __name__ == '__main__':
     V2 = len(sys.argv) > 3 and sys.argv[3] == 'v2'
-    {'prepare': cmd_prepare, 'count': cmd_count, 'run': cmd_run, 'cv': cmd_cv, 'prepare_mem': cmd_prepare_mem, 'mem': cmd_mem}[sys.argv[1]](sys.argv[2])
+    {'prepare': cmd_prepare, 'count': cmd_count, 'run': cmd_run, 'cv': cmd_cv, 'prepare_mem': cmd_prepare_mem, 'mem': cmd_mem,
+     'prepare_mem_diag': lambda w_: cmd_prepare_mem(w_, True)}[sys.argv[1]](sys.argv[2])
