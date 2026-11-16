@@ -2,6 +2,7 @@
 
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
 | --- | --- | --- | --- | --- |
+| 2026-11-16 | `host/scenefun_faro_corridor_screen_dev_20261116.py` | EXPLORE，SceneFun3D 公开训练录制、连续位姿及独立 FARO 投影，姿态筛选后标注两条走廊 | 16 访次、175 标注时刻。扩展视角复算得到朝向占据而行进为空 4 段/3 访次，行进占据 92 段/15 访次，其他空 4 段、未知 14 段。主要 Range 记账 234.52 MB，零自采 | 空走廊负例不足，算法对比 `NOT_RUN`。[样本分布与复现](INDEPENDENT_SCAN_CORRIDOR_SCREEN_20261116.md) |
 | 2026-11-16 | `host/arkit_selective_heading_dev_20261116.py`、`host/sanpo_known_geometry_heading_dev_20261116.py` | EXPLORE，ARKit 40 访次按访次划分，SANPO-Real 8 个头戴窗。因果位移稳定和空域门控，同规则对照 | ARKit 检验 334 正/1负，SANPO 2正/0负，两批零撤回。72 个几何摆位中头向与严格门控均误报38/52、漏报0/64；无保护平移36/52、0/64 | 保留头向。真实空域参照不足，严格条件未产生收益。零自采，公开下载158.18 MB。[数据和结果](SELECTIVE_HEADING_PUBLIC_PILOT_20261116.md) |
 | 2026-11-16 | `host/adt_causal_heading_dev_20261116.py` | EXPLORE，ADT 已消费 12 段，同深度和警戒区比较头向与因果平移，参考使用后续方向 | 头向→过去约 0.6 秒，漏报 414→421/1494，误报 134→141/1155。预定 10–20° 子集误报 68→57/488，漏报 162→163/586。CPU 1.23 秒，GPU/下载/自采 0 | 整体无升级，保留头向，选择性方向判断留作假设。[对照与公开数据库存](ADT_CAUSAL_HEADING_DEV_20261116.md) |
 | 2026-10-15 | `host/sensor_translation_dev_20261015.py`及导出/核验 | EXPLORE；8已消费Hypersim train帧，6/2家族；同几何/模型比较理想、既有电子学、真实经验约束；仅宿舍2/4/4b拟合，另6可评价宿舍段/18手机段检查；不买硬件 | 经验生成域近支持159/176、误近9/1008，主峰151/176、75/1008；仅2家族/8低占比zone-scale。真实固件弱参考宏差：经验宿舍0.327m/手机0.697m，主峰0.261/0.229m；覆盖21016/67072、48224/116352。run-c16.737s、核验500/500/4.220s；GPU0/下载0/新增0元 | 保留数据桥及48几何实例三臂导出，不采用小模型，不扩大训练；距离一致性未胜主峰，非真实避障收益。下一需要6段尺量背景/杆配对，净录制1分钟。[结果与操作](SENSOR_TRANSLATION_DEV_20261015.md)；初次和整数类型失败留证，原模型/手机不变 |
