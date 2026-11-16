@@ -65,28 +65,29 @@ def main(out_json):
     for seq in SEQS:
         base = DATA / seq / 'x/depth'
         params = json.loads((base / 'pinhole_camera_parameters.json').read_text())
-        t0 = params[0]['frameTimestampNs']
-        fu, fv, u0, v0 = params[0]['camera']['Parameters']; W = H = 512
-        K = np.array([[fu, 0, u0], [0, fv, v0], [0, 0, 1.]])
+        t0 = params[0]['frameTimestampNs']; W = H = 512
         vv, uu = np.mgrid[0:H, 0:W]
-        dirs = np.stack([(uu - u0) / fu, (vv - v0) / fv, np.ones((H, W))], -1).reshape(-1, 3); dn = np.linalg.norm(dirs, axis=1)
-        F = []
-        for p in params[::STEP]:
-            assert tuple(p['camera']['Parameters']) == (fu, fv, u0, v0)
+
+        def load(p):   # intrinsics differ slightly per frame (per-frame rectified pinhole), so build rays per frame
+            fu, fv, u0, v0 = p['camera']['Parameters']
+            K = np.array([[fu, 0, u0], [0, fv, v0], [0, 0, 1.]])
+            dirs = np.stack([(uu - u0) / fu, (vv - v0) / fv, np.ones((H, W))], -1).reshape(-1, 3)
             i = p['index']
             r = cv2.imread(str(base / 'depth' / f'depth_{i:08d}.png'), cv2.IMREAD_UNCHANGED).reshape(-1).astype(np.float64) / 1000.
-            z = r / dn                                               # optical depth
+            z = r / np.linalg.norm(dirs, axis=1)                    # optical depth
             valid = (r > 0) & (z > .3) & (z < 10)
-            R_wc = Rotation.from_quat(p['T_world_camera']['QuaternionXYZW']).as_matrix()
-            down = R_wc.T @ np.array([0, 0, -1.])
-            pts = dirs * np.where(valid, z, 0)[:, None]
-            gp = ground_plane(pts[valid], down, rng)
-            F.append(dict(i=i, t=(p['frameTimestampNs'] - t0) / 1e9, z=z, valid=valid, pts=pts, down=down, gp=gp))
+            down = Rotation.from_quat(p['T_world_camera']['QuaternionXYZW']).as_matrix().T @ np.array([0, 0, -1.])
+            return K, dirs, z, valid, dirs * np.where(valid, z, 0)[:, None], down
+        F = []
+        for p in params[::STEP]:   # pass 1: reference ground plane only (no point clouds kept in memory)
+            K, dirs, z, valid, pts, down = load(p)
+            F.append(dict(p=p, i=p['index'], t=(p['frameTimestampNs'] - t0) / 1e9, gp=ground_plane(pts[valid], down, rng)))
         hs = [f['gp'][1] for f in F if f['gp'] is not None]
         h_seq = float(np.median(hs)) if hs else None
         last_tof = None
-        for f in F:
-            z, valid, pts = f['z'], f['valid'], f['pts']
+        for f in F:                # pass 2
+            K, dirs, z, valid, pts, f['down'] = load(f['p'])
+            fu, fv, u0, v0 = K[0, 0], K[1, 1], K[0, 2], K[1, 2]
             gray = cv2.imread(str(base / 'rectified_images' / f"image_{f['i']:08d}.png"), cv2.IMREAD_UNCHANGED)
             bgr = np.repeat(gray[:, :, None], 3, 2)
             with torch.inference_mode():
@@ -139,7 +140,8 @@ def main(out_json):
                 row[a] = dict(near_nonground=P.metrics(Z[a], z, near_ng) if near_ng.sum() >= 200 else None,
                               near=P.metrics(Z[a], z, near), corridor=P.metrics(Z[a], z, corr) if corr.sum() >= 200 else None)
             rows.append(row)
-        print(seq, len(F), 'frames, h_seq', None if h_seq is None else round(h_seq, 3), flush=True)
+        spread = np.ptp([f['p']['camera']['Parameters'][0] for f in F])
+        print(seq, len(F), 'frames, focal spread %.2f px' % spread, 'h_seq', None if h_seq is None else round(h_seq, 3), flush=True)
     blocks = sorted({r['block'] for r in rows}); summ = {}
     for region in ('near_nonground', 'near', 'corridor'):
         for a in arms:
