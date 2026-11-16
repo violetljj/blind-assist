@@ -4,6 +4,7 @@ Stages
   prepare <work>  per-session cache (labels from fused GT static map; perception from each frame's own depth, no classes)
   count   <work>  denominator check on the frozen split (labels only; no policy run)
   run     <work>  thresholds chosen on TRAIN sessions only, then one EVAL pass + session bootstrap
+  cv      <work> v2  v3: session-level 5-fold CV on the v2 cache (POLICY_PROTOCOL_V3_CV_20261116.md)
 Conventions (checked in hardware-bringup/host/sanpo_cane_reach_dev_20261015.py): depth = optical z metres after 2 header
 values, pose quaternion camera->world, world Z up, class id in PNG R channel. SANPO time base is unreliable, so all timing
 is re-derived from walker speed over path distance.
@@ -371,6 +372,114 @@ def cmd_run(work):
     (Path(work) / ('report_v2.json' if V2 else 'report.json')).write_text(json.dumps(report, indent=1, default=float))
 
 
+# v3 (POLICY_PROTOCOL_V3_CV_20261116.md): session-level 5-fold CV on the v2 cache; selection per fold on the other folds.
+CV_K, CV_SALT = 5, 'walk-alert-r0-cv:'
+
+
+def fold_of(scene):
+    return int(int(hashlib.sha256((CV_SALT + scene).encode()).hexdigest()[:8], 16) / 16 ** 8 * CV_K)
+
+
+def score_table(eps_by, name, arm, model=None):
+    """scene -> (len(grid), 5) summed score() over that scene's walker episodes."""
+    out = {}
+    for s, eps in eps_by.items():
+        if name == 'P1':
+            for e in eps:
+                e.pop(f'p{arm}', None)
+        out[s] = np.array([np.sum([score(e, policy_alerts(name, t, e, arm, model)) for e in eps], 0) for t in GRIDS[name]],
+                          dtype=float)
+    return out
+
+
+def _rates(T):
+    with np.errstate(divide='ignore', invalid='ignore'):
+        return T[..., 0] / T[..., 1], T[..., 3] / T[..., 4]
+
+
+def _pick(T, cap):
+    lr, fk = _rates(T); idx = np.nonzero(lr <= cap + 1e-12)[0]
+    return int(idx[np.argmin(fk[idx])]) if len(idx) else None
+
+
+def _summ(T):
+    late, avoid, unavoid, fa, km = T
+    return dict(late=int(late), avoidable=int(avoid), unavoidable=int(unavoid), fa=int(fa), km=round(float(km), 4),
+                late_rate=late / avoid if avoid else None, fa_per_km=fa / km if km else None)
+
+
+def cv_one(data, kind, arm):
+    eps_by = {s: episodes(s, r, kind) for s, r in data.items()}
+    folds = {s: fold_of(s) for s in data}
+    rules = {n: score_table(eps_by, n, arm) for n in ('B1', 'B2', 'B3')}
+    pooled = {n: np.zeros(5) for n in ('B1', 'B2', 'B3', 'P1', 'best_rule')}
+    per_session, fold_info, ok = {}, [], True
+    for f in range(CV_K):
+        tr = [s for s in data if folds[s] != f]; ho = [s for s in data if folds[s] == f]
+        model, minfo = fit_model([e for s in tr for e in eps_by[s]], arm)
+        p1 = score_table({s: eps_by[s] for s in data}, 'P1', arm, model)
+        tabs = dict(rules, P1=p1)
+        trT = {n: sum(t[s] for s in tr) for n, t in tabs.items()}
+        floors = {n: float(np.nanmin(_rates(trT[n])[0])) for n in ('B1', 'B2', 'B3')}
+        cap = min(floors.values()) + CAP_MARGIN_V2
+        sel = {n: _pick(trT[n], cap) for n in tabs}
+        sr = {n: sel[n] for n in ('B1', 'B2', 'B3') if sel[n] is not None}
+        best = min(sr, key=lambda n: _rates(trT[n][sr[n]])[1]) if sr else None
+        fold_info.append(dict(fold=f, train_sessions=len(tr), holdout_sessions=len(ho), cap=cap, train_rule_floors=floors,
+                              model=minfo, best_rule=best,
+                              thr={n: (float(GRIDS[n][i]) if i is not None else None) for n, i in sel.items()},
+                              train={n: (_summ(trT[n][i]) if i is not None else None) for n, i in sel.items()},
+                              holdout={n: (_summ(sum(tabs[n][s][i] for s in ho)) if i is not None else None) for n, i in sel.items()}))
+        if best is None or sel['P1'] is None:
+            ok = False; continue
+        for n, i in sel.items():
+            if i is not None:
+                pooled[n] += sum(tabs[n][s][i] for s in ho)
+        for s in ho:
+            a = tabs[best][s][sr[best]]; b = p1[s][sel['P1']]
+            pooled['best_rule'] += a; per_session[s] = np.r_[a, b]
+    res = dict(folds=fold_info, evaluable=ok)
+    if not ok:
+        return res
+    res['pooled'] = {n: _summ(t) for n, t in pooled.items()}
+    pb, pp = res['pooled']['best_rule'], res['pooled']['P1']
+    M = np.array(list(per_session.values())); rng = np.random.default_rng(20261116); red = []
+    for _ in range(2000):
+        s_ = M[rng.integers(len(M), size=len(M))].sum(0)
+        if s_[3] > 0:
+            red.append(1 - (s_[8] / s_[9]) / (s_[3] / s_[4]))
+    red = np.array(red)
+    res['bootstrap'] = dict(reduction=1 - pp['fa_per_km'] / pb['fa_per_km'] if pb['fa'] else None,
+                            ci95=[float(np.percentile(red, 2.5)), float(np.percentile(red, 97.5))] if len(red) else None,
+                            late_excess=pp['late'] - pb['late'], sessions=len(M))
+    return res
+
+
+def cmd_cv(work):
+    assert V2, 'v3 CV reuses the v2 cache and v2 rules; run with the v2 flag'
+    BW_SPEEDS.update(bw_speeds()); data = load(work); t0 = time.time()
+    folds = {s: fold_of(s) for s in data}
+    den = {}
+    for kind in ('blind', 'sighted'):
+        z = totals([e for s, r in data.items() for e in episodes(s, r, kind)], 'B1', -1.0, 0)
+        den[kind] = dict(sessions=len(data), avoidable_per_walker=z['avoidable'] // K_WALKERS,
+                         unavoidable_walker_events=z['unavoidable'], km_per_walker=round(z['km'] / K_WALKERS, 3))
+    den['fold_sessions'] = [sum(v == f for v in folds.values()) for f in range(CV_K)]
+    report = dict(protocol='POLICY_PROTOCOL_V3_CV_20261116.md', denominator=den)
+    print(json.dumps(den), flush=True)
+    if den['blind']['avoidable_per_walker'] < 30:
+        report['status'] = 'NOT_EVALUABLE_DENOMINATOR'
+    else:
+        for kind in ('blind', 'sighted'):
+            for arm, arm_name in ((0, 'true_depth_no_semantics'), (1, 'noisy_depth_proxy')):
+                r = cv_one(data, kind, arm); report[f'{kind}/{arm_name}'] = r
+                print(kind, arm_name, f'{time.time()-t0:.0f}s', json.dumps(dict(
+                    evaluable=r['evaluable'], best=[f_['best_rule'] for f_ in r['folds']],
+                    pooled={n: (p['late'], p['avoidable'], p['fa'], round(p['fa_per_km'], 2)) for n, p in r.get('pooled', {}).items()},
+                    boot=r.get('bootstrap')), default=float), flush=True)
+    (Path(work) / 'report_v3_cv.json').write_text(json.dumps(report, indent=1, default=float))
+
+
 def weak_mask(ep):
     """v2: hazard frames belonging to runs with < MIN_EVENT_FRAMES_V2 hazard frames (excluded from events and FA)."""
     r = ep['rows']; valid = ep['valid']; haz = valid & (r[:, 0] <= H); w = np.zeros(len(haz), bool)
@@ -390,4 +499,4 @@ def weak_mask(ep):
 
 if __name__ == '__main__':
     V2 = len(sys.argv) > 3 and sys.argv[3] == 'v2'
-    {'prepare': cmd_prepare, 'count': cmd_count, 'run': cmd_run}[sys.argv[1]](sys.argv[2])
+    {'prepare': cmd_prepare, 'count': cmd_count, 'run': cmd_run, 'cv': cmd_cv}[sys.argv[1]](sys.argv[2])
