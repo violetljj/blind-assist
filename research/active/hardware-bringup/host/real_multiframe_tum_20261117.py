@@ -93,21 +93,21 @@ def contact_sheet(images, time, output, indices):
     sheet.save(output)
 
 
-def tum_frames(data, person_masks=None):
+def tum_frames(data, person_masks=None, *, intrinsics=FR3_RGB, stride=STRIDE, depth_scale=5000., planes=None):
     time, depth_png = data["time"], data["depth_png"]
     locations, rotations = data["locations"], data["rotations"]
     h, w = depth_png.shape[1:]
-    fx, fy, cx, cy = FR3_RGB
+    fx, fy, cx, cy = intrinsics
     ys, xs = np.indices((h, w), dtype=np.float32)
-    rays = np.stack(((xs - cx) / fx, (ys - cy) / fy, np.ones_like(xs)), axis=-1)[::STRIDE, ::STRIDE]
-    weights = (STRIDE**2 / (fx * fy)) / np.linalg.norm(rays, axis=-1)**3
+    rays = np.stack(((xs - cx) / fx, (ys - cy) / fy, np.ones_like(xs)), axis=-1)[::stride, ::stride]
+    weights = (stride**2 / (fx * fy)) / np.linalg.norm(rays, axis=-1)**3
     for i, (raw, origin, rotation) in enumerate(zip(depth_png, locations, rotations, strict=True)):
-        depth = raw.astype(np.float32) / 5000.
-        small = depth[::STRIDE, ::STRIDE]
+        depth = raw.astype(np.float32) / depth_scale
+        small = depth[::stride, ::stride]
         valid = (small >= .35) & (small <= 5.46)
         cloud = (rays[valid] * small[valid, None]) @ rotation.T + origin
         # This handheld recording tests the camera-aligned alert volume, not a wearer's path.
-        plane = rotation[:, [2, 0, 1]].T * np.array([1, -1, -1])[:, None]
+        plane = rotation[:, [2, 0, 1]].T * np.array([1, -1, -1])[:, None] if planes is None else planes[i]
 
         def clear(points, image=depth, center=origin, orient=rotation):
             camera = (points - center) @ orient
@@ -119,7 +119,7 @@ def tum_frames(data, person_masks=None):
             observed = image[np.clip(y, 0, h - 1), np.clip(x, 0, w - 1)]
             return inside & (observed > z + .08) & (observed <= 5.46)
 
-        person = person_masks[i, ::STRIDE, ::STRIDE][valid] if person_masks is not None else None
+        person = person_masks[i, ::stride, ::stride][valid] if person_masks is not None else None
         yield Frame(i, float(time[i]), 0, cloud, weights[valid], origin, plane, clear, person)
 
 
