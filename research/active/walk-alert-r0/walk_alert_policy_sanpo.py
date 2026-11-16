@@ -45,6 +45,9 @@ SIGHTED = (1.35, .12, 1.0, 1.7)
 # late cap = best rule's TRAIN late-rate floor + 5 pp.
 V2 = False
 MIN_VOX_V2, MIN_EVENT_FRAMES_V2, CAP_MARGIN_V2 = 8, 2, .05
+# multi-frame memory (MEMORY_PROTOCOL_20261116.md)
+MEM_PATH, MEM_DRIFT_T, MEM_DRIFT_YAW_DEG = 6.0, .02, .8
+CACHE_DIR = None   # overrides the cache sub-directory in load()
 
 
 def quat(x, y, z, w):
@@ -75,7 +78,7 @@ def corridor_d(z, n_min):
 
 
 def prepare_one(arg):
-    root, scene, out = Path(arg[0]), arg[1], Path(arg[2]); v2 = len(arg) > 3 and arg[3]
+    root, scene, out = Path(arg[0]), arg[1], Path(arg[2]); v2 = len(arg) > 3 and arg[3]; mem = len(arg) > 4 and arg[4]
     dst = out / f'{scene}.npz'
     if dst.exists():
         return scene
@@ -119,13 +122,23 @@ def prepare_one(arg):
     for k in np.unique(np.floor(vc[:, :2] / CELL).astype(np.int64), axis=0):
         cellset.add(tuple(k))
     seg_len = np.r_[0, np.linalg.norm(np.diff(ps[:, :2], axis=0), axis=1)]
+    if mem:   # MEMORY_PROTOCOL_20261116.md: arm 1 = GT-pose memory (true depth), arm 2 = noisy depth + pose drift memory
+        drng = np.random.default_rng(int(hashlib.sha256(('mem:' + scene).encode()).hexdigest()[:8], 16))
+        dxy = np.cumsum(drng.normal(0, 1, (n, 2)) * (MEM_DRIFT_T * seg_len)[:, None], 0)
+        dth = np.cumsum(drng.normal(0, 1, n) * np.deg2rad(MEM_DRIFT_YAW_DEG) * seg_len)
+        ps_d = ps + np.c_[dxy, np.zeros(n)]
+
+        def drifted(j):
+            c, s_ = np.cos(dth[j]), np.sin(dth[j]); Rz = np.array([[c, -s_, 0], [s_, c, 0], [0, 0, 1.]])
+            return (P_all[j][1] - ps[j]) @ Rz.T + ps_d[j]
+        cum = np.cumsum(seg_len)
     rows = []
     for i in range(n):
         a = max(0, i - 2); b = i if i >= 2 else min(n - 1, 2)
         v = (ps[b] - ps[a])[:2]
         vt = (ps[min(n - 1, i + 2)] - ps[max(0, i - 2)])[:2] if v2 else v   # truth heading (evaluator only)
         if np.linalg.norm(v) < .2 or np.linalg.norm(vt) < .2:   # standing/turning in place
-            rows.append([np.nan] * 16); continue
+            rows.append([np.nan] * (4 + 6 * (3 if mem else 2))); continue
         fwd = np.array([v[0], v[1], 0.]) / np.linalg.norm(v); right = np.array([fwd[1], -fwd[0], 0.])
         tf = np.array([vt[0], vt[1], 0.]) / np.linalg.norm(vt); tr_ = np.array([tf[1], -tf[0], 0.])
         rel = vc - ps[i]; x, z = rel @ tr_, rel @ tf
@@ -138,10 +151,16 @@ def prepare_one(arg):
         h0 = height(P0); rel0 = P0 - ps[i]; x0, z0 = rel0 @ tr_, rel0 @ tf
         dyn = bool(((np.abs(x0) <= X_HALF) & (z0 >= FWD0) & (z0 <= H) & np.isin(Lc, DYN) & (h0 >= HGT[0]) & (h0 <= HGT[1])).sum() >= MIN_PTS)
         feats = []
-        for arm in (0, 1):   # 0 = true depth no semantics, 1 = noisy depth proxy
-            Q = P_all[i][arm]; rq = Q - ps[i]; xq, zq = rq @ right, rq @ fwd
+        clouds = [(P_all[i][0], ps[i], fwd, right), (P_all[i][1], ps[i], fwd, right)]
+        if mem:
+            win = [j for j in range(i + 1) if cum[i] - cum[j] <= MEM_PATH]
+            vd = (ps_d[b] - ps_d[a])[:2]; fd = np.array([vd[0], vd[1], 0.]) / max(np.linalg.norm(vd), 1e-9)
+            clouds = [clouds[0], (np.concatenate([P_all[j][0] for j in win]), ps[i], fwd, right),
+                      (np.concatenate([drifted(j) for j in win]), ps_d[i], fd, np.array([fd[1], -fd[0], 0.]))]
+        for Q, org, fwd_, right_ in clouds:   # v1/v2: 0 = true depth no semantics, 1 = noisy depth proxy
+            rq = Q - org; xq, zq = rq @ right_, rq @ fwd_
             strip = (np.abs(xq) <= 1.0) & (zq >= 1.0) & (zq <= H)
-            g = np.percentile(Q[strip, 2], 5) if strip.sum() >= 50 else ps[i][2] - 1.5
+            g = np.percentile(Q[strip, 2], 5) if strip.sum() >= 50 else org[2] - 1.5
             hq = Q[:, 2] - g
             c = (np.abs(xq) <= X_HALF) & (zq >= FWD0) & (zq <= H) & (hq >= HGT[0]) & (hq <= HGT[1])
             dh = corridor_d(zq[c], MIN_PTS)
@@ -181,7 +200,7 @@ BW_SPEEDS: dict = {}
 def load(work):
     data = {}
     for root, scene in sessions():
-        z = np.load(Path(work) / ('cache_v2' if V2 else 'cache') / f'{scene}.npz')
+        z = np.load(Path(work) / (CACHE_DIR or ('cache_v2' if V2 else 'cache')) / f'{scene}.npz')
         if int(z['n']) >= 5:
             data[scene] = z['rows']
     return data
@@ -485,6 +504,83 @@ def cmd_cv(work):
     (Path(work) / 'report_v3_cv.json').write_text(json.dumps(report, indent=1, default=float))
 
 
+def cmd_prepare_mem(work):
+    assert V2, 'memory cache uses v2 truth; run with the v2 flag'
+    out = Path(work) / 'cache_mem'; out.mkdir(parents=True, exist_ok=True)
+    args = [(r, s, str(out), True, True) for r, s in sessions()]
+    t0 = time.time()
+    with ProcessPoolExecutor(6) as ex:
+        for k, _ in enumerate(ex.map(prepare_one, args), 1):
+            if k % 25 == 0:
+                print(f'{k}/{len(args)} {time.time()-t0:.0f}s', flush=True)
+    print(f'prepared {len(args)} in {time.time()-t0:.0f}s')
+
+
+def cmd_mem(work):
+    """MEMORY_PROTOCOL_20261116.md: B1 late floor (tau=5.0) and matched operating point, arms 0/1/2, paired session bootstrap."""
+    global CACHE_DIR
+    assert V2
+    CACHE_DIR = 'cache_mem'; BW_SPEEDS.update(bw_speeds()); data = load(work)
+    gi = len(GRIDS['B1']) - 1; assert GRIDS['B1'][gi] == 5.0
+    report = dict(protocol='MEMORY_PROTOCOL_20261116.md', sessions=len(data))
+    for kind in ('blind', 'sighted'):
+        eps_by = {s: episodes(s, r, kind) for s, r in data.items()}
+        tabs = {arm: score_table(eps_by, 'B1', arm) for arm in (0, 1, 2)}
+        tot = {arm: sum(t.values()) for arm, t in tabs.items()}
+        floor = {arm: _summ(tot[arm][gi]) for arm in tabs}
+        cap = floor[0]['late_rate'] + CAP_MARGIN_V2
+        op = {arm: _pick(tot[arm], cap) for arm in tabs}
+        res = dict(floor=floor, cap=cap,
+                   operating={arm: (dict(tau=float(GRIDS['B1'][i]), **_summ(tot[arm][i])) if i is not None else None) for arm, i in op.items()},
+                   curves={arm: [(float(t), *map(float, _rates(tot[arm][k]))) for k, t in enumerate(GRIDS['B1'])] for arm in tabs})
+        # paired bootstrap, arm 1 vs arm 0
+        o0, o1 = (gi if op[0] is None else op[0]), (gi if op[1] is None else op[1])
+        S = list(data); A = np.array([[*tabs[0][s][gi], *tabs[1][s][gi], *tabs[0][s][o0], *tabs[1][s][o1]] for s in S])
+        rng = np.random.default_rng(20261116); dfl, rfa = [], []
+        for _ in range(2000):
+            x = A[rng.integers(len(A), size=len(A))].sum(0)
+            if x[1] > 0:
+                dfl.append((x[0] - x[5]) / x[1])
+            if x[13] > 0 and None not in (op[0], op[1]):
+                rfa.append((x[18] / x[19]) / (x[13] / x[14]))
+        res['bootstrap'] = dict(floor_reduction=(tot[0][gi][0] - tot[1][gi][0]) / tot[0][gi][1],
+                                floor_reduction_ci95=[float(np.percentile(dfl, 2.5)), float(np.percentile(dfl, 97.5))],
+                                fa_ratio_at_operating=(res['operating'][1]['fa_per_km'] / res['operating'][0]['fa_per_km'])
+                                if op[0] is not None and op[1] is not None and res['operating'][0]['fa'] else None,
+                                fa_ratio_ci95=[float(np.percentile(rfa, 2.5)), float(np.percentile(rfa, 97.5))] if rfa else None)
+        # event-level: late in arm 0 rescued by arm 1, and the reverse (tau = 5.0)
+        resc = lost = 0
+        for s in S:
+            for e in eps_by[s]:
+                l0 = per_event_late(e, policy_alerts('B1', 5.0, e, 0)); l1 = per_event_late(e, policy_alerts('B1', 5.0, e, 1))
+                resc += sum(a and not b for a, b in zip(l0, l1)); lost += sum(b and not a for a, b in zip(l0, l1))
+        res['events_rescued_by_memory'], res['events_lost_by_memory'] = int(resc), int(lost)
+        report[kind] = res
+        print(kind, json.dumps(dict(floor={a: (f['late'], f['avoidable'], round(f['late_rate'], 4)) for a, f in floor.items()},
+                                    operating={a: (o['tau'], o['late'], round(o['fa_per_km'], 2)) if o else None
+                                               for a, o in res['operating'].items()},
+                                    boot=res['bootstrap'], rescued=resc, lost=lost), default=float), flush=True)
+    (Path(work) / 'report_mem.json').write_text(json.dumps(report, indent=1, default=float))
+
+
+def per_event_late(ep, alerts):
+    """Late flag for each avoidable event in order (same event logic as score())."""
+    r = ep['rows']; D = r[:, 0]; valid = ep['valid']; haz = valid & (D <= H); alerts = alerts & valid
+    out, i, n = [], 0, len(D)
+    while i < n:
+        if haz[i]:
+            j = i
+            while j + 1 < n and (haz[j + 1] or (j + 2 < n and haz[j + 2] and valid[j + 1])):
+                j += 1
+            seg = slice(i, j + 1); ok = D[seg] >= ep['dreq']
+            if not (V2 and haz[seg].sum() < MIN_EVENT_FRAMES_V2) and ok.any():
+                out.append(not (alerts[seg] & ok).any())
+            i = j + 1
+        else:
+            i += 1
+    return out
+
+
 def weak_mask(ep):
     """v2: hazard frames belonging to runs with < MIN_EVENT_FRAMES_V2 hazard frames (excluded from events and FA)."""
     r = ep['rows']; valid = ep['valid']; haz = valid & (r[:, 0] <= H); w = np.zeros(len(haz), bool)
@@ -504,4 +600,4 @@ def weak_mask(ep):
 
 if __name__ == '__main__':
     V2 = len(sys.argv) > 3 and sys.argv[3] == 'v2'
-    {'prepare': cmd_prepare, 'count': cmd_count, 'run': cmd_run, 'cv': cmd_cv}[sys.argv[1]](sys.argv[2])
+    {'prepare': cmd_prepare, 'count': cmd_count, 'run': cmd_run, 'cv': cmd_cv, 'prepare_mem': cmd_prepare_mem, 'mem': cmd_mem}[sys.argv[1]](sys.argv[2])
