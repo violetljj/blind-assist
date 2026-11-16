@@ -19,8 +19,12 @@ METHODS = ("single", "memory", "person", "expanded")
 
 def restrict(frames, flags):
     # Reference labels are used here for attribution only. The full replay sees every depth point.
-    return [replace(frame, cloud=frame.cloud[keep], weights=frame.weights[keep], person=frame.person[keep])
-            for frame, keep in zip(frames, flags, strict=True)]
+    restricted = []
+    for frame, keep in zip(frames, flags, strict=True):
+        motion = frame.person_motion_at[keep] if frame.person_motion_at is not None else None
+        restricted.append(replace(frame, cloud=frame.cloud[keep], weights=frame.weights[keep],
+                                  person=frame.person[keep], person_motion_at=motion))
+    return restricted
 
 
 def replay_arms(frames, expanded):

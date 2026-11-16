@@ -29,6 +29,12 @@ class Frame:
     plane: np.ndarray
     witnessed_free: Callable[[np.ndarray], np.ndarray]
     person: np.ndarray | None = None
+    person_motion_at: np.ndarray | None = None
+
+
+def follows(previous, current):
+    return (current.row == previous.row + 1 and current.component == previous.component
+            and 0 < current.time - previous.time <= MAX_GAP_S)
 
 
 def corridor_bands(points, origin, plane):
@@ -46,8 +52,7 @@ def replay(frames, keep_trace=False, person_history_s=None):
     result = {}
     previous = None
     for frame in frames:
-        if (previous is None or frame.component != previous.component
-                or frame.row != previous.row + 1 or not 0 < frame.time - previous.time <= MAX_GAP_S):
+        if previous is None or not follows(previous, frame):
             history.clear()
             recent_votes.clear()
         previous = frame
@@ -63,13 +68,17 @@ def replay(frames, keep_trace=False, person_history_s=None):
             past_bands = corridor_bands(past.cloud, frame.origin, frame.plane)
             expired_person = (person_history_s is not None and past.person is not None
                               and frame.time - past.time > person_history_s + 1e-8)
+            if expired_person:
+                expired = past.person
+                if past.person_motion_at is not None:
+                    expired = expired & (past.person_motion_at <= frame.time)
             for heights, band in enumerate(past_bands):
                 occupied = past.weights[band].sum() >= MIN_SOLID_ANGLE
                 raw_memory[heights] |= occupied
                 if person_history_s is not None:
                     retained = occupied
                     if occupied and expired_person:
-                        retained = past.weights[band & ~past.person].sum() >= MIN_SOLID_ANGLE
+                        retained = past.weights[band & ~expired].sum() >= MIN_SOLID_ANGLE
                     person_memory[heights] |= retained
                 candidate = np.flatnonzero(band & kept)
                 if len(candidate):
