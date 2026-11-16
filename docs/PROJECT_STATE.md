@@ -32,7 +32,7 @@
 
 ## 按任务进入
 
-[两条工作线](WORK_LINES.md) · [研究决定](CURRENT_DECISION.md) · [避障研究](../research/active/dtr-r0/CURRENT.md) · [代码地图](CODE_MAP.md) · [硬件路线](GLASSES_HARDWARE_ROUTE.md) · [设备回归](DEVICE_REGRESSION.md) · [提醒与多帧记忆探索（已暂停）](../research/active/walk-alert-r0/STAGE_SUMMARY_20261117.md)
+[两条工作线](WORK_LINES.md) · [研究决定](CURRENT_DECISION.md) · [避障研究](../research/active/dtr-r0/CURRENT.md) · [代码地图](CODE_MAP.md) · [硬件路线](GLASSES_HARDWARE_ROUTE.md) · [设备回归](DEVICE_REGRESSION.md) · [提醒与多帧记忆探索（已关闭）](../research/active/walk-alert-r0/STAGE_SUMMARY_20261117.md)
 
 本页整理前全文保留在 Git `83fbc28a` 同路径；旧实验结果、失败与各自停止规则仍以原报告为准。
 L10 暂停、DTR R2 动态路线保留历史证据（`L10_R0_PAUSED / DTR_R2_DYNAMIC_RETAINED`），不作为当前推进线。
