@@ -37,6 +37,7 @@ def main():
     a.out.mkdir(parents=True, exist_ok=False)
     tally = {f'{arm}|{d}|{m}': {k: [0, 0] for k in KINDS} for arm in ARMS for d in ('head', 'travel') for m in ('single', 'two_of_three')}
     checks = dict(y_axis_world_z=[], missing_history=0, frames=0)
+    band_tally = {key: [[0, 0], [0, 0]] for key in tally}   # added after the run (descriptive): per height band, occupied-travel episodes
     for visit in geom['visits']:
         name = visit['visit']; native_path = a.work / 'hololens/CAB/native_depth' / f'{name}.npz'
         if not native_path.exists():
@@ -71,6 +72,7 @@ def main():
                 if not all((name, row['timestamp']) in have for row in ep):
                     continue
                 hit = {key: False for key in tally}
+                bhit = {key: np.zeros(2, bool) for key in tally}; bpos = np.zeros(2, bool)
                 for row in ep:
                     r = row['depth_row']; _, i, _, _, head, travel, _ = win[r]
                     origin = data['T_wc'][i, :3, 3]
@@ -78,6 +80,8 @@ def main():
                     hist = [f for f in (r - 2, r - 1, r) if usable(f, r)]
                     checks['missing_history'] += 3 - len(hist)
                     mask = (np.asarray(row['travel']) == 1) if kind == 'travel_occupied' else np.ones(2, bool)
+                    if kind == 'travel_occupied':
+                        bpos |= mask
                     for d, vec in (('head', head), ('travel', travel)):
                         per_frame = {}
                         for f in hist:
@@ -89,17 +93,22 @@ def main():
                             votes = sum((per_frame[f][arm] for f in per_frame), np.zeros(2, int))
                             for m, alert in (('single', single), ('two_of_three', votes >= 2)):
                                 hit[f'{arm}|{d}|{m}'] |= bool((alert & mask).any())
+                                bhit[f'{arm}|{d}|{m}'] |= alert & mask
                 for key, v in hit.items():
                     tally[key][kind][0] += int(v); tally[key][kind][1] += 1
+                    if kind == 'travel_occupied':
+                        for b in range(2):
+                            band_tally[key][b][0] += int(bhit[key][b]); band_tally[key][b][1] += int(bpos[b])
     yz = np.array(checks['y_axis_world_z'])
     summary = dict(head_y_axis_world_z_median=float(np.median(yz)), missing_history_frames=checks['missing_history'],
-                   rows=checks['frames'], tally=tally)
+                   rows=checks['frames'], tally=tally, band_tally_descriptive=band_tally)
     (a.out / 'narrow_fov.json').write_text(json.dumps(summary, indent=1), encoding='utf-8')
     print('头坐标 y 轴的世界 z 分量中位（应接近 -1，表示 y 朝下）: %.3f' % summary['head_y_axis_world_z_median'],
           '| 缺历史帧', checks['missing_history'], '/', 3 * checks['frames'])
     print('臂|方向|口径 -> 正前检出 / 头障碍空走廊误报 / 其他空走廊误报')
     for key, t in tally.items():
-        print(f'{key:32s}', ' / '.join(f'{t[k][0]}/{t[k][1]}' for k in KINDS))
+        bt = band_tally[key]
+        print(f'{key:32s}', ' / '.join(f'{t[k][0]}/{t[k][1]}' for k in KINDS), f'| 头部带 {bt[0][0]}/{bt[0][1]} 身体带 {bt[1][0]}/{bt[1][1]}')
 
 
 if __name__ == '__main__':
