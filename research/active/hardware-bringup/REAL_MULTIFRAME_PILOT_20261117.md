@@ -28,3 +28,24 @@ LaMAR 唯一补回的正例只有一个可判抽样时刻（`hl_2022-06-20-14-33
 - [LaMAR 回放](host/real_multiframe_pilot_20261117.py) · [TUM 适配与计分](host/real_multiframe_tum_20261117.py)。LaMAR 输入为 `work/lamar-independent-heading-dev-20261116-codex`，复用其 `runtime/packages` 中的 Embree 绑定。Python 环境为 `E:/codex-tools/tools/venvs/blindassist-torch-gpu`，仅 CPU。TUM 用 `prepare`、`score` 两个入口，参考索引从同目录 `tum_reference.json` 读取。
 - `artifacts.local/work/real-multiframe-pilot-20261117-codex/` 保留短计划、片段参考、逐时刻预测、比较和原始 TUM 归档。TUM 从 [官方发布](https://webshare.cvg.cit.tum.de/g/rgbd/dataset/freiburg3/rgbd_dataset_freiburg3_walking_xyz.tgz) 下载 527,550,055 字节，SHA256 `1459e9488ac0e61a2ec80dfbc35cfb77942f6d8eabded1c8d26a70be650d0e1d`。RGB 配对最大时差 6.4 ms。原始归档可重建下采样缓存。
 - 单帧 LaMAR 输出在原比较的 456 个时刻逐带一致。TUM 三处切断后续帧的前缀结果一致，复算了全部 29 个事件采样。静态标签使用真实深度以外的扫描参考，但动态数据只有一条手持录制，三次穿过共享人物和环境。
+
+## 行人历史过滤
+
+同一批开发片段，继续用原走廊、占据阈值和 2/3 确认。用本地 SegFormer B0 ADE20K 分割每帧的行人，被掩码覆盖的深度点当作历史时只保留 0.25 秒，其余历史点保留 0.80 秒。当前帧照常参与报警。0.25 秒覆盖约 5 Hz 输入的上一帧。
+
+| 对照 | 逐帧 | 原多帧记忆 | 行人历史过滤 |
+| --- | ---: | ---: | ---: |
+| TUM 第一次离场至停报 | 0.20 s | 0.60 s | 0.60 s |
+| TUM 第二次离场至停报 | 0.20 s | 0.40 s | 0.40 s |
+| TUM 第三次离场至停报 | 0.40 s | 1.00 s | 1.00 s |
+| TUM 离场后告警采样 | 4/16 | 10/16 | 10/16 |
+| TUM 人在盒内的告警采样 | 11/13 | 12/13 | 12/13 |
+| LaMAR 108.002494 s 正前障碍 | 漏报 | 头部高度带报警 | 头部高度带报警 |
+
+停报时间从首个标作离场的采样算到首个安静采样。三个 TUM 离场窗口的原始投票和报警位都与原记忆相同，第一次入盒提前约 0.20 秒的报警也保住了。查了支撑尾报的历史源，掩码边缘附近的残留点仍能达标。第二次离场第一帧为例，0.60 秒前的人体高度带证据过滤后还剩 0.00269 sr，阈值为 0.00083 sr。此工作点在这些片段上没有缩短尾报。
+
+LaMAR 只复查原来唯一补回的正例，使用深度行 6–12 及对应的两路前灰图。旧帧的灰图比深度早 16.246–49.245 ms，按各自拍摄时刻的位姿和出厂内外参投影。人工查看灰图见门、门框和平台，分割也未标出深度行人点。决定补回的第 11 行头部带投票有三张历史源独立过线，所用点均投影进至少一张灰图。动态证据覆盖一条 TUM 手持录制和其中三次穿过。所有数字来自离线报警状态。
+
+两臂原结果在 TUM 的 142 个计分时刻逐带复现，原 0.80 秒射线清除臂也一致。关闭时限差时，新臂逐位等于原记忆。三个离场窗口的前缀重放通过，LaMAR 行 10–12 的原始投票及第 12 行的报警复现。离线 CPU，无自采、训练或新增权重。仅为 LaMAR 灰图读取了 5,768,208 字节（含 ZIP 索引）。
+
+[回放脚本](host/real_multiframe_person_20261117.py)接收新工作目录、原小试目录和模型快照路径。TUM 先用原 `prepare` 从原归档生成 `tum_frames.npz`，LaMAR 传 `--lamar` 指向原 LaMAR 工作目录并从新目录的 `lamar-gray/manifest.json` 读配对。复用上节 Python 环境与 Embree 包。SegFormer 快照 `489d5cd81a0b59fab9b7ea758d3548ebe99677da`，权重 SHA256 `6ae39addd01de6b1b8bde2cf677d43a5cd733424b8d186de3f95d1c51fee23f9`。两套比较 JSON、逐帧掩码和尾报点图保存在 `artifacts.local/work/real-multiframe-person-20261117-codex/`。

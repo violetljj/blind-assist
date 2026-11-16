@@ -2,6 +2,7 @@
 
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
 | --- | --- | --- | --- | --- |
+| 2026-11-17 | `host/real_multiframe_person_20261117.py` | EXPLORE，复用 TUM 三次离场和 LaMAR 唯一记忆补回片段。SegFormer 只把行人旧点保留时间从 0.80 秒缩到 0.25 秒 | TUM 逐帧／原记忆／过滤后离场告警 4／10／10 帧（16 帧），盒内 11／12／12 帧（13 帧）。LaMAR 正前头部高度带仍补回。新增 Range 5.77 MB，零自采 | 三次停报时刻都未提前，行人掩码周边残留足以达标。[片段结果与复现](REAL_MULTIFRAME_PILOT_20261117.md#行人历史过滤) |
 | 2026-11-17 | `host/real_multiframe_pilot_20261117.py`、`host/real_multiframe_tum_20261117.py` | EXPLORE，三条已消费 LaMAR 原生深度+位姿，一条 TUM 真人 RGB-D，逐帧／0.8 秒历史／历史加射线清除，零自采 | LaMAR 正前漏报 15→14/32，侧向误报 15/20，其他空段误报 5→7/34；TUM 人离开后告警 4→10/16，三次延长 0.20–0.60 秒，清除臂各项相同。新增下载 527.55 MB | 记忆只补回一个静态片段并增加持续误报。同批基线逐带复核和前缀检查通过。[数据与配对结果](REAL_MULTIFRAME_PILOT_20261117.md) |
 | 2026-11-16 | `host/lamar_locked_alert_validation_20261116.py` | EXPLORE，复盘旧增漏一段及两段目标误报，冻结整条撤警 15/36；用 CAB 第二独立扫描一次核验原第 4 条录制 | 旧漏报方向错 15.2°/25.6°，BODY 空点 13/9；第 4 条 483 时刻，66 可判，417 未知。目标误报 2→2/2，漏报 3→3/7，零撤警、零自采 | 旧例可用因果证据区分，整条规则未在新录制复现收益。[逐案与冻结对照](LAMAR_FOURTH_REPLAY_20261116.md) |
 | 2026-11-16 | `host/lamar_motion_gate_dev_20261116.py` | EXPLORE，已用 LaMAR 3 录制，27 个运动拒绝时刻及原占据对照，原生因果射线和头向时序不变 | 首因偏角超限 17、不稳 6、偏角小 3、低速 1。目标误报头向/历史 .8 秒中位误差 32.4°/12.8°，正报 10.2°/25.3°。整条撤警同批误报 15→13/20、漏报 15/32 持平；留一录制选门槛新增漏报 1 段。零下载自采 | 运动上限单独放宽无收益，整条撤警候选存在样本内机会，迁移待定。[逐项与工作点](LAMAR_MOTION_GATE_DEV_20261116.md) |

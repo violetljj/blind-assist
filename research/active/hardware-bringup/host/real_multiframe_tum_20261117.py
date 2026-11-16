@@ -93,7 +93,7 @@ def contact_sheet(images, time, output, indices):
     sheet.save(output)
 
 
-def tum_frames(data):
+def tum_frames(data, person_masks=None):
     time, depth_png = data["time"], data["depth_png"]
     locations, rotations = data["locations"], data["rotations"]
     h, w = depth_png.shape[1:]
@@ -119,17 +119,18 @@ def tum_frames(data):
             observed = image[np.clip(y, 0, h - 1), np.clip(x, 0, w - 1)]
             return inside & (observed > z + .08) & (observed <= 5.46)
 
-        yield Frame(i, float(time[i]), 0, cloud, weights[valid], origin, plane, clear)
+        person = person_masks[i, ::STRIDE, ::STRIDE][valid] if person_masks is not None else None
+        yield Frame(i, float(time[i]), 0, cloud, weights[valid], origin, plane, clear, person)
 
 
-def score(predictions, intervals):
+def score(predictions, intervals, arms=ARMS):
     summary = []
     for interval in intervals:
         selected = [predictions[i] for i in range(interval["start"], interval["end"] + 1) if i in predictions]
         times = np.array([p["time"] for p in selected])
-        alarm = np.array([p["alarm"] for p in selected], dtype=bool).reshape(-1, 3, 2).any(axis=2)
+        alarm = np.array([p["alarm"] for p in selected], dtype=bool).reshape(-1, len(arms), 2).any(axis=2)
         counts = {}
-        for i, method in enumerate(ARMS):
+        for i, method in enumerate(arms):
             active = np.flatnonzero(alarm[:, i])
             # A frame after the first inactive one should not be included in the initial tail.
             quiet = np.flatnonzero(~alarm[:, i])

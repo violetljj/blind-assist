@@ -28,6 +28,7 @@ class Frame:
     origin: np.ndarray
     plane: np.ndarray
     witnessed_free: Callable[[np.ndarray], np.ndarray]
+    person: np.ndarray | None = None
 
 
 def corridor_bands(points, origin, plane):
@@ -37,7 +38,9 @@ def corridor_bands(points, origin, plane):
     return tuple(inside & (down >= low) & (down < high) for low, high in BANDS)
 
 
-def replay(frames, keep_trace=False):
+def replay(frames, keep_trace=False, person_history_s=None):
+    if person_history_s is not None and not 0 <= person_history_s <= HISTORY_S:
+        raise ValueError("Person history must be between zero and the original history duration")
     history = deque()
     recent_votes = deque(maxlen=3)
     result = {}
@@ -55,17 +58,31 @@ def replay(frames, keep_trace=False):
         single = np.array([frame.weights[band].sum() >= MIN_SOLID_ANGLE for band in now_bands])
         raw_memory = single.copy()
         cleared_memory = single.copy()
+        person_memory = single.copy()
         for past, kept in history:
             past_bands = corridor_bands(past.cloud, frame.origin, frame.plane)
+            expired_person = (person_history_s is not None and past.person is not None
+                              and frame.time - past.time > person_history_s + 1e-8)
             for heights, band in enumerate(past_bands):
-                raw_memory[heights] |= past.weights[band].sum() >= MIN_SOLID_ANGLE
+                occupied = past.weights[band].sum() >= MIN_SOLID_ANGLE
+                raw_memory[heights] |= occupied
+                if person_history_s is not None:
+                    retained = occupied
+                    if occupied and expired_person:
+                        retained = past.weights[band & ~past.person].sum() >= MIN_SOLID_ANGLE
+                    person_memory[heights] |= retained
                 candidate = np.flatnonzero(band & kept)
                 if len(candidate):
                     free = frame.witnessed_free(past.cloud[candidate])
                     kept[candidate[free]] = False
                     cleared_memory[heights] |= past.weights[candidate[~free]].sum() >= MIN_SOLID_ANGLE
 
-        recent_votes.append(np.array([single, raw_memory, cleared_memory]))
+        arms = [single, raw_memory, cleared_memory]
+        if person_history_s is not None:
+            if np.any(single & ~person_memory) or np.any(person_memory & ~raw_memory):
+                raise AssertionError("Person history changed current evidence or added support")
+            arms.append(person_memory)
+        recent_votes.append(np.array(arms))
         if len(recent_votes) == 3:
             votes = np.count_nonzero(recent_votes, axis=0) >= 2
             if np.any(votes[0] & ~votes[2]) or np.any(votes[2] & ~votes[1]):
@@ -79,7 +96,7 @@ def replay(frames, keep_trace=False):
     return result
 
 
-def lamar_frames(prepared, native):
+def lamar_frames(prepared, native, person_mask_for_cloud=None):
     keys = ("T_local", "ts", "local_down", "component", "depth_index", "depth_timestamp_us")
     with np.load(prepared, allow_pickle=False) as source:
         data = {key: source[key] for key in keys}
@@ -101,8 +118,9 @@ def lamar_frames(prepared, native):
         def clear(points, image=depth, pose=depth_pose):
             return sensor.clear_mask(points, image, pose)
 
+        person = person_mask_for_cloud(int(row), int(stamp), cloud) if person_mask_for_cloud else None
         yield Frame(int(row), int(stamp) * 1e-6, int(data["component"][index]), cloud, weights,
-                    head_pose[:3, 3], plane, clear)
+                    head_pose[:3, 3], plane, clear, person)
 
 
 def evaluate_lamar(labels, predictions):
