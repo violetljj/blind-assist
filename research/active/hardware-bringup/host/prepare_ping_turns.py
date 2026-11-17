@@ -68,14 +68,14 @@ def route_vertices(points):
     return vertices
 
 
-def turn_corners(points):
+def turn_corners(points, *, min_angle=60.0, max_angle=120.0):
     legs = np.diff(points, axis=0)
     angles = bearings(legs)
     lengths = np.linalg.norm(legs, axis=1)
     corners = []
     for index in range(1, len(points) - 1):
         turn = float(wrap(angles[index] - angles[index - 1]))
-        if 60 <= abs(turn) <= 120 and min(lengths[index - 1:index + 1]) >= MIN_LEG_M:
+        if min_angle <= abs(turn) <= max_angle and min(lengths[index - 1:index + 1]) >= MIN_LEG_M:
             corners.append(Corner(
                 index, *points[index],
                 float(angles[index - 1]), float(angles[index]), turn,
@@ -170,7 +170,9 @@ def deduplicate(participant):
     return participant
 
 
-def prepare_person(person, participant, routes, corners):
+def prepare_person(person, participant, routes, corners, *, cue_directions=None):
+    if cue_directions is None:
+        cue_directions = MAJOR_CUES
     validate_participant(participant)
     participant = deduplicate(participant)
     calibration = basis_calibration(participant, routes[1, -1])
@@ -184,7 +186,7 @@ def prepare_person(person, participant, routes, corners):
     rejections = []
     clips = []
     seen = set()
-    for index in np.flatnonzero(np.isin(codes, list(MAJOR_CUES))):
+    for index in np.flatnonzero(np.isin(codes, list(cue_directions))):
         start = int(cue_times[index])
         cue = str(codes[index])
         rejection = {"person": person, "cue_index": int(index), "cue": cue, "timestart_ms": start}
@@ -202,7 +204,7 @@ def prepare_person(person, participant, routes, corners):
             rejections.append(dict(rejection, reason="before_calibration_end"))
             continue
         x, y = participant["logposition"][pose_index]
-        match, reason = find_corner(corners[(route, floor)], x, y, MAJOR_CUES[cue])
+        match, reason = find_corner(corners[(route, floor)], x, y, cue_directions[cue])
         if match is None:
             rejections.append(dict(rejection, reason=reason))
             continue

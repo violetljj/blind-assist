@@ -184,3 +184,40 @@ python -B "$src/ping_incoming_line_replay.py" --prior $prior --output-dir "$foll
 $env:MPLCONFIGDIR = "$follow/matplotlib-cache"
 python -B "$src/plot_turn_extension_examples.py" --validation-root 'artifacts.local/work/mobilio-turn-confirmation-20261117' --extension-root $prior --comparison "$follow/incoming-line/paired.csv" --output "$follow/turn_followthrough.png"
 ```
+
+### 对齐真实提示与独立位置的公开数据
+
+EXPLORE。寻找实际播放或系统记录发出的转弯或前进指令、当时设备位置、独立位置和计划路线能配到同一时间段的下载文件。逐个检查已发布件，明确项目论文记录与公开件差别。不同人员或场景才用于跨来源复核。作为可立即执行的补充，另跑 PING 原主要左右转记录未用的单独斜转、微转语音。候选取相同方向、转角大于 22.5° 且至多 60° 的拐角，匹配距离、样本年龄、路段长度及被后续指令截断规则和上轮一致。对已用拐角和评估窗口重叠的事件分别记账。以每次转弯为单位，依然使用指令后前 12 s、每 0.5 s 检查、最近两秒至少前进 0.6 m、过拐角至少 1 m、横向差至多 1.5 m。比较同一批试次的正确、过早、已发但未标、静默与正确时点。保留角度加位置、固定 6 s、原系统前进语音等对照。用数据缺项直接决定跨来源验证可否执行，拒绝把按参考轨迹反推的时刻当成实际提示。
+
+**公开原件核查。** 目前能拿到三路对齐数据的仍是 PING。其 `logposition` 来自在线定位，`gtpos` 以视频人工标注位置为准，`instructions.timestart/timeend` 记录系统语音指令时点。将 EnvFactors 的 1212 个 `speak` 行与 PING 按参与者及先后配对，1212 条时间在按小时取余的共同基准上相差至多 51 ms。1021 条类别文本相同，其余 182 条是 `Misc` 与 `Approaching` 对应、9 条是 `Forward TurRight` 拼写差异。CSV 按 0.1 s 舍入，两份发布共用原事件记录和队列。这核对了日志时间及标签。录音波形、耳机实际播放延迟和论文分析使用的对准声振时点仍缺。[PING 数据字典](https://github.com/eshed1/PING/tree/e4d07e10507fe5482e548009ea89a88c0bf9a771) · [EnvFactors 发布](https://envfactors.github.io/) · [对准反馈分析](https://arxiv.org/html/1804.04118v2#a5)
+
+| 外部来源 | 核对到的公开件与缺项 |
+| --- | --- |
+| All the Way There and Back | 论文 §5.3 有手机定位和同步视频抽取的转弯位置，也分析通知。找到论文和轨迹图，未找到逐条位置与通知时间文件。[论文 §5.3](https://pmc.ncbi.nlm.nih.gov/articles/PMC11758990/) |
+| StreetNav | 论文有系统日志和独立视频路线标注。官方项目发布项是论文和演示，未找到访次中可对齐的定位、标注和提示日志。[论文](https://arxiv.org/html/2310.00491) · [官方发布页](https://ceal.cs.columbia.edu/streetnav/) |
+| RouteNav | 开放补件列一段实验视频，论文定位图中的 GPS、RoNIN 和融合路径来自同一定位流程。未找到可把独立位置接到设备及提示时刻的逐访次记录。[论文和补件](https://pmc.ncbi.nlm.nih.gov/articles/PMC10691587/) |
+| NavCog 反应差异，12 人 | 论文使用独立的朝向反馈事件。PMC 只列 PDF，本次未取到正文。ACM 列 ZIP，直接请求返回 403，内容无法确认。[论文和补件](https://pmc.ncbi.nlm.nih.gov/articles/PMC6708581/) · [ACM 入口](https://doi.org/10.1145/3264941) |
+| YanAR | 固定版源码归档实读。设备 PDR、混合定位、参考轨迹各 40 行。定位 CSV 只有时间、路径、条件、x、z，另一个 CSV 是 30 行可用性统计。缺实际提示时标及逐人定位会话关联。[固定版文件](https://github.com/yanafrica/YanAR/tree/a7051149c60067ad57b9b1c05f2e88fc58796ee8/evaluation_data) |
+| ASSIST | 下载并检查 36225 B 官方 DOCX，内容为传感方法、问卷和无 app 条件指令示例。缺逐次日志。[补件 DOI](https://doi.org/10.6084/m9.figshare.12906822) |
+| CoRL 导览机器人 | 论文记录盲人或低视力者与机器人的 Vicon 轨迹。所指补件返回 403，公开 arXiv 源包 47 项均为论文和图件，无法核对另外的在线位置及提示流。[官方项目](https://delico123.github.io/corl23-transforming/) · [论文](https://arxiv.org/html/2306.14055) |
+| 维也纳步行导航 | 论文用 GNSS、耳机语音和实验手机记时。公开归档实读只有变量字典和说明，无逐时轨迹或播报。[归档文件](https://zenodo.org/records/4298703) |
+
+**已跑的补充检验。** 117 条单独斜转或微转语音中，53 条找到符合条件的计划转弯，都是左／右斜转（27／26），实际计划角 40.19°～52.13°，来自 6 个路口、原 9 位参与者。余 64 条未找到 4 m 内的合适拐角，其中包括全部 23 条微调语音。53 条均具备同一评估时点的设备和视频位置，44 条有至少一个满足前进条件的时刻。新旧转弯的评估区间无重叠，逐槽核对的设备端点及指令锚也无共享。一对相邻拐弯共用两条视频插值样本。4 个候选计分时点的插值上界跨越同路线下一条转向，去除后各规则首次判分和前进覆盖数均相同。使用相同参与者、地图、定位和定向配准。
+
+| 同 53 次斜角转弯 | 正确 | 过早 | 已发出但无标签 | 静默（其中已有前进） |
+| --- | ---: | ---: | ---: | ---: |
+| 固定等 6 s | 21 | 31 | 1 | 0（0） |
+| 只看角度 | 2 | 51 | 0 | 0（0） |
+| 角度加当前位置 | 22 | 23 | 0 | 8（5） |
+| 角度加位置与已观察到的前进 | 22 | 22 | 0 | 9（5） |
+| 视频位置替换诊断 | 31 | 9 | 1 | 12 |
+
+相对等 6 s，原出弯确认方法多 1 次正确（新对 6、原本正确丢 5）、少 9 次过早，16 次共同正确中位早 0.75 s，有 5 次已有前进但始终未发出。按人计，5 人过早减少、4 人相同。两秒位移条件相对于只看角度与位置，只少 1 次过早，正确数不变。5 次漏项在首个有前进证据且设备采样及时的时刻均卡在当前位置条件，22 次过早中的 16 次也不满足视频位置条件。仅用视频替换当前位置，保留设备两秒位移和角度，正确／过早由 22／22 变成 31／9，原漏项补回 1 次。这一诊断使用了判分位置。
+
+45/53 个窗口可核到原系统前进语音。首条语音中位于转弯指令后 2.1 s，播报时均未达到“已在下一段路前进”定义，在统一网格复核中有 1 次达到。这测量的是给行动指令与拥有完成证据之间的时间关系。研究结论保留为同队列的几何扩展，跨来源验证因没有符合全部字段的新增公开记录而未运行。
+
+按下列入口复跑 PING。逐次评估时间和排除原因在 `ping-minor/trials.json`，原语音及逐人统计在 `ping-minor/paired.csv` 与 `summary.json`。本地 `navcog/small_turn_context_verification.json` 保存独立逐槽校验、视频端点替换和重叠检查，核查脚本随回执。其他原件清单和状态分别留在 `yanar/`、`assistive/` 与 `cross-domain/`。
+
+```powershell
+python -B research/active/hardware-bringup/host/ping_minor_turn_replay.py --prior artifacts.local/work/mobilio-turn-extension-20261117 --output-dir artifacts.local/work/aligned-public-turns-20261117/ping-minor
+```
