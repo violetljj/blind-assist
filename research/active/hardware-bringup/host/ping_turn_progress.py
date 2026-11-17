@@ -250,7 +250,10 @@ def status_window_end(clip, online):
     return stop
 
 
-def status_events(clip, online, evaluated, vertices, calibration, *, position_shift=None, position_perturbation=False):
+def status_events(
+    clip, online, evaluated, vertices, calibration, *,
+    position_shift=None, position_perturbation=False, position_correction=None, correct_displacement=False,
+):
     """Run the prompts from online observations, then look up video labels."""
     origin, end = vertices[clip["corner_index"]:clip["corner_index"] + 2]
     length = float(np.linalg.norm(end - origin))
@@ -294,10 +297,12 @@ def status_events(clip, online, evaluated, vertices, calibration, *, position_sh
                 position["forward_m"] - MIN_OUTBOUND_M, length - position["forward_m"],
                 CENTERLINE_M - abs(position["cross_m"]),
             )
-        if position_shift is not None:
-            # A turn-local translation changes absolute placement but cancels in displacement.
-            position["forward_m"] += float(position_shift @ tangent)
-            position["cross_m"] += float(tangent[0] * position_shift[1] - tangent[1] * position_shift[0])
+        correction = position_shift if position_correction is None else position_correction[current]
+        if correction is not None:
+            position["forward_m"] += float(correction @ tangent)
+            position["cross_m"] += float(tangent[0] * correction[1] - tangent[1] * correction[0])
+            if correct_displacement and position_correction is not None:
+                position["advance_m"] += float((correction - position_correction[previous]) @ tangent)
         in_leg = (
             MIN_OUTBOUND_M <= position["forward_m"] <= length and abs(position["cross_m"]) <= CENTERLINE_M
         )
