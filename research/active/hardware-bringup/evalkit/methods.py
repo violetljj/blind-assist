@@ -160,10 +160,11 @@ class Methods:
             self.last_fit[key] = sc
         return z if sc is None else z * sc
 
-    def hybrid_out(self, f, dh=0., name='hybrid_out'):
-        """Outdoor-limited ToF scale if >= 5 zones, else the model's own ground scale, else the sequence's last scale."""
+    def hybrid_out(self, f, dh=0., name='hybrid_out', outdoor=True):
+        """Outdoor-limited ToF scale if >= 5 zones, else the model's own ground scale, else the sequence's last scale.
+        outdoor=False (hybrid_in, DIRECTION_A_INDOOR_ADT_DEV_20261118): the same chain with the ideal ToF emulation."""
         z = self._unidepth_cached(f); key = (name, f.dataset, f.seq)
-        sc, src = self._tof_scale(f, True), 'tof'
+        sc, src = self._tof_scale(f, outdoor), 'tof'
         if sc is None:
             sc, src = self._floor_scale(f, dh), 'floor'
         if sc is None:
@@ -186,6 +187,15 @@ class Methods:
 
     def hybrid_out_hp10(self, f):
         return self.hybrid_out(f, .10, 'hybrid_out_hp10')
+
+    def hybrid_in(self, f):
+        return self.hybrid_out(f, 0., 'hybrid_in', outdoor=False)
+
+    def hybrid_in_hm5(self, f):
+        return self.hybrid_out(f, -.05, 'hybrid_in_hm5', outdoor=False)
+
+    def hybrid_in_hp5(self, f):
+        return self.hybrid_out(f, .05, 'hybrid_in_hp5', outdoor=False)
 
     def tof_dav2s_out(self, f):
         return self.tof_dav2s(f, outdoor=True)

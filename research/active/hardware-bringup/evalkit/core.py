@@ -118,7 +118,8 @@ def self_check(frames, rng, height_range=None):
         a = _largest_plane(d[ok] * z[ok, None], down, rng)
         b = _largest_plane(d[ok] * (z[ok] / dn[ok])[:, None], down, rng)    # as if the file held range instead
         if a and b:
-            q_z.append(a[0]); q_r.append(b[0]); hts.append((a[2], f.mount))
+            q_z.append(a[0]); q_r.append(b[0])
+            hts.append((f.extra['ground'][1] if 'ground' in f.extra else a[2], f.mount))    # exact floor when the dataset has one
             if f.down is not None:
                 ang.append(a[1])
     mounts = sorted({m for _, m in hts})
@@ -160,7 +161,10 @@ def regions(f, rng):
     d = rays(f.K, h, w); z = f.ref_depth.reshape(-1); valid = np.isfinite(z) & (z > .3) & (z < 10)
     pts = d * np.where(valid, z, 0)[:, None]
     # device gravity: normal within 15 deg; without it, the camera y axis is only a loose prior (35 deg, camera pitch)
-    gp = (ground_plane(pts[valid], f.down, rng) if f.down is not None else ground_plane(pts[valid], np.array([0, 1., 0]), rng, max_deg=35.))
+    if 'ground' in f.extra:          # dataset with an exact floor (ADT: scene floor + GT pose), DIRECTION_A_INDOOR_ADT_DEV_20261118
+        gp = f.extra['ground']
+    else:
+        gp = (ground_plane(pts[valid], f.down, rng) if f.down is not None else ground_plane(pts[valid], np.array([0, 1., 0]), rng, max_deg=35.))
     out = dict(valid=valid, near=valid & (z >= NEAR[0]) & (z <= NEAR[1]), ground=gp)
     if gp is None:
         return out

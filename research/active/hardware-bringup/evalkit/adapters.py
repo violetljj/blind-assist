@@ -87,6 +87,53 @@ def sanpo_head_noseg(keep='file'):
             yield f
 
 
+def _adt_floor_y(base, seq, cam_y, dep, down, K):
+    """Scene floor height of one ADT sequence from GT depth: per sampled frame the lowest horizontal surface below the
+    camera with >= 2000 points within +-3 cm (1 cm bins along gravity), floor_y = cam_y - that distance; the sequence
+    value is the median of the candidates within 0.10 m of their 5th percentile (tables and beds sit above the floor).
+    Cached in <seq>.floor.json."""
+    cache = base / f'{seq}.floor.json'
+    if cache.exists():
+        return json.loads(cache.read_text())['floor_y']
+    from core import rays
+    cand = []
+    for i in range(0, len(cam_y), 4):
+        z = dep[i].astype(np.float32).reshape(-1) / 1000.; ok = (z > .3) & (z < 10)
+        h = (rays(np.asarray(K), *dep[i].shape)[ok] * z[ok, None]) @ down[i].astype(float)
+        hist, edges = np.histogram(h[h > .5], bins=np.arange(.5, 3., .01))
+        sup = np.convolve(hist, np.ones(7, int), 'same')
+        good = np.flatnonzero(sup >= 2000)
+        if len(good):
+            j = good[-1]; j = max(range(max(0, j - 6), min(len(hist), j + 1)), key=lambda q: hist[q])
+            cand.append(float(cam_y[i]) - (edges[j] + .005))
+    cand = np.array(cand); low = np.percentile(cand, 5)
+    floor_y = float(np.median(cand[cand <= low + .10]))
+    cache.write_text(json.dumps(dict(floor_y=floor_y, candidates=len(cand), rule=_adt_floor_y.__doc__.split('Cached')[0].strip())))
+    return floor_y
+
+
+def adt_apartment(block_s=30., min_cam_h=1.3):
+    """ADT Apartment sequences (local, previously used by other diagnostics): wide pinhole 512x512 F 256 at 2 Hz from
+    host/adt_direction_a_prep_20261118.py, ground-truth depth, gravity from the GT device pose, exact floor (Frame.extra
+    ground). Frames with the camera < min_cam_h above the floor (seated) are dropped. Non-commercial licence."""
+    base = A / 'work/direction-a-adt-20261118/prep'
+    for meta in sorted(p for p in base.glob('*.json') if not p.name.endswith('.floor.json')):
+        m = json.loads(meta.read_text()); fx, fy, cx, cy = m['K']
+        with np.load(base / f"{m['sequence']}.npz") as d:
+            rgb, dep, down, cam_y, ts = d['rgb'], d['depth'], d['down'], d['cam_y'], d['t_ns']
+        Kmat = np.array([[fx, 0, cx], [0, fy, cy], [0, 0, 1.]])
+        floor_y = _adt_floor_y(base, m['sequence'], cam_y, dep, down, Kmat)
+        for i in range(len(ts)):
+            if min_cam_h is not None and cam_y[i] - floor_y < min_cam_h:      # seated (not the walking use case), rule set before the run
+                continue
+            z = dep[i].astype(np.float32) / 1000.; z[z <= 0] = np.nan
+            t = (int(ts[i]) - int(ts[0])) / 1e9
+            yield Frame('adt_apartment', m['sequence'], i, t, cv2.cvtColor(rgb[i], cv2.COLOR_RGB2BGR),
+                        np.array([[fx, 0, cx], [0, fy, cy], [0, 0, 1.]]), z, 'ground_truth', down[i].astype(float), None,
+                        'head', block=f"{m['sequence']}:{int(t // block_s)}",
+                        extra=dict(ground=(-down[i].astype(float), float(cam_y[i] - floor_y))))
+
+
 def sanpo_chest_seg():
     return _sanpo(A / 'downloads/sanpo-real-chest-seg-20261117', 'sanpo_chest_seg', 'camera_chest')
 
@@ -109,4 +156,4 @@ def aria_gen2_walks(step=15, block_s=30.):
 
 ADAPTERS = {'sanpo_real_local': sanpo_real_local, 'aria_gen2_walks': aria_gen2_walks, 'sanpo_head_seg': sanpo_head_seg,
             'sanpo_chest_seg': sanpo_chest_seg, 'sanpo_head_seg_autosky': sanpo_head_seg_autosky,
-            'sanpo_head_noseg': sanpo_head_noseg}
+            'sanpo_head_noseg': sanpo_head_noseg, 'adt_apartment': adt_apartment}

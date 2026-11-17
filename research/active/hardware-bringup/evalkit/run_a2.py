@@ -29,14 +29,14 @@ def known_eye_heights(gen):
     for f in gen():
         z = f.ref_depth.reshape(-1); ok = np.isfinite(z) & (z > .3) & (z < 10)
         pts = core.rays(f.K, *f.ref_depth.shape)[ok] * z[ok, None]
-        gp = (core.ground_plane(pts, f.down, rng) if f.down is not None
+        gp = (f.extra['ground'] if 'ground' in f.extra else core.ground_plane(pts, f.down, rng) if f.down is not None
               else core.ground_plane(pts, np.array([0, 1., 0]), rng, max_deg=35.))
         if gp is not None:
             hs.setdefault(f.seq, []).append(gp[1])
     return {k: float(np.median(v)) for k, v in hs.items()}
 
 
-def evaluate(name, M, rng, out, smoke=0, methods=A2_METHODS, scaled=SCALED):
+def evaluate(name, M, rng, out, smoke=0, methods=A2_METHODS, scaled=SCALED, intake_skip=()):
     gen0 = adapters.ADAPTERS[name]
     eye = known_eye_heights(gen0)
 
@@ -48,6 +48,8 @@ def evaluate(name, M, rng, out, smoke=0, methods=A2_METHODS, scaled=SCALED):
             yield f
     n_all = sum(1 for _ in gen()); k = max(1, n_all // 20)
     sc = core.self_check([f for i, f in enumerate(gen()) if i % k == 0][:20], rng)
+    if intake_skip:                  # declared per dataset before the run (e.g. ADT: exact floor replaces the planarity check)
+        sc['skipped'] = list(intake_skip); sc['pass'] = all(v for k, v in sc['checks'].items() if k not in intake_skip)
     entry = dict(self_check=sc, eye_heights=eye)
     print(name, 'self-check pass', sc['pass'], 'eye heights median', float(np.median(list(eye.values()))), flush=True)
     if not sc['pass']:
