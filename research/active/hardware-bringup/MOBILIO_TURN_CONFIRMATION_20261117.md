@@ -327,3 +327,34 @@ EXPLORE。逐条复盘半秒稳定条件下仍判过早且提前的四次，和�
 $work = 'artifacts.local/work'
 python -B research/active/hardware-bringup/host/ping_position_transfer.py --run-dir "$work/ping-localization-20261117" --prior "$work/mobilio-turn-extension-20261117" --minor "$work/aligned-public-turns-20261117/ping-minor/trials.json" --timing-output-dir "$work/ping-compensation-timing-20261117/yaw-replay"
 ```
+
+### 出口段之后同向直行时的补偿
+
+EXPLORE。逐条核对 P4 #68、P7 #71 和前面四次补偿让过早确认提前的情况。P4、P7 所在的两条短出口段在终点之后还有完全同向的直线段。视频显示上轮原定位的首发已走过该分段点，朝向仍可能保持稳定。四次过早提前里，P1 #48 与 P6 #58 的出口段终点继续转弯，P8 #130 与 P9 #125 已在规划路线的末段。候选使用发出前可用的规划折线。如果下一地图段完全同向共线，沿用稳定半秒的补偿条件。如果没有同向接续，沿用上一轮的朝向即将出带条件。整个回放保持原位置、两秒前进和朝向判据，以及原视频评分的有限出口段。此前按同一地图用过的 131 次主转和 53 次斜转各回放一次，核对 P2 #7、P3 #66、P4 #68、P7 #71 全部正确，两个组相对原定位与上一轮既无新增过早，也无仍判过早者提前。共线条件来自已知案例，未扫描其他角度门槛。CPU，复用原数据。
+
+| 转弯 | 出口段及下段 | 补偿候选时点与视频沿线位置 | 原定位首发与视频沿线位置 | 本轮首发 |
+| --- | --- | --- | --- | --- |
+| P4 #68 | 4.045 m，接同向直行 11.831 m | 4.5 s，3.434 m，仍在出口段 | 6.5 s，4.877 m，超出段末 0.831 m | **4.5 s 正确** |
+| P7 #71 | 3.634 m，接同向直行 9.750 m | 8.5 s，3.458 m，仍在出口段 | 9.5 s，4.127 m，超出段末 0.493 m | **8.5 s 正确** |
+| P1 #48 | 3.738 m，接 90° 转弯 | 8.5 s，4.003 m，已超出段末 | 9.0 s，4.259 m，已超出段末 | 9.0 s，仍判过早 |
+| P6 #58 | 7.216 m，接 90° 转弯 | 6.0 s，0.158 m，未进 1 m | 6.5 s，0.470 m，未进 1 m | 6.5 s，仍判过早 |
+| P8 #130 | 33.339 m，规划末段 | 5.5 s，横偏 2.338 m | 6.0 s，横偏 2.357 m | 6.0 s，仍判过早 |
+| P9 #125 | 33.339 m，规划末段 | 6.5 s，横偏 2.410 m | 7.5 s，横偏 2.375 m | 7.5 s，仍判过早 |
+
+用同向接续的局部地图结构选门槛，适用 26/131 次主转、9/53 次斜转，分别来自 3 个和 1 个路线转角。四个旧对照的 736 个判定、时间与前进机会数逐条复现。十个关键案例以原候选时间和最终首发时间为界截断设备流，并替换视频坐标复核发出时间。继承原路线、楼层、窗口截断和每人首段朝向配准。
+
+| 组别 | 原定位正确／过早 | 仅朝向出带时补偿 | 加入直行接续后 | 相对原定位补漏／新增过早／过早提前 |
+| --- | ---: | ---: | ---: | ---: |
+| 主转弯 131 次 | 53／37 | 55／37 | **57／35** | **2／0／0** |
+| 斜转 53 次 | 22／22 | 22／22 | **22／22** | **0／0／0** |
+
+主转 P2 #7、P3 #66 的两次补漏仍为 9.0 s、11.5 s。此前过早的 P4 #68、P7 #71 恢复为正确。相对原定位和上一轮，主转仍判过早的 35 次和斜转仍判过早的 22 次首发时刻逐条相同。原本正确的试次均仍正确，其中主转 6 次、斜转 3 次提前，两组共同正确的中位时间差为 0 s。
+
+另对 P4、P7 的原定位首发时点做远端范围诊断。如果把两条同向直线接成同一段，视频位置都符合原横向与前进条件，也在延长后的沿线范围内。只按原有限段评分的两例正确增量，取决于地图分段。在连续路段的解释下，两例分别早 2.0 s 和 1.0 s 发出正确确认。整批仍是已用的 9 人开发样本。
+
+`artifacts.local/work/ping-compensation-short-turn-20261117/case-agent/waypoint_case_trace.json` 与 `waypoint_focal.csv` 保存逐条记录。全量结果在 `continuation-replay/summary.json` 和 `paired.csv`。
+
+```powershell
+$work = 'artifacts.local/work'
+python -B research/active/hardware-bringup/host/ping_position_transfer.py --run-dir "$work/ping-localization-20261117" --prior "$work/mobilio-turn-extension-20261117" --minor "$work/aligned-public-turns-20261117/ping-minor/trials.json" --continuation-output-dir "$work/ping-compensation-short-turn-20261117/continuation-replay"
+```

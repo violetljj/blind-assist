@@ -27,11 +27,21 @@ ARMS = (
 )
 DWELL_RESCUE = "heading_dwell_rescue"
 TIMED_RESCUE = "heading_exit_rescue"
+CONTINUATION_RESCUE = "heading_straight_continuation_rescue"
 SCORING_OUTCOMES = ("correct", "early", "unlabeled", "silent")
 
 
 def digest(path):
     return sha256(path.read_bytes()).hexdigest()
+
+
+def continues_straight(vertices, turn, tangent):
+    """Check whether the next mapped leg continues in the same direction."""
+    if turn + 2 >= len(vertices):
+        return False
+    next_leg = vertices[turn + 2] - vertices[turn + 1]
+    length = np.linalg.norm(next_leg)
+    return length > 0 and np.allclose(next_leg / length, tangent, rtol=0, atol=1e-8)
 
 
 def metrics_by_outcome(rows, arms):
@@ -77,7 +87,7 @@ def score_cohort(manifest, previous, people, video, maps, correction, *, arms, l
     cases = set()
     records = []
     # The rescue arm evaluates prompt eligibility only.
-    rescue_arms = (DWELL_RESCUE, TIMED_RESCUE)
+    rescue_arms = (DWELL_RESCUE, TIMED_RESCUE, CONTINUATION_RESCUE)
     pose_arms = [arm for arm in arms if arm not in rescue_arms]
     estimates = {arm: [] for arm in pose_arms}
     labels = []
@@ -128,11 +138,14 @@ def score_cohort(manifest, previous, people, video, maps, correction, *, arms, l
             status = baseline_status
             if arm != "raw":
                 correction_arm = "heading_integration" if arm in rescue_arms else arm
+                rescue = arm
+                if arm == CONTINUATION_RESCUE:
+                    rescue = DWELL_RESCUE if continues_straight(vertices, turn, tangent) else TIMED_RESCUE
                 status = status_events(
                     clip, data, truth, vertices, calibration, position_correction=corrections[correction_arm],
                     correct_displacement=arm.endswith("_aligned_history"),
-                    require_dwell_for_rescue=arm == DWELL_RESCUE,
-                    heading_exit_horizon_ms=1000 * lead_s if arm == TIMED_RESCUE else None,
+                    require_dwell_for_rescue=rescue == DWELL_RESCUE,
+                    heading_exit_horizon_ms=1000 * lead_s if rescue == TIMED_RESCUE else None,
                 )
                 if status["slots"] != baseline_status["slots"]:
                     raise ValueError(f"Correction changed reference scoring slots at {case}")
@@ -171,6 +184,7 @@ def main():
     mode.add_argument("--odometry", action="store_true", help="Also replay measured distance from observed turns.")
     mode.add_argument("--dwell-output-dir", type=Path, help="Compare raw, heading integration and dwell-gated rescue.")
     mode.add_argument("--timing-output-dir", type=Path, help="Also test rescue when the heading window is closing.")
+    mode.add_argument("--continuation-output-dir", type=Path, help="Also test rescue at straight-through waypoints.")
     args = parser.parse_args()
     ping = args.prior / "sources/ping"
     paths = {
@@ -213,8 +227,10 @@ def main():
     arms = ARMS + ("observed_route_distance",) if args.odometry else ARMS
     if args.dwell_output_dir is not None:
         arms = ("raw", "heading_integration", DWELL_RESCUE)
-    if args.timing_output_dir is not None:
+    if args.timing_output_dir is not None or args.continuation_output_dir is not None:
         arms = ("raw", "heading_integration", DWELL_RESCUE, TIMED_RESCUE)
+    if args.continuation_output_dir is not None:
+        arms += (CONTINUATION_RESCUE,)
     main, rows_main = score_cohort(
         major["clips"], previous, people, videos, maps, correction, arms=arms, lead_s=fixed_lead_s,
     )
@@ -222,7 +238,7 @@ def main():
         minor["clips"], minor["status"], people, videos, maps, correction, arms=arms, lead_s=fixed_lead_s,
     )
     result = {"input_sha256": hashes, "lead_s": fixed_lead_s, "major": main, "minor": diagonal}
-    output = args.timing_output_dir or args.dwell_output_dir or args.run_dir / "ping-transfer"
+    output = args.continuation_output_dir or args.timing_output_dir or args.dwell_output_dir or args.run_dir / "ping-transfer"
     write_json(output / "summary.json", result)
     with (output / "paired.csv").open("w", encoding="utf-8", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=["cohort", *rows_main[0]])
