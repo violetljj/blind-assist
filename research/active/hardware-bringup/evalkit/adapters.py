@@ -28,7 +28,8 @@ A = ROOT / 'artifacts.local'
 SKY = 27
 
 
-def _sanpo(data, name, only_cam=None):
+def _sanpo(data, name, only_cam=None, sky_dir=None):
+    """sky_dir: automatic sky masks (host/sanpo_auto_sky_20261117.py, 255 = sky) instead of the human segmentation."""
     W, H = 1280, 720
     for sess in sorted(os.listdir(data)):
         if not (data / sess).is_dir():
@@ -46,9 +47,14 @@ def _sanpo(data, name, only_cam=None):
         for fr in sorted(q.name.split('.')[0] for q in (base / 'depth_maps').glob('*.float16.gz')):
             a = np.frombuffer(gzip.decompress((base / 'depth_maps' / f'{fr}.float16.gz').read_bytes()), '<f2')
             z = a[2:].astype(np.float32).reshape(int(a[0]), int(a[1]))
-            seg = cv2.resize(cv2.imread(str(base / 'segmentation_masks' / f'{fr}.png'), cv2.IMREAD_UNCHANGED)[:, :, 2], (W, H),
-                             interpolation=cv2.INTER_NEAREST)
-            z = np.where(np.isfinite(z) & (seg != SKY), z, np.nan)
+            if sky_dir is None:
+                sky = cv2.resize(cv2.imread(str(base / 'segmentation_masks' / f'{fr}.png'), cv2.IMREAD_UNCHANGED)[:, :, 2], (W, H),
+                                 interpolation=cv2.INTER_NEAREST) == SKY
+            else:
+                sky = cv2.imread(str(Path(sky_dir) / sess / f'{fr}.png'), cv2.IMREAD_UNCHANGED) > 0
+            if sky.shape != z.shape:
+                sky = cv2.resize(sky.astype(np.uint8), (z.shape[1], z.shape[0]), interpolation=cv2.INTER_NEAREST) > 0
+            z = np.where(np.isfinite(z) & ~sky, z, np.nan)
             img = cv2.resize(cv2.imread(str(base / 'video_frames' / f'{fr}.png')), (W, H), interpolation=cv2.INTER_AREA)
             yield Frame(name, sess, int(fr), int(fr) / 15., img, K, z, 'pseudo_ground_truth', None, None,
                         'head' if cam == 'camera_head' else 'chest', block=sess)
@@ -60,6 +66,18 @@ def sanpo_real_local():
 
 def sanpo_head_seg():
     return _sanpo(A / 'downloads/sanpo-real-head-seg-20261117', 'sanpo_head_seg', 'camera_head')
+
+
+def sanpo_head_seg_autosky():
+    """Seen head subset with automatic instead of human sky (acceptance check only)."""
+    return _sanpo(A / 'downloads/sanpo-real-head-seg-20261117', 'sanpo_head_seg', 'camera_head',
+                  A / 'work/direction-a-confirm-head-20261117/sky_auto_seen_head_seg')
+
+
+def sanpo_head_noseg():
+    """Unseen head sessions without human segmentation (host/sanpo_head_noseg_fetch_20261117.py), automatic sky."""
+    return _sanpo(A / 'downloads/sanpo-real-head-noseg-20261117', 'sanpo_head_noseg', 'camera_head',
+                  A / 'work/direction-a-confirm-head-20261117/sky_auto_head_noseg')
 
 
 def sanpo_chest_seg():
@@ -83,4 +101,5 @@ def aria_gen2_walks(step=15, block_s=30.):
 
 
 ADAPTERS = {'sanpo_real_local': sanpo_real_local, 'aria_gen2_walks': aria_gen2_walks, 'sanpo_head_seg': sanpo_head_seg,
-            'sanpo_chest_seg': sanpo_chest_seg}
+            'sanpo_chest_seg': sanpo_chest_seg, 'sanpo_head_seg_autosky': sanpo_head_seg_autosky,
+            'sanpo_head_noseg': sanpo_head_noseg}
