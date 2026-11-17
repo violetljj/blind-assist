@@ -257,7 +257,7 @@ def status_window_end(clip, online):
 def status_events(
     clip, online, evaluated, vertices, calibration, *,
     position_shift=None, position_perturbation=False, position_correction=None, correct_displacement=False,
-    require_dwell_for_rescue=False, heading_exit_horizon_ms=None,
+    require_dwell_for_rescue=False, heading_exit_horizon_ms=None, window_end_ms=None,
 ):
     """Run the prompts from online observations, then look up video labels."""
     origin, end = vertices[clip["corner_index"]:clip["corner_index"] + 2]
@@ -265,7 +265,7 @@ def status_events(
     tangent = (end - origin) / length
     cue = clip["cue_start_ms"]
     route, floor = clip["route"], clip["floor"]
-    stop = status_window_end(clip, online)
+    stop = status_window_end(clip, online) if window_end_ms is None else min(window_end_ms, cue + MAX_STATUS_MS + 1)
 
     time = online["logtime"]
     positions = online["logposition"]

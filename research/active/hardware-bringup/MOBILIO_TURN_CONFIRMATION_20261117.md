@@ -418,3 +418,31 @@ EXPLORE。锁定 `fab1ae22` 的原定位与直行接续补偿，按 `e97bc1ab` �
 $run = 'artifacts.local/work/ping-independent-validation-20261117'
 python -B research/active/hardware-bringup/host/advio_turn_confirmation_replay.py --advio "$run/advio" --output-dir "$run/advio-replay-audit"
 ```
+
+### 真实指令的公开原件与回放接口
+
+EXPLORE。复查最接近真实语音、独立位置和设备位姿的发布件，核对文件及视频与论文所述试次的对应关系。锁定上一轮提示和同向合并评分，CPU。若找到新的同窗记录则直接接入。用原 184 次作换输入格式后的等价性检验。
+
+| 来源 | 本轮原件核验 |
+| --- | --- |
+| NavCog 反应差异研究 | 取得 NIH 官方补件 PDF，985,469 B，7 页，无嵌入附件。图表是平均角度曲线、一个标注转弯示例和汇总统计。无逐试次流。ACM 的 `ohn-bar.zip` 仍返回 403，内容未核实。该论文与 EnvFactors 报告的 9 个参与者档案逐行对应，路线环境与 BLE 布设也相符。12 人全组不能当成独立队列，3 个未匹配档案仍缺原件。[补件](https://pmc.ncbi.nlm.nih.gov/articles/instance/6708581/bin/NIHMS1044596-supplement-Supplementary.pdf) · [反应研究](https://eshed1.github.io/papers/var_ubicomp.pdf) · [EnvFactors](https://eshed1.github.io/papers/envfact.pdf) |
+| Mobilio 2026 正式版 | 正式版的 14 人研究指向 GitHub。用 GitHub API 比对，公开 HEAD 仍为已读的 `9dd54b80e95a48a95bde9d405ce6e632d66fbff9`，文件无差异。正式版补充视频中有演示片段和背景声说明，未提供新独立路线的同步数值流。[论文与补件](https://www.nature.com/articles/s41551-026-01772-x) · [公开仓库](https://github.com/Harvard-Slade-Lab/Mobilio) |
+| UNav Salaya | 分析队列 19 人、40 对走行、24 种路线，每条路线有 2–4 个转弯。用了真实语音和独立头戴录像。作者公开源目录实际列的是较早的地图和定位文件，方法对应纽约项目的 17 个静态定位点。未找到 Salaya 的逐试次位姿、指令与录像的对应发布件。[Salaya 试验](https://pmc.ncbi.nlm.nih.gov/articles/PMC11822047/) |
+| CREATTIVE3D | 按字节范围提取同一参与者两条真实走行。原件有 Vive 位姿、独立 Xsens 身体位置以及带 Unix 时刻的 `Go to` 游戏任务切换。场景文件给出地面、墙壁和门等对象，日志和场景未给每次的转弯指令与指定路径折线。作者的 Xsens 与 Vive 配准用整段记录。[方法](https://doi.org/10.1038/s41597-025-04560-5) · [数据](https://zenodo.org/records/14514163) |
+
+真实指令的跨队列试验仍为 `NOT_RUN`。原件、查询结果和逐源核对留在 `artifacts.local/work/ping-actual-cues-20261117/{nav-agent,lab-agent,mobilio}/`。
+
+独立来源接入脚本 `host/replay_recorded_turn_prompts.py` 复用原触发逻辑与同向合并判分。输入为同一时钟和米制地图坐标的两份数值流及 `manifest.json`。设备时刻表示在线观测可用的时间，朝向以地图正 X 轴逆时针为正。独立位置只用于判分。下一条转向指令、路线或楼层变化的最早已知时点填写 `stop_ms`，按原规则截断。入口用可用的原生设备帧检查 250 ms 条件，保留独立位置缺测及静默，并记录各臂恢复、过早频次与时间。
+
+| 输入 | 所需字段 |
+| --- | --- |
+| 设备 CSV | `time_ms,x_m,y_m,yaw_deg`，原生位置及朝向 |
+| 独立参考 CSV | `time_ms,x_m,y_m,route,floor` |
+| `manifest.json` | `source` 记录来源及时间依据。`sessions` 指向各走行的 `device` 与 `reference` CSV，`maps` 存已知路线折线。`turns` 为实际指令事件，字段为 `id,session,map,group,route,floor,corner_index,cue_start_ms` 及可选 `stop_ms` |
+
+用原 PING 的实际指令导出 9 份参与者记录。新入口逐条与原结果匹配 368 个首次发出或静默的时点、原与合并后判定、前进机会数，全组检查点数仍为主转 2455、斜转 1017。对 P2 #7、P3 #66、P4 #68、P7 #71 分别截断到首发时点为止的设备前缀，并用前缀重算补偿，再替换独立位置核对时点。复现仅确认接入和触发流程。真正能验证主转补漏和同向接续收益的新记录，应优先覆盖实际指令后的直角转弯，以及跨共线分段继续直行的路线。
+
+```powershell
+$fixture = 'artifacts.local/work/ping-actual-cues-20261117/ping-parity'
+python -B research/active/hardware-bringup/host/replay_recorded_turn_prompts.py --manifest "$fixture/manifest.json" --output-dir "$fixture/replay"
+```

@@ -2,6 +2,7 @@
 
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
 | --- | --- | --- | --- | --- |
+| 2026-11-17 | `host/replay_recorded_turn_prompts.py` | EXPLORE，实读 NavCog NIH 补件、UNav 公开目录、CREATTIVE3D 两条轨迹，复核 Mobilio 正式版数据引用。原时间与评分逻辑接入同钟记录 | 新来源可用的真实转弯指令配对 0。PING 184 次的 368 个判定、时刻和机会计数逐条复现，3472 个原检查点分母保持 | 接入已核对，独立真实指令验证 `NOT_RUN`。[公开原件与用法](MOBILIO_TURN_CONFIRMATION_20261117.md#真实指令的公开原件与回放接口) |
 | 2026-11-17 | `host/advio_turn_confirmation_replay.py` | EXPLORE，筛查实际指令及传感发布件；15 条未用 ADVIO 室内序列取数值流，以作者点为几何回放锚，保持 PING 固定规则 | 3 主转及 29 斜转，292 时点；正确／过早／静默为 7／6／19，两套时间逐条相同。补偿改变 8 条位置裕量，无新增触发 | 未见独立几何补漏收益，直行接续无覆盖；真实指令复现缺配对数据，`NOT_RUN`。[实读与结果](MOBILIO_TURN_CONFIRMATION_20261117.md#未参与选规则的走行数据) |
 | 2026-11-17 | `host/ping_collinear_rescore.py` | EXPLORE，冻结 184 次两套首发与静默，只按合并后的同向直线范围重评；复核 3472 个原评分点 | 主转 131 次原定位／补偿的正确与过早为 56／34 对 58／34，斜转 53 次均 22／22。两次补漏保留，新增过早与过早提前均为 0 | P4 #68、P7 #71 只体现早 2.0／1.0 s；P2 #99 两套均改判正确，同一队列。[全量重评与核对](MOBILIO_TURN_CONFIRMATION_20261117.md#合并同向直线后重评固定的提示时点) |
 | 2026-11-17 | `host/ping_position_transfer.py --continuation-output-dir` | EXPLORE，出口段下一段同向共线时用半秒稳定条件，其余继续用上一轮朝向出带条件；按原有限段评分 184 次 | 相对原定位，主转 131 次正确／过早 53／37→57／35，补漏 2，恢复 P4 #68、P7 #71；斜转 53 次保持 22／22。相对原定位及上轮两组均无新增过早或仍过早且提前 | 达到同队列端点；合并共线段后两例原首发也符合，恢复主要体现反馈时点与分段。[逐条与复跑](MOBILIO_TURN_CONFIRMATION_20261117.md#出口段之后同向直行时的补偿) |
