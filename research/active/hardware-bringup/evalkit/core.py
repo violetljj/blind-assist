@@ -7,7 +7,8 @@ Task definition (chosen for the walking user, independent of the App's camera-re
   occupied   obstacle surface area in the band >= 0.005 m^2 (about 5 x 10 cm), distance-invariant, counted after a 3x3
              morphological opening of the band mask (drops isolated stereo 'flying pixels'), same for truth and predictions
   empty      no reference point at all in the band BEFORE the opening (strict); flying-pixel-only frames are ambiguous
-Version history: v0 (LOW from 0.10 m, no opening); v1 2026-11-17 (LOW from 0.15 m, opening, strict empty) - see EVALKIT.md.
+Version history: v0 (LOW from 0.10 m, no opening); v1 2026-11-17 (LOW from 0.15 m, opening, strict empty);
+v1.1 2026-11-17 (method comparisons on common output frames via `compare`, no-output frames reported) - see EVALKIT.md.
 The ground plane and gravity axes used for evaluation come from the reference depth (RANSAC, normal within 15 deg of the
 device gravity when available). Reference grade and the independence unit (`block`) travel with every frame.
 """
@@ -18,7 +19,7 @@ from dataclasses import dataclass, field
 import cv2
 import numpy as np
 
-PROTOCOL_VERSION = 'v1'
+PROTOCOL_VERSION = 'v1.1'
 
 X_HALF, Z_NEAR, Z_FAR = .35, .30, 2.50
 BANDS = {'LOW': (.15, .50), 'BODY': (.50, 1.30), 'HEAD': (1.30, 2.00)}
@@ -203,9 +204,24 @@ def depth_metrics(pred, ref, mask, min_px=200):
                 delta1=float(np.mean(np.maximum(r, 1 / r) < 1.25)), valid=float(ok.mean()))
 
 
-def summarize(rows, method):
+def evaluable(r):
+    """Frame on which the evaluator had a ground plane, i.e. a method could be scored. Rows written from v1.1 carry the
+    flag; for older rows, a frame counts as evaluable when any method produced an alert there."""
+    return r['evaluable'] if 'evaluable' in r else any(v.get('LOW') is not None for v in r['alert'].values())
+
+
+def has_output(r, method):
+    return r['alert'][method].get('LOW') is not None
+
+
+def summarize(rows, method, keep=None):
     """Block-median depth metrics per region; per band frame-level recall (also by distance bin), frame FA rate and
-    FA episodes (consecutive alerted truth-negative frames merged) per minute."""
+    FA episodes (consecutive alerted truth-negative frames merged) per minute. `keep(row)` restricts the frames (used by
+    `compare` for common output frames). `no_output` = evaluable frames on which the method returned nothing; those frames
+    drop out of this method's own denominators, so a comparison between methods must use `compare`."""
+    no_output = sum(1 for r in rows if evaluable(r) and not has_output(r, method))
+    if keep is not None:
+        rows = [r for r in rows if keep(r)]
     out = {}
     blocks = sorted({r['block'] for r in rows})
     for region in ['near', 'near_nonground'] + [f'corridor_{b}' for b in BANDS]:
@@ -247,4 +263,70 @@ def summarize(rows, method):
                                      fa_frame_rate=fp / max(fp + tn, 1), fa_episodes=int(eps),
                                      fa_episodes_per_min=eps / max(minutes, 1e-9), minutes=minutes,
                                      negatives_opened=fpo + tno, fa_frame_rate_opened=fpo / max(fpo + tno, 1))
+    out['no_output'] = no_output; out['frames'] = len(rows)
     return out
+
+
+def _binom_two_sided(k, n):
+    """Exact two-sided sign test (McNemar on discordant pairs): P(|X - n/2| >= |k - n/2|), X ~ Bin(n, 1/2)."""
+    from math import comb
+    if n == 0:
+        return 1.
+    d = abs(k - n / 2)
+    return min(1., sum(comb(n, i) for i in range(n + 1) if abs(i - n / 2) >= d - 1e-12) / 2 ** n)
+
+
+def compare(rows, a, b):
+    """Paired comparison of method b against method a (v1.1). Detection: per band, only frames where BOTH have output;
+    reports both confusion counts, discordant pairs on positives (a hit / b miss and the reverse) and on negatives, with
+    the exact sign-test p-value. Depth: per region, block medians over frames where both AbsRel values exist.
+    Also reports each method's no-output frames and the system view where no output counts as no alert."""
+    both = lambda r: has_output(r, a) and has_output(r, b)
+    sa, sb = summarize(rows, a, both), summarize(rows, b, both)
+    out = dict(methods=(a, b), common_frames=sa['frames'], no_output={a: sa['no_output'], b: sb['no_output']}, detect={}, depth={})
+    for band in BANDS:
+        pos = [r for r in rows if both(r) and r['truth'].get(band) == 1]
+        neg = [r for r in rows if both(r) and r['truth'].get(band) == 0]
+        hit_a = sum(1 for r in pos if r['alert'][a][band] and not r['alert'][b][band])
+        hit_b = sum(1 for r in pos if r['alert'][b][band] and not r['alert'][a][band])
+        fa_a = sum(1 for r in neg if r['alert'][a][band] and not r['alert'][b][band])
+        fa_b = sum(1 for r in neg if r['alert'][b][band] and not r['alert'][a][band])
+        sys_view = {}
+        for m in (a, b):
+            ev = [r for r in rows if evaluable(r) and r['truth'].get(band) in (0, 1)]
+            sys_view[m] = dict(tp=sum(1 for r in ev if r['truth'][band] == 1 and r['alert'][m].get(band)),
+                               positives=sum(1 for r in ev if r['truth'][band] == 1),
+                               fp=sum(1 for r in ev if r['truth'][band] == 0 and r['alert'][m].get(band)),
+                               negatives=sum(1 for r in ev if r['truth'][band] == 0))
+        out['detect'][band] = dict(
+            positives=len(pos), negatives=len(neg),
+            tp={a: sum(1 for r in pos if r['alert'][a][band]), b: sum(1 for r in pos if r['alert'][b][band])},
+            fp={a: sum(1 for r in neg if r['alert'][a][band]), b: sum(1 for r in neg if r['alert'][b][band])},
+            recall={a: sa[f'detect_{band}']['recall'], b: sb[f'detect_{band}']['recall']},
+            fa_frame_rate={a: sa[f'detect_{band}']['fa_frame_rate'], b: sb[f'detect_{band}']['fa_frame_rate']},
+            fa_episodes_per_min={a: sa[f'detect_{band}']['fa_episodes_per_min'], b: sb[f'detect_{band}']['fa_episodes_per_min']},
+            discordant_pos={'only_' + a: hit_a, 'only_' + b: hit_b, 'p': _binom_two_sided(hit_b, hit_a + hit_b)},
+            discordant_neg={'only_' + a: fa_a, 'only_' + b: fa_b, 'p': _binom_two_sided(fa_b, fa_a + fa_b)},
+            no_output_as_no_alert=sys_view)
+    for region in ['near', 'near_nonground'] + [f'corridor_{b}' for b in BANDS] + ['nng_in_fov', 'nng_out_fov']:
+        per_a, per_b = [], []
+        for blk in sorted({r['block'] for r in rows}):
+            va, vb = [], []
+            for r in rows:
+                if r['block'] != blk:
+                    continue
+                ma, mb = r['depth'][a].get(region), r['depth'][b].get(region)
+                if ma and mb and ma['absrel'] is not None and mb['absrel'] is not None:
+                    va.append(ma['absrel']); vb.append(mb['absrel'])
+            if va:
+                per_a.append(float(np.median(va))); per_b.append(float(np.median(vb)))
+        if per_a:
+            out['depth'][region] = dict(blocks=len(per_a), absrel={a: float(np.median(per_a)), b: float(np.median(per_b))},
+                                        blocks_b_better=int(sum(y < x for x, y in zip(per_a, per_b))))
+    return out
+
+
+def min_resolvable_frames(tolerance, positives):
+    """A recall tolerance expressed in frames. Rules should state tolerances in frames (or discordant pairs) and treat a
+    tolerance below 3 frames as unresolvable on that data (v1.1 lesson from the A1 SANPO recheck: 0.02 of 58 = 1.2 frames)."""
+    return tolerance * positives

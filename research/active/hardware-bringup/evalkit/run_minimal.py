@@ -37,7 +37,7 @@ def main(out_dir, *names):
         rows, t0 = [], time.time()
         for f in gen():
             reg = core.regions(f, rng)
-            row = dict(seq=f.seq, t=f.t, block=f.block, truth={b: reg.get(f'truth_{b}') for b in core.BANDS},
+            row = dict(seq=f.seq, t=f.t, block=f.block, evaluable='axes' in reg, truth={b: reg.get(f'truth_{b}') for b in core.BANDS},
                        truth_opened={b: reg.get(f'truth_opened_{b}') for b in core.BANDS},
                        truth_dist={b: reg.get(f'truth_dist_{b}') for b in core.BANDS}, depth={}, alert={})
             for m in METHOD_NAMES:

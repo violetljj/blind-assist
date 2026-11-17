@@ -45,7 +45,7 @@ def evaluate(name, M, rng, out):
         fov = (np.abs(np.arctan(d[:, 0])) <= FOV_HALF) & (np.abs(np.arctan(d[:, 1])) <= FOV_HALF)
         if 'near_nonground' in reg:
             reg['nng_in_fov'] = reg['near_nonground'] & fov; reg['nng_out_fov'] = reg['near_nonground'] & ~fov
-        row = dict(seq=f.seq, t=f.t, block=f.block, truth={b: reg.get(f'truth_{b}') for b in core.BANDS},
+        row = dict(seq=f.seq, t=f.t, block=f.block, evaluable='axes' in reg, truth={b: reg.get(f'truth_{b}') for b in core.BANDS},
                    truth_opened={b: reg.get(f'truth_opened_{b}') for b in core.BANDS},
                    truth_dist={b: reg.get(f'truth_dist_{b}') for b in core.BANDS}, depth={}, alert={})
         for m in A1_METHODS:
