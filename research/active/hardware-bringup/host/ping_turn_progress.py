@@ -231,11 +231,7 @@ def matched_corner_ranking(rows):
     return output
 
 
-def status_events(clip, online, evaluated, vertices, calibration):
-    """Run the prompts from online observations, then look up video labels."""
-    origin, end = vertices[clip["corner_index"]:clip["corner_index"] + 2]
-    length = float(np.linalg.norm(end - origin))
-    tangent = (end - origin) / length
+def status_window_end(clip, online):
     cue = clip["cue_start_ms"]
     route, floor = clip["route"], clip["floor"]
     annotations = online["gttime"]
@@ -251,12 +247,24 @@ def status_events(clip, online, evaluated, vertices, calibration):
         if cue < stamp < stop and command in TURN_CUES:
             stop = int(stamp)
             break
+    return stop
+
+
+def status_events(clip, online, evaluated, vertices, calibration, *, position_shift=None, position_perturbation=False):
+    """Run the prompts from online observations, then look up video labels."""
+    origin, end = vertices[clip["corner_index"]:clip["corner_index"] + 2]
+    length = float(np.linalg.norm(end - origin))
+    tangent = (end - origin) / length
+    cue = clip["cue_start_ms"]
+    route, floor = clip["route"], clip["floor"]
+    stop = status_window_end(clip, online)
 
     time = online["logtime"]
     positions = online["logposition"]
     errors = wrap(clip["target_heading_deg"] - calibration["offset_deg"] + online["logorientation"])
     outputs = dict.fromkeys(STATUS_RULES)
     slots = []
+    placement = []
     for stamp in range(cue + WALK_HISTORY_MS, stop, STATUS_PERIOD_MS):
         current = np.searchsorted(time, stamp, side="right") - 1
         previous = np.searchsorted(time, stamp - WALK_HISTORY_MS, side="right") - 1
@@ -281,6 +289,15 @@ def status_events(clip, online, evaluated, vertices, calibration):
             if enough_slope else float("inf")
         )
         position = projection(positions[previous], positions[current], origin, tangent)
+        if position_perturbation:
+            raw_margin = min(
+                position["forward_m"] - MIN_OUTBOUND_M, length - position["forward_m"],
+                CENTERLINE_M - abs(position["cross_m"]),
+            )
+        if position_shift is not None:
+            # A turn-local translation changes absolute placement but cancels in displacement.
+            position["forward_m"] += float(position_shift @ tangent)
+            position["cross_m"] += float(tangent[0] * position_shift[1] - tangent[1] * position_shift[0])
         in_leg = (
             MIN_OUTBOUND_M <= position["forward_m"] <= length and abs(position["cross_m"]) <= CENTERLINE_M
         )
@@ -303,14 +320,28 @@ def status_events(clip, online, evaluated, vertices, calibration):
             truth = leg_clearance(projection(before, after, origin, tangent), length, CENTERLINE_M) >= 0
         event = {"time_s": (stamp - cue) / 1000, "correct": truth}
         slots.append(event)
+        if position_perturbation:
+            shifted_margin = min(
+                position["forward_m"] - MIN_OUTBOUND_M, length - position["forward_m"],
+                CENTERLINE_M - abs(position["cross_m"]),
+            )
+            placement.append({
+                "slot": event,
+                "raw_margin_m": raw_margin,
+                "shifted_margin_m": shifted_margin,
+                "angle_and_advance": bool(angle and position["advance_m"] >= MIN_PROGRESS_M),
+            })
         for rule, condition in eligible.items():
             if condition and outputs[rule] is None:
                 outputs[rule] = event
-    return {
+    result = {
         "slots": slots,
         "progress_opportunities": sum(slot["correct"] is True for slot in slots),
         "outputs": outputs,
     }
+    if position_perturbation:
+        result["placement"] = placement
+    return result
 
 
 def summarize_status(records):

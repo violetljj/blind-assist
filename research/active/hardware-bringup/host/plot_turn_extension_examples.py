@@ -85,17 +85,25 @@ def draw_route(axis, progress):
     axis.legend(loc="lower right", frameon=False, fontsize=9)
 
 
-def draw_status(axis, status_path):
+def draw_status(axis, status_path, comparison_path=None):
     status = json.loads(status_path.read_bytes())
     row = next(r for r in status["trials"] if r["person"] == "P2" and r["number"] == 12)
     for slot in row["slots"]:
         if slot["correct"] is not None:
             color = "#d0e9e1" if slot["correct"] else "#f2e2d9"
             axis.axvspan(slot["time_s"] - 0.20, slot["time_s"] + 0.20, color=color, linewidth=0)
-    for index, (rule, label) in enumerate((
-        ("angle", "只看角度"), ("after_6s", "固定等 6 秒"), ("angle_progress", "角度＋出弯前进"),
-    )):
-        event = row["outputs"][rule]
+    events = [
+        ("只看角度", row["outputs"]["angle"]),
+        ("固定等 6 秒", row["outputs"]["after_6s"]),
+        ("确认走入下一段", row["outputs"]["angle_progress"]),
+    ]
+    if comparison_path is not None:
+        comparison = select(comparison_path, "P2", 12, "number")
+        events.insert(1, ("原系统提示前进", {
+            "time_s": float(comparison["forward_exact_s"]),
+            "correct": comparison["forward_exact_outcome"] == "correct",
+        }))
+    for index, (label, event) in enumerate(events):
         timestamp = event["time_s"]
         color = "#136861" if event["correct"] else "#ae421d"
         axis.hlines(index, 2, timestamp, color="#6f7f87", linewidth=1.0)
@@ -106,11 +114,11 @@ def draw_status(axis, status_path):
                       ha=alignment, fontsize=10, color=color)
         axis.text(1.84, index, label, ha="right", va="center", fontsize=10)
     axis.set(
-        xlim=(0.4, 12.35), ylim=(2.56, -0.6), yticks=[], xticks=(2, 4, 6, 8, 10, 12),
+        xlim=(0.25, 12.35), ylim=(len(events) - 0.44, -0.6), yticks=[], xticks=(2, 4, 6, 8, 10, 12),
         xlabel="转弯指令发出后的时间（秒）",
     )
     axis.spines["left"].set_visible(False)
-    axis.set_title("PING · 同一次转弯的三种确认时机", loc="left", fontsize=14, pad=13)
+    axis.set_title("PING · 提示继续前进与确认已经走入路段", loc="left", fontsize=14, pad=13)
     axis.text(4.8, -0.43, "尚未达到前进条件", color="#ae421d", fontsize=9)
     axis.text(9.2, -0.43, "已达到前进条件", color="#136861", fontsize=9)
 
@@ -120,6 +128,7 @@ def main():
     parser.add_argument("--validation-root", type=Path, required=True)
     parser.add_argument("--extension-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--comparison", type=Path, help="Optional PING follow-through comparison CSV.")
     parser.add_argument("--font", help="Installed font family with Chinese glyphs.")
     args = parser.parse_args()
     installed = set(font_manager.get_font_names())
@@ -134,12 +143,12 @@ def main():
         "axes.unicode_minus": False, "axes.spines.top": False, "axes.spines.right": False,
         "axes.edgecolor": "#b6c2c7", "text.color": "#223641", "axes.labelcolor": "#223641",
     })
-    fig = plt.figure(figsize=(12, 7.2), layout="constrained")
-    layout = fig.add_gridspec(2, 2, height_ratios=(4.8, 2.65))
+    fig = plt.figure(figsize=(12, 7.9 if args.comparison else 7.2), layout="constrained")
+    layout = fig.add_gridspec(2, 2, height_ratios=(4.8, 3.1 if args.comparison else 2.65))
     angular, route, status = (fig.add_subplot(spec) for spec in (layout[0, 0], layout[0, 1], layout[1, :]))
     draw_error(angular, args.validation_root, args.extension_root / "diagnosis/exit_audit.csv")
     draw_route(route, args.extension_root / "ping-progress/turn_progress.csv")
-    draw_status(status, args.extension_root / "ping-progress/status_replay.json")
+    draw_status(status, args.extension_root / "ping-progress/status_replay.json", args.comparison)
     for axis in (angular, route, status):
         axis.grid(color="#e4eaec", linewidth=0.65)
         axis.set_axisbelow(True)
