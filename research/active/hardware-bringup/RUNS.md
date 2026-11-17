@@ -2,6 +2,7 @@
 
 | Date | Code version | Configuration changes | Metrics (units/denominators) | Conclusion / result link |
 | --- | --- | --- | --- | --- |
+| 2026-11-17 | `evalkit/check_auto_sky.py`、`evalkit/head_noseg_session_filter.py`（Claude执行） | EXPLORE 确认（头戴）；规则先提交（218d8f18）；SegFormer-B0 自动剔天空；用户同意下载从未用过的 SANPO 头戴会话 114 段 1512 帧 5.76 GiB（CC BY 4.0，md5 全过）；接入自检未过后，用户选择按会话筛选（未跑方法前） | 自动天空对人工：三带真值一致 99.8/99.8/99.5%，ToF≥5 区一致 100%（门槛 98%，通过）。新数据平面占比 0.36 < 0.4，自检未过；按会话筛选保留 46/114 段 608 帧，低矮/躯干阳性仅 4/7 帧（全部 1512 帧 29/55） | 头戴确认未运行：阳性帧不够判定（门槛各 30），没有方法结果，对方向 A 无正负证据。自动天空可复用；SANPO 无分割头戴会话近处障碍物稀少，再下约 28 GiB 不划算。[头戴确认](DIRECTION_A_CONFIRM_SANPO_HEAD_20261117.md) |
 | 2026-11-17 | `host/replay_recorded_turn_prompts.py` | EXPLORE，实读 NavCog NIH 补件、UNav 公开目录、CREATTIVE3D 两条轨迹，复核 Mobilio 正式版数据引用。原时间与评分逻辑接入同钟记录 | 新来源可用的真实转弯指令配对 0。PING 184 次的 368 个判定、时刻和机会计数逐条复现，3472 个原检查点分母保持 | 接入已核对，独立真实指令验证 `NOT_RUN`。[公开原件与用法](MOBILIO_TURN_CONFIRMATION_20261117.md#真实指令的公开原件与回放接口) |
 | 2026-11-17 | `host/advio_turn_confirmation_replay.py` | EXPLORE，筛查实际指令及传感发布件；15 条未用 ADVIO 室内序列取数值流，以作者点为几何回放锚，保持 PING 固定规则 | 3 主转及 29 斜转，292 时点；正确／过早／静默为 7／6／19，两套时间逐条相同。补偿改变 8 条位置裕量，无新增触发 | 未见独立几何补漏收益，直行接续无覆盖；真实指令复现缺配对数据，`NOT_RUN`。[实读与结果](MOBILIO_TURN_CONFIRMATION_20261117.md#未参与选规则的走行数据) |
 | 2026-11-17 | `host/ping_collinear_rescore.py` | EXPLORE，冻结 184 次两套首发与静默，只按合并后的同向直线范围重评；复核 3472 个原评分点 | 主转 131 次原定位／补偿的正确与过早为 56／34 对 58／34，斜转 53 次均 22／22。两次补漏保留，新增过早与过早提前均为 0 | P4 #68、P7 #71 只体现早 2.0／1.0 s；P2 #99 两套均改判正确，同一队列。[全量重评与核对](MOBILIO_TURN_CONFIRMATION_20261117.md#合并同向直线后重评固定的提示时点) |

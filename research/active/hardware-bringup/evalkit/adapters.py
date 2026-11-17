@@ -74,10 +74,17 @@ def sanpo_head_seg_autosky():
                   A / 'work/direction-a-confirm-head-20261117/sky_auto_seen_head_seg')
 
 
-def sanpo_head_noseg():
-    """Unseen head sessions without human segmentation (host/sanpo_head_noseg_fetch_20261117.py), automatic sky."""
-    return _sanpo(A / 'downloads/sanpo-real-head-noseg-20261117', 'sanpo_head_noseg', 'camera_head',
-                  A / 'work/direction-a-confirm-head-20261117/sky_auto_head_noseg')
+NOSEG_KEEP = A / 'work/direction-a-confirm-head-20261117/session_filter.json'
+
+
+def sanpo_head_noseg(keep='file'):
+    """Unseen head sessions without human segmentation (host/sanpo_head_noseg_fetch_20261117.py), automatic sky.
+    keep='file': only sessions passing the per-session intake check (evalkit/head_noseg_session_filter.py); None: all."""
+    keep = set(json.loads(NOSEG_KEEP.read_text())['keep']) if keep == 'file' else None
+    for f in _sanpo(A / 'downloads/sanpo-real-head-noseg-20261117', 'sanpo_head_noseg', 'camera_head',
+                    A / 'work/direction-a-confirm-head-20261117/sky_auto_head_noseg'):
+        if keep is None or f.seq in keep:
+            yield f
 
 
 def sanpo_chest_seg():
