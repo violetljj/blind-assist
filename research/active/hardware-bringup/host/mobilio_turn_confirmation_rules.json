@@ -1,0 +1,79 @@
+{
+  "fixed_utc": "2026-11-17T09:05:38.010719+00:00",
+  "evaluator_sha256": "652818c1dafc041ba395e8d7993f3e2a5d91003e147ef7551745c9041b41aa4e",
+  "development_summary_sha256": "ec19c34462db1e446b4a4f9262ee10b68e6a26f5ac5360306f31538d17ecc62b",
+  "development_sources_sha256": "c9f39a6b06dc080d4dfe426b19ae7a2315061a21bf3bffdc24cb4ff65106a18a",
+  "settings": {
+    "window_seconds": 5.0,
+    "tolerance_deg": 10.0,
+    "hold_seconds": 0.5
+  },
+  "baseline": "linear_0.3_11",
+  "candidate": "margin_0.2_9_20",
+  "rules": [
+    {
+      "name": "first_entry",
+      "kind": "entry",
+      "lookback_s": 0.0,
+      "current_deg": 10.0,
+      "projected_deg": 10.0,
+      "history_deg": null
+    },
+    {
+      "name": "dwell_500ms",
+      "kind": "dwell",
+      "lookback_s": 0.5,
+      "current_deg": 10.0,
+      "projected_deg": 10.0,
+      "history_deg": null
+    },
+    {
+      "name": "linear_projection",
+      "kind": "linear",
+      "lookback_s": 0.2,
+      "current_deg": 10.0,
+      "projected_deg": 10.0,
+      "history_deg": null
+    },
+    {
+      "name": "current_margin_8",
+      "kind": "linear",
+      "lookback_s": 0.2,
+      "current_deg": 8,
+      "projected_deg": 10.0,
+      "history_deg": null
+    },
+    {
+      "name": "dwell_0.3_7_wide_history",
+      "kind": "dwell",
+      "lookback_s": 0.3,
+      "current_deg": 7,
+      "projected_deg": 10.0,
+      "history_deg": 10
+    },
+    {
+      "name": "linear_0.3_11",
+      "kind": "linear",
+      "lookback_s": 0.3,
+      "current_deg": 10,
+      "projected_deg": 11,
+      "history_deg": null
+    },
+    {
+      "name": "margin_0.2_9_20",
+      "kind": "linear",
+      "lookback_s": 0.2,
+      "current_deg": 9,
+      "projected_deg": 20,
+      "history_deg": null
+    },
+    {
+      "name": "projection_without_margin",
+      "kind": "linear",
+      "lookback_s": 0.2,
+      "current_deg": 10,
+      "projected_deg": 20,
+      "history_deg": null
+    }
+  ]
+}
