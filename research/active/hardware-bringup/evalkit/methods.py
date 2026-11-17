@@ -117,6 +117,47 @@ class Methods:
                 ratios.append(dist[zi] / float(np.median(zz[ok] / zcos[zi][s][ok])))
         return float(np.median(ratios)) if len(ratios) >= 5 else None
 
+    AFFINE_MIN_ZONES, AFFINE_MIN_SPAN, AFFINE_A, AFFINE_B = 12, .75, (.5, 2.), .5
+
+    def _tof_affine(self, f, outdoor):
+        """Scale + offset in range from the ToF zones (DIRECTION_A_INDOOR_ADT_DEV_20261118 follow-up): ToF range ~ a * UniDepth
+        range + b, least squares, then refit without zones whose residual exceeds 3 x MAD (>= 0.02 m). Used only with >= 12
+        zones spanning >= 0.75 m of UniDepth range and a in [0.5, 2], |b| <= 0.5 m; None otherwise."""
+        z = self._unidepth_cached(f); dist, zu, zv, zin, zcos = self._zones(f, outdoor)
+        tr, ur = [], []
+        for zi in np.flatnonzero(np.isfinite(dist)):
+            s = zin[zi]; zz = z[zv[zi][s], zu[zi][s]]; ok = np.isfinite(zz) & (zz > .1)
+            if ok.sum() >= 13:
+                tr.append(dist[zi]); ur.append(float(np.median(zz[ok] / zcos[zi][s][ok])))
+        tr, ur = np.array(tr), np.array(ur)
+        if len(tr) < self.AFFINE_MIN_ZONES or np.ptp(ur) < self.AFFINE_MIN_SPAN:
+            return None
+        a, b = np.polyfit(ur, tr, 1); res = np.abs(tr - (a * ur + b)); keep = res <= max(.02, 3 * np.median(res) / .6745)
+        if keep.sum() >= self.AFFINE_MIN_ZONES and np.ptp(ur[keep]) >= self.AFFINE_MIN_SPAN:
+            a, b = np.polyfit(ur[keep], tr[keep], 1)
+        if not (self.AFFINE_A[0] <= a <= self.AFFINE_A[1] and abs(b) <= self.AFFINE_B):
+            return None
+        return float(a), float(b)
+
+    def hybrid_aff(self, f, outdoor, name):
+        """ToF scale + offset (if accepted) -> one ToF scale (>= 5 zones) -> own ground x eye height -> last scale.
+        Optical z per pixel: z' = a z + b / |ray| (range r' = a r + b)."""
+        aff = self._tof_affine(f, outdoor)
+        if aff is None:
+            out = self.hybrid_out(f, 0., name, outdoor=outdoor)
+            return out
+        z = self._unidepth_cached(f); H, W = z.shape; a, b = aff
+        nrm = np.linalg.norm(__import__('core').rays(f.K, H, W), axis=1).reshape(H, W)
+        self.source[name] = 'tof_affine'
+        self.last_fit[(name, f.dataset, f.seq)] = a          # a later frame without ToF falls back to this scale
+        return a * z + b / nrm
+
+    def hybrid_in_aff(self, f):
+        return self.hybrid_aff(f, False, 'hybrid_in_aff')
+
+    def hybrid_out_aff(self, f):
+        return self.hybrid_aff(f, True, 'hybrid_out_aff')
+
     def tof_unidepth(self, f, outdoor=False):
         """UniDepth-V2-S times one scale s = median over valid zones of (ToF range / UniDepth range on the zone's rays)."""
         z = self._unidepth_cached(f)
