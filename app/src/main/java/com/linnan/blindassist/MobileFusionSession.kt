@@ -43,6 +43,8 @@ internal class MobileFusionSession(
     private val application: Application, private val directory: File,
     private val atomHost: String, private val tofHost: String,
     private val demoRules: Boolean = true,
+    /** Direction A (2026-11-18): UniDepth-V2-S metric depth x one scale (ToF -> own ground -> previous) instead of DAV2-S. */
+    private val metricDepth: Boolean = false,
     private val publishFrame: (androidx.compose.ui.graphics.ImageBitmap, Long) -> Unit = { _, _ -> },
     private val publish: (MobileFusionView) -> Unit,
 ) : AutoCloseable {
@@ -85,6 +87,7 @@ internal class MobileFusionSession(
     @Volatile private var camera: MobileFusionCamera? = null
     private var tofEngine: CnhStrongEngine? = null
     private var depth: Dav2DepthRuntime? = null
+    private var metric: MetricDepthRuntime? = null
     private var geometry: AtomRgbGeometry? = null
     private val votes = AtomRgbTwoOfThree()
     private val gait = MobileGaitDetector()
@@ -112,7 +115,7 @@ internal class MobileFusionSession(
     fun start() {
         rgbWork.execute {
             try {
-                val models=MobileFusionModels.acquire(application,directory)
+                val models=MobileFusionModels.acquire(application,directory,metricDepth)
                 camera = models.camera
                 val calibration=models.camera.calibration
                 geometry = AtomRgbGeometry(480,640,if(demoRules) calibration.copy(
@@ -120,6 +123,7 @@ internal class MobileFusionSession(
                 extrinsicPitch=MobileFusionDemoRules.pitchDeg(geometry!!.calibration.cameraFromTof)
                 tofEngine = models.tof.also { it.reset() }
                 depth = models.depth
+                metric = models.metric
                 if (closed.get()) return@execute
                 emit(MobileFusionView(message="模型已就绪，正在连接三路传感器"))
                 openSources()
@@ -331,11 +335,20 @@ internal class MobileFusionSession(
                 undistortMs=(SystemClock.elapsedRealtimeNanos()-stageNs)/1e6
                 image=upright.bitmap
                 stageNs=SystemClock.elapsedRealtimeNanos()
-                val disparity=depth!!.estimate(upright.bitmap)
-                depthMs=(SystemClock.elapsedRealtimeNanos()-stageNs)/1e6
-                stageNs=SystemClock.elapsedRealtimeNanos()
-                rgb=g.process(disparity,upright.valid,job.frame.distanceMm.map(Int::toDouble).toDoubleArray(),
-                    job.frame.targetStatus.toIntArray(),job.pitch,job.roll,height)
+                val metricRuntime=metric
+                if(metricRuntime!=null) {
+                    val z=metricRuntime.estimate(upright.bitmap)
+                    depthMs=(SystemClock.elapsedRealtimeNanos()-stageNs)/1e6
+                    stageNs=SystemClock.elapsedRealtimeNanos()
+                    rgb=g.processMetric(z,upright.valid,job.frame.distanceMm.map(Int::toDouble).toDoubleArray(),
+                        job.frame.targetStatus.toIntArray(),job.pitch,job.roll,height)
+                } else {
+                    val disparity=depth!!.estimate(upright.bitmap)
+                    depthMs=(SystemClock.elapsedRealtimeNanos()-stageNs)/1e6
+                    stageNs=SystemClock.elapsedRealtimeNanos()
+                    rgb=g.process(disparity,upright.valid,job.frame.distanceMm.map(Int::toDouble).toDoubleArray(),
+                        job.frame.targetStatus.toIntArray(),job.pitch,job.roll,height)
+                }
                 geometryMs=(SystemClock.elapsedRealtimeNanos()-stageNs)/1e6
             }
             if(closed.get() || job.epoch!=inputs.epoch) return
@@ -399,7 +412,7 @@ internal class MobileFusionSession(
                 .put("tof_queue_rejected",tofQueueRejected.get()).put("rgb_pending_replaced",rgbPendingReplaced.get())
                 .put("processing_receipt_age_ms",elapsed).put("head",result.head).put("body",result.body)
                 .put("tof_head",tofHead).put("tof_body",tofBody).put("rgb_head",result.rgbHead).put("rgb_body",result.rgbBody)
-                .put("anchor",result.anchor).put("pose_ok",poseOk).put("pitch_deg",job.pitch).put("roll_deg",job.roll)
+                .put("depth_model",if(metricDepth) "unidepth_s_scale" else "dav2s_affine").put("anchor",result.anchor).put("pose_ok",poseOk).put("pitch_deg",job.pitch).put("roll_deg",job.roll)
                 .put("demo_rules",demoRules).put("walking",walking).put("limit_m",limit)
                 .put("tof_head_depth_m",tofDepth.first.takeIf { it.isFinite() } ?: JSONObject.NULL)
                 .put("tof_body_depth_m",tofDepth.second.takeIf { it.isFinite() } ?: JSONObject.NULL)

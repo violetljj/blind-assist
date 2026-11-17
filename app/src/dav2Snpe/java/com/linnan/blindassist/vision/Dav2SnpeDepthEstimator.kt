@@ -99,6 +99,9 @@ class Dav2SnpeDepthEstimator(
             return CubicAxis(indices, weights)
         }
 
+        /** Shared with [UniDepthSnpeRuntime]: same SDK, same HTP skeleton. */
+        fun skeletonDirectory(application: Application): File = installSkeleton(application)
+
         // FastRPC needs an actual skeleton file even when Android loads arm64 libs from the APK.
         @Synchronized
         private fun installSkeleton(application: Application): File {

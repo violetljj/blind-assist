@@ -111,6 +111,101 @@ class AtomRgbGeometry(val width: Int, val height: Int, val calibration: Calibrat
         return Result(anchor, fit, poseOk, queries.first, queries.second)
     }
 
+    // ---- Direction A metric chain (2026-11-18): UniDepth-V2-S optical depth times ONE scale. ----
+    // Mirrors evalkit Methods.hybrid_out / hybrid_in: ToF scale (>= 5 zones) -> own-ground scale x known eye height ->
+    // previous scale -> none. The scale is carried as Fit(a = s, b = 0) on disparity = 1 / z, so [readout] gives s * z.
+
+    /** One scale = median over valid zones (>= 5) of (ToF range / model range on the zone's sample rays); null otherwise.
+     * A zone needs >= 13 in-image samples with model depth > 0.1 m, a valid firmware status and 0.3 < range < 4 m. */
+    fun tofScale(depthM: FloatArray, rawDistanceMm: DoubleArray, rawStatus: IntArray): Double? {
+        require(depthM.size == width * height && rawDistanceMm.size == 64 && rawStatus.size == 64)
+        val ratios = ArrayList<Double>()
+        for (zone in 0 until 64) {
+            val raw = 63 - zone
+            val distance = rawDistanceMm[raw] / 1000.0
+            if (rawStatus[raw] !in VALID_STATUS || distance <= .3 || distance >= 4.0) continue
+            val ranges = ArrayList<Double>()
+            for (s in 0 until 25) {
+                val p = zonePixels[zone][s]
+                if (p < 0) continue
+                val z = depthM[p]
+                if (z.isFinite() && z > .1f) ranges.add(z / zoneFactors[zone][s])
+            }
+            if (ranges.size >= 13) ratios.add(distance / median(ranges))
+        }
+        return if (ratios.size >= 5) median(ratios) else null
+    }
+
+    /** Scale from the model's own ground: RANSAC plane below the camera (normal within 15 deg of IMU gravity, 3 cm
+     * tolerance, >= 2000 inliers, plane distance > 0.3 m) in the unscaled point cloud; s = eye height / plane distance,
+     * accepted in [0.5, 2]. Same rule as evalkit core.ground_plane / Methods._floor_scale (Java RNG, not numpy's). */
+    fun floorScale(depthM: FloatArray, pitchDeg: Double, rollDeg: Double, eyeHeightM: Double): Double? {
+        require(depthM.size == width * height && eyeHeightM.isFinite() && eyeHeightM > 0)
+        if (!pitchDeg.isFinite() || !rollDeg.isFinite()) return null
+        val m = corridorFromCamera(pitchDeg, rollDeg)
+        val down = doubleArrayOf(m[3], m[4], m[5])
+        var count = 0
+        val below = FloatArray(depthM.size * 3)
+        for (i in depthM.indices) {
+            val z = depthM[i]
+            if (!z.isFinite() || z <= .3f || z >= 10f) continue
+            val d = directions[i]
+            val x = d[0] * z; val y = d[1] * z; val zz = z.toDouble()
+            if (x * down[0] + y * down[1] + zz * down[2] <= .5) continue
+            below[count * 3] = x.toFloat(); below[count * 3 + 1] = y.toFloat(); below[count * 3 + 2] = z; count++
+        }
+        if (count < FLOOR_MIN_INLIERS) return null
+        val n = minOf(30000, count)
+        val sel = IntArray(count) { it }
+        for (i in 0 until n) { val j = i + rng.nextInt(count - i); val t = sel[i]; sel[i] = sel[j]; sel[j] = t }
+        // Contiguous copy of the sample (same points, same order) so each hypothesis scans three flat arrays.
+        val sx = FloatArray(n) { below[sel[it] * 3] }; val sy = FloatArray(n) { below[sel[it] * 3 + 1] }
+        val sz = FloatArray(n) { below[sel[it] * 3 + 2] }
+        val cosMax = cos(Math.toRadians(15.0))
+        var bestCount = -1; var best: DoubleArray? = null
+        repeat(300) {
+            val a = rng.nextInt(n); val b = rng.nextInt(n); val c = rng.nextInt(n)
+            val ux = (sx[b] - sx[a]).toDouble(); val uy = (sy[b] - sy[a]).toDouble(); val uz = (sz[b] - sz[a]).toDouble()
+            val vx = (sx[c] - sx[a]).toDouble(); val vy = (sy[c] - sy[a]).toDouble(); val vz = (sz[c] - sz[a]).toDouble()
+            var nx = uy * vz - uz * vy; var ny = uz * vx - ux * vz; var nz = ux * vy - uy * vx
+            val norm = sqrt(nx * nx + ny * ny + nz * nz)
+            if (norm < 1e-6) return@repeat
+            nx /= norm; ny /= norm; nz /= norm
+            if (nx * down[0] + ny * down[1] + nz * down[2] > 0) { nx = -nx; ny = -ny; nz = -nz }
+            if (-(nx * down[0] + ny * down[1] + nz * down[2]) < cosMax) return@repeat
+            val dist = -(nx * sx[a] + ny * sy[a] + nz * sz[a])
+            if (dist <= .3) return@repeat
+            val fx = nx.toFloat(); val fy = ny.toFloat(); val fz = nz.toFloat(); val fd = dist.toFloat()
+            var inliers = 0
+            for (k in 0 until n) if (abs(fx * sx[k] + fy * sy[k] + fz * sz[k] + fd) < .03f) inliers++
+            if (inliers > bestCount) { bestCount = inliers; best = doubleArrayOf(nx, ny, nz, dist) }
+        }
+        val plane = best ?: return null
+        var all = 0
+        for (p in 0 until count)
+            if (abs(plane[0] * below[p * 3] + plane[1] * below[p * 3 + 1] + plane[2] * below[p * 3 + 2] + plane[3]) < .03) all++
+        if (all < FLOOR_MIN_INLIERS) return null
+        val s = eyeHeightM / plane[3]
+        return s.takeIf { it in .5..2.0 }
+    }
+
+    /** The adopted chain on metric depth; anchors are TOF / FLOOR / PREVIOUS / NONE as in [process]. */
+    fun processMetric(depthM: FloatArray, validPixels: BooleanArray, rawDistanceMm: DoubleArray, rawStatus: IntArray,
+                      pitchDeg: Double, rollDeg: Double, eyeHeightM: Double = 1.35): Result {
+        require(depthM.size == width * height && validPixels.size == depthM.size)
+        val poseOk = poseInEnvelope(pitchDeg, rollDeg)
+        if (!poseOk) return Result(Anchor.NONE, null, false, Query(0, false), Query(0, false))
+        var scale = tofScale(depthM, rawDistanceMm, rawStatus); var anchor = Anchor.TOF
+        if (scale == null) { scale = floorScale(depthM, pitchDeg, rollDeg, eyeHeightM); anchor = Anchor.FLOOR }
+        var fit = scale?.let { Fit(it, 0.0) }
+        if (fit == null) { fit = previous; anchor = if (fit == null) Anchor.NONE else Anchor.PREVIOUS }
+        if (fit != null) previous = fit
+        if (fit == null) return Result(anchor, null, poseOk, Query(0, false), Query(0, false))
+        val disparity = FloatArray(depthM.size) { val z = depthM[it]; if (z.isFinite() && z > 0f) 1f / z else Float.NaN }
+        val queries = readout(disparity, validPixels, fit, pitchDeg, rollDeg)
+        return Result(anchor, fit, poseOk, queries.first, queries.second)
+    }
+
     fun floorAnchor(disparity: FloatArray, pitchDeg: Double, rollDeg: Double,
                     headHeightM: Double = 1.35, samples: FloorSamples? = null): Fit? {
         require(disparity.size == width * height && headHeightM.isFinite() && headHeightM > 0)
@@ -244,6 +339,7 @@ class AtomRgbGeometry(val width: Int, val height: Int, val calibration: Calibrat
 
     companion object {
         private val VALID_STATUS = setOf(5, 6, 9, 10)
+        private const val FLOOR_MIN_INLIERS = 2000
         fun poseInEnvelope(pitchDeg: Double, rollDeg: Double): Boolean =
             !(pitchDeg.isFinite() && rollDeg.isFinite() && (pitchDeg > 10 || abs(rollDeg) > 25))
 

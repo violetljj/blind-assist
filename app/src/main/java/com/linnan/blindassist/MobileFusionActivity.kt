@@ -37,6 +37,8 @@ class MobileFusionActivity : ComponentActivity() {
     private var speech by mutableStateOf(true)
     private var vibration by mutableStateOf(true)
     private var demoRules by mutableStateOf(true)
+    private var uniDepth by mutableStateOf(false)
+    private var uniDepthAvailable by mutableStateOf(false)
     private var lastSpoken by mutableStateOf<String?>(null)
     private var announcer:MobileFusionAnnouncer?=null
     // Time-dependent display state is computed in the 100 ms loop below and only written when it
@@ -71,9 +73,11 @@ class MobileFusionActivity : ComponentActivity() {
         speech=preferences.getBoolean("speech",true)
         vibration=preferences.getBoolean("vibration",true)
         demoRules=preferences.getBoolean("demo_rules",true)
+        uniDepthAvailable=com.linnan.blindassist.vision.UniDepthRuntimeFactory.available(root)
+        uniDepth=uniDepthAvailable && preferences.getBoolean("depth_unidepth",false)
         announcer=MobileFusionAnnouncer(this)
         // Load DAV2/ToF models while the presenter is still on the idle screen.
-        if(requiredFiles.all { File(root,it).isFile }) MobileFusionModels.preload(application,root)
+        if(requiredFiles.all { File(root,it).isFile }) MobileFusionModels.preload(application,root,uniDepth)
         setContent { BlindAssistTheme {
             Surface(Modifier.fillMaxSize(),color=FxNight) {
                 FusionScreen(
@@ -85,6 +89,9 @@ class MobileFusionActivity : ComponentActivity() {
                     onSpeech={ speech=it; preferences.edit().putBoolean("speech",it).apply(); if(!it) announcer?.silence(); checkAudio() },
                     onVibration={ vibration=it; preferences.edit().putBoolean("vibration",it).apply() },
                     onDemoRules={ demoRules=it; preferences.edit().putBoolean("demo_rules",it).apply() },
+                    uniDepth=uniDepth,uniDepthAvailable=uniDepthAvailable,
+                    onUniDepth={ uniDepth=it; preferences.edit().putBoolean("depth_unidepth",it).apply()
+                        if(requiredFiles.all { f -> File(root,f).isFile }) MobileFusionModels.preload(application,root,it) },
                     onRaiseVolume=::raiseVolume,
                     onBack={ finish() },
                 )
@@ -175,7 +182,7 @@ class MobileFusionActivity : ComponentActivity() {
         val token=generation.incrementAndGet()
         active=true; view=MobileFusionView(message=if(MobileFusionModels.ready) "模型已就绪，正在连接三路传感器" else "准备模型…",
             demoRules=demoRules); lastSpoken=null; liveFrame.value=null; headSeenNs=0; bodySeenNs=0
-        session=MobileFusionSession(application,root,atom,tof,demoRules,publishFrame={ image, receiptNs ->
+        session=MobileFusionSession(application,root,atom,tof,demoRules,metricDepth=uniDepth,publishFrame={ image, receiptNs ->
             pendingFrame.set(image); liveFrameNs=receiptNs
             if(framePostQueued.compareAndSet(false,true)) runOnUiThread {
                 framePostQueued.set(false)

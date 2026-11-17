@@ -1,11 +1,16 @@
 [CmdletBinding()]
-param([string]$Serial = 'R5CX10M8Y8X')
+# -WithUniDepth also installs the direction-A UniDepth-V2-S Atom model and its rays (host/unidepth_atom_export_20261118.py).
+param([string]$Serial = 'R5CX10M8Y8X', [switch]$WithUniDepth)
 $ErrorActionPreference = 'Stop'
 $adbExecutable = (Get-Command adb -CommandType Application | Select-Object -First 1).Source
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $bundle = Join-Path $repoRoot 'artifacts.local/work/mobile-fusion-integration-20261012'
 $model = Join-Path $repoRoot 'artifacts.local/work/dav2s-mobile-20261012/dav2s_686x518_fp32.dlc'
 $sources = @($model) + @('camera.json','atom_remap.bin','cnh_strong_m3.onnx','cnh_strong_calibration.bin' | ForEach-Object { Join-Path $bundle $_ })
+if ($WithUniDepth) {
+    $ud = Join-Path $repoRoot 'artifacts.local/work/unidepth-atom-app-20261118'
+    $sources += @('unidepth_s_atom_658x490_fp32.dlc','unidepth_s_atom_rays_658x490.raw' | ForEach-Object { Join-Path $ud $_ })
+}
 foreach ($file in $sources) { if (-not (Test-Path -LiteralPath $file -PathType Leaf)) { throw "Missing prepared artifact: $file" } }
 $taskRemote = '/data/local/tmp/blindassist-mobile-fusion-install'
 function Adb([string[]]$Arguments) {

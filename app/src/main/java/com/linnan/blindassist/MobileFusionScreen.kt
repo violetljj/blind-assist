@@ -107,6 +107,7 @@ internal fun FusionScreen(
     speech:Boolean, vibration:Boolean, demoRules:Boolean, lastSpoken:String?,
     onStart:()->Unit, onStop:()->Unit, onCalibrate:()->Unit,
     onSpeech:(Boolean)->Unit, onVibration:(Boolean)->Unit, onDemoRules:(Boolean)->Unit, onRaiseVolume:()->Unit, onBack:()->Unit,
+    uniDepth:Boolean=false, uniDepthAvailable:Boolean=false, onUniDepth:(Boolean)->Unit={},
 ) {
     // Freshness and the short alarm hold are computed in the Activity loop (display smoothing only).
     val held=view.copy(head=shownHead,body=shownBody)
@@ -138,7 +139,7 @@ internal fun FusionScreen(
                     SpokenLine(lastSpoken)
                 }
             }
-            RulesCard(view,active,demoRules,onDemoRules,onCalibrate)
+            RulesCard(view,active,demoRules,onDemoRules,onCalibrate,uniDepth,uniDepthAvailable,onUniDepth)
             DetailsCard(view,fresh,active)
             Text("研究原型演示：提示只表示头部 / 身体检测区内有障碍响应，不表示道路可通行。演示规则来自开发数据，尚未经新冻结检验。",
                 color=FxFaint,fontSize=11.sp,lineHeight=16.sp,modifier=Modifier.padding(top=4.dp))
@@ -506,8 +507,23 @@ private fun SpokenLine(text:String?) {
 }
 
 @Composable
-private fun RulesCard(view:MobileFusionView, active:Boolean, demoRules:Boolean, onDemoRules:(Boolean)->Unit, onCalibrate:()->Unit) {
+private fun RulesCard(view:MobileFusionView, active:Boolean, demoRules:Boolean, onDemoRules:(Boolean)->Unit, onCalibrate:()->Unit,
+                      uniDepth:Boolean, uniDepthAvailable:Boolean, onUniDepth:(Boolean)->Unit) {
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(20.dp)).background(FxSurface)) {
+        val canSwitch=!active && uniDepthAvailable
+        Row(Modifier.fillMaxWidth().clickable(enabled=canSwitch,role=Role.Switch) { onUniDepth(!uniDepth) }.testTag("fusion_depth_model")
+            .padding(horizontal=16.dp,vertical=14.dp),verticalAlignment=Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text("深度模型",color=if(canSwitch) FxText else FxMuted,fontSize=15.sp,fontWeight=FontWeight.SemiBold)
+                Text(if(uniDepth) "UniDepth-S × 单一尺度（ToF → 地面 → 沿用）" else "DAV2-S + ToF 仿射（现做法）",color=FxMuted,fontSize=12.sp)
+                if(!uniDepthAvailable) Text("UniDepth 模型未部署",color=FxFaint,fontSize=11.sp)
+                else if(active) Text("停止后可切换",color=FxFaint,fontSize=11.sp)
+            }
+            Switch(uniDepth,onCheckedChange=null,enabled=canSwitch,colors=SwitchDefaults.colors(
+                checkedTrackColor=FxClear,checkedThumbColor=FxNight,uncheckedTrackColor=FxSurfaceHigh,
+                uncheckedThumbColor=FxMuted,uncheckedBorderColor=FxLine,disabledCheckedTrackColor=FxClear.copy(alpha=.35f)))
+        }
+        HorizontalDivider(color=FxLine,modifier=Modifier.padding(horizontal=16.dp))
         Row(Modifier.fillMaxWidth().clickable(enabled=!active,role=Role.Switch) { onDemoRules(!demoRules) }
             .padding(horizontal=16.dp,vertical=14.dp),verticalAlignment=Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {

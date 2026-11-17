@@ -184,3 +184,106 @@ Java_com_linnan_blindassist_vision_Dav2NativePreprocess_apply(
         return output;
     } catch (const std::exception& error) { fail(env, error); return nullptr; }
 }
+
+// ---- UniDepth-V2-S (direction A, 2026-11-18): generic DSP-only engine with several inputs and one named output. ----
+namespace {
+struct MultiEngine {
+    Snpe_SNPE_Handle_t snpe = nullptr;
+    std::vector<std::string> input_names;
+    std::vector<Snpe_ITensor_Handle_t> inputs;
+    std::vector<size_t> input_sizes;
+    ~MultiEngine() {
+        for (auto t : inputs) if (t) Snpe_ITensor_Delete(t);
+        if (snpe) Snpe_SNPE_Delete(snpe);
+    }
+};
+}
+
+extern "C" JNIEXPORT jlong JNICALL
+Java_com_linnan_blindassist_vision_UniDepthSnpeRuntime_nativeCreate(JNIEnv* env, jobject, jstring path, jstring dsp_path) {
+    try {
+        const auto dsp = string(env, dsp_path);
+        const char* previous = std::getenv("ADSP_LIBRARY_PATH");
+        std::string search = dsp + ";" + (previous ? previous : "/vendor/lib/rfsa/adsp;/vendor/dsp;/system/lib/rfsa/adsp;/dsp");
+        require(setenv("ADSP_LIBRARY_PATH", search.c_str(), 1) == 0, "Set DSP search path");
+        require(Snpe_Util_IsRuntimeAvailableCheckOption(SNPE_RUNTIME_DSP, SNPE_RUNTIME_CHECK_OPTION_UNSIGNEDPD_CHECK), "HTP runtime unavailable");
+        Owned<Snpe_DlContainer_Delete> container{Snpe_DlContainer_Open(string(env, path).c_str())};
+        require(container.value, "Open DLC");
+        Owned<Snpe_SNPEBuilder_Delete> builder{Snpe_SNPEBuilder_Create(container.value)};
+        Owned<Snpe_RuntimeList_Delete> runtimes{Snpe_RuntimeList_Create()};
+        Owned<Snpe_PlatformConfig_Delete> platform{Snpe_PlatformConfig_Create()};
+        Owned<Snpe_StringList_Delete> wanted{Snpe_StringList_Create()};
+        require(builder.value && runtimes.value && platform.value && wanted.value, "Create SNPE builder");
+        require(Snpe_RuntimeList_Add(runtimes.value, SNPE_RUNTIME_DSP) == SNPE_SUCCESS, "DSP runtime order");
+        require(Snpe_PlatformConfig_SetPlatformOptions(platform.value, "unsignedPD:ON"), "Unsigned DSP platform");
+        require(Snpe_SNPEBuilder_SetRuntimeProcessorOrder(builder.value, runtimes.value) == SNPE_SUCCESS, "Set DSP-only runtime");
+        require(Snpe_SNPEBuilder_SetPlatformConfig(builder.value, platform.value) == SNPE_SUCCESS, "Set platform");
+        require(Snpe_SNPEBuilder_SetPerformanceProfile(builder.value, SNPE_PERFORMANCE_PROFILE_BURST) == SNPE_SUCCESS, "Set burst");
+        require(Snpe_SNPEBuilder_SetUseUserSuppliedBuffers(builder.value, false) == SNPE_SUCCESS, "Set ITensor");
+        require(Snpe_StringList_Append(wanted.value, "pts_3d") == SNPE_SUCCESS, "Output name");
+        require(Snpe_SNPEBuilder_SetOutputTensors(builder.value, wanted.value) == SNPE_SUCCESS, "Select pts_3d output");
+        auto engine = std::make_unique<MultiEngine>();
+        engine->snpe = Snpe_SNPEBuilder_Build(builder.value);
+        require(engine->snpe, "Build DSP-only UniDepth");
+        Owned<Snpe_StringList_Delete> names{Snpe_SNPE_GetInputTensorNames(engine->snpe)};
+        require(names.value && Snpe_StringList_Size(names.value) >= 1, "Input names");
+        for (size_t i = 0; i < Snpe_StringList_Size(names.value); ++i) {
+            engine->input_names.emplace_back(Snpe_StringList_At(names.value, i));
+            Owned<Snpe_TensorShape_Delete> shape{Snpe_SNPE_GetInputDimensions(engine->snpe, engine->input_names.back().c_str())};
+            require(shape.value, "Input shape");
+            auto tensor = Snpe_Util_CreateITensor(shape.value);
+            require(tensor, "Create input tensor");
+            engine->inputs.push_back(tensor);
+            engine->input_sizes.push_back(Snpe_ITensor_GetSize(tensor));
+        }
+        return reinterpret_cast<jlong>(engine.release());
+    } catch (const std::exception& error) { fail(env, error); return 0; }
+}
+
+extern "C" JNIEXPORT jobjectArray JNICALL
+Java_com_linnan_blindassist_vision_UniDepthSnpeRuntime_nativeInputNames(JNIEnv* env, jobject, jlong handle) {
+    auto* engine = reinterpret_cast<MultiEngine*>(handle);
+    auto result = env->NewObjectArray(engine->input_names.size(), env->FindClass("java/lang/String"), nullptr);
+    for (size_t i = 0; i < engine->input_names.size(); ++i)
+        env->SetObjectArrayElement(result, i, env->NewStringUTF(engine->input_names[i].c_str()));
+    return result;
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_linnan_blindassist_vision_UniDepthSnpeRuntime_nativeInputSize(JNIEnv*, jobject, jlong handle, jint index) {
+    return static_cast<jint>(reinterpret_cast<MultiEngine*>(handle)->input_sizes.at(index));
+}
+
+/** Copies one input once (e.g. the constant camera rays); it stays in the engine's tensor for later executions. */
+extern "C" JNIEXPORT void JNICALL
+Java_com_linnan_blindassist_vision_UniDepthSnpeRuntime_nativeSetInput(JNIEnv* env, jobject, jlong handle, jint index, jfloatArray values) {
+    try {
+        auto* engine = reinterpret_cast<MultiEngine*>(handle);
+        require(engine && index >= 0 && static_cast<size_t>(index) < engine->inputs.size(), "Input index");
+        require(static_cast<size_t>(env->GetArrayLength(values)) == engine->input_sizes[index], "Input size");
+        env->GetFloatArrayRegion(values, 0, engine->input_sizes[index], static_cast<float*>(Snpe_ITensor_GetData(engine->inputs[index])));
+    } catch (const std::exception& error) { fail(env, error); }
+}
+
+extern "C" JNIEXPORT jfloatArray JNICALL
+Java_com_linnan_blindassist_vision_UniDepthSnpeRuntime_nativeExecute(JNIEnv* env, jobject, jlong handle) {
+    try {
+        auto* engine = reinterpret_cast<MultiEngine*>(handle);
+        Owned<Snpe_TensorMap_Delete> inputs{Snpe_TensorMap_Create()}, outputs{Snpe_TensorMap_Create()};
+        require(inputs.value && outputs.value, "Create tensor maps");
+        for (size_t i = 0; i < engine->inputs.size(); ++i)
+            Snpe_TensorMap_Add(inputs.value, engine->input_names[i].c_str(), engine->inputs[i]);
+        require(Snpe_SNPE_ExecuteITensors(engine->snpe, inputs.value, outputs.value) == SNPE_SUCCESS, "Execute DSP UniDepth");
+        auto tensor = Snpe_TensorMap_GetTensor_Ref(outputs.value, "pts_3d");
+        require(tensor, "pts_3d output");
+        const auto size = Snpe_ITensor_GetSize(tensor);
+        auto result = env->NewFloatArray(size);
+        if (result) env->SetFloatArrayRegion(result, 0, size, static_cast<float*>(Snpe_ITensor_GetData(tensor)));
+        return result;
+    } catch (const std::exception& error) { fail(env, error); return nullptr; }
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_linnan_blindassist_vision_UniDepthSnpeRuntime_nativeDestroy(JNIEnv*, jobject, jlong handle) {
+    delete reinterpret_cast<MultiEngine*>(handle);
+}
