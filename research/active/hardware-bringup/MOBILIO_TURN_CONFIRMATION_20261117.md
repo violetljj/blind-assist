@@ -271,3 +271,30 @@ $src = 'research/active/hardware-bringup/host'
 python -B "$src/evaluate_paired_turn_localization.py" --run-dir $loc
 python -B "$src/ping_position_transfer.py" --run-dir $loc --prior 'artifacts.local/work/mobilio-turn-extension-20261117' --minor 'artifacts.local/work/aligned-public-turns-20261117/ping-minor/trials.json' --odometry
 ```
+
+### 朝向稳定后再补偿
+
+EXPLORE。逐条对照朝向积分刚补回的两次和刚新增过早的两次。四次的当前设备朝向都在出口方向 ±25° 以内。复用原 `dwell_angle` 条件，最近至少 0.5 s 的原生朝向均在同一角带、采样间隔至多 250 ms，才允许用原 0.75 s 朝向积分修正未通过位置条件的一帧。原位置通过时照常判断，补偿只负责补充触发机会，原两秒位移、空间条件、时点和视频判据沿用。条件来自已知四例。CPU 回放原 184 次，不新增数据。逐事件检查，目标是保住 P2 #7 与 P3 #66，且主、斜两个组均为零新增过早。
+
+| 转弯 | 原朝向积分的首次提示 | 当下偏角／过去半秒最大偏角 | 当时的设备定位与视频标注 | 加条件后的首次提示 |
+| --- | ---: | ---: | --- | --- |
+| 主 P2 #7 | 9.0 s，补漏 | 16.75°／16.75° | 沿线 0.49→1.17 m，视频 3.28 m，已在出口前进 | 9.0 s，正确 |
+| 主 P3 #66 | 11.5 s，补漏 | 21.05°／21.05° | 沿线 0.68→1.11 m，视频 1.24 m，已在出口前进 | 11.5 s，正确 |
+| 主 P8 #125 | 2.0 s，新增过早 | 11.15°／29.33° | 横偏绝对值 1.58→1.39 m，恰过横向界。视频沿线 0.76 m、两秒前进 0.46 m，均未达标 | 3.0 s，正确 |
+| 斜 P3 #31 | 2.5 s，新增过早 | 19.81°／33.84° | 沿线 0.93→1.39 m，视频 0.75 m，未到沿线 1 m | 3.0 s，正确 |
+
+| 组别 | 原设备定位正确／过早 | 原朝向积分正确／过早 | 稳定后补偿正确／过早 | 稳定后补偿的新增过早／补漏 |
+| --- | ---: | ---: | ---: | ---: |
+| 主转弯 131 次 | 53／37 | 56／36 | **57／35** | **0／2** |
+| 斜转 53 次 | 22／22 | 21／23 | **22／22** | **0／0** |
+
+全部 368 个原定位与原朝向积分的试次判定、首发时间和前进机会数均复现。两次补漏保留，P4 #68、P7 #71 仍从判错变为正确，两组原本判对的试次全保留，配对中位时差均为 0 s。主转弯剩 16 次已有前进而静默、1 次发出但无法评分，斜转剩 5 次已有前进而静默。主转弯中仍判为过早且比原定位更早的有 4 次。P1 #48、P6 #58、P8 #130 各提前 0.5 s，P9 #125 提前 1.0 s。零新增指逐试次无非过早变成过早。
+
+四例分别截断提示后的原生设备流，并更换视频位置，候选首次提示时点不变。回放继承原路线、楼层、窗口截断以及每人首段朝向配准。候选达到同队列的补漏和新增过早端点，仍保留在开发阶段。稳定性条件由这四个已知案例提出，184 次均属已用的 9 人样本。
+
+`artifacts.local/work/ping-compensation-gate-20261117/signal-agent/case_trace.json` 保存四例逐帧数据。`replay/summary.json` 与 `replay/paired.csv` 保存全量结果、输入哈希和逐试次时间。
+
+```powershell
+$work = 'artifacts.local/work'
+python -B research/active/hardware-bringup/host/ping_position_transfer.py --run-dir "$work/ping-localization-20261117" --prior "$work/mobilio-turn-extension-20261117" --minor "$work/aligned-public-turns-20261117/ping-minor/trials.json" --dwell-output-dir "$work/ping-compensation-gate-20261117/replay"
+```

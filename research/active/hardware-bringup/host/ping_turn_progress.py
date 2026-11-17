@@ -87,6 +87,10 @@ def leg_clearance(projected, length, lateral):
     )
 
 
+def in_outbound_leg(position, length):
+    return MIN_OUTBOUND_M <= position["forward_m"] <= length and abs(position["cross_m"]) <= CENTERLINE_M
+
+
 def compare_turn(clip, participant, vertices, calibration):
     cue_time = clip["cue_start_ms"]
     time = participant["logtime"]
@@ -253,6 +257,7 @@ def status_window_end(clip, online):
 def status_events(
     clip, online, evaluated, vertices, calibration, *,
     position_shift=None, position_perturbation=False, position_correction=None, correct_displacement=False,
+    require_dwell_for_rescue=False,
 ):
     """Run the prompts from online observations, then look up video labels."""
     origin, end = vertices[clip["corner_index"]:clip["corner_index"] + 2]
@@ -283,6 +288,7 @@ def status_events(
             dwell_start >= 0 and time[dwell_start] >= cue
             and np.max(np.diff(time[dwell_start:current + 1])) <= POSE_LAG_MS
         )
+        dwell_angle = enough_dwell and np.all(np.abs(errors[dwell_start:current + 1]) <= HEADING_LIMIT_DEG)
         enough_slope = (
             slope_start >= 0 and time[slope_start] >= cue
             and np.max(np.diff(time[slope_start:current + 1])) <= POSE_LAG_MS
@@ -298,21 +304,21 @@ def status_events(
                 CENTERLINE_M - abs(position["cross_m"]),
             )
         correction = position_shift if position_correction is None else position_correction[current]
+        if require_dwell_for_rescue and (not dwell_angle or in_outbound_leg(position, length)):
+            correction = None
         if correction is not None:
             position["forward_m"] += float(correction @ tangent)
             position["cross_m"] += float(tangent[0] * correction[1] - tangent[1] * correction[0])
             if correct_displacement and position_correction is not None:
                 position["advance_m"] += float((correction - position_correction[previous]) @ tangent)
-        in_leg = (
-            MIN_OUTBOUND_M <= position["forward_m"] <= length and abs(position["cross_m"]) <= CENTERLINE_M
-        )
+        in_leg = in_outbound_leg(position, length)
         angle = abs(angle_error) <= HEADING_LIMIT_DEG
         progressing = in_leg and position["advance_m"] >= MIN_PROGRESS_M
         eligible = {
             "after_3s": stamp - cue >= QUERY_MS,
             "after_6s": stamp - cue >= 2 * QUERY_MS,
             "angle": angle,
-            "dwell_angle": enough_dwell and np.all(np.abs(errors[dwell_start:current + 1]) <= HEADING_LIMIT_DEG),
+            "dwell_angle": dwell_angle,
             "linear_angle": angle and abs(projected_angle) <= HEADING_LIMIT_DEG,
             "angle_position": angle and in_leg,
             "angle_progress": angle and progressing,

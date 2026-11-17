@@ -25,6 +25,7 @@ ARMS = (
     "raw", "unguarded", "gated", "gated_with_heading_check", "heading_integration", "heading_along_only",
     "heading_aligned_history", "heading_along_aligned_history",
 )
+DWELL_RESCUE = "heading_dwell_rescue"
 SCORING_OUTCOMES = ("correct", "early", "unlabeled", "silent")
 
 
@@ -65,12 +66,13 @@ def metrics_by_outcome(rows, arms):
     return outputs
 
 
-def score_cohort(manifest, previous, people, video, maps, correction, *, include_odometry):
+def score_cohort(manifest, previous, people, video, maps, correction, *, arms):
     baseline = {(row["person"], row["number"]): row for row in previous}
     cases = set()
     records = []
-    arms = ARMS + ("observed_route_distance",) if include_odometry else ARMS
-    estimates = {arm: [] for arm in arms}
+    # The rescue arm evaluates prompt eligibility only.
+    pose_arms = [arm for arm in arms if arm != DWELL_RESCUE]
+    estimates = {arm: [] for arm in pose_arms}
     labels = []
     for clip in manifest:
         person = clip["person"]
@@ -93,7 +95,7 @@ def score_cohort(manifest, previous, people, video, maps, correction, *, include
         corrections["heading_aligned_history"] = corrections["heading_integration"]
         corrections["heading_along_aligned_history"] = corrections["heading_along_only"]
         anchor_s = None
-        if include_odometry:
+        if "observed_route_distance" in arms:
             times = (data["logtime"] - clip["cue_start_ms"]) / 1000
             stop = (status_window_end(clip, data) - clip["cue_start_ms"] - 1) / 1000
             position = data["logposition"]
@@ -113,14 +115,17 @@ def score_cohort(manifest, previous, people, video, maps, correction, *, include
             position = data["logposition"][index]
             labels.append(label)
             estimates["raw"].append(position)
-            for arm in arms[1:]:
+            for arm in pose_arms[1:]:
                 estimates[arm].append(position + corrections[arm][index])
         for arm in arms:
             status = baseline_status
             if arm != "raw":
+                dwell_rescue = arm == DWELL_RESCUE
+                correction_arm = "heading_integration" if dwell_rescue else arm
                 status = status_events(
-                    clip, data, truth, vertices, calibration, position_correction=corrections[arm],
+                    clip, data, truth, vertices, calibration, position_correction=corrections[correction_arm],
                     correct_displacement=arm.endswith("_aligned_history"),
+                    require_dwell_for_rescue=dwell_rescue,
                 )
                 if status["slots"] != baseline_status["slots"]:
                     raise ValueError(f"Correction changed reference scoring slots at {case}")
@@ -155,7 +160,9 @@ def main():
     parser.add_argument("--prior", type=Path, required=True)
     parser.add_argument("--minor", type=Path, required=True)
     parser.add_argument("--run-dir", type=Path, required=True)
-    parser.add_argument("--odometry", action="store_true", help="Also replay measured distance from observed turns.")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--odometry", action="store_true", help="Also replay measured distance from observed turns.")
+    mode.add_argument("--dwell-output-dir", type=Path, help="Compare raw, heading integration and dwell-gated rescue.")
     args = parser.parse_args()
     ping = args.prior / "sources/ping"
     paths = {
@@ -195,14 +202,17 @@ def main():
         take = mask["people"][person]["unambiguous_pose_row_indices"]
         videos[person] = {name: participant[name][take] for name in ("gttime", "gtpos", "gtroute", "gtfloor")}
     previous = json.loads(paths["previous_major"].read_bytes())["trials"]
+    arms = ARMS + ("observed_route_distance",) if args.odometry else ARMS
+    if args.dwell_output_dir is not None:
+        arms = ("raw", "heading_integration", DWELL_RESCUE)
     main, rows_main = score_cohort(
-        major["clips"], previous, people, videos, maps, correction, include_odometry=args.odometry,
+        major["clips"], previous, people, videos, maps, correction, arms=arms,
     )
     diagonal, rows_diag = score_cohort(
-        minor["clips"], minor["status"], people, videos, maps, correction, include_odometry=args.odometry,
+        minor["clips"], minor["status"], people, videos, maps, correction, arms=arms,
     )
     result = {"input_sha256": hashes, "lead_s": fixed_lead_s, "major": main, "minor": diagonal}
-    output = args.run_dir / "ping-transfer"
+    output = args.dwell_output_dir or args.run_dir / "ping-transfer"
     write_json(output / "summary.json", result)
     with (output / "paired.csv").open("w", encoding="utf-8", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=["cohort", *rows_main[0]])
