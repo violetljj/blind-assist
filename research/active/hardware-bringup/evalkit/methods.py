@@ -28,6 +28,7 @@ class Methods:
         self.S, self.zone_rays = P.V1.S, P.V1.X.zone_rays()
         self.last_fit = {}
         self._cache = None
+        self.source = {}             # per-call scale source of the scaled UniDepth arms (logged by runners)
 
     def _disp(self, f):
         import torch
@@ -100,19 +101,85 @@ class Methods:
         out = self.P.to_depth(disp, fit)
         return None if out is None else out.reshape(H, W)
 
-    def tof_unidepth(self, f, outdoor=False):
-        """UniDepth-V2-S times one scale s = median over valid zones of (ToF range / UniDepth range on the zone's rays)."""
+    def _tof_scale(self, f, outdoor):
+        """One scale = median over valid zones (>= 5) of (ToF range / UniDepth range on the zone's rays); None otherwise."""
         z = self._unidepth_cached(f); dist, zu, zv, zin, zcos = self._zones(f, outdoor)
         ratios = []
         for zi in np.flatnonzero(np.isfinite(dist)):
             s = zin[zi]; zz = z[zv[zi][s], zu[zi][s]]; ok = np.isfinite(zz) & (zz > .1)
             if ok.sum() >= 13:
                 ratios.append(dist[zi] / float(np.median(zz[ok] / zcos[zi][s][ok])))
+        return float(np.median(ratios)) if len(ratios) >= 5 else None
+
+    def tof_unidepth(self, f, outdoor=False):
+        """UniDepth-V2-S times one scale s = median over valid zones of (ToF range / UniDepth range on the zone's rays)."""
+        z = self._unidepth_cached(f)
         key = ('ud', outdoor, f.dataset, f.seq)
-        sc = float(np.median(ratios)) if len(ratios) >= 5 else self.last_fit.get(key)
+        sc = self._tof_scale(f, outdoor)
+        self.source['tof_unidepth_out' if outdoor else 'tof_unidepth'] = 'tof' if sc is not None else ('last' if self.last_fit.get(key) is not None else 'none')
+        sc = sc if sc is not None else self.last_fit.get(key)
         if sc is not None:
             self.last_fit[key] = sc
         return z if sc is None else z * sc
+
+    FLOOR_SCALE_RANGE = (.5, 2.)
+
+    def _floor_scale(self, f, dh=0.):
+        """Scale from the model's own ground: RANSAC plane below the camera in the UniDepth point cloud (normal within 15 deg
+        of device gravity, or 35 deg of the camera y axis without it); s = (known eye height + dh) / predicted plane distance.
+        Uses only the prediction, the device gravity and the sequence's known eye height. Cached per frame (dh applied after)."""
+        import hashlib
+        import core
+        key = ('floor', f.dataset, f.seq, f.index)
+        if getattr(self, '_floor_cache', (None,))[0] != key:
+            z = self._unidepth_cached(f).reshape(-1); H, W = f.ref_depth.shape
+            ok = np.isfinite(z) & (z > .3) & (z < 10)
+            pts = core.rays(f.K, H, W)[ok] * z[ok, None]
+            rng = np.random.default_rng(int(hashlib.sha256(f'floor:{f.dataset}:{f.seq}:{f.index}'.encode()).hexdigest()[:8], 16))
+            gp = (core.ground_plane(pts, f.down, rng) if f.down is not None
+                  else core.ground_plane(pts, np.array([0, 1., 0]), rng, max_deg=35.))
+            self._floor_cache = (key, None if gp is None else gp[1])
+        d = self._floor_cache[1]
+        if d is None or f.eye_height is None:
+            return None
+        sc = (f.eye_height + dh) / d
+        return sc if self.FLOOR_SCALE_RANGE[0] <= sc <= self.FLOOR_SCALE_RANGE[1] else None
+
+    def floor_unidepth(self, f):
+        z = self._unidepth_cached(f); key = ('floor', f.dataset, f.seq)
+        sc = self._floor_scale(f)
+        self.source['floor_unidepth'] = 'floor' if sc is not None else ('last' if self.last_fit.get(key) is not None else 'none')
+        sc = sc if sc is not None else self.last_fit.get(key)
+        if sc is not None:
+            self.last_fit[key] = sc
+        return z if sc is None else z * sc
+
+    def hybrid_out(self, f, dh=0., name='hybrid_out'):
+        """Outdoor-limited ToF scale if >= 5 zones, else the model's own ground scale, else the sequence's last scale."""
+        z = self._unidepth_cached(f); key = (name, f.dataset, f.seq)
+        sc, src = self._tof_scale(f, True), 'tof'
+        if sc is None:
+            sc, src = self._floor_scale(f, dh), 'floor'
+        if sc is None:
+            sc, src = self.last_fit.get(key), 'last'
+        if sc is None:
+            src = 'none'
+        self.source[name] = src
+        if sc is not None:
+            self.last_fit[key] = sc
+        return z if sc is None else z * sc
+
+    def hybrid_out_hm10(self, f):
+        return self.hybrid_out(f, -.10, 'hybrid_out_hm10')
+
+    def hybrid_out_hm5(self, f):
+        return self.hybrid_out(f, -.05, 'hybrid_out_hm5')
+
+    def hybrid_out_hp5(self, f):
+        return self.hybrid_out(f, .05, 'hybrid_out_hp5')
+
+    def hybrid_out_hp10(self, f):
+        return self.hybrid_out(f, .10, 'hybrid_out_hp10')
 
     def tof_dav2s_out(self, f):
         return self.tof_dav2s(f, outdoor=True)
@@ -123,3 +190,5 @@ class Methods:
 
 METHOD_NAMES = ('reference', 'tof_dav2s', 'unidepth_s', 'oracle_dav2s')
 A1_METHODS = ('tof_dav2s', 'tof_unidepth', 'tof_dav2s_out', 'tof_unidepth_out', 'unidepth_s', 'oracle_dav2s')
+A2_METHODS = ('tof_dav2s_out', 'unidepth_s', 'tof_unidepth_out', 'floor_unidepth', 'hybrid_out',
+              'hybrid_out_hm10', 'hybrid_out_hm5', 'hybrid_out_hp5', 'hybrid_out_hp10')
