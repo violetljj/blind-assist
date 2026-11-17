@@ -358,3 +358,31 @@ EXPLORE。逐条核对 P4 #68、P7 #71 和前面四次补偿让过早确认提�
 $work = 'artifacts.local/work'
 python -B research/active/hardware-bringup/host/ping_position_transfer.py --run-dir "$work/ping-localization-20261117" --prior "$work/mobilio-turn-extension-20261117" --minor "$work/aligned-public-turns-20261117/ping-minor/trials.json" --continuation-output-dir "$work/ping-compensation-short-turn-20261117/continuation-replay"
 ```
+
+### 合并同向直线后重评固定的提示时点
+
+EXPLORE。固定 `continuation-replay/paired.csv` 中原定位与同向接续补偿的首发时点或静默，固定原 131 次主转、53 次斜转和每次的可评时点。在评分侧，把出口段连续接到下一段，直至下一段改变方向或路线结束。采用前一轮相同的共线数值容差，只延长有效段的远端。出口起点、横向范围、两秒前进、视频插值和楼层路线截断都用原设定。首先逐槽复现原标签，再用延长段判分。跟踪 P2 #7、P3 #66 是否仍补漏，P4 #68、P7 #71 的正确性与时间差，以及两组逐事件新增过早、仍过早且提前。CPU，复用 184 次原数据。
+
+| 组别 | 原有限段原定位正确／过早 | 原有限段补偿正确／过早 | 合并后原定位正确／过早 | 合并后补偿正确／过早 | 合并后新增过早／仍过早且提前 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 主转弯 131 次 | 53／37 | 57／35 | **56／34** | **58／34** | **0／0** |
+| 斜转 53 次 | 22／22 | 22／22 | **22／22** | **22／22** | **0／0** |
+
+所有 368 条首发或静默记录原样重评。独立核对及复跑均复现 3472 个原检查点（主转 2455、斜转 1017）。同方向的评分段延长了 26 次主转、9 次斜转。有两种路线情形连续接了三段。视频达标的检查点分别多 77、41 个，有至少一个达标时点的试次仍为 98、44 次。主转仍过早的 34 次与斜转仍过早的 22 次，原定位与补偿首发时刻均逐条相同。
+
+| 案例 | 合并后原定位 | 合并后补偿 | 效果 |
+| --- | --- | --- | --- |
+| P2 #7 | 静默 | 9.0 s 正确 | 保住补漏 |
+| P3 #66 | 静默 | 11.5 s 正确 | 保住补漏 |
+| P4 #68 | 6.5 s 正确 | 4.5 s 正确 | 提前 2.0 s |
+| P7 #71 | 9.5 s 正确 | 8.5 s 正确 | 提前 1.0 s |
+| P2 #99 | 11.5 s 正确 | 11.5 s 正确 | 两套均由过早改判。11.5 s 的视频位置沿线 5.843 m，原段末为 4.676 m，合并段末为 11.401 m |
+
+合并后净增正确仅来自两次补漏。两套均判正确的 56 次主转中，8 次提前 0.5–2.0 s，另 48 次同时。22 次共同正确斜转中，3 次提前 0.5–1.0 s，另 19 次同时。主转原定位仍有 18 次已有视频前进却一直静默，补偿为 16 次。斜转两套均为 5 次。仍是 PING 原 9 人的开发回放。
+
+结果留在 `artifacts.local/work/ping-collinear-rescore-20261117/rescore/` 的 `paired.csv` 与 `summary.json`，独立核对见 `audit-agent/independent_rescore.json`。
+
+```powershell
+$work = 'artifacts.local/work'
+python -B research/active/hardware-bringup/host/ping_collinear_rescore.py --prior "$work/mobilio-turn-extension-20261117" --minor "$work/aligned-public-turns-20261117/ping-minor/trials.json" --replay "$work/ping-compensation-short-turn-20261117/continuation-replay" --output-dir "$work/ping-collinear-rescore-20261117/rescore"
+```
