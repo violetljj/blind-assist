@@ -75,13 +75,18 @@ def shadow_factor(T, gt_mm, boxes, floor):
     return out
 
 
-def composite(run, T, rgb, gt, noise):
+VARIANTS = dict(both=('insert_v2', True, True), sup=('insert_v2_sup', True, False), shd=('insert_v2_shd', False, True))
+
+
+def composite(run, T, rgb, gt, noise, use_sup=True, use_shadow=True):
     """rgb, gt (mm) of the uninserted frame -> composite rgb, gt, main-object mask, main-object true depth (m)."""
-    extra, ecol = supports(run)
+    extra, ecol = supports(run) if use_sup else ([], [])
     main = I.world_boxes(run); sup = I.world_boxes(dict(run, boxes=extra)) if extra else []
     boxes = main + sup; cols = [np.array(I.COLORS[run['kind']], float)] * len(main) + [np.array(c) for c in ecol]
     Lg = np.array([.4, .3, .86]); Lg /= np.linalg.norm(Lg)
-    rgb = (rgb.astype(np.float32) * shadow_factor(T, gt, boxes, run['floor'])[..., None])
+    rgb = rgb.astype(np.float32)
+    if use_shadow:
+        rgb = rgb * shadow_factor(T, gt, boxes, run['floor'])[..., None]
     t, n, bi = raycast_idx(T, (SI.F, SI.F, SI.CX, SI.CY), boxes)
     m = np.isfinite(t) & ((gt == 0) | (t * 1000 < gt)) & SI.undistort_map()[2]
     colmap = np.stack(cols)[np.clip(bi, 0, len(cols) - 1)]
@@ -110,10 +115,11 @@ def sheet(spires, work):
     cv2.imwrite(str(work / OUT / 'sheet.jpg'), np.vstack([np.hstack(tiles[i:i + 4]) for i in range(0, len(tiles), 4)]))
 
 
-def render(spires, work):
+def render(spires, work, variant='both'):
     import torch
     import torch.nn.functional as Fn
     import cv2
+    out_dir, use_sup, use_shadow = VARIANTS[variant]
     work = Path(work); R = json.loads((work / 'insert' / 'runs.json').read_text())
     meta = dict(projection=[SI.F, SI.F, SI.CX, SI.CY], size=[W, H])
     model = SI._dav2s(); rng = np.random.default_rng(7)               # same stream as the first insertion
@@ -121,12 +127,12 @@ def render(spires, work):
     vv, uu = np.mgrid[0:H:V.STEP, 0:W:V.STEP]
     dp = np.stack([(uu - SI.CX) / SI.F, (vv - SI.CY) / SI.F, np.ones(uu.shape)], -1)
     for run in R:
-        p = prep[run['id']]; od = work / OUT / str(run['id']); od.mkdir(parents=True, exist_ok=True)
+        p = prep[run['id']]; od = work / out_dir / str(run['id']); od.mkdir(parents=True, exist_ok=True)
         ims, gts, masks, tts = [], [], [], []
         for k in run['frames']:
             noise = rng.normal(0, 6, (H, W, 1)); nm = p['names'][k]
             rgb = SI.pinhole_rgb(work / 'insert' / 'img' / run['seq'] / nm[5:]) if nm else np.zeros((H, W, 3), np.uint8)
-            im, gt, mo, tt = composite(run, p['T'][k], rgb, p['gts'][k].astype(np.float32), noise)
+            im, gt, mo, tt = composite(run, p['T'][k], rgb, p['gts'][k].astype(np.float32), noise, use_sup, use_shadow)
             if k == run['run_frames'][len(run['run_frames']) // 2]:
                 cv2.imwrite(str(od / f'{k:03d}.jpg'), im, [cv2.IMWRITE_JPEG_QUALITY, 90])
             ims.append(im); gts.append(gt); masks.append(mo); tts.append(tt)
@@ -157,7 +163,7 @@ def render(spires, work):
                        (Pm[:, 2] - run['floor'] >= .6) & (Pm[:, 2] - run['floor'] <= 1.9)
                 px.append(dict(id=run['id'], kind=run['kind'], k=k, absrel=float(np.median(np.abs(rel))), in_body=float(body.mean())))
         print('run', run['id'], run['kind'], flush=True)
-    (work / OUT / 'pixels.json').write_text(json.dumps(px), encoding='utf8')
+    (work / out_dir / 'pixels.json').write_text(json.dumps(px), encoding='utf8')
 
 
 def score(ase_work, work):
@@ -207,5 +213,46 @@ def score(ase_work, work):
     print(json.dumps(rep, indent=1))
 
 
+
+def score4(ase_work, work):
+    """2x2 ablation: v1 (neither), sup only, shadow only, both."""
+    import torch
+    ase_work, work = Path(ase_work), Path(work); R = json.loads((work / 'insert' / 'runs.json').read_text())
+    net = I.D.make_head(8).cuda(); net.load_state_dict(torch.load(ase_work / 'decision_head8_all.pt')); net.eval()
+    arms = dict(neither='insert', sup='insert_v2_sup', shd='insert_v2_shd', both='insert_v2')
+    rep, rows = {}, {}
+    for tag, sub in arms.items():
+        per = []
+        for run in R:
+            g = np.load(work / sub / str(run['id']) / 'grid.npz')
+            with torch.no_grad():
+                s = torch.sigmoid(net(V.pad(torch.from_numpy(g['X']).cuda().float()))).cpu().numpy()
+            near = [q for q, l in enumerate(g['lab']) if str(l).endswith('_near')]
+            hit = [q for q in near if s[q] > I.THETA]
+            per.append(dict(id=run['id'], kind=run['kind'], hit=bool(hit), first_d=None if not hit else float(g['d'][hit[0]]),
+                            max_s=float(max(s[q] for q in near)) if near else None))
+        rows[tag] = per
+        def summ(kinds):
+            rr = [r for r in per if r['kind'] in kinds]; h = [r for r in rr if r['hit']]
+            return dict(runs=len(rr), alerted=len(h), timely_07=sum(r['first_d'] >= .7 for r in h), timely_10=sum(r['first_d'] >= 1. for r in h))
+        rep[tag] = dict(miss=summ(I.MISS_TYPES), control=summ(set(I.TYPES) - I.MISS_TYPES), thin=summ({'bar', 'shelf'}),
+                        **{k: summ({k}) for k in I.TYPES})
+        if tag == 'neither':
+            px = [dict(q, kind=r['kind']) for r in json.loads((work / 'insert' / 'thin_diag.json').read_text())
+                  if r['kind'] in ('bar', 'shelf') for q in r['pixels'] if q.get('obj_px')]
+        else:
+            px = [q for q in json.loads((work / sub / 'pixels.json').read_text()) if q['kind'] in ('bar', 'shelf')]
+        rep[tag]['thin_pixels'] = dict(absrel_median=round(float(np.median([q['absrel'] for q in px])), 3),
+                                       in_body_mean=round(float(np.mean([q['in_body'] for q in px])), 3),
+                                       by_kind={k: round(float(np.median([q['absrel'] for q in px if q.get('kind', None) == k] or [np.nan])), 3)
+                                                for k in ('bar', 'shelf')}, frames=len(px))
+    (work / 'insert_v2' / 'ablation.json').write_text(json.dumps(dict(report=rep, runs=rows), indent=1), encoding='utf8')
+    for tag in arms:
+        r = rep[tag]
+        print(tag, 'miss', r['miss'], 'control', r['control']['alerted'], 'thin', r['thin'])
+        print('   bar', r['bar'], 'shelf', r['shelf'], 'sign', r['sign'], 'table', r['table'])
+        print('   pixels', r['thin_pixels'])
+
+
 if __name__ == '__main__':
-    dict(sheet=sheet, render=render, score=score)[sys.argv[1]](*sys.argv[2:])
+    dict(sheet=sheet, render=render, score=score, score4=score4)[sys.argv[1]](*sys.argv[2:])
