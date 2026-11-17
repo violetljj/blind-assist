@@ -36,7 +36,7 @@ def known_eye_heights(gen):
     return {k: float(np.median(v)) for k, v in hs.items()}
 
 
-def evaluate(name, M, rng, out, smoke=0):
+def evaluate(name, M, rng, out, smoke=0, methods=A2_METHODS, scaled=SCALED):
     gen0 = adapters.ADAPTERS[name]
     eye = known_eye_heights(gen0)
 
@@ -62,15 +62,15 @@ def evaluate(name, M, rng, out, smoke=0):
         row = dict(seq=f.seq, t=f.t, block=f.block, evaluable='axes' in reg, truth={b: reg.get(f'truth_{b}') for b in core.BANDS},
                    truth_opened={b: reg.get(f'truth_opened_{b}') for b in core.BANDS},
                    truth_dist={b: reg.get(f'truth_dist_{b}') for b in core.BANDS}, depth={}, alert={}, source={})
-        for m in A2_METHODS:
+        for m in methods:
             pred = getattr(M, m)(f)
             row['depth'][m] = {r: core.depth_metrics(pred, f.ref_depth, reg[r]) for r in REGIONS + ['nng_in_fov', 'nng_out_fov'] if r in reg}
             row['alert'][m] = core.band_alert(pred, f, reg)
-            if m in SCALED:
+            if m in scaled:
                 row['source'][m] = M.source[m]
         rows.append(row)
     entry.update(frames=len(rows), seconds=round(time.time() - t0),
-                 sources={m: dict(Counter(r['source'][m] for r in rows)) for m in SCALED})
+                 sources={m: dict(Counter(r['source'][m] for r in rows)) for m in scaled if m in methods})
     (out / f'rows_{name}.json').write_text(json.dumps(rows, default=float), encoding='utf-8')
     print(name, 'done', len(rows), round(time.time() - t0), 's', flush=True)
     return entry, rows

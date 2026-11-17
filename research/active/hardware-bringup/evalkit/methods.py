@@ -24,7 +24,7 @@ class Methods:
         import sanpo_scale_without_tof_dev_20261117 as P
         from fusion_anchor_candidates_dev_20261013 import fit_quality, robust_affine
         self.P, self.fit_quality, self.robust_affine = P, fit_quality, robust_affine
-        self.rel, _, _, self.ud_infer = P.load_models()
+        self.rel, _, self.ud, self.ud_infer = P.load_models()
         self.S, self.zone_rays = P.V1.S, P.V1.X.zone_rays()
         self.last_fit = {}
         self._cache = None
@@ -37,6 +37,12 @@ class Methods:
             with torch.inference_mode():
                 self._cache = (key, self.rel.infer_image(f.image, 518).astype(np.float32).reshape(-1))
         return self._cache[1]
+
+    def set_unidepth_pixels(self, n):
+        """Fix UniDepth's input pixel budget (both bounds = n; aspect kept, sides rounded up to multiples of 14), to emulate
+        a phone resolution (A3: 203056 = 392x518, 315560 = 490x644). Default bounds are 200k-600k."""
+        self.ud.shape_constraints = dict(self.ud.shape_constraints, pixels_min=n, pixels_max=n)
+        self._ud_cache = (None,)
 
     def reference(self, f):
         return f.ref_depth.copy()
