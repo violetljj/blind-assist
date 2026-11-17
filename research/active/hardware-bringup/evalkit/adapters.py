@@ -5,6 +5,8 @@ beyond loading the reference depth, which only core.regions / core.depth_metrics
                     gravity (2026-11-17 pose check: 8 deg median), CC BY 4.0
   sanpo_head_seg    SANPO-Real head ZED Mini, 89 sessions with human segmentation (sky removed), 1307 frames every 2 s
                     (host/sanpo_head_seg_fetch_20261117.py), same reference and licence as above
+  sanpo_chest_seg   SANPO-Real chest ZED 2i, 138 sessions with human segmentation, none shared with the head subset or the
+                    local coverage subset, 1969 frames every 2 s (same fetch script, --camera camera_chest); confirmation data
   aria_gen2_walks   Aria Gen 2 Pilot walk_0/walk_1, FoundationStereo pseudo-GT (PNG = optical z, checked 2026-11-17),
                     rectified grayscale, gravity-aligned MPS pose, CC BY-NC 4.0
 """
@@ -60,6 +62,10 @@ def sanpo_head_seg():
     return _sanpo(A / 'downloads/sanpo-real-head-seg-20261117', 'sanpo_head_seg', 'camera_head')
 
 
+def sanpo_chest_seg():
+    return _sanpo(A / 'downloads/sanpo-real-chest-seg-20261117', 'sanpo_chest_seg', 'camera_chest')
+
+
 def aria_gen2_walks(step=15, block_s=30.):
     for seq in ('walk_0', 'walk_1'):
         base = A / 'downloads/aria-gen2-pilot-20261117' / seq / 'x/depth'
@@ -76,4 +82,5 @@ def aria_gen2_walks(step=15, block_s=30.):
                         block=f'{seq}:{int(t // block_s)}')
 
 
-ADAPTERS = {'sanpo_real_local': sanpo_real_local, 'aria_gen2_walks': aria_gen2_walks, 'sanpo_head_seg': sanpo_head_seg}
+ADAPTERS = {'sanpo_real_local': sanpo_real_local, 'aria_gen2_walks': aria_gen2_walks, 'sanpo_head_seg': sanpo_head_seg,
+            'sanpo_chest_seg': sanpo_chest_seg}
