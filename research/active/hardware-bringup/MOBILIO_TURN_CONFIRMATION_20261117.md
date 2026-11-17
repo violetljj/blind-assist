@@ -386,3 +386,35 @@ EXPLORE。固定 `continuation-replay/paired.csv` 中原定位与同向接续补
 $work = 'artifacts.local/work'
 python -B research/active/hardware-bringup/host/ping_collinear_rescore.py --prior "$work/mobilio-turn-extension-20261117" --minor "$work/aligned-public-turns-20261117/ping-minor/trials.json" --replay "$work/ping-compensation-short-turn-20261117/continuation-replay" --output-dir "$work/ping-collinear-rescore-20261117/rescore"
 ```
+
+### 未参与选规则的走行数据
+
+EXPLORE。锁定 `fab1ae22` 的原定位与直行接续补偿，按 `e97bc1ab` 的同向合并口径打分。最直接的复现需要新队列中的实际转弯指令时点、在线定位及朝向、独立位置与路线。下载优先官方文档与数值文件。CPU。参数、先前 184 次的结果和其中的案例不用于再调。
+
+对能独立测位置、缺指令时点的来源单做几何回放。ADVIO 只用原 02、03、10、15 之外的完整官方室内序列集合（01、04–09、11–14、16–19），以同一个 25 s 前缀做二维刚性坐标配准，保持原比例和时间。读取发布的 Pixel ARCore 位姿、作者人工固定点和另一台手机惯导与人工标点构造的位置参考。每个转弯由连续三个人工点的夹角与空间范围确定，同楼层且相邻边至少 2.5 m，角度大于 22.5° 且不大于 120°，60° 为主转边界。早于 32 s 的转角留给坐标配准及历史。人工点时刻前 2 s 设为回放时间原点，使原 0.5 s 网格的首个时点落在标注拐角时刻。遇下一个方向变化、楼层边界或原 12 s 上限截至。点标注参与作者位置参考的构造，因此这里评价预先给定拐角的几何与出弯时序。固定原规则和定位补偿条件，同时记录可评时点、实际发生补偿的位置时点、补漏、新增过早、原本过早是否更早以及共同正确的延迟。真实指令的跨队列结果单记。
+
+**真实转弯指令复现 `NOT_RUN`。** 这次查到的公开发布项中，走行、原生定位及朝向、独立位置、逐次指令时标无法在一个新队列配齐。
+
+| 新查来源 | 原件核对 |
+| --- | --- |
+| InMob | 28,273,941 B 官方样本和说明的 MD5 符合。两条样本都是视障走行。Android 场次有手机朝向与另一设备参考，缺手机在线 XY。手持 ULISS 场次有 510 条设备位置和 570 条参考位置，原生间隔中位 1 s。另有人工过街时点，逐转弯指令在样本中缺失。[数据与说明](https://doi.org/10.57745/20NA4M) |
+| BlindWays | 论文记录 11 名视障参与者使用 Google Maps。实际开放清单为 1,026 对动作和文本，实读两对为关节数组和两级描述。发布件缺在线定位及逐次语音时标。[作者发布](https://blindways.github.io/) · [论文](https://proceedings.neurips.cc/paper_files/paper/2024/file/1d4c4047f5d82699cf01b19c991ec56d-Paper-Datasets_and_Benchmarks_Track.pdf) |
+| PedROAM | 匿名按文件读取同场两部手机位置与朝向，位置相邻间隔中位 0.413／0.430 s，两路共 7176 个原生位置中无点满足原补偿的连续位置历史采样条件。已核到 1453 个有效独立位置参考，目录缺逐转弯指令。[作者仓库与数据入口](https://github.com/IPNL-POLYU/PedROAM-Dataset) |
+| ULISS、GraphWalker 与 Earable | ULISS 六条走行中的原生位置解为 1 Hz，5 Hz 是原始卫星观测。GraphWalker 核查 152 条人工标注文件，3257 个相邻标注间隔中 3055 个超过原评分的 1.5 s，公开件缺在线位置。Earable 实读一组矩形走行的设备文件只有姿态及 IMU，另有独立参考，公开归档缺在线位置及指令时标。[ULISS](https://doi.org/10.57745/ZCBIIB) · [GraphWalker](https://zenodo.org/records/20374956) · [Earable](https://zenodo.org/records/20594004) |
+| Hibiya 与室内 ARKit 定位 | Hibiya 方法有手机、独立 RTK 和路线，查过的发布页与补件没有逐试次文件。Smith-Kettlewell 的 37 条环线多数在手工关键帧之间利用同源 ARKit 运动插出参考位置，缺实际转弯指令时标。[Hibiya 方法](https://www.ipsj.or.jp/dp/contents/publication/65/TR0701-04.html) · [室内 AR 定位方法](https://www.mdpi.com/1424-8220/23/5/2701) |
+
+**ADVIO 几何回放。** 15 条未用室内序列各取三个数值文件，使用 HTTP Range 共传 11,478,819 B。10 条有符合原定几何筛选的窗口。每条序列的设备相邻时间中位 33 ms。第 11 条含 4 行重复时标，按原 PING 同时标保留最后一条。纳入转弯的序列前 25 s 配准 RMSE 为 0.16–4.51 m。全 32 个窗口都有可评分的参考前进点。两套提示判定及时间逐条相同，292 个检查点中 8 个的位置裕量因补偿而改变，未形成新的合资格提示点。[ADVIO 数据](https://zenodo.org/records/1476931) · [采集与参考位置方法](https://openaccess.thecvf.com/content_ECCV_2018/papers/Santiago_Cortes_ADVIO_An_Authentic_ECCV_2018_paper.pdf)
+
+| 路口类别 | 原定位正确／过早／静默 | 固定补偿正确／过早／静默 | 补回漏确认／新增过早／仍过早且提前 |
+| --- | ---: | ---: | ---: |
+| 主转弯 3 次 | 1／1／1 | 1／1／1 | 0／0／0 |
+| 斜转 29 次 | 6／5／18 | 6／5／18 | 0／0／0 |
+
+19 次有参考前进却静默。逐槽核对其中 9 次至少有一个满足原设备朝向和两秒前进、且参考当前位置在原出口段内的时点，另外 10 次的正确时点仍缺朝向或两秒位移证据。这个诊断只描述替换当前位置后是否存在合资格时点。32 次均无完全同向的下一地图段，因此本轮覆盖朝向出带分支。可以保留 PING 的开发结果，暂未获得独立的补漏收益。主转样本较少，原 PING 的两次补漏都属于主转。
+
+下载、校验和筛查记录在 `artifacts.local/work/ping-independent-validation-20261117/`。官方 ADVIO 文件与 `advio-fetch.json`、真实来源字段核对和 `advio-replay-audit/{summary.json,paired.csv}` 可复查。脚本单独回放，原提示控制代码保持固定。
+
+```powershell
+$run = 'artifacts.local/work/ping-independent-validation-20261117'
+python -B research/active/hardware-bringup/host/advio_turn_confirmation_replay.py --advio "$run/advio" --output-dir "$run/advio-replay-audit"
+```
