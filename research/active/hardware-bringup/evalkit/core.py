@@ -19,7 +19,7 @@ from dataclasses import dataclass, field
 import cv2
 import numpy as np
 
-PROTOCOL_VERSION = 'v1.1'
+PROTOCOL_VERSION = 'v1.2'
 
 X_HALF, Z_NEAR, Z_FAR = .35, .30, 2.50
 BANDS = {'LOW': (.15, .50), 'BODY': (.50, 1.30), 'HEAD': (1.30, 2.00)}
@@ -280,11 +280,52 @@ def _binom_two_sided(k, n):
     return min(1., sum(comb(n, i) for i in range(n + 1) if abs(i - n / 2) >= d - 1e-12) / 2 ** n)
 
 
+def obstacle_truth(r, kind='ANY'):
+    """v1.2 obstacle view of a row. ANY: 1 if any band is occupied, 0 if all three bands are strictly empty, else -1.
+    LOW_ONLY: 1 if LOW is occupied and BODY strictly empty (a foot-level obstacle with nothing at body height), 0 if all
+    three bands are empty, else -1."""
+    t = [r['truth'].get(b) for b in BANDS]
+    if kind == 'LOW_ONLY':
+        if r['truth'].get('LOW') == 1 and r['truth'].get('BODY') == 0:
+            return 1
+        return 0 if all(v == 0 for v in t) else -1
+    return 1 if any(v == 1 for v in t) else 0 if all(v == 0 for v in t) else -1
+
+
+def obstacle_alert(r, m):
+    """Any band alerted (None when the method gave no output)."""
+    al = r['alert'][m]
+    return None if all(v is None for v in al.values()) else any(bool(v) for v in al.values())
+
+
+def _paired_obstacle(rows, a, b, both, kind):
+    pos = [r for r in rows if both(r) and obstacle_truth(r, kind) == 1]
+    neg = [r for r in rows if both(r) and obstacle_truth(r, kind) == 0]
+    hit = lambda r, m: bool(obstacle_alert(r, m))
+    only = lambda rs, x, y: sum(1 for r in rs if hit(r, x) and not hit(r, y))
+    sys_view = {}
+    for m in (a, b):
+        ev = [r for r in rows if evaluable(r) and obstacle_truth(r, kind) in (0, 1)]
+        sys_view[m] = dict(tp=sum(1 for r in ev if obstacle_truth(r, kind) == 1 and hit(r, m)),
+                           positives=sum(1 for r in ev if obstacle_truth(r, kind) == 1),
+                           fp=sum(1 for r in ev if obstacle_truth(r, kind) == 0 and hit(r, m)),
+                           negatives=sum(1 for r in ev if obstacle_truth(r, kind) == 0))
+    return dict(positives=len(pos), negatives=len(neg),
+                tp={a: sum(hit(r, a) for r in pos), b: sum(hit(r, b) for r in pos)},
+                fp={a: sum(hit(r, a) for r in neg), b: sum(hit(r, b) for r in neg)},
+                discordant_pos={'only_' + a: only(pos, a, b), 'only_' + b: only(pos, b, a),
+                                'p': _binom_two_sided(only(pos, b, a), only(pos, a, b) + only(pos, b, a))},
+                discordant_neg={'only_' + a: only(neg, a, b), 'only_' + b: only(neg, b, a),
+                                'p': _binom_two_sided(only(neg, b, a), only(neg, a, b) + only(neg, b, a))},
+                no_output_as_no_alert=sys_view)
+
+
 def compare(rows, a, b):
     """Paired comparison of method b against method a (v1.1). Detection: per band, only frames where BOTH have output;
     reports both confusion counts, discordant pairs on positives (a hit / b miss and the reverse) and on negatives, with
     the exact sign-test p-value. Depth: per region, block medians over frames where both AbsRel values exist.
-    Also reports each method's no-output frames and the system view where no output counts as no alert."""
+    Also reports each method's no-output frames and the system view where no output counts as no alert.
+    v1.2 adds `obstacle`: the same paired counts with 'any band alerted' against obstacle_truth ANY and LOW_ONLY."""
     both = lambda r: has_output(r, a) and has_output(r, b)
     sa, sb = summarize(rows, a, both), summarize(rows, b, both)
     out = dict(methods=(a, b), common_frames=sa['frames'], no_output={a: sa['no_output'], b: sb['no_output']}, detect={}, depth={})
@@ -312,6 +353,7 @@ def compare(rows, a, b):
             discordant_pos={'only_' + a: hit_a, 'only_' + b: hit_b, 'p': _binom_two_sided(hit_b, hit_a + hit_b)},
             discordant_neg={'only_' + a: fa_a, 'only_' + b: fa_b, 'p': _binom_two_sided(fa_b, fa_a + fa_b)},
             no_output_as_no_alert=sys_view)
+    out['obstacle'] = {k: _paired_obstacle(rows, a, b, both, k) for k in ('ANY', 'LOW_ONLY')}
     for region in ['near', 'near_nonground'] + [f'corridor_{b}' for b in BANDS] + ['nng_in_fov', 'nng_out_fov']:
         per_a, per_b = [], []
         for blk in sorted({r['block'] for r in rows}):
