@@ -298,3 +298,32 @@ EXPLORE。逐条对照朝向积分刚补回的两次和刚新增过早的两次�
 $work = 'artifacts.local/work'
 python -B research/active/hardware-bringup/host/ping_position_transfer.py --run-dir "$work/ping-localization-20261117" --prior "$work/mobilio-turn-extension-20261117" --minor "$work/aligned-public-turns-20261117/ping-minor/trials.json" --dwell-output-dir "$work/ping-compensation-gate-20261117/replay"
 ```
+
+### 只补偿即将结束的朝向机会
+
+EXPLORE。逐条复盘半秒稳定条件下仍判过早且提前的四次，和两次补漏比较。候选保持原设备触发和稳定性条件。对只有补偿位置才能通过的时点，增加一个时间上的条件：用原 `linear_angle` 的最近至少 200 ms 朝向变化率，从最新设备点外推原补偿时长 0.75 s，只有预计越出原 ±25° 角带才允许补偿。信号来自提示前的设备朝向。假设补偿可以抓住短暂的确认机会，普通机会先等待原定位。200 ms、0.75 s 与 25° 沿用既有值，选择这条组合受六个已知案例启发。CPU 回放相同的 131 次主转和 53 次斜转。每组逐次对原设备定位验证零新增过早、仍过早的首发时刻无提前，并复核 P2 #7 和 P3 #66 仍得到正确首次确认。另对照上一轮的两次过早转为正确是否保留。
+
+| 主转弯 | 上轮提前的时刻 | 该时刻设备沿线位置（原始→补偿） | 视频判据失败原因 | 该时刻外推偏角绝对值 | 本轮首次提示 |
+| --- | ---: | ---: | --- | ---: | --- |
+| P1 #48 | 8.5 s | 0.677→1.009 m | 已走到 4.003 m，超过目标段 3.738 m 末端 | 7.46° | 9.0 s，原时刻仍判错 |
+| P6 #58 | 6.0 s | 0.671→1.161 m | 沿线仅 0.158 m，未到 1 m 入口 | 24.51° | 6.5 s，原时刻仍判错 |
+| P8 #130 | 5.5 s | 0.578→1.051 m | 横偏 2.338 m，超过 1.5 m | 10.53° | 6.0 s，原时刻仍判错 |
+| P9 #125 | 6.5 s | 0.936→1.599 m | 横偏 2.410 m，超过 1.5 m | 14.22° | 7.5 s，原时刻仍判错 |
+
+四次都已通过半秒朝向、设备横向和两秒前进条件，补偿把沿线位置抬过了 1 m。P8 #130 与 P9 #125 在同一个路线、楼层和转角，完整窗口内均无视频达标时刻。P9 #125 中间的 7.0 s 检查点因原设备样本过旧而跳过。回放的「过早」包含实际走过有限目标段、确认时已离开有效区间的情况。
+
+两次补漏 P2 #7 和 P3 #66 在各自 9.0 s 和 11.5 s 位置补偿时的外推偏角绝对值为 25.41° 和 27.85°，仍在原时点得到正确确认。P2 #7 在下一有效时点的实测偏角为 27.37°。P3 #66 到原窗口结束仍未用原定位到达沿线 1 m。这个朝向外推用来判断能否等原规则继续观察。最接近边界的 P2 #7 与 P6 #58 外推值相差约 0.90°。P3 #66 下一检查点实测偏角为 12.61°，仍在角带内。
+
+| 组别 | 原定位正确／过早 | 上轮稳定后补偿 | 本轮正确／过早 | 相对原定位补漏／新增过早／过早提前 |
+| --- | ---: | ---: | ---: | ---: |
+| 主转弯 131 次 | 53／37 | 57／35 | **55／37** | **2／0／0** |
+| 斜转 53 次 | 22／22 | 22／22 | **22／22** | **0／0／0** |
+
+三个旧对照的 552 个试次判定、首发时间与前进机会数全部复现。按每次首发判定及时间比较，本轮与原定位的差异只有两次补漏。相对上轮，P4 #68 与 P7 #71 放弃了原来能提前发出的正确确认，分别退回 6.5 s 和 9.5 s 的原过早时刻。全量端点只适用于原定位对照和这批 9 人开发数据。
+
+六例在原提前时点和新首发时点截断后续设备流，并替换视频位置，触发时钟复核通过。继承原路线、楼层、窗口截断和每人首段朝向配准。`artifacts.local/work/ping-compensation-timing-20261117/case-agent/case_trace.json` 和 `focal_slots.csv` 保存定位与视频的逐槽对照。`mechanism-agent/known_projected_yaw.json` 保存提示前的外推值。全量数据和输入哈希在 `yaw-replay/paired.csv`、`yaw-replay/summary.json`。
+
+```powershell
+$work = 'artifacts.local/work'
+python -B research/active/hardware-bringup/host/ping_position_transfer.py --run-dir "$work/ping-localization-20261117" --prior "$work/mobilio-turn-extension-20261117" --minor "$work/aligned-public-turns-20261117/ping-minor/trials.json" --timing-output-dir "$work/ping-compensation-timing-20261117/yaw-replay"
+```

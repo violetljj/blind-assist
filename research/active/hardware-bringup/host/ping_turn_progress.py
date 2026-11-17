@@ -257,7 +257,7 @@ def status_window_end(clip, online):
 def status_events(
     clip, online, evaluated, vertices, calibration, *,
     position_shift=None, position_perturbation=False, position_correction=None, correct_displacement=False,
-    require_dwell_for_rescue=False,
+    require_dwell_for_rescue=False, heading_exit_horizon_ms=None,
 ):
     """Run the prompts from online observations, then look up video labels."""
     origin, end = vertices[clip["corner_index"]:clip["corner_index"] + 2]
@@ -293,10 +293,11 @@ def status_events(
             slope_start >= 0 and time[slope_start] >= cue
             and np.max(np.diff(time[slope_start:current + 1])) <= POSE_LAG_MS
         )
-        projected_angle = (
-            angle_error + 500 * wrap(angle_error - errors[slope_start]) / (time[current] - time[slope_start])
-            if enough_slope else float("inf")
-        )
+        projected_angle = float("inf")
+        if enough_slope:
+            angle_change = wrap(angle_error - errors[slope_start])
+            history_ms = time[current] - time[slope_start]
+            projected_angle = angle_error + 500 * angle_change / history_ms
         position = projection(positions[previous], positions[current], origin, tangent)
         if position_perturbation:
             raw_margin = min(
@@ -304,8 +305,15 @@ def status_events(
                 CENTERLINE_M - abs(position["cross_m"]),
             )
         correction = position_shift if position_correction is None else position_correction[current]
-        if require_dwell_for_rescue and (not dwell_angle or in_outbound_leg(position, length)):
-            correction = None
+        if require_dwell_for_rescue or heading_exit_horizon_ms is not None:
+            can_rescue = dwell_angle and not in_outbound_leg(position, length)
+            if heading_exit_horizon_ms is not None:
+                # The raw pose may catch up after this heading opportunity closes.
+                can_rescue = can_rescue and enough_slope and (
+                    abs(angle_error + heading_exit_horizon_ms * angle_change / history_ms) > HEADING_LIMIT_DEG
+                )
+            if not can_rescue:
+                correction = None
         if correction is not None:
             position["forward_m"] += float(correction @ tangent)
             position["cross_m"] += float(tangent[0] * correction[1] - tangent[1] * correction[0])

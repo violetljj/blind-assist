@@ -26,6 +26,7 @@ ARMS = (
     "heading_aligned_history", "heading_along_aligned_history",
 )
 DWELL_RESCUE = "heading_dwell_rescue"
+TIMED_RESCUE = "heading_exit_rescue"
 SCORING_OUTCOMES = ("correct", "early", "unlabeled", "silent")
 
 
@@ -55,6 +56,11 @@ def metrics_by_outcome(rows, arms):
             "new_early": [
                 old["id"] for old, new in compared if old["outcome"] != "early" and new["outcome"] == "early"
             ],
+            "early_moved_earlier": [
+                {"id": old["id"], "raw_issue_s": old["issue_s"], "issue_s": new["issue_s"]}
+                for old, new in compared
+                if old["outcome"] == new["outcome"] == "early" and new["issue_s"] < old["issue_s"]
+            ],
             "removed_early": [
                 old["id"] for old, new in compared if old["outcome"] == "early" and new["outcome"] != "early"
             ],
@@ -66,12 +72,13 @@ def metrics_by_outcome(rows, arms):
     return outputs
 
 
-def score_cohort(manifest, previous, people, video, maps, correction, *, arms):
+def score_cohort(manifest, previous, people, video, maps, correction, *, arms, lead_s):
     baseline = {(row["person"], row["number"]): row for row in previous}
     cases = set()
     records = []
     # The rescue arm evaluates prompt eligibility only.
-    pose_arms = [arm for arm in arms if arm != DWELL_RESCUE]
+    rescue_arms = (DWELL_RESCUE, TIMED_RESCUE)
+    pose_arms = [arm for arm in arms if arm not in rescue_arms]
     estimates = {arm: [] for arm in pose_arms}
     labels = []
     for clip in manifest:
@@ -120,12 +127,12 @@ def score_cohort(manifest, previous, people, video, maps, correction, *, arms):
         for arm in arms:
             status = baseline_status
             if arm != "raw":
-                dwell_rescue = arm == DWELL_RESCUE
-                correction_arm = "heading_integration" if dwell_rescue else arm
+                correction_arm = "heading_integration" if arm in rescue_arms else arm
                 status = status_events(
                     clip, data, truth, vertices, calibration, position_correction=corrections[correction_arm],
                     correct_displacement=arm.endswith("_aligned_history"),
-                    require_dwell_for_rescue=dwell_rescue,
+                    require_dwell_for_rescue=arm == DWELL_RESCUE,
+                    heading_exit_horizon_ms=1000 * lead_s if arm == TIMED_RESCUE else None,
                 )
                 if status["slots"] != baseline_status["slots"]:
                     raise ValueError(f"Correction changed reference scoring slots at {case}")
@@ -163,6 +170,7 @@ def main():
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--odometry", action="store_true", help="Also replay measured distance from observed turns.")
     mode.add_argument("--dwell-output-dir", type=Path, help="Compare raw, heading integration and dwell-gated rescue.")
+    mode.add_argument("--timing-output-dir", type=Path, help="Also test rescue when the heading window is closing.")
     args = parser.parse_args()
     ping = args.prior / "sources/ping"
     paths = {
@@ -205,14 +213,16 @@ def main():
     arms = ARMS + ("observed_route_distance",) if args.odometry else ARMS
     if args.dwell_output_dir is not None:
         arms = ("raw", "heading_integration", DWELL_RESCUE)
+    if args.timing_output_dir is not None:
+        arms = ("raw", "heading_integration", DWELL_RESCUE, TIMED_RESCUE)
     main, rows_main = score_cohort(
-        major["clips"], previous, people, videos, maps, correction, arms=arms,
+        major["clips"], previous, people, videos, maps, correction, arms=arms, lead_s=fixed_lead_s,
     )
     diagonal, rows_diag = score_cohort(
-        minor["clips"], minor["status"], people, videos, maps, correction, arms=arms,
+        minor["clips"], minor["status"], people, videos, maps, correction, arms=arms, lead_s=fixed_lead_s,
     )
     result = {"input_sha256": hashes, "lead_s": fixed_lead_s, "major": main, "minor": diagonal}
-    output = args.dwell_output_dir or args.run_dir / "ping-transfer"
+    output = args.timing_output_dir or args.dwell_output_dir or args.run_dir / "ping-transfer"
     write_json(output / "summary.json", result)
     with (output / "paired.csv").open("w", encoding="utf-8", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=["cohort", *rows_main[0]])
