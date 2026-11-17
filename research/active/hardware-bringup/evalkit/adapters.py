@@ -3,6 +3,8 @@ beyond loading the reference depth, which only core.regions / core.depth_metrics
 
   sanpo_real_local  local SANPO-Real coverage subset (10 sessions x 5 frames), CREStereo pseudo-GT, RGB, no usable device
                     gravity (2026-11-17 pose check: 8 deg median), CC BY 4.0
+  sanpo_head_seg    SANPO-Real head ZED Mini, 89 sessions with human segmentation (sky removed), 1307 frames every 2 s
+                    (host/sanpo_head_seg_fetch_20261117.py), same reference and licence as above
   aria_gen2_walks   Aria Gen 2 Pilot walk_0/walk_1, FoundationStereo pseudo-GT (PNG = optical z, checked 2026-11-17),
                     rectified grayscale, gravity-aligned MPS pose, CC BY-NC 4.0
 """
@@ -24,10 +26,12 @@ A = ROOT / 'artifacts.local'
 SKY = 27
 
 
-def sanpo_real_local():
-    data = A / 'datasets/sanpo-real-coverage-20260927'; W, H = 1280, 720
+def _sanpo(data, name, only_cam=None):
+    W, H = 1280, 720
     for sess in sorted(os.listdir(data)):
-        cams = [c for c in os.listdir(data / sess) if c.startswith('camera')]
+        if not (data / sess).is_dir():
+            continue
+        cams = [c for c in os.listdir(data / sess) if c.startswith('camera') and (only_cam is None or c == only_cam)]
         if not cams:
             continue
         cam = cams[0]; base = data / sess / cam / 'left'
@@ -44,8 +48,16 @@ def sanpo_real_local():
                              interpolation=cv2.INTER_NEAREST)
             z = np.where(np.isfinite(z) & (seg != SKY), z, np.nan)
             img = cv2.resize(cv2.imread(str(base / 'video_frames' / f'{fr}.png')), (W, H), interpolation=cv2.INTER_AREA)
-            yield Frame('sanpo_real_local', sess, int(fr), int(fr) / 15., img, K, z, 'pseudo_ground_truth', None, None,
+            yield Frame(name, sess, int(fr), int(fr) / 15., img, K, z, 'pseudo_ground_truth', None, None,
                         'head' if cam == 'camera_head' else 'chest', block=sess)
+
+
+def sanpo_real_local():
+    return _sanpo(A / 'datasets/sanpo-real-coverage-20260927', 'sanpo_real_local')
+
+
+def sanpo_head_seg():
+    return _sanpo(A / 'downloads/sanpo-real-head-seg-20261117', 'sanpo_head_seg', 'camera_head')
 
 
 def aria_gen2_walks(step=15, block_s=30.):
@@ -64,4 +76,4 @@ def aria_gen2_walks(step=15, block_s=30.):
                         block=f'{seq}:{int(t // block_s)}')
 
 
-ADAPTERS = {'sanpo_real_local': sanpo_real_local, 'aria_gen2_walks': aria_gen2_walks}
+ADAPTERS = {'sanpo_real_local': sanpo_real_local, 'aria_gen2_walks': aria_gen2_walks, 'sanpo_head_seg': sanpo_head_seg}
