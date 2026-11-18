@@ -1,0 +1,1092 @@
+{
+ "receipts": [
+  {
+   "source": "EgoWalk_public_ZEDX_20261118",
+   "manifest_sha256": "25b1ff5c42913decb107084959db27bf18457fb291109134ed23d163432d58eb",
+   "labels_sha256": "ee947a179afe3f8a8219ed20fd736f5eb5b9872997956903e1fac29823672bfa",
+   "receipt_sha256": "5150f3b79c245202e2b4b7abb9818986b7602745e8b5548ef9f07abffac9d93a"
+  },
+  {
+   "source": "EgoWalk_public_ZEDX_20261118",
+   "manifest_sha256": "be3c89b722158a8ee85996cfc89eebec72b55a040f41aea148419345a2df28e1",
+   "labels_sha256": "e3263bb3d4155cd3b70f5ded898dd6929067286da1e43c9ba786388acf1b155a",
+   "receipt_sha256": "b0f9291cec2565543efe90a1436e8bc604e73f098a9bf46acfc26cecb153ee45"
+  },
+  {
+   "source": "lamar-edge-controls",
+   "manifest_sha256": "92973c1c0bbf7e7ee969cfe5881794a4e7d43127c84951841935f15190de46a5",
+   "labels_sha256": "d2812d49ee6ac369e301ffbea187a08b8f7fd6bd361f05e72c8be8b38a5925ad",
+   "receipt_sha256": "2daa6ea2b7da3a364957fe171a9901f454bbc7922512b5d6ffcfdadbc776bd2a"
+  },
+  {
+   "source": "sanpo_parking_control_official_stereo",
+   "manifest_sha256": "eb7d712d49e7d7852b06ae2db9b589c794581e989a1133c951f99223466036fe",
+   "labels_sha256": "f8f8665d57ccdbc4cc84c51b4e98a68dcfa98a00e0bf4cfb68888f63200045e1",
+   "receipt_sha256": "c6e614db461e61fcf8601b892e7cf19b36ed9f14b02b0ac880cc3615848d114a"
+  }
+ ],
+ "all": {
+  "approaches": 4,
+  "silent": 2,
+  "incomplete": 0,
+  "objects": 3,
+  "silent_objects": 2,
+  "windows": 9,
+  "samples": 82,
+  "arms": {
+   "original": {
+    "first_encounters": 0,
+    "first_objects": 0,
+    "all_object_supported_encounters": 1,
+    "false_windows": 0,
+    "false_samples": 0
+   },
+   "direct": {
+    "first_encounters": 1,
+    "first_objects": 1,
+    "all_object_supported_encounters": 2,
+    "false_windows": 2,
+    "false_samples": 3
+   },
+   "edge": {
+    "first_encounters": 2,
+    "first_objects": 2,
+    "all_object_supported_encounters": 4,
+    "false_windows": 2,
+    "false_samples": 3
+   }
+  },
+  "edge_only": [
+   "outbound-brown"
+  ],
+  "direct_only": [],
+  "same_false_cost": true,
+  "edge_only_with_direct_silent_throughout": [],
+  "increment_at_same_cost": 1
+ },
+ "sites": {
+  "EgoWalk-November-office-parking-row": {
+   "approaches": 3,
+   "silent": 2,
+   "incomplete": 0,
+   "objects": 2,
+   "silent_objects": 2,
+   "windows": 3,
+   "samples": 33,
+   "arms": {
+    "original": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 0,
+     "false_windows": 0,
+     "false_samples": 0
+    },
+    "direct": {
+     "first_encounters": 1,
+     "first_objects": 1,
+     "all_object_supported_encounters": 1,
+     "false_windows": 1,
+     "false_samples": 2
+    },
+    "edge": {
+     "first_encounters": 2,
+     "first_objects": 2,
+     "all_object_supported_encounters": 3,
+     "false_windows": 1,
+     "false_samples": 2
+    }
+   },
+   "edge_only": [
+    "outbound-brown"
+   ],
+   "direct_only": [],
+   "same_false_cost": true,
+   "edge_only_with_direct_silent_throughout": [],
+   "increment_at_same_cost": 1
+  },
+  "EgoWalk-October-glass-front-covered-garage": {
+   "approaches": 1,
+   "silent": 0,
+   "incomplete": 0,
+   "objects": 1,
+   "silent_objects": 0,
+   "windows": 1,
+   "samples": 10,
+   "arms": {
+    "original": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 1,
+     "false_windows": 0,
+     "false_samples": 0
+    },
+    "direct": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 1,
+     "false_windows": 0,
+     "false_samples": 0
+    },
+    "edge": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 1,
+     "false_windows": 0,
+     "false_samples": 0
+    }
+   },
+   "edge_only": [],
+   "direct_only": [],
+   "same_false_cost": true,
+   "edge_only_with_direct_silent_throughout": [],
+   "increment_at_same_cost": null
+  },
+  "LaMAR-CAB": {
+   "approaches": 0,
+   "silent": 0,
+   "incomplete": 0,
+   "objects": 0,
+   "silent_objects": 0,
+   "windows": 2,
+   "samples": 16,
+   "arms": {
+    "original": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 0,
+     "false_windows": 0,
+     "false_samples": 0
+    },
+    "direct": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 0,
+     "false_windows": 0,
+     "false_samples": 0
+    },
+    "edge": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 0,
+     "false_windows": 0,
+     "false_samples": 0
+    }
+   },
+   "edge_only": [],
+   "direct_only": [],
+   "same_false_cost": true,
+   "edge_only_with_direct_silent_throughout": [],
+   "increment_at_same_cost": null
+  },
+  "LaMAR-HGE": {
+   "approaches": 0,
+   "silent": 0,
+   "incomplete": 0,
+   "objects": 0,
+   "silent_objects": 0,
+   "windows": 2,
+   "samples": 16,
+   "arms": {
+    "original": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 0,
+     "false_windows": 0,
+     "false_samples": 0
+    },
+    "direct": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 0,
+     "false_windows": 1,
+     "false_samples": 1
+    },
+    "edge": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 0,
+     "false_windows": 1,
+     "false_samples": 1
+    }
+   },
+   "edge_only": [],
+   "direct_only": [],
+   "same_false_cost": true,
+   "edge_only_with_direct_silent_throughout": [],
+   "increment_at_same_cost": null
+  },
+  "sanpo-urban-cracked-parking-court": {
+   "approaches": 0,
+   "silent": 0,
+   "incomplete": 0,
+   "objects": 0,
+   "silent_objects": 0,
+   "windows": 1,
+   "samples": 7,
+   "arms": {
+    "original": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 0,
+     "false_windows": 0,
+     "false_samples": 0
+    },
+    "direct": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 0,
+     "false_windows": 0,
+     "false_samples": 0
+    },
+    "edge": {
+     "first_encounters": 0,
+     "first_objects": 0,
+     "all_object_supported_encounters": 0,
+     "false_windows": 0,
+     "false_samples": 0
+    }
+   },
+   "edge_only": [],
+   "direct_only": [],
+   "same_false_cost": true,
+   "edge_only_with_direct_silent_throughout": [],
+   "increment_at_same_cost": null
+  }
+ },
+ "events": [
+  {
+   "site": "EgoWalk-November-office-parking-row",
+   "id": "outbound-brown",
+   "frames": [
+    [
+     "2024_11_29__09_46_15",
+     2086
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2087
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2088
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2089
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2090
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2091
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2092
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2093
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2094
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2095
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2096
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2097
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2098
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2099
+    ]
+   ],
+   "objects": [
+    "brown-SUV-stall"
+   ],
+   "window_ids": [
+    "outbound-brown-empty"
+   ],
+   "category": "wheel_stop",
+   "silent": true,
+   "hits": {
+    "original": [],
+    "direct": [],
+    "edge": [
+     "brown-SUV-stall"
+    ]
+   },
+   "sample_count": 14,
+   "max_gap_s": 0.20000004768371582,
+   "pass_alarm_samples": {
+    "original": 0,
+    "direct": 1,
+    "edge": 3
+   }
+  },
+  {
+   "site": "EgoWalk-November-office-parking-row",
+   "id": "inbound-white",
+   "frames": [
+    [
+     "2024_11_29__09_46_15",
+     2137
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2138
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2139
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2140
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2141
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2142
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2143
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2144
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2145
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2146
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2147
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2148
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2149
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2150
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2151
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2152
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2153
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2154
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2155
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2156
+    ]
+   ],
+   "objects": [
+    "white-SUV-stall"
+   ],
+   "window_ids": [
+    "inbound-white-empty"
+   ],
+   "category": "wheel_stop",
+   "silent": false,
+   "hits": {
+    "original": [],
+    "direct": [],
+    "edge": [
+     "white-SUV-stall"
+    ]
+   },
+   "sample_count": 20,
+   "max_gap_s": 0.20000004768371582,
+   "pass_alarm_samples": {
+    "original": 1,
+    "direct": 6,
+    "edge": 6
+   }
+  },
+  {
+   "site": "EgoWalk-November-office-parking-row",
+   "id": "outbound-white",
+   "frames": [
+    [
+     "2024_11_29__09_46_15",
+     2181
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2182
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2183
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2184
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2185
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2186
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2187
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2188
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2189
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2190
+    ]
+   ],
+   "objects": [
+    "white-SUV-stall"
+   ],
+   "window_ids": [
+    "outbound-white-empty"
+   ],
+   "category": "wheel_stop",
+   "silent": true,
+   "hits": {
+    "original": [],
+    "direct": [
+     "white-SUV-stall"
+    ],
+    "edge": [
+     "white-SUV-stall"
+    ]
+   },
+   "sample_count": 10,
+   "max_gap_s": 0.20000004768371582,
+   "pass_alarm_samples": {
+    "original": 0,
+    "direct": 2,
+    "edge": 2
+   }
+  },
+  {
+   "site": "EgoWalk-October-glass-front-covered-garage",
+   "id": "garage-wet-floor",
+   "frames": [
+    [
+     "2024_10_30__19_15_58",
+     3812
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3813
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3814
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3815
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3816
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3817
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3818
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3819
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3820
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3821
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3822
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3823
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3824
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3825
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3826
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3827
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3828
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3829
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3830
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3831
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3832
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3833
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3834
+    ]
+   ],
+   "objects": [
+    "silver-stall-tube"
+   ],
+   "window_ids": [
+    "garage-wet-floor-empty"
+   ],
+   "category": "wheel_stop",
+   "silent": false,
+   "hits": {
+    "original": [
+     "silver-stall-tube"
+    ],
+    "direct": [
+     "silver-stall-tube"
+    ],
+    "edge": [
+     "silver-stall-tube"
+    ]
+   },
+   "sample_count": 23,
+   "max_gap_s": 0.20000004768371582,
+   "pass_alarm_samples": {
+    "original": 8,
+    "direct": 13,
+    "edge": 13
+   }
+  }
+ ],
+ "windows": [
+  {
+   "site": "EgoWalk-November-office-parking-row",
+   "id": "outbound-brown-empty",
+   "frames": [
+    [
+     "2024_11_29__09_46_15",
+     2050
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2051
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2052
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2053
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2054
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2055
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2056
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2057
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2058
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2059
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2060
+    ]
+   ],
+   "complete": true,
+   "alarms": {
+    "original": [],
+    "direct": [],
+    "edge": []
+   }
+  },
+  {
+   "site": "EgoWalk-November-office-parking-row",
+   "id": "inbound-white-empty",
+   "frames": [
+    [
+     "2024_11_29__09_46_15",
+     2115
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2116
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2117
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2118
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2119
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2120
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2121
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2122
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2123
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2124
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2125
+    ]
+   ],
+   "complete": true,
+   "alarms": {
+    "original": [],
+    "direct": [],
+    "edge": []
+   }
+  },
+  {
+   "site": "EgoWalk-November-office-parking-row",
+   "id": "outbound-white-empty",
+   "frames": [
+    [
+     "2024_11_29__09_46_15",
+     2162
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2163
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2164
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2165
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2166
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2167
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2168
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2169
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2170
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2171
+    ],
+    [
+     "2024_11_29__09_46_15",
+     2172
+    ]
+   ],
+   "complete": true,
+   "alarms": {
+    "original": [],
+    "direct": [
+     2163,
+     2165
+    ],
+    "edge": [
+     2163,
+     2165
+    ]
+   }
+  },
+  {
+   "site": "EgoWalk-October-glass-front-covered-garage",
+   "id": "garage-wet-floor-empty",
+   "frames": [
+    [
+     "2024_10_30__19_15_58",
+     3845
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3846
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3847
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3848
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3849
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3850
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3851
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3852
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3853
+    ],
+    [
+     "2024_10_30__19_15_58",
+     3854
+    ]
+   ],
+   "complete": true,
+   "alarms": {
+    "original": [],
+    "direct": [],
+    "edge": []
+   }
+  },
+  {
+   "site": "LaMAR-CAB",
+   "id": "CAB-CAB_570-0",
+   "frames": [
+    [
+     "ios_2022-02-27_17.44.49",
+     5215298311
+    ],
+    [
+     "ios_2022-02-27_17.44.49",
+     5215598177
+    ],
+    [
+     "ios_2022-02-27_17.44.49",
+     5215898042
+    ],
+    [
+     "ios_2022-02-27_17.44.49",
+     5216197908
+    ],
+    [
+     "ios_2022-02-27_17.44.49",
+     5216497774
+    ],
+    [
+     "ios_2022-02-27_17.44.49",
+     5216797639
+    ],
+    [
+     "ios_2022-02-27_17.44.49",
+     5217097505
+    ],
+    [
+     "ios_2022-02-27_17.44.49",
+     5217397370
+    ]
+   ],
+   "complete": true,
+   "alarms": {
+    "original": [],
+    "direct": [],
+    "edge": []
+   }
+  },
+  {
+   "site": "LaMAR-CAB",
+   "id": "CAB-CAB_648-0",
+   "frames": [
+    [
+     "ios_2022-02-27_17.56.28",
+     5843850253
+    ],
+    [
+     "ios_2022-02-27_17.56.28",
+     5844150118
+    ],
+    [
+     "ios_2022-02-27_17.56.28",
+     5844449984
+    ],
+    [
+     "ios_2022-02-27_17.56.28",
+     5844766509
+    ],
+    [
+     "ios_2022-02-27_17.56.28",
+     5845066374
+    ],
+    [
+     "ios_2022-02-27_17.56.28",
+     5845366240
+    ],
+    [
+     "ios_2022-02-27_17.56.28",
+     5845666106
+    ],
+    [
+     "ios_2022-02-27_17.56.28",
+     5845965971
+    ]
+   ],
+   "complete": true,
+   "alarms": {
+    "original": [],
+    "direct": [],
+    "edge": []
+   }
+  },
+  {
+   "site": "LaMAR-HGE",
+   "id": "HGE-HGE_1502-0",
+   "frames": [
+    [
+     "ios_2022-06-13_10.45.07",
+     176611926782
+    ],
+    [
+     "ios_2022-06-13_10.45.07",
+     176612226645
+    ],
+    [
+     "ios_2022-06-13_10.45.07",
+     176612526508
+    ],
+    [
+     "ios_2022-06-13_10.45.07",
+     176612826373
+    ],
+    [
+     "ios_2022-06-13_10.45.07",
+     176613126236
+    ],
+    [
+     "ios_2022-06-13_10.45.07",
+     176613426100
+    ],
+    [
+     "ios_2022-06-13_10.45.07",
+     176613725964
+    ],
+    [
+     "ios_2022-06-13_10.45.07",
+     176614025828
+    ]
+   ],
+   "complete": true,
+   "alarms": {
+    "original": [],
+    "direct": [
+     176611926782
+    ],
+    "edge": [
+     176611926782
+    ]
+   }
+  },
+  {
+   "site": "LaMAR-HGE",
+   "id": "HGE-HGE_1569-1",
+   "frames": [
+    [
+     "ios_2022-06-13_15.59.36",
+     179448446728
+    ],
+    [
+     "ios_2022-06-13_15.59.36",
+     179448746591
+    ],
+    [
+     "ios_2022-06-13_15.59.36",
+     179449046454
+    ],
+    [
+     "ios_2022-06-13_15.59.36",
+     179449346317
+    ],
+    [
+     "ios_2022-06-13_15.59.36",
+     179449646179
+    ],
+    [
+     "ios_2022-06-13_15.59.36",
+     179449946042
+    ],
+    [
+     "ios_2022-06-13_15.59.36",
+     179450245905
+    ],
+    [
+     "ios_2022-06-13_15.59.36",
+     179450545768
+    ]
+   ],
+   "complete": true,
+   "alarms": {
+    "original": [],
+    "direct": [],
+    "edge": []
+   }
+  },
+  {
+   "site": "sanpo-urban-cracked-parking-court",
+   "id": "sanpo-asphalt-clear",
+   "frames": [
+    [
+     "bfTbc0atVxbLbnI5MHT3RqWVCj-4u8gp",
+     96
+    ],
+    [
+     "bfTbc0atVxbLbnI5MHT3RqWVCj-4u8gp",
+     102
+    ],
+    [
+     "bfTbc0atVxbLbnI5MHT3RqWVCj-4u8gp",
+     105
+    ],
+    [
+     "bfTbc0atVxbLbnI5MHT3RqWVCj-4u8gp",
+     111
+    ],
+    [
+     "bfTbc0atVxbLbnI5MHT3RqWVCj-4u8gp",
+     117
+    ],
+    [
+     "bfTbc0atVxbLbnI5MHT3RqWVCj-4u8gp",
+     124
+    ],
+    [
+     "bfTbc0atVxbLbnI5MHT3RqWVCj-4u8gp",
+     130
+    ]
+   ],
+   "complete": true,
+   "alarms": {
+    "original": [],
+    "direct": [],
+    "edge": []
+   }
+  }
+ ]
+}
