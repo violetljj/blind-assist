@@ -26,4 +26,6 @@
 
 本轮保留原定的身体通道宽度（±0.25 m）、高度范围（0.60–1.90 m）和各组最低样本数。合成灰墙的报警现象仍限于原插入实验，真实素墙的影响未定。
 
+后续在八段 HoloSet 真实头戴录像中达到样本门槛。低纹理侧面报警 8/381，无侧面报警 7/1,338；逐帧回看见到横跨走廊的半透明管体。[异源比较及报警归因](REAL_WALL_DATA_DEV_20261118.md)
+
 原计划及本地产物位于 `artifacts.local/work/adt-wall-fa-20261118/` 下的 `PLAN.md`、`strata.json`、`coverage.json` 和 `low_texture_sample.jpg`。[分析脚本](host/adt_wall_fa_dev_20261118.py) 的 `strata` 与 `sheet` 可复现本次筛查和抽图；计划中的 D8 评分使用真深度定尺度，本轮未执行。ADT 帧和图像抽样仅存于本地。
