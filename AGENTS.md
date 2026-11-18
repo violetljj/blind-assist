@@ -12,22 +12,22 @@ Ownership: `:app` shell/assets, `:feature:assist` runtime, `:core:assist` risk,
 
 ## Context routing
 
-1. Read [project state](docs/PROJECT_STATE.md) for priorities/ownership; start a
-   self-contained fix at its known file and reuse context already read.
-2. For research, read `docs/CURRENT_DECISION.md` and the affected route `CURRENT.md`.
-   Open detailed results, code or contracts only when needed.
-3. If baseline/inheritance context is missing, use
+- For a self-contained fix, start at the affected file. If priorities or ownership
+  are unclear, consult [project state](docs/PROJECT_STATE.md).
+- For research, read [current decisions](docs/CURRENT_DECISION.md) and the affected
+  route's `CURRENT.md`. Consult its code, results or contracts as the question requires.
+- If baseline/inheritance context is missing, use
    `python tools/knowledge.py context --route <route> --limit 4 --query <question>`.
-4. Check `git status --short` before editing/staging; use
+- Check `git status --short` before editing/staging; use
    `scripts/show_worktree_scope.ps1` only when ownership is unclear.
 
 ## Execution
 
-Prioritize breakthroughs at the current bottleneck and useful working results.
-Start with a direct implementation and one decision-changing check; this is a
-starting point, not a ceiling on ambition or authorized follow-through.
-Carry an authorized question through implementation, comparison, recovery and
-delivery within its budget and stop conditions; do not end each step for approval.
+Fix a localized defect directly when its cause is clear. When the mechanism is
+uncertain, choose the observation, controlled comparison or prototype that best
+distinguishes the plausible explanations. Give details such as alert timing and
+interaction feedback attention in proportion to their effect on actual use.
+Carry the work through delivery within its authorized budget and stop conditions.
 For experiments and tasks with an explicit budget, record the goal, adjustable scope,
 deliverables and any applicable budget (with its unit) once in the existing task/run record.
 Ask only for a material missing decision, changed frozen criteria, scope/budget expansion
@@ -45,14 +45,10 @@ Before freezing experiment gates, apply the brief [decision check](research/WORK
   for protected blind/final access or claim-critical numbers (`FINAL`).
 - Use `EXTERNAL` for release/deployment, credentials, privacy, destructive external
   actions or real-user safety claims. Missing evidence limits claims, not reversible work.
-- Add a precheck, review, test, defensive layer or abstraction only for an observed
-  defect, explicit acceptance criterion, concrete data-integrity need, material
-  irreversible risk or evidence gap that changes the next decision; name the reason briefly.
+- Protect data integrity and address evidence gaps that could change the research conclusion.
 - Expand validation for observed failures or integration impact. Once passing checks
   cover the affected behavior and acceptance criteria, stop expanding validation and
   complete any remaining deliverables. Repeat passing checks only for changed inputs or new concerns.
-- Implement the current need directly. Defer speculative edge cases, generalization
-  and polish until they affect the result; keep necessary error/data-integrity handling.
 
 ## Integrity and evidence
 
@@ -70,7 +66,6 @@ Before freezing experiment gates, apply the brief [decision check](research/WORK
 
 | Task | Read next |
 | --- | --- |
-| Algorithm/model/data experiment | One route current, then its owning code/result |
 | Protected blind/final claim | [Research governance](docs/formal/RESEARCH_GOVERNANCE.md) |
 | Android/CameraX/UI/module code | [Code map](docs/CODE_MAP.md) |
 | UI changes to key controls, focus order, state announcements or layout under scaling | Select checks for the affected behavior from the [accessibility regression matrix](docs/DEVICE_REGRESSION.md#无障碍回归矩阵). |
@@ -93,8 +88,10 @@ Before freezing experiment gates, apply the brief [decision check](research/WORK
   remotes without explicit authorization.
 - Payloads stay under ignored `artifacts.local/`, the canonical junction described in
   [local artifacts](docs/LOCAL_ARTIFACTS.md); run hygiene after storage-routing changes.
-- Deliver routine research directly to the default branch; verify remote parity.
-- Lead reports in plain Chinese with effect, cost and next decision; label metrics,
-  units and denominators, and consolidate limits once. Tables are optional.
+- Push within the workspace's delivery authorization. Confirm the target remote
+  branch contains the commits authorized for this task.
+- Write reports in plain Chinese. For research reports, lead with the effect and cost.
+  State the next decision when one remains. Label metrics with units and denominators
+  and summarize material limits once. Tables are optional.
 - Keep currents near 3KB: update for route decisions, archive prior text, keep history
   in results/logs. Finish scoped checks, delivery and release of task-owned resources.
