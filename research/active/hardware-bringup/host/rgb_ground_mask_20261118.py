@@ -30,11 +30,14 @@ class GroundMask:
         self.class_ids = [self.model.config.label2id[name] for name in GROUND_CLASSES]
 
     @torch.inference_mode()
-    def predict(self, rgb):
+    def probability(self, rgb):
         if rgb.dtype != np.uint8 or rgb.ndim != 3 or rgb.shape[2] != 3:
             raise ValueError("Expected an RGB uint8 image with shape (height, width, 3)")
         pixels = self.processor(images=rgb, return_tensors="pt")["pixel_values"].to(self.device)
         logits = self.model(pixel_values=pixels).logits.float()
         probability = logits.softmax(dim=1)[:, self.class_ids].sum(dim=1, keepdim=True)
         full_size = interpolate(probability, size=rgb.shape[:2], mode="bilinear", align_corners=False)
-        return (full_size[0, 0] >= MIN_PROBABILITY).cpu().numpy()
+        return full_size[0, 0].cpu().numpy()
+
+    def predict(self, rgb):
+        return self.probability(rgb) >= MIN_PROBABILITY
