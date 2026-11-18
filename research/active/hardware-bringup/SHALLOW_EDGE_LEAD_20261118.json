@@ -936,6 +936,7 @@
     "vista/external-test/source-review.json": "4ffdfc01773752f11947a2e543fece2a11fea54946b7b16df02cc42b4e793af0",
     "vista/pose-span.json": "f746c15abf0378c18b4b3729bc32801eafc3e25d21f5152af5f4a375402ab8fc",
     "hilti23/site1_handheld_4/preview.jpg": "7160873b168487a7e7042d627312a2224d8b2a80136134275ac7fc4db76fa447",
-    "hilti23/site3_handheld_1/preview.jpg": "70495b1e77d6abcde8b437168c0135ec39f2b9b757ce4d06768f69a9a5fcb520"
+    "hilti23/site3_handheld_1/preview.jpg": "70495b1e77d6abcde8b437168c0135ec39f2b9b757ce4d06768f69a9a5fcb520",
+    "world/source_disposition.json": "3ec437fd40e0879a8cc876f2408dff26464d826ac3c56b24c5b0af984093be7b"
   }
 }

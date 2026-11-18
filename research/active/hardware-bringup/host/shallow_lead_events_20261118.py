@@ -108,6 +108,9 @@ def matched_lead(endpoint, controls_match):
     """Return None when a comparison lacks matched costs, distances or a common first target."""
     if controls_match is not True or endpoint['edge_lead_s'] is None:
         return None
+    if any(endpoint['arms'][arm]['first_target']['at_pass_start'] for arm in ARMS):
+        # A first-frame hit might have begun before the recording window.
+        return None
     if not any(d is not None for d in endpoint['edge_lead_m_by_common_object'].values()):
         return None
     return endpoint['edge_lead_s']>0
