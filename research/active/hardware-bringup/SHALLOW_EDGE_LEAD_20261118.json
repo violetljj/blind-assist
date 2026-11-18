@@ -1,0 +1,941 @@
+{
+  "protocol_commit": "eb714e83",
+  "method_sha256": "3f2449b480cdcbb459c8d5756220daf69db026f06b0771ea36892085d0bc4a62",
+  "threshold_m2": 0.005,
+  "strict_forward_range_m": [
+    0.3,
+    1.5
+  ],
+  "fresh_physical_sites_scored": 0,
+  "new_recording_site_independence": "possible reuse of September development facility; supplemental only",
+  "new_recording": {
+    "events": [
+      {
+        "site": "EgoWalk-August-retail-parking-possible-September-repeat",
+        "event": "west-row-crossing",
+        "sequence": "2024_08_08__15_40_31",
+        "first_frame": 179,
+        "last_frame": 197,
+        "time0": 1723120869.155,
+        "samples": 19,
+        "outcome": "edge_only",
+        "lead_s": null,
+        "direct": null,
+        "edge": {
+          "frame": 189,
+          "source_t": 1723120871.155,
+          "from_start_s": 2.0,
+          "at_first_eligible_frame": true,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "yellow-stop-by-black-SUV",
+              "forward_median_m": 1.452189686558106
+            }
+          ]
+        },
+        "whole_pass_silent": {
+          "direct": false,
+          "edge": false
+        },
+        "objects": {
+          "yellow-stop-by-black-SUV": {
+            "outcome": "edge_only",
+            "lead_s": null,
+            "direct": null,
+            "edge": {
+              "frame": 189,
+              "source_t": 1723120871.155,
+              "from_start_s": 2.0,
+              "at_first_eligible_frame": true,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "yellow-stop-by-black-SUV",
+                  "forward_median_m": 1.452189686558106
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            },
+            "whole_outline": {
+              "direct": {
+                "frame": 185,
+                "source_t": 1723120870.355,
+                "from_start_s": 1.2,
+                "forward_median_m": 3.013227907738999
+              },
+              "edge": {
+                "frame": 185,
+                "source_t": 1723120870.355,
+                "from_start_s": 1.2,
+                "forward_median_m": 3.013227907738999
+              },
+              "lead_s": 0.0
+            }
+          }
+        }
+      },
+      {
+        "site": "EgoWalk-August-retail-parking-possible-September-repeat",
+        "event": "east-row-along-stalls",
+        "sequence": "2024_08_08__15_40_31",
+        "first_frame": 345,
+        "last_frame": 365,
+        "time0": 1723120902.353,
+        "samples": 21,
+        "outcome": "both_hit",
+        "lead_s": 0.0,
+        "direct": {
+          "frame": 356,
+          "source_t": 1723120904.553,
+          "from_start_s": 2.2,
+          "at_first_eligible_frame": false,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "yellow-stop-near-side-of-painted-cross",
+              "forward_median_m": 1.2580036713327478
+            }
+          ]
+        },
+        "edge": {
+          "frame": 356,
+          "source_t": 1723120904.553,
+          "from_start_s": 2.2,
+          "at_first_eligible_frame": false,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "yellow-stop-near-side-of-painted-cross",
+              "forward_median_m": 1.2580036713327478
+            }
+          ]
+        },
+        "whole_pass_silent": {
+          "direct": false,
+          "edge": false
+        },
+        "objects": {
+          "yellow-stop-near-side-of-painted-cross": {
+            "outcome": "both_hit",
+            "lead_s": 0.0,
+            "direct": {
+              "frame": 356,
+              "source_t": 1723120904.553,
+              "from_start_s": 2.2,
+              "at_first_eligible_frame": false,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "yellow-stop-near-side-of-painted-cross",
+                  "forward_median_m": 1.2580036713327478
+                }
+              ]
+            },
+            "edge": {
+              "frame": 356,
+              "source_t": 1723120904.553,
+              "from_start_s": 2.2,
+              "at_first_eligible_frame": false,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "yellow-stop-near-side-of-painted-cross",
+                  "forward_median_m": 1.2580036713327478
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            },
+            "whole_outline": {
+              "direct": {
+                "frame": 352,
+                "source_t": 1723120903.753,
+                "from_start_s": 1.4,
+                "forward_median_m": 1.6504115931099652
+              },
+              "edge": {
+                "frame": 352,
+                "source_t": 1723120903.753,
+                "from_start_s": 1.4,
+                "forward_median_m": 1.6504115931099652
+              },
+              "lead_s": 0.0
+            }
+          },
+          "yellow-stop-far-side-of-painted-cross": {
+            "outcome": "both_missed",
+            "lead_s": null,
+            "direct": null,
+            "edge": null,
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            },
+            "whole_outline": {
+              "direct": {
+                "frame": 356,
+                "source_t": 1723120904.553,
+                "from_start_s": 2.2,
+                "forward_median_m": 2.603015092582578
+              },
+              "edge": {
+                "frame": 356,
+                "source_t": 1723120904.553,
+                "from_start_s": 2.2,
+                "forward_median_m": 2.603015092582578
+              },
+              "lead_s": 0.0
+            }
+          }
+        }
+      }
+    ],
+    "controls": [
+      {
+        "id": "west-row-crossing-clear",
+        "site": "EgoWalk-August-retail-parking-possible-September-repeat",
+        "samples": 14,
+        "direct": [
+          135,
+          137
+        ],
+        "edge": [
+          135,
+          137
+        ],
+        "complete": true
+      },
+      {
+        "id": "east-row-along-stalls-clear",
+        "site": "EgoWalk-August-retail-parking-possible-September-repeat",
+        "samples": 16,
+        "direct": [
+          290,
+          291
+        ],
+        "edge": [
+          290,
+          291
+        ],
+        "complete": true
+      }
+    ]
+  },
+  "previous_transfer": {
+    "events": [
+      {
+        "site": "EgoWalk-November-office-parking-row",
+        "event": "outbound-brown",
+        "sequence": "2024_11_29__09_46_15",
+        "first_frame": 2086,
+        "last_frame": 2099,
+        "time0": 1732863194.984,
+        "samples": 14,
+        "outcome": "edge_only",
+        "lead_s": null,
+        "direct": null,
+        "edge": {
+          "frame": 2096,
+          "source_t": 1732863196.984,
+          "from_start_s": 2.0,
+          "at_first_eligible_frame": true,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "brown-SUV-stall",
+              "forward_median_m": 1.3259428353412026
+            }
+          ]
+        },
+        "whole_pass_silent": {
+          "direct": false,
+          "edge": false
+        },
+        "objects": {
+          "brown-SUV-stall": {
+            "outcome": "edge_only",
+            "lead_s": null,
+            "direct": null,
+            "edge": {
+              "frame": 2096,
+              "source_t": 1732863196.984,
+              "from_start_s": 2.0,
+              "at_first_eligible_frame": true,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "brown-SUV-stall",
+                  "forward_median_m": 1.3259428353412026
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            }
+          }
+        }
+      },
+      {
+        "site": "EgoWalk-November-office-parking-row",
+        "event": "inbound-white",
+        "sequence": "2024_11_29__09_46_15",
+        "first_frame": 2137,
+        "last_frame": 2156,
+        "time0": 1732863205.184,
+        "samples": 20,
+        "outcome": "edge_only",
+        "lead_s": null,
+        "direct": null,
+        "edge": {
+          "frame": 2154,
+          "source_t": 1732863208.583,
+          "from_start_s": 3.399,
+          "at_first_eligible_frame": false,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "white-SUV-stall",
+              "forward_median_m": 1.1546801661914028
+            }
+          ]
+        },
+        "whole_pass_silent": {
+          "direct": false,
+          "edge": false
+        },
+        "objects": {
+          "white-SUV-stall": {
+            "outcome": "edge_only",
+            "lead_s": null,
+            "direct": null,
+            "edge": {
+              "frame": 2154,
+              "source_t": 1732863208.583,
+              "from_start_s": 3.399,
+              "at_first_eligible_frame": false,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "white-SUV-stall",
+                  "forward_median_m": 1.1546801661914028
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            }
+          }
+        }
+      },
+      {
+        "site": "EgoWalk-November-office-parking-row",
+        "event": "outbound-white",
+        "sequence": "2024_11_29__09_46_15",
+        "first_frame": 2181,
+        "last_frame": 2190,
+        "time0": 1732863213.983,
+        "samples": 10,
+        "outcome": "both_hit",
+        "lead_s": 0.0,
+        "direct": {
+          "frame": 2187,
+          "source_t": 1732863215.183,
+          "from_start_s": 1.2,
+          "at_first_eligible_frame": true,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "white-SUV-stall",
+              "forward_median_m": 1.34176139215502
+            }
+          ]
+        },
+        "edge": {
+          "frame": 2187,
+          "source_t": 1732863215.183,
+          "from_start_s": 1.2,
+          "at_first_eligible_frame": true,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "white-SUV-stall",
+              "forward_median_m": 1.34176139215502
+            }
+          ]
+        },
+        "whole_pass_silent": {
+          "direct": false,
+          "edge": false
+        },
+        "objects": {
+          "white-SUV-stall": {
+            "outcome": "both_hit",
+            "lead_s": 0.0,
+            "direct": {
+              "frame": 2187,
+              "source_t": 1732863215.183,
+              "from_start_s": 1.2,
+              "at_first_eligible_frame": true,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "white-SUV-stall",
+                  "forward_median_m": 1.34176139215502
+                }
+              ]
+            },
+            "edge": {
+              "frame": 2187,
+              "source_t": 1732863215.183,
+              "from_start_s": 1.2,
+              "at_first_eligible_frame": true,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "white-SUV-stall",
+                  "forward_median_m": 1.34176139215502
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            }
+          }
+        }
+      },
+      {
+        "site": "EgoWalk-October-glass-front-covered-garage",
+        "event": "garage-wet-floor",
+        "sequence": "2024_10_30__19_15_58",
+        "first_frame": 3812,
+        "last_frame": 3834,
+        "time0": 1730305723.228,
+        "samples": 23,
+        "outcome": "both_hit",
+        "lead_s": 0.0,
+        "direct": {
+          "frame": 3825,
+          "source_t": 1730305725.828,
+          "from_start_s": 2.6,
+          "at_first_eligible_frame": false,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "silver-stall-tube",
+              "forward_median_m": 0.9297750594494864
+            }
+          ]
+        },
+        "edge": {
+          "frame": 3825,
+          "source_t": 1730305725.828,
+          "from_start_s": 2.6,
+          "at_first_eligible_frame": false,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "silver-stall-tube",
+              "forward_median_m": 0.9297750594494864
+            }
+          ]
+        },
+        "whole_pass_silent": {
+          "direct": false,
+          "edge": false
+        },
+        "objects": {
+          "silver-stall-tube": {
+            "outcome": "both_hit",
+            "lead_s": 0.0,
+            "direct": {
+              "frame": 3825,
+              "source_t": 1730305725.828,
+              "from_start_s": 2.6,
+              "at_first_eligible_frame": false,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "silver-stall-tube",
+                  "forward_median_m": 0.9297750594494864
+                }
+              ]
+            },
+            "edge": {
+              "frame": 3825,
+              "source_t": 1730305725.828,
+              "from_start_s": 2.6,
+              "at_first_eligible_frame": false,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "silver-stall-tube",
+                  "forward_median_m": 0.9297750594494864
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            }
+          }
+        }
+      }
+    ],
+    "controls": [
+      {
+        "id": "outbound-brown-empty",
+        "site": "EgoWalk-November-office-parking-row",
+        "samples": 11,
+        "direct": [],
+        "edge": [],
+        "complete": true
+      },
+      {
+        "id": "inbound-white-empty",
+        "site": "EgoWalk-November-office-parking-row",
+        "samples": 11,
+        "direct": [],
+        "edge": [],
+        "complete": true
+      },
+      {
+        "id": "outbound-white-empty",
+        "site": "EgoWalk-November-office-parking-row",
+        "samples": 11,
+        "direct": [
+          2163,
+          2165
+        ],
+        "edge": [
+          2163,
+          2165
+        ],
+        "complete": true
+      },
+      {
+        "id": "garage-wet-floor-empty",
+        "site": "EgoWalk-October-glass-front-covered-garage",
+        "samples": 10,
+        "direct": [],
+        "edge": [],
+        "complete": true
+      },
+      {
+        "id": "sanpo-asphalt-clear",
+        "site": "sanpo-urban-cracked-parking-court",
+        "samples": 7,
+        "direct": [],
+        "edge": [],
+        "complete": true
+      },
+      {
+        "id": "CAB-CAB_570-0",
+        "site": "LaMAR-CAB",
+        "samples": 8,
+        "direct": [],
+        "edge": [],
+        "complete": true
+      },
+      {
+        "id": "CAB-CAB_648-0",
+        "site": "LaMAR-CAB",
+        "samples": 8,
+        "direct": [],
+        "edge": [],
+        "complete": true
+      },
+      {
+        "id": "HGE-HGE_1502-0",
+        "site": "LaMAR-HGE",
+        "samples": 8,
+        "direct": [
+          176611926782
+        ],
+        "edge": [
+          176611926782
+        ],
+        "complete": true
+      },
+      {
+        "id": "HGE-HGE_1569-1",
+        "site": "LaMAR-HGE",
+        "samples": 8,
+        "direct": [],
+        "edge": [],
+        "complete": true
+      }
+    ]
+  },
+  "previous_development": {
+    "events": [
+      {
+        "site": "EgoWalk-shopping-center-parking-September",
+        "event": "EgoWalk-Sep-left-stop-before-car-crossing",
+        "sequence": "2024_09_28__15_37_24",
+        "first_frame": 228,
+        "last_frame": 235,
+        "time0": 1727527092.356,
+        "samples": 8,
+        "outcome": "both_missed",
+        "lead_s": null,
+        "direct": null,
+        "edge": null,
+        "whole_pass_silent": {
+          "direct": true,
+          "edge": false
+        },
+        "objects": {
+          "left-stop-before-car-crossing": {
+            "outcome": "both_missed",
+            "lead_s": null,
+            "direct": null,
+            "edge": null,
+            "whole_pass_silent": {
+              "direct": true,
+              "edge": false
+            }
+          }
+        }
+      },
+      {
+        "site": "EgoWalk-shopping-center-parking-September",
+        "event": "EgoWalk-Sep-left-stop-in-front-of-white-car",
+        "sequence": "2024_09_28__15_37_24",
+        "first_frame": 337,
+        "last_frame": 345,
+        "time0": 1727527114.155,
+        "samples": 9,
+        "outcome": "edge_only",
+        "lead_s": null,
+        "direct": null,
+        "edge": {
+          "frame": 344,
+          "source_t": 1727527115.555,
+          "from_start_s": 1.4,
+          "at_first_eligible_frame": false,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "left-stop-in-front-of-white-car",
+              "forward_median_m": 1.244053473637625
+            }
+          ]
+        },
+        "whole_pass_silent": {
+          "direct": false,
+          "edge": false
+        },
+        "objects": {
+          "left-stop-in-front-of-white-car": {
+            "outcome": "edge_only",
+            "lead_s": null,
+            "direct": null,
+            "edge": {
+              "frame": 344,
+              "source_t": 1727527115.555,
+              "from_start_s": 1.4,
+              "at_first_eligible_frame": false,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "left-stop-in-front-of-white-car",
+                  "forward_median_m": 1.244053473637625
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            }
+          }
+        }
+      },
+      {
+        "site": "EgoWalk-shopping-center-parking-September",
+        "event": "EgoWalk-Sep-through-storefront-row35-pair",
+        "sequence": "2024_09_28__15_37_24",
+        "first_frame": 643,
+        "last_frame": 650,
+        "time0": 1727527175.353,
+        "samples": 8,
+        "outcome": "both_hit",
+        "lead_s": 0.0,
+        "direct": {
+          "frame": 649,
+          "source_t": 1727527176.552,
+          "from_start_s": 1.199,
+          "at_first_eligible_frame": false,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "storefront-row35-right-stop",
+              "forward_median_m": 1.146304086626421
+            },
+            {
+              "object_id": "storefront-row35-left-stop",
+              "forward_median_m": 1.295014103232067
+            }
+          ]
+        },
+        "edge": {
+          "frame": 649,
+          "source_t": 1727527176.552,
+          "from_start_s": 1.199,
+          "at_first_eligible_frame": false,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "storefront-row35-right-stop",
+              "forward_median_m": 1.146304086626421
+            },
+            {
+              "object_id": "storefront-row35-left-stop",
+              "forward_median_m": 1.295014103232067
+            }
+          ]
+        },
+        "whole_pass_silent": {
+          "direct": false,
+          "edge": false
+        },
+        "objects": {
+          "storefront-row35-right-stop": {
+            "outcome": "both_hit",
+            "lead_s": 0.0,
+            "direct": {
+              "frame": 649,
+              "source_t": 1727527176.552,
+              "from_start_s": 1.199,
+              "at_first_eligible_frame": false,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "storefront-row35-right-stop",
+                  "forward_median_m": 1.146304086626421
+                }
+              ]
+            },
+            "edge": {
+              "frame": 649,
+              "source_t": 1727527176.552,
+              "from_start_s": 1.199,
+              "at_first_eligible_frame": false,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "storefront-row35-right-stop",
+                  "forward_median_m": 1.146304086626421
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            }
+          },
+          "storefront-row35-left-stop": {
+            "outcome": "both_hit",
+            "lead_s": 0.0,
+            "direct": {
+              "frame": 649,
+              "source_t": 1727527176.552,
+              "from_start_s": 1.199,
+              "at_first_eligible_frame": true,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "storefront-row35-left-stop",
+                  "forward_median_m": 1.295014103232067
+                }
+              ]
+            },
+            "edge": {
+              "frame": 649,
+              "source_t": 1727527176.552,
+              "from_start_s": 1.199,
+              "at_first_eligible_frame": true,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "storefront-row35-left-stop",
+                  "forward_median_m": 1.295014103232067
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            }
+          }
+        }
+      },
+      {
+        "site": "EgoWalk-shopping-center-parking-September",
+        "event": "EgoWalk-Sep-first-right-stop",
+        "sequence": "2024_09_28__15_37_24",
+        "first_frame": 425,
+        "last_frame": 447,
+        "time0": 1727527131.755,
+        "samples": 23,
+        "outcome": "edge_only",
+        "lead_s": null,
+        "direct": null,
+        "edge": {
+          "frame": 446,
+          "source_t": 1727527135.954,
+          "from_start_s": 4.199,
+          "at_first_eligible_frame": true,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "first-right-yellow-stop-at-painted-intersection",
+              "forward_median_m": 1.3281043437356024
+            }
+          ]
+        },
+        "whole_pass_silent": {
+          "direct": true,
+          "edge": false
+        },
+        "objects": {
+          "first-right-yellow-stop-at-painted-intersection": {
+            "outcome": "edge_only",
+            "lead_s": null,
+            "direct": null,
+            "edge": {
+              "frame": 446,
+              "source_t": 1727527135.954,
+              "from_start_s": 4.199,
+              "at_first_eligible_frame": true,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "first-right-yellow-stop-at-painted-intersection",
+                  "forward_median_m": 1.3281043437356024
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": true,
+              "edge": false
+            }
+          }
+        }
+      },
+      {
+        "site": "Zuerich-LIN",
+        "event": "LIN-yellow-entrance-01",
+        "sequence": "ios_2022-06-25_20.28.02",
+        "first_frame": 100505010047,
+        "last_frame": 100509008246,
+        "time0": 100505.010047,
+        "samples": 17,
+        "outcome": "both_hit",
+        "lead_s": 0.0,
+        "direct": {
+          "frame": 100508008697,
+          "source_t": 100508.008697,
+          "from_start_s": 2.99865,
+          "at_first_eligible_frame": true,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "LIN-yellow-entrance",
+              "forward_median_m": 1.429871862921143
+            }
+          ]
+        },
+        "edge": {
+          "frame": 100508008697,
+          "source_t": 100508.008697,
+          "from_start_s": 2.99865,
+          "at_first_eligible_frame": true,
+          "at_pass_start": false,
+          "objects": [
+            {
+              "object_id": "LIN-yellow-entrance",
+              "forward_median_m": 1.429871862921143
+            }
+          ]
+        },
+        "whole_pass_silent": {
+          "direct": false,
+          "edge": false
+        },
+        "objects": {
+          "LIN-yellow-entrance": {
+            "outcome": "both_hit",
+            "lead_s": 0.0,
+            "direct": {
+              "frame": 100508008697,
+              "source_t": 100508.008697,
+              "from_start_s": 2.99865,
+              "at_first_eligible_frame": true,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "LIN-yellow-entrance",
+                  "forward_median_m": 1.429871862921143
+                }
+              ]
+            },
+            "edge": {
+              "frame": 100508008697,
+              "source_t": 100508.008697,
+              "from_start_s": 2.99865,
+              "at_first_eligible_frame": true,
+              "at_pass_start": false,
+              "objects": [
+                {
+                  "object_id": "LIN-yellow-entrance",
+                  "forward_median_m": 1.429871862921143
+                }
+              ]
+            },
+            "whole_pass_silent": {
+              "direct": false,
+              "edge": false
+            }
+          }
+        }
+      }
+    ]
+  },
+  "replay_parity": {
+    "all_frames": 70,
+    "strict_target_rows": 6,
+    "exact_count": 76,
+    "max_area_difference_m2": 0,
+    "exact_controls": true
+  },
+  "local_artifact_root": "artifacts.local/work/shallow-lead-20261118",
+  "sha256": {
+    "august-first-alerts.json": "dd1c53a5d6355588defe12ce4810eb65849867fbc2e14da559009ad34b141ba5",
+    "ego/locked-august/manifest.json": "94d33cca07c1e7d1b2cf0f5f23c29883622658da5f62f3f5ba9a2a1d8f2622b9",
+    "ego/locked-august/labels.json": "46ede355b83208ef973cb118fc97667c9637ce0e36dc2ce7ac51be532dbe8971",
+    "ego/search-receipt.json": "c0c1c73887697b0ebf92a2c0a67939e097b013bfca3984be014acf7850d45d08",
+    "sensitivity/sensitivity_result.json": "29b7d9725d32fcfc5211005e9c82dc51de2c7803e46373b954da088f57fcc052",
+    "sensitivity/reviewed_silhouette_check.json": "9be2bad19c222e106eedb761a87aae03feaac81b89a1f341098f9c1500ed323e",
+    "previous/first-alerts.json": "267ef480cefc4477c1e5eb9928f280913fc929e84e6d8c9796d79c2921b2e165",
+    "previous/transfer-first-alerts.json": "0fd046f5c26e228b6f4d7af53f411bc1f666e491b28bb111c83448c37cfb453a",
+    "lamar/source-review.json": "4ddd2a9af4573bb2c730d61e4387f31db32f0b65b95a85ef0d2c16fb7ead1b6d",
+    "alternative/source_disposition.json": "dd2f097525c87206e232fcd8fc7e25eb2fa181bdaf664f480af2fc23742c7e1c",
+    "sanpo/intake_receipt.json": "95321eeb4bf62e3f6435035472da1d6c22d5b2f825dcc3a367db3bcac66ae52b",
+    "world/mapfree-clock.json": "458df9d6da1663354fd2ba3e5c4db64657e7b8421f13389ddb745794c596cf7b",
+    "world/mapfree-s00046-mesh-support.json": "c1ddb3f6354ba46ff04258a1863c28541af22cb1391992e41abc56cbd8bd5c45",
+    "world/mapfree-s00161-geometry.json": "483d87ac81e7e9045645e0541ed1252b2631a801f742b1bed6530badfe11754c",
+    "vista/external-test/source-review.json": "4ffdfc01773752f11947a2e543fece2a11fea54946b7b16df02cc42b4e793af0",
+    "vista/pose-span.json": "f746c15abf0378c18b4b3729bc32801eafc3e25d21f5152af5f4a375402ab8fc",
+    "hilti23/site1_handheld_4/preview.jpg": "7160873b168487a7e7042d627312a2224d8b2a80136134275ac7fc4db76fa447",
+    "hilti23/site3_handheld_1/preview.jpg": "70495b1e77d6abcde8b437168c0135ec39f2b9b757ce4d06768f69a9a5fcb520"
+  }
+}
