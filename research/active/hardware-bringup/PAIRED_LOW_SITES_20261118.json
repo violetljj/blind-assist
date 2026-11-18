@@ -1,0 +1,604 @@
+{
+ "protocol_commit": "4408c690",
+ "frozen_algorithm_commit": "83a9f8e4",
+ "scope": "Real outdoor recordings, repeated installations and repeated approaches linked. All alarm decisions are experimental replays. Reference footprints and locally generated MP4s are in artifacts.local/work/paired-low-sites-20261118.",
+ "sources": {
+  "EgoWalk": "https://huggingface.co/datasets/EgoWalk/trajectories",
+  "LaMAR LIN": "https://github.com/microsoft/lamar-benchmark/blob/main/RAW-DATA.md",
+  "Oxford Spires": "https://dynamic.robots.ox.ac.uk/datasets/oxford-spires/",
+  "Project Aria Gen 2 Pilot": "https://explorer.projectaria.com/gen2pilot",
+  "SANPO Real": "https://google-research-datasets.github.io/sanpo_dataset/"
+ },
+ "events": [
+  {
+   "dataset": "Oxford Spires",
+   "site": "keble",
+   "sequence": "2024-03-12-keble-college-02",
+   "event": "A0",
+   "entities": [
+    "Keble Hall paired entrances"
+   ],
+   "category": "entrance_platform",
+   "height_band": "LOW",
+   "history": "new_facility",
+   "rgb_frame_keys": [
+    3132,
+    3137,
+    3142,
+    3147,
+    3152,
+    3157,
+    3162,
+    3167
+   ],
+   "first_t_s": 1710255814.2968068,
+   "last_t_s": 1710255816.0467935,
+   "labels_sha256": "76de878bac32402f256a636201aebed8d690e8870eede77d8ad1f9a7c3a878ee",
+   "input_manifest_sha256": "a2e76ca2c09254225b981922cacb252d5147bda4d8f7ecdd64adce871a73d699",
+   "any_target_hit": {
+    "baseline": true,
+    "sem80": false,
+    "geom": true
+   },
+   "windows": [
+    {
+     "id": "nearby_0",
+     "frames": [
+      2939,
+      2944,
+      2948,
+      2953,
+      2958,
+      2963,
+      2968,
+      2973
+     ],
+     "observed_samples": 8,
+     "accepted": true,
+     "longest_observed_s": 1.7999861240386963,
+     "any_alarm": {
+      "baseline": false,
+      "sem80": false,
+      "geom": false
+     }
+    }
+   ]
+  },
+  {
+   "dataset": "Oxford Spires",
+   "site": "keble",
+   "sequence": "2024-03-12-keble-college-05",
+   "event": "A20",
+   "entities": [
+    "Keble Hall paired entrances"
+   ],
+   "category": "entrance_platform",
+   "height_band": "LOW",
+   "history": "new_facility",
+   "rgb_frame_keys": [
+    3225,
+    3230,
+    3235,
+    3240,
+    3245,
+    3250,
+    3255,
+    3260,
+    3265,
+    3270,
+    3275,
+    3280,
+    3285,
+    3290,
+    3295,
+    3300,
+    3305,
+    3310
+   ],
+   "first_t_s": 1710257790.266177,
+   "last_t_s": 1710257794.5161283,
+   "labels_sha256": "76de878bac32402f256a636201aebed8d690e8870eede77d8ad1f9a7c3a878ee",
+   "input_manifest_sha256": "a2e76ca2c09254225b981922cacb252d5147bda4d8f7ecdd64adce871a73d699",
+   "any_target_hit": {
+    "baseline": true,
+    "sem80": false,
+    "geom": true
+   },
+   "windows": [
+    {
+     "id": "nearby_20",
+     "frames": [
+      3130,
+      3135,
+      3140,
+      3145,
+      3150,
+      3155,
+      3160,
+      3165,
+      3170
+     ],
+     "observed_samples": 9,
+     "accepted": true,
+     "longest_observed_s": 1.9999778270721436,
+     "any_alarm": {
+      "baseline": true,
+      "sem80": true,
+      "geom": true
+     }
+    }
+   ]
+  },
+  {
+   "dataset": "Oxford Spires",
+   "site": "christ",
+   "sequence": "2024-03-20-christ-church-05",
+   "event": "A178",
+   "entities": [
+    "Christ Church enclosed side-door landing"
+   ],
+   "category": "entrance_platform",
+   "height_band": "LOW",
+   "history": "new_facility",
+   "rgb_frame_keys": [
+    3467,
+    3468,
+    3469,
+    3470,
+    3471,
+    3472
+   ],
+   "first_t_s": 1710927021.4900262,
+   "last_t_s": 1710927022.4900098,
+   "labels_sha256": "76de878bac32402f256a636201aebed8d690e8870eede77d8ad1f9a7c3a878ee",
+   "input_manifest_sha256": "a2e76ca2c09254225b981922cacb252d5147bda4d8f7ecdd64adce871a73d699",
+   "any_target_hit": {
+    "baseline": true,
+    "sem80": true,
+    "geom": true
+   },
+   "windows": [
+    {
+     "id": "nearby_178",
+     "frames": [
+      3398,
+      3400,
+      3402,
+      3404,
+      3406
+     ],
+     "observed_samples": 5,
+     "accepted": true,
+     "longest_observed_s": 1.5999736785888672,
+     "any_alarm": {
+      "baseline": false,
+      "sem80": false,
+      "geom": false
+     }
+    }
+   ]
+  },
+  {
+   "dataset": "LaMAR LIN",
+   "site": "Zuerich-LIN",
+   "sequence": "ios_2022-06-25_20.28.02",
+   "event": "LIN-yellow-entrance-01",
+   "entities": [
+    "LIN-yellow-entrance"
+   ],
+   "category": "entrance_platform",
+   "height_band": "shallow",
+   "history": "new_facility",
+   "rgb_frame_keys": [
+    100505010047,
+    100505209957,
+    100505509822,
+    100505709732,
+    100506009597,
+    100506209507,
+    100506509372,
+    100506709282,
+    100507009147,
+    100507209057,
+    100507508922,
+    100507708832,
+    100508008697,
+    100508308562,
+    100508508472,
+    100508808337,
+    100509008246
+   ],
+   "first_t_s": 100505.010047,
+   "last_t_s": 100509.008246,
+   "labels_sha256": "65d1ff3f425ce3c3a673b6f54cfa7bf52d8f27be900e3fae52335c6c2d6c4f13",
+   "input_manifest_sha256": "68cc9c1d3f7527be4c693f1a1f04da0681755463e9b8a2ad0efe1c74d83750f7",
+   "any_target_hit": {
+    "baseline": false,
+    "sem80": false,
+    "geom": false
+   },
+   "windows": [
+    {
+     "id": "linear-yellow-lower-street-previous-window",
+     "frames": [
+      100502211307,
+      100502511172,
+      100502711082,
+      100503010947,
+      100503210857,
+      100503510722,
+      100503710632,
+      100504010497,
+      100504210407
+     ],
+     "observed_samples": 9,
+     "accepted": true,
+     "longest_observed_s": 1.999100000000908,
+     "any_alarm": {
+      "baseline": false,
+      "sem80": false,
+      "geom": false
+     }
+    }
+   ]
+  },
+  {
+   "dataset": "EgoWalk",
+   "site": "EgoWalk-shopping-center-parking-September",
+   "sequence": "2024_09_28__15_37_24",
+   "event": "EgoWalk-Sep-left-stop-before-car-crossing",
+   "entities": [
+    "left-stop-before-car-crossing"
+   ],
+   "category": "wheel_stop",
+   "height_band": "shallow",
+   "history": "new_facility",
+   "rgb_frame_keys": [
+    228,
+    229,
+    230,
+    231,
+    232,
+    233,
+    234,
+    235
+   ],
+   "first_t_s": 1727527092.356,
+   "last_t_s": 1727527093.756,
+   "labels_sha256": "5bfa5c7f6f97acfd94a95c17cc0c930c3119362adae2bce734a81974aab2cf6f",
+   "input_manifest_sha256": "2ccb5a97a85ee7f941554fc668312172730514852cc8bd9ed5e5e1be994eb506",
+   "any_target_hit": {
+    "baseline": false,
+    "sem80": false,
+    "geom": false
+   },
+   "windows": [
+    {
+     "id": "clear_182_192",
+     "frames": [
+      182,
+      184,
+      186,
+      188,
+      190,
+      192
+     ],
+     "observed_samples": 6,
+     "accepted": true,
+     "longest_observed_s": 2.0,
+     "any_alarm": {
+      "baseline": false,
+      "sem80": false,
+      "geom": false
+     }
+    }
+   ]
+  },
+  {
+   "dataset": "EgoWalk",
+   "site": "EgoWalk-shopping-center-parking-September",
+   "sequence": "2024_09_28__15_37_24",
+   "event": "EgoWalk-Sep-left-stop-in-front-of-white-car",
+   "entities": [
+    "left-stop-in-front-of-white-car"
+   ],
+   "category": "wheel_stop",
+   "height_band": "shallow",
+   "history": "new_facility",
+   "rgb_frame_keys": [
+    337,
+    338,
+    339,
+    340,
+    341,
+    342,
+    343,
+    344,
+    345
+   ],
+   "first_t_s": 1727527114.155,
+   "last_t_s": 1727527115.755,
+   "labels_sha256": "5bfa5c7f6f97acfd94a95c17cc0c930c3119362adae2bce734a81974aab2cf6f",
+   "input_manifest_sha256": "2ccb5a97a85ee7f941554fc668312172730514852cc8bd9ed5e5e1be994eb506",
+   "any_target_hit": {
+    "baseline": false,
+    "sem80": false,
+    "geom": false
+   },
+   "windows": [
+    {
+     "id": "clear_284_294",
+     "frames": [
+      284,
+      286,
+      288,
+      290,
+      292,
+      294
+     ],
+     "observed_samples": 6,
+     "accepted": true,
+     "longest_observed_s": 2.0,
+     "any_alarm": {
+      "baseline": false,
+      "sem80": false,
+      "geom": false
+     }
+    }
+   ]
+  },
+  {
+   "dataset": "EgoWalk",
+   "site": "EgoWalk-shopping-center-parking-September",
+   "sequence": "2024_09_28__15_37_24",
+   "event": "EgoWalk-Sep-through-storefront-row35-pair",
+   "entities": [
+    "storefront-row35-right-stop",
+    "storefront-row35-left-stop"
+   ],
+   "category": "wheel_stop",
+   "height_band": "shallow",
+   "history": "new_facility",
+   "rgb_frame_keys": [
+    643,
+    644,
+    645,
+    646,
+    647,
+    648,
+    649,
+    650
+   ],
+   "first_t_s": 1727527175.353,
+   "last_t_s": 1727527176.752,
+   "labels_sha256": "5bfa5c7f6f97acfd94a95c17cc0c930c3119362adae2bce734a81974aab2cf6f",
+   "input_manifest_sha256": "2ccb5a97a85ee7f941554fc668312172730514852cc8bd9ed5e5e1be994eb506",
+   "any_target_hit": {
+    "baseline": false,
+    "sem80": false,
+    "geom": false
+   },
+   "windows": [
+    {
+     "id": "clear_589_599",
+     "frames": [
+      589,
+      591,
+      593,
+      595,
+      597,
+      599
+     ],
+     "observed_samples": 6,
+     "accepted": true,
+     "longest_observed_s": 2.0,
+     "any_alarm": {
+      "baseline": false,
+      "sem80": false,
+      "geom": false
+     }
+    }
+   ]
+  },
+  {
+   "dataset": "EgoWalk",
+   "site": "EgoWalk-shopping-center-parking-September",
+   "sequence": "2024_09_28__15_37_24",
+   "event": "EgoWalk-Sep-first-right-stop",
+   "entities": [
+    "first-right-yellow-stop-at-painted-intersection"
+   ],
+   "category": "wheel_stop",
+   "height_band": "shallow",
+   "history": "new_facility",
+   "rgb_frame_keys": [
+    425,
+    426,
+    427,
+    428,
+    429,
+    430,
+    431,
+    432,
+    433,
+    434,
+    435,
+    436,
+    437,
+    438,
+    439,
+    440,
+    441,
+    442,
+    443,
+    444,
+    445,
+    446,
+    447
+   ],
+   "first_t_s": 1727527131.755,
+   "last_t_s": 1727527136.154,
+   "labels_sha256": "5bfa5c7f6f97acfd94a95c17cc0c930c3119362adae2bce734a81974aab2cf6f",
+   "input_manifest_sha256": "2ccb5a97a85ee7f941554fc668312172730514852cc8bd9ed5e5e1be994eb506",
+   "any_target_hit": {
+    "baseline": false,
+    "sem80": false,
+    "geom": false
+   },
+   "windows": [
+    {
+     "id": "locked_september_open_aisle",
+     "frames": [
+      380,
+      382,
+      384,
+      386,
+      388,
+      390
+     ],
+     "observed_samples": 6,
+     "accepted": true,
+     "longest_observed_s": 2.0,
+     "any_alarm": {
+      "baseline": false,
+      "sem80": false,
+      "geom": false
+     }
+    }
+   ]
+  },
+  {
+   "dataset": "Project Aria Gen 2 Pilot",
+   "site": "aria-parking-lot",
+   "sequence": "walk_0",
+   "event": "aria-known-wheelstop-pass-01",
+   "entities": [
+    "aria-known-wheelstop"
+   ],
+   "category": "wheel_stop",
+   "height_band": "LOW",
+   "history": "previously_seen_facility",
+   "rgb_frame_keys": [
+    1224,
+    1230,
+    1236,
+    1242,
+    1248,
+    1254,
+    1260,
+    1266,
+    1272,
+    1278,
+    1284,
+    1290,
+    1296,
+    1302,
+    1308,
+    1314,
+    1320,
+    1326,
+    1332,
+    1338,
+    1344,
+    1350,
+    1356,
+    1362,
+    1368,
+    1374,
+    1380
+   ],
+   "first_t_s": 40.799996,
+   "last_t_s": 45.999986,
+   "labels_sha256": "3a0986e052d613db0f599c5dfc541a548f9e76d9ec76fe95cfba104a13e01d41",
+   "input_manifest_sha256": "c467f007fad6589adf4ce81fe4e3622139b914cc853269f27bc23403715751b8",
+   "any_target_hit": {
+    "baseline": true,
+    "sem80": true,
+    "geom": true
+   },
+   "windows": [
+    {
+     "id": "aria-walk0-after-known-stop",
+     "frames": [
+      1452,
+      1458,
+      1464,
+      1470,
+      1476,
+      1482,
+      1488,
+      1494,
+      1500,
+      1506,
+      1512
+     ],
+     "observed_samples": 7,
+     "accepted": true,
+     "longest_observed_s": 1.1999979999999937,
+     "any_alarm": {
+      "baseline": false,
+      "sem80": false,
+      "geom": false
+     }
+    }
+   ]
+  },
+  {
+   "dataset": "SANPO Real",
+   "site": "circular-plaza-old",
+   "sequence": "oTc35OYrAu58zq4-EGRREZnJ_E73KM8N",
+   "event": "round-platform-revisit",
+   "entities": [
+    "old-concentric-stone-platform"
+   ],
+   "category": "low_platform",
+   "height_band": "LOW",
+   "history": "previously_seen_facility",
+   "rgb_frame_keys": [
+    81,
+    87,
+    93,
+    99,
+    105,
+    111,
+    117,
+    123,
+    129,
+    135,
+    141,
+    147,
+    153,
+    159
+   ],
+   "first_t_s": 5.4,
+   "last_t_s": 10.6,
+   "labels_sha256": "3b0913ec154d0b8f3948d52fc55b26e1227abfbf96ea98353c58fc52528434ff",
+   "input_manifest_sha256": "f4da40831e7d7b5cb5d276b8bf506d5f439298fdec60bec94ea9681744facd75",
+   "any_target_hit": {
+    "baseline": true,
+    "sem80": true,
+    "geom": true
+   },
+   "windows": [
+    {
+     "id": "plaza-approach-nearest-covered-empty",
+     "frames": [
+      414,
+      415,
+      416,
+      417,
+      418
+     ],
+     "observed_samples": 5,
+     "accepted": false,
+     "longest_observed_s": 0.2666666666666657,
+     "any_alarm": {
+      "baseline": false,
+      "sem80": false,
+      "geom": false
+     }
+    }
+   ]
+  }
+ ]
+}
