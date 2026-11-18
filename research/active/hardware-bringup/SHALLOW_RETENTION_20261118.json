@@ -1,0 +1,2089 @@
+{
+ "method_sha256": "3f2449b480cdcbb459c8d5756220daf69db026f06b0771ea36892085d0bc4a62",
+ "threshold_m2": 0.005,
+ "cohorts": [
+  {
+   "cohort": "august",
+   "objects": [
+    {
+     "site": "EgoWalk-August-retail-parking-possible-September-repeat",
+     "event": "west-row-crossing",
+     "object_id": "yellow-stop-by-black-SUV",
+     "sequence": "2024_08_08__15_40_31",
+     "control_ids": [
+      "west-row-crossing-clear"
+     ],
+     "far": {
+      "event": "west-row-crossing",
+      "object_id": "yellow-stop-by-black-SUV",
+      "direct": {
+       "status": "hit",
+       "frame": 185,
+       "t": 1723120870.355,
+       "median_m": 3.013227907738999,
+       "p10_m": 2.5742298601022036,
+       "pure_far": {
+        "frame": 185,
+        "t": 1723120870.355,
+        "median_m": 3.013227907738999,
+        "p10_m": 2.5742298601022036
+       }
+      },
+      "edge": {
+       "status": "hit",
+       "frame": 185,
+       "t": 1723120870.355,
+       "median_m": 3.013227907738999,
+       "p10_m": 2.5742298601022036,
+       "pure_far": {
+        "frame": 185,
+        "t": 1723120870.355,
+        "median_m": 3.013227907738999,
+        "p10_m": 2.5742298601022036
+       }
+      }
+     },
+     "near": [
+      {
+       "i": 189,
+       "t": 1723120871.155,
+       "forward_m": 1.452189686558106,
+       "direct": false,
+       "edge": true
+      },
+      {
+       "i": 190,
+       "t": 1723120871.355,
+       "forward_m": 1.173275966534331,
+       "direct": false,
+       "edge": true
+      }
+     ],
+     "eligible": true,
+     "direct": {
+      "status": "always_missed",
+      "any_hit": false,
+      "all_hit": false,
+      "first_miss_i": 189,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 189,
+        "last_i": 190,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "edge": {
+      "status": "always_hit",
+      "any_hit": true,
+      "all_hit": true,
+      "first_miss_i": null,
+      "first_recovery_i": null,
+      "last_eligible_hit": true,
+      "missed_intervals": []
+     },
+     "cost_matched": true
+    },
+    {
+     "site": "EgoWalk-August-retail-parking-possible-September-repeat",
+     "event": "east-row-along-stalls",
+     "object_id": "yellow-stop-near-side-of-painted-cross",
+     "sequence": "2024_08_08__15_40_31",
+     "control_ids": [
+      "east-row-along-stalls-clear"
+     ],
+     "far": {
+      "event": "east-row-along-stalls",
+      "object_id": "yellow-stop-near-side-of-painted-cross",
+      "direct": {
+       "status": "hit",
+       "frame": 352,
+       "t": 1723120903.753,
+       "median_m": 1.6504115931099652,
+       "p10_m": 1.2812494644387191,
+       "pure_far": null
+      },
+      "edge": {
+       "status": "hit",
+       "frame": 352,
+       "t": 1723120903.753,
+       "median_m": 1.6504115931099652,
+       "p10_m": 1.2812494644387191,
+       "pure_far": null
+      }
+     },
+     "near": [
+      {
+       "i": 355,
+       "t": 1723120904.353,
+       "forward_m": 1.373542390917706,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 356,
+       "t": 1723120904.553,
+       "forward_m": 1.2580036713327478,
+       "direct": true,
+       "edge": true
+      }
+     ],
+     "eligible": true,
+     "direct": {
+      "status": "intermittent",
+      "any_hit": true,
+      "all_hit": false,
+      "first_miss_i": 355,
+      "first_recovery_i": 356,
+      "last_eligible_hit": true,
+      "missed_intervals": [
+       {
+        "first_i": 355,
+        "last_i": 355,
+        "sampled_span_s": 0.0,
+        "to_next_hit_s": 0.2
+       }
+      ]
+     },
+     "edge": {
+      "status": "intermittent",
+      "any_hit": true,
+      "all_hit": false,
+      "first_miss_i": 355,
+      "first_recovery_i": 356,
+      "last_eligible_hit": true,
+      "missed_intervals": [
+       {
+        "first_i": 355,
+        "last_i": 355,
+        "sampled_span_s": 0.0,
+        "to_next_hit_s": 0.2
+       }
+      ]
+     },
+     "cost_matched": true
+    },
+    {
+     "site": "EgoWalk-August-retail-parking-possible-September-repeat",
+     "event": "east-row-along-stalls",
+     "object_id": "yellow-stop-far-side-of-painted-cross",
+     "sequence": "2024_08_08__15_40_31",
+     "control_ids": [
+      "east-row-along-stalls-clear"
+     ],
+     "far": {
+      "event": "east-row-along-stalls",
+      "object_id": "yellow-stop-far-side-of-painted-cross",
+      "direct": {
+       "status": "hit",
+       "frame": 356,
+       "t": 1723120904.553,
+       "median_m": 2.603015092582578,
+       "p10_m": 2.1393948783828685,
+       "pure_far": {
+        "frame": 356,
+        "t": 1723120904.553,
+        "median_m": 2.603015092582578,
+        "p10_m": 2.1393948783828685
+       }
+      },
+      "edge": {
+       "status": "hit",
+       "frame": 356,
+       "t": 1723120904.553,
+       "median_m": 2.603015092582578,
+       "p10_m": 2.1393948783828685,
+       "pure_far": {
+        "frame": 356,
+        "t": 1723120904.553,
+        "median_m": 2.603015092582578,
+        "p10_m": 2.1393948783828685
+       }
+      }
+     },
+     "near": [
+      {
+       "i": 359,
+       "t": 1723120905.153,
+       "forward_m": 1.3537207952215136,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 360,
+       "t": 1723120905.353,
+       "forward_m": 1.36010579092413,
+       "direct": false,
+       "edge": false
+      }
+     ],
+     "eligible": true,
+     "direct": {
+      "status": "always_missed",
+      "any_hit": false,
+      "all_hit": false,
+      "first_miss_i": 359,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 359,
+        "last_i": 360,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "edge": {
+      "status": "always_missed",
+      "any_hit": false,
+      "all_hit": false,
+      "first_miss_i": 359,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 359,
+        "last_i": 360,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "cost_matched": true
+    }
+   ],
+   "windows": [
+    {
+     "id": "east-row-along-stalls-clear",
+     "site": "EgoWalk-August-retail-parking-possible-September-repeat",
+     "frames": [
+      290,
+      291,
+      292,
+      293,
+      294,
+      295,
+      296,
+      297,
+      298,
+      299,
+      300,
+      301,
+      302,
+      303,
+      304,
+      305
+     ],
+     "complete": true,
+     "alarms": {
+      "direct": [
+       290,
+       291
+      ],
+      "edge": [
+       290,
+       291
+      ]
+     },
+     "runs": {
+      "direct": 1,
+      "edge": 1
+     }
+    },
+    {
+     "id": "west-row-crossing-clear",
+     "site": "EgoWalk-August-retail-parking-possible-September-repeat",
+     "frames": [
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137
+     ],
+     "complete": true,
+     "alarms": {
+      "direct": [
+       135,
+       137
+      ],
+      "edge": [
+       135,
+       137
+      ]
+     },
+     "runs": {
+      "direct": 2,
+      "edge": 2
+     }
+    }
+   ],
+   "eligible_summary": {
+    "objects": 3,
+    "evaluable": 3,
+    "walks": 2,
+    "full_near_gained": 1,
+    "full_near_lost": 0,
+    "walks_with_a_gained_object": [
+     "west-row-crossing"
+    ],
+    "arms": {
+     "direct": {
+      "full_near": 0,
+      "any_near": 1,
+      "at_last_sample": 1,
+      "hit_frames": 1
+     },
+     "edge": {
+      "full_near": 1,
+      "any_near": 2,
+      "at_last_sample": 2,
+      "hit_frames": 3
+     }
+    },
+    "eligible_object_frames": 6,
+    "paired_controls": {
+     "windows": 2,
+     "samples": 30,
+     "traces_equal": true,
+     "direct": {
+      "windows": 2,
+      "frames": 4,
+      "runs": 3
+     },
+     "edge": {
+      "windows": 2,
+      "frames": 4,
+      "runs": 3
+     }
+    }
+   },
+   "all_wheel_stop_control_cost": {
+    "windows": 2,
+    "samples": 30,
+    "traces_equal": true,
+    "direct": {
+     "windows": 2,
+     "frames": 4,
+     "runs": 3
+    },
+    "edge": {
+     "windows": 2,
+     "frames": 4,
+     "runs": 3
+    }
+   }
+  },
+  {
+   "cohort": "development",
+   "objects": [
+    {
+     "site": "EgoWalk-shopping-center-parking-September",
+     "event": "EgoWalk-Sep-left-stop-before-car-crossing",
+     "object_id": "left-stop-before-car-crossing",
+     "sequence": "2024_09_28__15_37_24",
+     "control_ids": [
+      "clear_182_192"
+     ],
+     "far": {
+      "event": "EgoWalk-Sep-left-stop-before-car-crossing",
+      "object_id": "left-stop-before-car-crossing",
+      "clip_first_frame": 228,
+      "clip_last_frame": 235,
+      "eligible_pre_near": [
+       228,
+       229,
+       230,
+       231,
+       232
+      ],
+      "eligible_near": [
+       233,
+       234
+      ],
+      "near_coverage": [
+       {
+        "frame": 233,
+        "t": 1727527093.356,
+        "median_m": 1.4501222263870985,
+        "whole_median_m": 1.6237352476754305,
+        "direct": false,
+        "edge": false,
+        "whole_direct": false,
+        "whole_edge": false
+       },
+       {
+        "frame": 234,
+        "t": 1727527093.556,
+        "median_m": 1.2396592353872373,
+        "whole_median_m": 1.432458583556918,
+        "direct": false,
+        "edge": false,
+        "whole_direct": false,
+        "whole_edge": false
+       }
+      ],
+      "direct": {
+       "status": "miss",
+       "frame": null,
+       "t": null,
+       "median_m": null,
+       "p10_m": null,
+       "pure_far": null,
+       "last_hit": null,
+       "whole_trace_between_last_far_and_near": []
+      },
+      "edge": {
+       "status": "miss",
+       "frame": null,
+       "t": null,
+       "median_m": null,
+       "p10_m": null,
+       "pure_far": null,
+       "last_hit": null,
+       "whole_trace_between_last_far_and_near": []
+      }
+     },
+     "near": [
+      {
+       "i": 233,
+       "t": 1727527093.356,
+       "forward_m": 1.4501222263870985,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 234,
+       "t": 1727527093.556,
+       "forward_m": 1.2396592353872375,
+       "direct": false,
+       "edge": false
+      }
+     ],
+     "eligible": false,
+     "direct": {
+      "status": "always_missed",
+      "any_hit": false,
+      "all_hit": false,
+      "first_miss_i": 233,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 233,
+        "last_i": 234,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "edge": {
+      "status": "always_missed",
+      "any_hit": false,
+      "all_hit": false,
+      "first_miss_i": 233,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 233,
+        "last_i": 234,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "cost_matched": true
+    },
+    {
+     "site": "EgoWalk-shopping-center-parking-September",
+     "event": "EgoWalk-Sep-left-stop-in-front-of-white-car",
+     "object_id": "left-stop-in-front-of-white-car",
+     "sequence": "2024_09_28__15_37_24",
+     "control_ids": [
+      "clear_284_294"
+     ],
+     "far": {
+      "event": "EgoWalk-Sep-left-stop-in-front-of-white-car",
+      "object_id": "left-stop-in-front-of-white-car",
+      "clip_first_frame": 337,
+      "clip_last_frame": 345,
+      "eligible_pre_near": [
+       337,
+       338,
+       339,
+       340,
+       341,
+       342
+      ],
+      "eligible_near": [
+       343,
+       344,
+       345
+      ],
+      "near_coverage": [
+       {
+        "frame": 343,
+        "t": 1727527115.355,
+        "median_m": 1.4156322846362277,
+        "whole_median_m": 1.584416005162789,
+        "direct": false,
+        "edge": false,
+        "whole_direct": false,
+        "whole_edge": false
+       },
+       {
+        "frame": 344,
+        "t": 1727527115.555,
+        "median_m": 1.244053473637625,
+        "whole_median_m": 1.424681578571378,
+        "direct": false,
+        "edge": true,
+        "whole_direct": false,
+        "whole_edge": true
+       },
+       {
+        "frame": 345,
+        "t": 1727527115.755,
+        "median_m": 1.1174978863092355,
+        "whole_median_m": 1.2951461445797796,
+        "direct": false,
+        "edge": false,
+        "whole_direct": false,
+        "whole_edge": false
+       }
+      ],
+      "direct": {
+       "status": "hit",
+       "frame": 338,
+       "t": 1727527114.355,
+       "median_m": 2.5464274214100056,
+       "p10_m": 2.1915171958654205,
+       "inner": true,
+       "full": true,
+       "pure_far": {
+        "frame": 338,
+        "t": 1727527114.355,
+        "median_m": 2.5464274214100056,
+        "p10_m": 2.1915171958654205,
+        "inner": true,
+        "full": true
+       },
+       "last_hit": {
+        "frame": 339,
+        "t": 1727527114.555,
+        "median_m": 2.3545625574027342,
+        "p10_m": 2.0562294350415518,
+        "inner": true,
+        "full": true
+       },
+       "whole_trace_between_last_far_and_near": [
+        {
+         "frame": 340,
+         "t": 1727527114.755,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 341,
+         "t": 1727527114.955,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 342,
+         "t": 1727527115.155,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 343,
+         "t": 1727527115.355,
+         "whole": false,
+         "near_eligible": true
+        }
+       ]
+      },
+      "edge": {
+       "status": "hit",
+       "frame": 338,
+       "t": 1727527114.355,
+       "median_m": 2.5464274214100056,
+       "p10_m": 2.1915171958654205,
+       "inner": true,
+       "full": true,
+       "pure_far": {
+        "frame": 338,
+        "t": 1727527114.355,
+        "median_m": 2.5464274214100056,
+        "p10_m": 2.1915171958654205,
+        "inner": true,
+        "full": true
+       },
+       "last_hit": {
+        "frame": 339,
+        "t": 1727527114.555,
+        "median_m": 2.3545625574027342,
+        "p10_m": 2.0562294350415518,
+        "inner": true,
+        "full": true
+       },
+       "whole_trace_between_last_far_and_near": [
+        {
+         "frame": 340,
+         "t": 1727527114.755,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 341,
+         "t": 1727527114.955,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 342,
+         "t": 1727527115.155,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 343,
+         "t": 1727527115.355,
+         "whole": false,
+         "near_eligible": true
+        }
+       ]
+      }
+     },
+     "near": [
+      {
+       "i": 343,
+       "t": 1727527115.355,
+       "forward_m": 1.4156322846362275,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 344,
+       "t": 1727527115.555,
+       "forward_m": 1.244053473637625,
+       "direct": false,
+       "edge": true
+      },
+      {
+       "i": 345,
+       "t": 1727527115.755,
+       "forward_m": 1.1174978863092355,
+       "direct": false,
+       "edge": false
+      }
+     ],
+     "eligible": true,
+     "direct": {
+      "status": "always_missed",
+      "any_hit": false,
+      "all_hit": false,
+      "first_miss_i": 343,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 343,
+        "last_i": 345,
+        "sampled_span_s": 0.4,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "edge": {
+      "status": "intermittent",
+      "any_hit": true,
+      "all_hit": false,
+      "first_miss_i": 343,
+      "first_recovery_i": 344,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 343,
+        "last_i": 343,
+        "sampled_span_s": 0.0,
+        "to_next_hit_s": 0.2
+       },
+       {
+        "first_i": 345,
+        "last_i": 345,
+        "sampled_span_s": 0.0,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "cost_matched": true
+    },
+    {
+     "site": "EgoWalk-shopping-center-parking-September",
+     "event": "EgoWalk-Sep-through-storefront-row35-pair",
+     "object_id": "storefront-row35-right-stop",
+     "sequence": "2024_09_28__15_37_24",
+     "control_ids": [
+      "clear_589_599"
+     ],
+     "far": {
+      "event": "EgoWalk-Sep-through-storefront-row35-pair",
+      "object_id": "storefront-row35-right-stop",
+      "clip_first_frame": 643,
+      "clip_last_frame": 650,
+      "eligible_pre_near": [
+       643,
+       644
+      ],
+      "eligible_near": [
+       647,
+       648,
+       649
+      ],
+      "near_coverage": [
+       {
+        "frame": 647,
+        "t": 1727527176.153,
+        "median_m": 1.450839704259291,
+        "whole_median_m": 1.2896303181925408,
+        "direct": false,
+        "edge": false,
+        "whole_direct": false,
+        "whole_edge": false
+       },
+       {
+        "frame": 648,
+        "t": 1727527176.353,
+        "median_m": 1.269834348184663,
+        "whole_median_m": 1.2466284478925227,
+        "direct": false,
+        "edge": false,
+        "whole_direct": false,
+        "whole_edge": false
+       },
+       {
+        "frame": 649,
+        "t": 1727527176.552,
+        "median_m": 1.146304086626421,
+        "whole_median_m": 1.1485809734338714,
+        "direct": true,
+        "edge": true,
+        "whole_direct": true,
+        "whole_edge": true
+       }
+      ],
+      "direct": {
+       "status": "miss",
+       "frame": null,
+       "t": null,
+       "median_m": null,
+       "p10_m": null,
+       "pure_far": null,
+       "last_hit": null,
+       "whole_trace_between_last_far_and_near": []
+      },
+      "edge": {
+       "status": "miss",
+       "frame": null,
+       "t": null,
+       "median_m": null,
+       "p10_m": null,
+       "pure_far": null,
+       "last_hit": null,
+       "whole_trace_between_last_far_and_near": []
+      }
+     },
+     "near": [
+      {
+       "i": 647,
+       "t": 1727527176.153,
+       "forward_m": 1.450839704259291,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 648,
+       "t": 1727527176.353,
+       "forward_m": 1.2698343481846628,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 649,
+       "t": 1727527176.552,
+       "forward_m": 1.146304086626421,
+       "direct": true,
+       "edge": true
+      }
+     ],
+     "eligible": false,
+     "direct": {
+      "status": "intermittent",
+      "any_hit": true,
+      "all_hit": false,
+      "first_miss_i": 647,
+      "first_recovery_i": 649,
+      "last_eligible_hit": true,
+      "missed_intervals": [
+       {
+        "first_i": 647,
+        "last_i": 648,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": 0.399
+       }
+      ]
+     },
+     "edge": {
+      "status": "intermittent",
+      "any_hit": true,
+      "all_hit": false,
+      "first_miss_i": 647,
+      "first_recovery_i": 649,
+      "last_eligible_hit": true,
+      "missed_intervals": [
+       {
+        "first_i": 647,
+        "last_i": 648,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": 0.399
+       }
+      ]
+     },
+     "cost_matched": true
+    },
+    {
+     "site": "EgoWalk-shopping-center-parking-September",
+     "event": "EgoWalk-Sep-through-storefront-row35-pair",
+     "object_id": "storefront-row35-left-stop",
+     "sequence": "2024_09_28__15_37_24",
+     "control_ids": [
+      "clear_589_599"
+     ],
+     "far": {
+      "event": "EgoWalk-Sep-through-storefront-row35-pair",
+      "object_id": "storefront-row35-left-stop",
+      "clip_first_frame": 643,
+      "clip_last_frame": 650,
+      "eligible_pre_near": [
+       643,
+       644,
+       645,
+       646,
+       647,
+       648
+      ],
+      "eligible_near": [
+       649,
+       650
+      ],
+      "near_coverage": [
+       {
+        "frame": 649,
+        "t": 1727527176.552,
+        "median_m": 1.295014103232067,
+        "whole_median_m": 1.400834510686096,
+        "direct": true,
+        "edge": true,
+        "whole_direct": true,
+        "whole_edge": true
+       },
+       {
+        "frame": 650,
+        "t": 1727527176.752,
+        "median_m": 1.1549413274987914,
+        "whole_median_m": 1.2729651011084975,
+        "direct": false,
+        "edge": false,
+        "whole_direct": false,
+        "whole_edge": false
+       }
+      ],
+      "direct": {
+       "status": "hit",
+       "frame": 643,
+       "t": 1727527175.353,
+       "median_m": 2.604346832538903,
+       "p10_m": 2.3640989024889634,
+       "inner": true,
+       "full": true,
+       "pure_far": {
+        "frame": 643,
+        "t": 1727527175.353,
+        "median_m": 2.604346832538903,
+        "p10_m": 2.3640989024889634,
+        "inner": true,
+        "full": true
+       },
+       "last_hit": {
+        "frame": 643,
+        "t": 1727527175.353,
+        "median_m": 2.604346832538903,
+        "p10_m": 2.3640989024889634,
+        "inner": true,
+        "full": true
+       },
+       "whole_trace_between_last_far_and_near": [
+        {
+         "frame": 644,
+         "t": 1727527175.553,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 645,
+         "t": 1727527175.753,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 646,
+         "t": 1727527175.953,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 647,
+         "t": 1727527176.153,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 648,
+         "t": 1727527176.353,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 649,
+         "t": 1727527176.552,
+         "whole": true,
+         "near_eligible": true
+        }
+       ]
+      },
+      "edge": {
+       "status": "hit",
+       "frame": 643,
+       "t": 1727527175.353,
+       "median_m": 2.604346832538903,
+       "p10_m": 2.3640989024889634,
+       "inner": true,
+       "full": true,
+       "pure_far": {
+        "frame": 643,
+        "t": 1727527175.353,
+        "median_m": 2.604346832538903,
+        "p10_m": 2.3640989024889634,
+        "inner": true,
+        "full": true
+       },
+       "last_hit": {
+        "frame": 643,
+        "t": 1727527175.353,
+        "median_m": 2.604346832538903,
+        "p10_m": 2.3640989024889634,
+        "inner": true,
+        "full": true
+       },
+       "whole_trace_between_last_far_and_near": [
+        {
+         "frame": 644,
+         "t": 1727527175.553,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 645,
+         "t": 1727527175.753,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 646,
+         "t": 1727527175.953,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 647,
+         "t": 1727527176.153,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 648,
+         "t": 1727527176.353,
+         "whole": false,
+         "near_eligible": false
+        },
+        {
+         "frame": 649,
+         "t": 1727527176.552,
+         "whole": true,
+         "near_eligible": true
+        }
+       ]
+      }
+     },
+     "near": [
+      {
+       "i": 649,
+       "t": 1727527176.552,
+       "forward_m": 1.295014103232067,
+       "direct": true,
+       "edge": true
+      },
+      {
+       "i": 650,
+       "t": 1727527176.752,
+       "forward_m": 1.1549413274987914,
+       "direct": false,
+       "edge": false
+      }
+     ],
+     "eligible": true,
+     "direct": {
+      "status": "intermittent",
+      "any_hit": true,
+      "all_hit": false,
+      "first_miss_i": 650,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 650,
+        "last_i": 650,
+        "sampled_span_s": 0.0,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "edge": {
+      "status": "intermittent",
+      "any_hit": true,
+      "all_hit": false,
+      "first_miss_i": 650,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 650,
+        "last_i": 650,
+        "sampled_span_s": 0.0,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "cost_matched": true
+    },
+    {
+     "site": "EgoWalk-shopping-center-parking-September",
+     "event": "EgoWalk-Sep-first-right-stop",
+     "object_id": "first-right-yellow-stop-at-painted-intersection",
+     "sequence": "2024_09_28__15_37_24",
+     "control_ids": [
+      "locked_september_open_aisle"
+     ],
+     "far": {
+      "event": "EgoWalk-Sep-first-right-stop",
+      "object_id": "first-right-yellow-stop-at-painted-intersection",
+      "clip_first_frame": 425,
+      "clip_last_frame": 447,
+      "eligible_pre_near": [
+       425,
+       426,
+       427,
+       428,
+       429,
+       430,
+       431,
+       432,
+       433,
+       434,
+       435,
+       436,
+       437,
+       438,
+       439,
+       440,
+       441,
+       443
+      ],
+      "eligible_near": [
+       446,
+       447
+      ],
+      "near_coverage": [
+       {
+        "frame": 446,
+        "t": 1727527135.954,
+        "median_m": 1.3281043437356024,
+        "whole_median_m": 1.2805946116308853,
+        "direct": false,
+        "edge": true,
+        "whole_direct": false,
+        "whole_edge": true
+       },
+       {
+        "frame": 447,
+        "t": 1727527136.154,
+        "median_m": 1.1748403196727717,
+        "whole_median_m": 1.1588088929305194,
+        "direct": false,
+        "edge": true,
+        "whole_direct": false,
+        "whole_edge": true
+       }
+      ],
+      "direct": {
+       "status": "miss",
+       "frame": null,
+       "t": null,
+       "median_m": null,
+       "p10_m": null,
+       "pure_far": null,
+       "last_hit": null,
+       "whole_trace_between_last_far_and_near": []
+      },
+      "edge": {
+       "status": "miss",
+       "frame": null,
+       "t": null,
+       "median_m": null,
+       "p10_m": null,
+       "pure_far": null,
+       "last_hit": null,
+       "whole_trace_between_last_far_and_near": []
+      }
+     },
+     "near": [
+      {
+       "i": 446,
+       "t": 1727527135.954,
+       "forward_m": 1.3281043437356024,
+       "direct": false,
+       "edge": true
+      },
+      {
+       "i": 447,
+       "t": 1727527136.154,
+       "forward_m": 1.1748403196727715,
+       "direct": false,
+       "edge": true
+      }
+     ],
+     "eligible": false,
+     "direct": {
+      "status": "always_missed",
+      "any_hit": false,
+      "all_hit": false,
+      "first_miss_i": 446,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 446,
+        "last_i": 447,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "edge": {
+      "status": "always_hit",
+      "any_hit": true,
+      "all_hit": true,
+      "first_miss_i": null,
+      "first_recovery_i": null,
+      "last_eligible_hit": true,
+      "missed_intervals": []
+     },
+     "cost_matched": true
+    }
+   ],
+   "windows": [
+    {
+     "id": "clear_182_192",
+     "site": "EgoWalk-shopping-center-parking-September",
+     "frames": [
+      182,
+      184,
+      186,
+      188,
+      190,
+      192
+     ],
+     "complete": true,
+     "alarms": {
+      "direct": [],
+      "edge": []
+     },
+     "runs": {
+      "direct": 0,
+      "edge": 0
+     }
+    },
+    {
+     "id": "clear_284_294",
+     "site": "EgoWalk-shopping-center-parking-September",
+     "frames": [
+      284,
+      286,
+      288,
+      290,
+      292,
+      294
+     ],
+     "complete": true,
+     "alarms": {
+      "direct": [],
+      "edge": []
+     },
+     "runs": {
+      "direct": 0,
+      "edge": 0
+     }
+    },
+    {
+     "id": "clear_589_599",
+     "site": "EgoWalk-shopping-center-parking-September",
+     "frames": [
+      589,
+      591,
+      593,
+      595,
+      597,
+      599
+     ],
+     "complete": true,
+     "alarms": {
+      "direct": [],
+      "edge": []
+     },
+     "runs": {
+      "direct": 0,
+      "edge": 0
+     }
+    },
+    {
+     "id": "locked_september_open_aisle",
+     "site": "EgoWalk-shopping-center-parking-September",
+     "frames": [
+      380,
+      382,
+      384,
+      386,
+      388,
+      390
+     ],
+     "complete": true,
+     "alarms": {
+      "direct": [],
+      "edge": []
+     },
+     "runs": {
+      "direct": 0,
+      "edge": 0
+     }
+    }
+   ],
+   "eligible_summary": {
+    "objects": 2,
+    "evaluable": 2,
+    "walks": 2,
+    "full_near_gained": 0,
+    "full_near_lost": 0,
+    "walks_with_a_gained_object": [],
+    "arms": {
+     "direct": {
+      "full_near": 0,
+      "any_near": 1,
+      "at_last_sample": 0,
+      "hit_frames": 1
+     },
+     "edge": {
+      "full_near": 0,
+      "any_near": 2,
+      "at_last_sample": 0,
+      "hit_frames": 2
+     }
+    },
+    "eligible_object_frames": 5,
+    "paired_controls": {
+     "windows": 2,
+     "samples": 12,
+     "traces_equal": true,
+     "direct": {
+      "windows": 0,
+      "frames": 0,
+      "runs": 0
+     },
+     "edge": {
+      "windows": 0,
+      "frames": 0,
+      "runs": 0
+     }
+    }
+   },
+   "all_wheel_stop_control_cost": {
+    "windows": 4,
+    "samples": 24,
+    "traces_equal": true,
+    "direct": {
+     "windows": 0,
+     "frames": 0,
+     "runs": 0
+    },
+    "edge": {
+     "windows": 0,
+     "frames": 0,
+     "runs": 0
+    }
+   }
+  },
+  {
+   "cohort": "transfer",
+   "objects": [
+    {
+     "site": "EgoWalk-November-office-parking-row",
+     "event": "outbound-brown",
+     "object_id": "brown-SUV-stall",
+     "sequence": "2024_11_29__09_46_15",
+     "control_ids": [
+      "outbound-brown-empty"
+     ],
+     "far": {
+      "event": "outbound-brown",
+      "object_id": "brown-SUV-stall",
+      "direct": {
+       "status": "miss",
+       "pure_far": null,
+       "nominal_first": null,
+       "possible_outer_first": null
+      },
+      "edge": {
+       "status": "miss",
+       "pure_far": null,
+       "nominal_first": null,
+       "possible_outer_first": null
+      },
+      "note": "Within the complete previously registered approach; dates and repeated objects retain their original grouping. Boundary-only evidence stays unknown."
+     },
+     "near": [
+      {
+       "i": 2096,
+       "t": 1732863196.984,
+       "forward_m": 1.3259428353412026,
+       "direct": false,
+       "edge": true
+      },
+      {
+       "i": 2097,
+       "t": 1732863197.184,
+       "forward_m": 1.1293015175531536,
+       "direct": false,
+       "edge": true
+      }
+     ],
+     "eligible": false,
+     "direct": {
+      "status": "always_missed",
+      "any_hit": false,
+      "all_hit": false,
+      "first_miss_i": 2096,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 2096,
+        "last_i": 2097,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "edge": {
+      "status": "always_hit",
+      "any_hit": true,
+      "all_hit": true,
+      "first_miss_i": null,
+      "first_recovery_i": null,
+      "last_eligible_hit": true,
+      "missed_intervals": []
+     },
+     "cost_matched": true
+    },
+    {
+     "site": "EgoWalk-November-office-parking-row",
+     "event": "inbound-white",
+     "object_id": "white-SUV-stall",
+     "sequence": "2024_11_29__09_46_15",
+     "control_ids": [
+      "inbound-white-empty"
+     ],
+     "far": {
+      "event": "inbound-white",
+      "object_id": "white-SUV-stall",
+      "direct": {
+       "status": "miss",
+       "pure_far": null,
+       "nominal_first": null,
+       "possible_outer_first": null
+      },
+      "edge": {
+       "status": "miss",
+       "pure_far": null,
+       "nominal_first": null,
+       "possible_outer_first": null
+      },
+      "note": "Within the complete previously registered approach; dates and repeated objects retain their original grouping. Boundary-only evidence stays unknown."
+     },
+     "near": [
+      {
+       "i": 2153,
+       "t": 1732863208.3830001,
+       "forward_m": 1.4156105328119668,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 2154,
+       "t": 1732863208.583,
+       "forward_m": 1.1546801661914028,
+       "direct": false,
+       "edge": true
+      },
+      {
+       "i": 2155,
+       "t": 1732863208.783,
+       "forward_m": 0.8882371003451884,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 2156,
+       "t": 1732863208.983,
+       "forward_m": 0.759248017813686,
+       "direct": false,
+       "edge": false
+      }
+     ],
+     "eligible": false,
+     "direct": {
+      "status": "always_missed",
+      "any_hit": false,
+      "all_hit": false,
+      "first_miss_i": 2153,
+      "first_recovery_i": null,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 2153,
+        "last_i": 2156,
+        "sampled_span_s": 0.6,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "edge": {
+      "status": "intermittent",
+      "any_hit": true,
+      "all_hit": false,
+      "first_miss_i": 2153,
+      "first_recovery_i": 2154,
+      "last_eligible_hit": false,
+      "missed_intervals": [
+       {
+        "first_i": 2153,
+        "last_i": 2153,
+        "sampled_span_s": 0.0,
+        "to_next_hit_s": 0.2
+       },
+       {
+        "first_i": 2155,
+        "last_i": 2156,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": null
+       }
+      ]
+     },
+     "cost_matched": true
+    },
+    {
+     "site": "EgoWalk-November-office-parking-row",
+     "event": "outbound-white",
+     "object_id": "white-SUV-stall",
+     "sequence": "2024_11_29__09_46_15",
+     "control_ids": [
+      "outbound-white-empty"
+     ],
+     "far": {
+      "event": "outbound-white",
+      "object_id": "white-SUV-stall",
+      "direct": {
+       "status": "hit",
+       "frame": 2186,
+       "t": 1732863214.983,
+       "median_m": 1.8052698123256508,
+       "p10_m": 1.5352070632998966,
+       "pure_far": {
+        "frame": 2186,
+        "t": 1732863214.983,
+        "median_m": 1.8052698123256508,
+        "p10_m": 1.5352070632998966
+       },
+       "nominal_first": {
+        "frame": 2186,
+        "t": 1732863214.983,
+        "median_m": 1.8052698123256508,
+        "p10_m": 1.5352070632998966
+       },
+       "possible_outer_first": {
+        "frame": 2186,
+        "t": 1732863214.983,
+        "median_m": 1.8052698123256508,
+        "p10_m": 1.5352070632998966
+       }
+      },
+      "edge": {
+       "status": "hit",
+       "frame": 2186,
+       "t": 1732863214.983,
+       "median_m": 1.8052698123256508,
+       "p10_m": 1.5352070632998966,
+       "pure_far": {
+        "frame": 2186,
+        "t": 1732863214.983,
+        "median_m": 1.8052698123256508,
+        "p10_m": 1.5352070632998966
+       },
+       "nominal_first": {
+        "frame": 2186,
+        "t": 1732863214.983,
+        "median_m": 1.8052698123256508,
+        "p10_m": 1.5352070632998966
+       },
+       "possible_outer_first": {
+        "frame": 2186,
+        "t": 1732863214.983,
+        "median_m": 1.8052698123256508,
+        "p10_m": 1.5352070632998966
+       }
+      },
+      "note": "Within the complete previously registered approach; dates and repeated objects retain their original grouping. Boundary-only evidence stays unknown."
+     },
+     "near": [
+      {
+       "i": 2187,
+       "t": 1732863215.183,
+       "forward_m": 1.34176139215502,
+       "direct": true,
+       "edge": true
+      }
+     ],
+     "eligible": true,
+     "direct": {
+      "status": "always_hit",
+      "any_hit": true,
+      "all_hit": true,
+      "first_miss_i": null,
+      "first_recovery_i": null,
+      "last_eligible_hit": true,
+      "missed_intervals": []
+     },
+     "edge": {
+      "status": "always_hit",
+      "any_hit": true,
+      "all_hit": true,
+      "first_miss_i": null,
+      "first_recovery_i": null,
+      "last_eligible_hit": true,
+      "missed_intervals": []
+     },
+     "cost_matched": true
+    },
+    {
+     "site": "EgoWalk-October-glass-front-covered-garage",
+     "event": "garage-wet-floor",
+     "object_id": "silver-stall-tube",
+     "sequence": "2024_10_30__19_15_58",
+     "control_ids": [
+      "garage-wet-floor-empty"
+     ],
+     "far": {
+      "event": "garage-wet-floor",
+      "object_id": "silver-stall-tube",
+      "direct": {
+       "status": "miss",
+       "pure_far": null,
+       "nominal_first": null,
+       "possible_outer_first": null
+      },
+      "edge": {
+       "status": "miss",
+       "pure_far": null,
+       "nominal_first": null,
+       "possible_outer_first": null
+      },
+      "note": "Within the complete previously registered approach; dates and repeated objects retain their original grouping. Boundary-only evidence stays unknown."
+     },
+     "near": [
+      {
+       "i": 3819,
+       "t": 1730305724.628,
+       "forward_m": 1.4207735877033802,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 3820,
+       "t": 1730305724.828,
+       "forward_m": 1.2786397834029162,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 3821,
+       "t": 1730305725.028,
+       "forward_m": 1.053384005691634,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 3822,
+       "t": 1730305725.228,
+       "forward_m": 0.9328169963771614,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 3823,
+       "t": 1730305725.428,
+       "forward_m": 0.8353354632094572,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 3824,
+       "t": 1730305725.628,
+       "forward_m": 0.7793990320688443,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 3825,
+       "t": 1730305725.828,
+       "forward_m": 0.9297750594494864,
+       "direct": true,
+       "edge": true
+      },
+      {
+       "i": 3826,
+       "t": 1730305726.028,
+       "forward_m": 0.8233678383565717,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 3827,
+       "t": 1730305726.228,
+       "forward_m": 0.723014201889079,
+       "direct": false,
+       "edge": false
+      },
+      {
+       "i": 3828,
+       "t": 1730305726.428,
+       "forward_m": 0.6877065359577574,
+       "direct": true,
+       "edge": true
+      },
+      {
+       "i": 3829,
+       "t": 1730305726.628,
+       "forward_m": 0.6794533134319555,
+       "direct": true,
+       "edge": true
+      }
+     ],
+     "eligible": false,
+     "direct": {
+      "status": "intermittent",
+      "any_hit": true,
+      "all_hit": false,
+      "first_miss_i": 3819,
+      "first_recovery_i": 3825,
+      "last_eligible_hit": true,
+      "missed_intervals": [
+       {
+        "first_i": 3819,
+        "last_i": 3824,
+        "sampled_span_s": 1.0,
+        "to_next_hit_s": 1.2
+       },
+       {
+        "first_i": 3826,
+        "last_i": 3827,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": 0.4
+       }
+      ]
+     },
+     "edge": {
+      "status": "intermittent",
+      "any_hit": true,
+      "all_hit": false,
+      "first_miss_i": 3819,
+      "first_recovery_i": 3825,
+      "last_eligible_hit": true,
+      "missed_intervals": [
+       {
+        "first_i": 3819,
+        "last_i": 3824,
+        "sampled_span_s": 1.0,
+        "to_next_hit_s": 1.2
+       },
+       {
+        "first_i": 3826,
+        "last_i": 3827,
+        "sampled_span_s": 0.2,
+        "to_next_hit_s": 0.4
+       }
+      ]
+     },
+     "cost_matched": true
+    }
+   ],
+   "windows": [
+    {
+     "id": "inbound-white-empty",
+     "site": "EgoWalk-November-office-parking-row",
+     "frames": [
+      2115,
+      2116,
+      2117,
+      2118,
+      2119,
+      2120,
+      2121,
+      2122,
+      2123,
+      2124,
+      2125
+     ],
+     "complete": true,
+     "alarms": {
+      "direct": [],
+      "edge": []
+     },
+     "runs": {
+      "direct": 0,
+      "edge": 0
+     }
+    },
+    {
+     "id": "outbound-brown-empty",
+     "site": "EgoWalk-November-office-parking-row",
+     "frames": [
+      2050,
+      2051,
+      2052,
+      2053,
+      2054,
+      2055,
+      2056,
+      2057,
+      2058,
+      2059,
+      2060
+     ],
+     "complete": true,
+     "alarms": {
+      "direct": [],
+      "edge": []
+     },
+     "runs": {
+      "direct": 0,
+      "edge": 0
+     }
+    },
+    {
+     "id": "outbound-white-empty",
+     "site": "EgoWalk-November-office-parking-row",
+     "frames": [
+      2162,
+      2163,
+      2164,
+      2165,
+      2166,
+      2167,
+      2168,
+      2169,
+      2170,
+      2171,
+      2172
+     ],
+     "complete": true,
+     "alarms": {
+      "direct": [
+       2163,
+       2165
+      ],
+      "edge": [
+       2163,
+       2165
+      ]
+     },
+     "runs": {
+      "direct": 2,
+      "edge": 2
+     }
+    },
+    {
+     "id": "garage-wet-floor-empty",
+     "site": "EgoWalk-October-glass-front-covered-garage",
+     "frames": [
+      3845,
+      3846,
+      3847,
+      3848,
+      3849,
+      3850,
+      3851,
+      3852,
+      3853,
+      3854
+     ],
+     "complete": true,
+     "alarms": {
+      "direct": [],
+      "edge": []
+     },
+     "runs": {
+      "direct": 0,
+      "edge": 0
+     }
+    }
+   ],
+   "eligible_summary": {
+    "objects": 1,
+    "evaluable": 1,
+    "walks": 1,
+    "full_near_gained": 0,
+    "full_near_lost": 0,
+    "walks_with_a_gained_object": [],
+    "arms": {
+     "direct": {
+      "full_near": 1,
+      "any_near": 1,
+      "at_last_sample": 1,
+      "hit_frames": 1
+     },
+     "edge": {
+      "full_near": 1,
+      "any_near": 1,
+      "at_last_sample": 1,
+      "hit_frames": 1
+     }
+    },
+    "eligible_object_frames": 1,
+    "paired_controls": {
+     "windows": 1,
+     "samples": 11,
+     "traces_equal": true,
+     "direct": {
+      "windows": 1,
+      "frames": 2,
+      "runs": 2
+     },
+     "edge": {
+      "windows": 1,
+      "frames": 2,
+      "runs": 2
+     }
+    }
+   },
+   "all_wheel_stop_control_cost": {
+    "windows": 4,
+    "samples": 43,
+    "traces_equal": true,
+    "direct": {
+     "windows": 1,
+     "frames": 2,
+     "runs": 2
+    },
+    "edge": {
+     "windows": 1,
+     "frames": 2,
+     "runs": 2
+    }
+   }
+  }
+ ],
+ "inventory": {
+  "object_approaches": 12,
+  "walks": 10
+ },
+ "pooled": {
+  "objects": 6,
+  "evaluable": 6,
+  "walks": 5,
+  "full_near_gained": 1,
+  "full_near_lost": 0,
+  "walks_with_a_gained_object": [
+   "west-row-crossing"
+  ],
+  "arms": {
+   "direct": {
+    "full_near": 1,
+    "any_near": 3,
+    "at_last_sample": 2,
+    "hit_frames": 3
+   },
+   "edge": {
+    "full_near": 2,
+    "any_near": 5,
+    "at_last_sample": 3,
+    "hit_frames": 6
+   }
+  },
+  "eligible_object_frames": 12,
+  "paired_controls": {
+   "windows": 5,
+   "samples": 53,
+   "traces_equal": true,
+   "direct": {
+    "windows": 3,
+    "frames": 6,
+    "runs": 5
+   },
+   "edge": {
+    "windows": 3,
+    "frames": 6,
+    "runs": 5
+   }
+  }
+ },
+ "two_consecutive_near_samples": {
+  "objects": 5,
+  "evaluable": 5,
+  "walks": 4,
+  "full_near_gained": 1,
+  "full_near_lost": 0,
+  "walks_with_a_gained_object": [
+   "west-row-crossing"
+  ],
+  "arms": {
+   "direct": {
+    "full_near": 0,
+    "any_near": 2,
+    "at_last_sample": 1,
+    "hit_frames": 2
+   },
+   "edge": {
+    "full_near": 1,
+    "any_near": 4,
+    "at_last_sample": 2,
+    "hit_frames": 5
+   }
+  },
+  "eligible_object_frames": 11,
+  "paired_controls": {
+   "windows": 4,
+   "samples": 42,
+   "traces_equal": true,
+   "direct": {
+    "windows": 2,
+    "frames": 4,
+    "runs": 3
+   },
+   "edge": {
+    "windows": 2,
+    "frames": 4,
+    "runs": 3
+   }
+  }
+ },
+ "far_p10_over_1p5_m": {
+  "objects": 5,
+  "evaluable": 5,
+  "walks": 5,
+  "full_near_gained": 1,
+  "full_near_lost": 0,
+  "walks_with_a_gained_object": [
+   "west-row-crossing"
+  ],
+  "arms": {
+   "direct": {
+    "full_near": 1,
+    "any_near": 2,
+    "at_last_sample": 1,
+    "hit_frames": 2
+   },
+   "edge": {
+    "full_near": 2,
+    "any_near": 4,
+    "at_last_sample": 2,
+    "hit_frames": 5
+   }
+  },
+  "eligible_object_frames": 10,
+  "paired_controls": {
+   "windows": 5,
+   "samples": 53,
+   "traces_equal": true,
+   "direct": {
+    "windows": 3,
+    "frames": 6,
+    "runs": 5
+   },
+   "edge": {
+    "windows": 3,
+    "frames": 6,
+    "runs": 5
+   }
+  }
+ },
+ "all_original_wheel_stop_control_cost": {
+  "windows": 10,
+  "samples": 97,
+  "traces_equal": true,
+  "direct": {
+   "windows": 3,
+   "frames": 6,
+   "runs": 5
+  },
+  "edge": {
+   "windows": 3,
+   "frames": 6,
+   "runs": 5
+  }
+ },
+ "input_sha256": {
+  "shallow-lead-20261118/august-first-alerts.json": "dd1c53a5d6355588defe12ce4810eb65849867fbc2e14da559009ad34b141ba5",
+  "shallow-lead-20261118/previous/first-alerts.json": "267ef480cefc4477c1e5eb9928f280913fc929e84e6d8c9796d79c2921b2e165",
+  "shallow-lead-20261118/previous/transfer-first-alerts.json": "0fd046f5c26e228b6f4d7af53f411bc1f666e491b28bb111c83448c37cfb453a",
+  "shallow-retention-20261118/august/far-status.json": "74d1d00b39a67c30e43b2c6a2df5620d81c3fe88327b101d6050c981d52b6e30",
+  "shallow-retention-20261118/development/far-status.json": "f53179da83e816cbf4b7c61a7603d66583c95adc6a560950a978d5a23dac4b25",
+  "shallow-retention-20261118/transfer/far-status.json": "6b4100d1b3ccd6c4457a5acc5b2727075e0ae044723528950147ec11d228253a",
+  "shallow-retention-20261118/august/retention-frames.json": "417deab065b0c2156e2ea872ca21d48c49e20a191e90f503aa0a0b8bdf5fadbf",
+  "shallow-retention-20261118/development/replay.json": "c14d8e3686cfd8217934b5ab21f4ccf9a4ed4c30956d049a4e02bd0fd2f2aad6",
+  "shallow-retention-20261118/transfer/drop-traces.json": "fbabcc3d39b6e36a0ba80c4409f990c961ec82a853a2364f09d5067d428a5dc4",
+  "shallow-retention-20261118/transfer/outbound-white-adjacent.json": "88b6366b4b589229bf5d166e2366b08166555dab9aad558bad9948c187ae8f92",
+  "shallow-retention-20261118/aria/source-check.json": "a4195f2c4a9414224b08ba499063a9d72e6316fa7641faea5b2e6ce9cc4fe0d2"
+ }
+}
