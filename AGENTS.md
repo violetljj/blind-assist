@@ -28,9 +28,10 @@ Start with a direct implementation and one decision-changing check; this is a
 starting point, not a ceiling on ambition or authorized follow-through.
 Carry an authorized question through implementation, comparison, recovery and
 delivery within its budget and stop conditions; do not end each step for approval.
-Record the goal, budget (including its unit), adjustable scope and deliverables once
-in the existing task/run record. Ask only for a material missing decision, changed
-frozen criteria, scope/budget expansion or an action needing new authority.
+For experiments and tasks with an explicit budget, record the goal, adjustable scope,
+deliverables and any applicable budget (with its unit) once in the existing task/run record.
+Ask only for a material missing decision, changed frozen criteria, scope/budget expansion
+or an action needing new authority.
 Delegate independent work when useful; the primary agent integrates results and
 continues without requiring the user to relay them or routine dual sign-off.
 Before freezing experiment gates, apply the brief [decision check](research/WORKFLOW.md#decision-check-before-freezing).
@@ -47,8 +48,9 @@ Before freezing experiment gates, apply the brief [decision check](research/WORK
 - Add a precheck, review, test, defensive layer or abstraction only for an observed
   defect, explicit acceptance criterion, concrete data-integrity need, material
   irreversible risk or evidence gap that changes the next decision; name the reason briefly.
-- Start with one meaningful check. Broaden for actual failures or integration impact;
-  stop when relevant checks pass and repeat only for changed inputs or new concerns.
+- Expand validation for observed failures or integration impact. Once passing checks
+  cover the affected behavior and acceptance criteria, stop expanding validation and
+  complete any remaining deliverables. Repeat passing checks only for changed inputs or new concerns.
 - Implement the current need directly. Defer speculative edge cases, generalization
   and polish until they affect the result; keep necessary error/data-integrity handling.
 
@@ -71,6 +73,7 @@ Before freezing experiment gates, apply the brief [decision check](research/WORK
 | Algorithm/model/data experiment | One route current, then its owning code/result |
 | Protected blind/final claim | [Research governance](docs/formal/RESEARCH_GOVERNANCE.md) |
 | Android/CameraX/UI/module code | [Code map](docs/CODE_MAP.md) |
+| UI changes to key controls, focus order, state announcements or layout under scaling | Select checks for the affected behavior from the [accessibility regression matrix](docs/DEVICE_REGRESSION.md#无障碍回归矩阵). |
 | Device/ADB/latency/stability | [Device regression](docs/DEVICE_REGRESSION.md) |
 | Release/APK/archive | [Release and verification](docs/RELEASE_AND_VERIFICATION.md) |
 | Hardware/glasses/ESP32/network | [Hardware route](docs/GLASSES_HARDWARE_ROUTE.md) |
