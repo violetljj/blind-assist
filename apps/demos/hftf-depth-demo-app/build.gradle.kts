@@ -113,5 +113,5 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.lifecycle.common)
-    implementation("org.opencv:opencv:4.10.0")
+    implementation("org.opencv:opencv:5.0.0.1")
 }
