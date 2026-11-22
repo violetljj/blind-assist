@@ -1,0 +1,1010 @@
+{
+  "source_csv": "https://raw.githubusercontent.com/apple/ARKitScenes/main/raw/raw_train_val_splits.csv",
+  "target_train_valid": 90,
+  "target_val_valid": 30,
+  "train_pool": [
+    {
+      "video_id": "40777073",
+      "visit_id": "369706",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41007602",
+      "visit_id": "380024",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41048190",
+      "visit_id": "381531",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41159375",
+      "visit_id": "381625",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41069111",
+      "visit_id": "381736",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41098090",
+      "visit_id": "381876",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41124918",
+      "visit_id": "382111",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41098166",
+      "visit_id": "382143",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41126374",
+      "visit_id": "382303",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41159664",
+      "visit_id": "382434",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41125085",
+      "visit_id": "382457",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41126439",
+      "visit_id": "382634",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41126739",
+      "visit_id": "382835",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41126550",
+      "visit_id": "382962",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41126494",
+      "visit_id": "382982",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41126825",
+      "visit_id": "383343",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41254940",
+      "visit_id": "383837",
+      "fold": "Training"
+    },
+    {
+      "video_id": "41291635",
+      "visit_id": "402849",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42445174",
+      "visit_id": "420688",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42444845",
+      "visit_id": "421014",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42444834",
+      "visit_id": "421251",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42445483",
+      "visit_id": "421377",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42445594",
+      "visit_id": "421602",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42445627",
+      "visit_id": "421657",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42446031",
+      "visit_id": "422006",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42445707",
+      "visit_id": "422134",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42445602",
+      "visit_id": "422214",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42447214",
+      "visit_id": "422380",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42446466",
+      "visit_id": "422522",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42446442",
+      "visit_id": "422570",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42898037",
+      "visit_id": "423249",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42898006",
+      "visit_id": "423311",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42897955",
+      "visit_id": "423324",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42447216",
+      "visit_id": "423511",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42897939",
+      "visit_id": "423782",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42898340",
+      "visit_id": "423957",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42898710",
+      "visit_id": "426131",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42898470",
+      "visit_id": "426153",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42898163",
+      "visit_id": "426259",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42899041",
+      "visit_id": "434629",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42898802",
+      "visit_id": "434688",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42898720",
+      "visit_id": "434701",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42899282",
+      "visit_id": "434894",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42899232",
+      "visit_id": "434911",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42898971",
+      "visit_id": "434978",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42899789",
+      "visit_id": "435342",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42899767",
+      "visit_id": "435369",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42899977",
+      "visit_id": "435661",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42899657",
+      "visit_id": "435723",
+      "fold": "Training"
+    },
+    {
+      "video_id": "42899898",
+      "visit_id": "435931",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43649633",
+      "visit_id": "437154",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43649772",
+      "visit_id": "437220",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43828243",
+      "visit_id": "437429",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43828402",
+      "visit_id": "437530",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43828493",
+      "visit_id": "437689",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43828583",
+      "visit_id": "437757",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43895956",
+      "visit_id": "437986",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43896244",
+      "visit_id": "438102",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43896126",
+      "visit_id": "438119",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43896344",
+      "visit_id": "438373",
+      "fold": "Training"
+    },
+    {
+      "video_id": "43896482",
+      "visit_id": "438424",
+      "fold": "Training"
+    },
+    {
+      "video_id": "44358274",
+      "visit_id": "438793",
+      "fold": "Training"
+    },
+    {
+      "video_id": "44358289",
+      "visit_id": "438966",
+      "fold": "Training"
+    },
+    {
+      "video_id": "44358460",
+      "visit_id": "455342",
+      "fold": "Training"
+    },
+    {
+      "video_id": "44796285",
+      "visit_id": "464745",
+      "fold": "Training"
+    },
+    {
+      "video_id": "44358728",
+      "visit_id": "464758",
+      "fold": "Training"
+    },
+    {
+      "video_id": "44796297",
+      "visit_id": "464805",
+      "fold": "Training"
+    },
+    {
+      "video_id": "44796562",
+      "visit_id": "466092",
+      "fold": "Training"
+    },
+    {
+      "video_id": "44796730",
+      "visit_id": "466238",
+      "fold": "Training"
+    },
+    {
+      "video_id": "45261024",
+      "visit_id": "466535",
+      "fold": "Training"
+    },
+    {
+      "video_id": "45261201",
+      "visit_id": "466741",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47331573",
+      "visit_id": "466850",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47331695",
+      "visit_id": "466897",
+      "fold": "Training"
+    },
+    {
+      "video_id": "45261485",
+      "visit_id": "467105",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47333281",
+      "visit_id": "467152",
+      "fold": "Training"
+    },
+    {
+      "video_id": "45261406",
+      "visit_id": "467252",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47333751",
+      "visit_id": "467298",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47333973",
+      "visit_id": "467337",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47333846",
+      "visit_id": "467367",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47334589",
+      "visit_id": "468096",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47334337",
+      "visit_id": "468112",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47334301",
+      "visit_id": "468153",
+      "fold": "Training"
+    },
+    {
+      "video_id": "45261651",
+      "visit_id": "468393",
+      "fold": "Training"
+    },
+    {
+      "video_id": "45662791",
+      "visit_id": "468509",
+      "fold": "Training"
+    },
+    {
+      "video_id": "45663053",
+      "visit_id": "468775",
+      "fold": "Training"
+    },
+    {
+      "video_id": "45663223",
+      "visit_id": "469235",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47332746",
+      "visit_id": "469278",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47333014",
+      "visit_id": "469428",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47333138",
+      "visit_id": "469456",
+      "fold": "Training"
+    },
+    {
+      "video_id": "45663397",
+      "visit_id": "469560",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47333589",
+      "visit_id": "469612",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47430814",
+      "visit_id": "469632",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47333599",
+      "visit_id": "469659",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47334139",
+      "visit_id": "469810",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47334027",
+      "visit_id": "469832",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47431036",
+      "visit_id": "470109",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47334202",
+      "visit_id": "470136",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47429690",
+      "visit_id": "470314",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47429663",
+      "visit_id": "470335",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47115412",
+      "visit_id": "470445",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47115442",
+      "visit_id": "470515",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47115619",
+      "visit_id": "470804",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47331904",
+      "visit_id": "470845",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47332015",
+      "visit_id": "470876",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47332066",
+      "visit_id": "470977",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47430326",
+      "visit_id": "471002",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47430162",
+      "visit_id": "471026",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47332081",
+      "visit_id": "471106",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47430389",
+      "visit_id": "471162",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47430439",
+      "visit_id": "471192",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47429824",
+      "visit_id": "471372",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47429961",
+      "visit_id": "471394",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47429764",
+      "visit_id": "471416",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47332241",
+      "visit_id": "471649",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47430536",
+      "visit_id": "471670",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47332287",
+      "visit_id": "471697",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47204670",
+      "visit_id": "472045",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47332323",
+      "visit_id": "472082",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47332454",
+      "visit_id": "472313",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47895316",
+      "visit_id": "472336",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47430629",
+      "visit_id": "472354",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47430778",
+      "visit_id": "472578",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47332597",
+      "visit_id": "472621",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47332545",
+      "visit_id": "472648",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47431169",
+      "visit_id": "481480",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47334728",
+      "visit_id": "481501",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47431103",
+      "visit_id": "481527",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47334808",
+      "visit_id": "481770",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47334849",
+      "visit_id": "481802",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47334912",
+      "visit_id": "482099",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47895496",
+      "visit_id": "482124",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47669998",
+      "visit_id": "482224",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47670063",
+      "visit_id": "482315",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47670116",
+      "visit_id": "482474",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47895876",
+      "visit_id": "482617",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47670195",
+      "visit_id": "482761",
+      "fold": "Training"
+    },
+    {
+      "video_id": "48017901",
+      "visit_id": "482861",
+      "fold": "Training"
+    },
+    {
+      "video_id": "47670350",
+      "visit_id": "482977",
+      "fold": "Training"
+    },
+    {
+      "video_id": "48018242",
+      "visit_id": "483077",
+      "fold": "Training"
+    },
+    {
+      "video_id": "48018210",
+      "visit_id": "483098",
+      "fold": "Training"
+    }
+  ],
+  "val_pool": [
+    {
+      "video_id": "41069048",
+      "visit_id": "381644",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "41159538",
+      "visit_id": "381868",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "41159519",
+      "visit_id": "381879",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "41125756",
+      "visit_id": "382319",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "41254432",
+      "visit_id": "382851",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "41254382",
+      "visit_id": "382858",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42445429",
+      "visit_id": "421372",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42444966",
+      "visit_id": "421383",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42446056",
+      "visit_id": "422012",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42446137",
+      "visit_id": "422018",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42446100",
+      "visit_id": "422034",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42446527",
+      "visit_id": "422386",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42897552",
+      "visit_id": "422803",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42897521",
+      "visit_id": "422829",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42897672",
+      "visit_id": "423441",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42898570",
+      "visit_id": "426147",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42898486",
+      "visit_id": "426167",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42898811",
+      "visit_id": "434650",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42899712",
+      "visit_id": "435343",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42899617",
+      "visit_id": "435368",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42899679",
+      "visit_id": "435377",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "42899729",
+      "visit_id": "435733",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "44358582",
+      "visit_id": "460410",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "44358451",
+      "visit_id": "460417",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "45260920",
+      "visit_id": "466183",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "45260854",
+      "visit_id": "466193",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "45261179",
+      "visit_id": "466802",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47331651",
+      "visit_id": "466849",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47333440",
+      "visit_id": "467176",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47333934",
+      "visit_id": "467301",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47333916",
+      "visit_id": "467311",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "45261631",
+      "visit_id": "468076",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47334367",
+      "visit_id": "468137",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47331331",
+      "visit_id": "468280",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "45662921",
+      "visit_id": "468646",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "45662970",
+      "visit_id": "468712",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "45663099",
+      "visit_id": "469017",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47332908",
+      "visit_id": "469255",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47332885",
+      "visit_id": "469272",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47334107",
+      "visit_id": "469782",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47334252",
+      "visit_id": "470098",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47331068",
+      "visit_id": "470352",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47430038",
+      "visit_id": "470508",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47430003",
+      "visit_id": "470537",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47429971",
+      "visit_id": "470550",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47115525",
+      "visit_id": "470659",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47331988",
+      "visit_id": "470811",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47430485",
+      "visit_id": "471185",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47430468",
+      "visit_id": "471210",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47429904",
+      "visit_id": "471434",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47204559",
+      "visit_id": "471948",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47895371",
+      "visit_id": "472479",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47895552",
+      "visit_id": "482083",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47895779",
+      "visit_id": "482296",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "47895738",
+      "visit_id": "482324",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "48018375",
+      "visit_id": "483312",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "48018737",
+      "visit_id": "483618",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "48018730",
+      "visit_id": "483632",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "48018966",
+      "visit_id": "483957",
+      "fold": "Validation"
+    },
+    {
+      "video_id": "48018956",
+      "visit_id": "483966",
+      "fold": "Validation"
+    }
+  ],
+  "note": "Strictly visit-disjoint official ARKitScenes Training vs Validation captures; selected purely by sorted visit_id stride before reading any pixels."
+}

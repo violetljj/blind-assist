@@ -11,8 +11,10 @@
 | `benchmarks/` | [`:device-benchmark`](benchmarks/device-benchmark/) | 设备评测 |
 | `benchmarks/` | [`:ustrf-shadow-benchmark`](benchmarks/ustrf-shadow-benchmark/) | 隔离 shadow 研究 |
 | `canaries/` | [`:hftf-device-canary`](canaries/hftf-device-canary/) | HFTF 真机 canary |
+| `canaries/` | [`:egoclear-device-canary`](canaries/egoclear-device-canary/) | EgoClear 纯视觉全 NPU 双阶段真机 canary |
 | `canaries/` | [`:hftf-metric-depth-canary-core`](canaries/hftf-metric-depth-canary-core/) | 度量深度 canary 的 JVM 逻辑与测试 |
 | `demos/` | [`:hftf-depth-demo-app`](demos/hftf-depth-demo-app/) | 独立深度演示 |
+| `demos/` | [`:egoclear-demo-app`](demos/egoclear-demo-app/) | EgoClear-v14/v6.6 全 NPU 实时手持避障演示 |
 | `demos/` | [`:known-height-capture-app`](demos/known-height-capture-app/README.md) | 已知高度采集 |
 | `demos/` | [`:goal-capture-app`](demos/goal-capture-app/README.md) | 目标任务采集 |
 | `demos/` | [`:semantic-anchor-demo-app`](demos/semantic-anchor-demo-app/) | 语义锚点演示 |

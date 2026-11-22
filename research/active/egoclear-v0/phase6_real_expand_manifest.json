@@ -1,0 +1,1786 @@
+{
+  "source": "https://storage.googleapis.com/gresearch/sanpo_dataset/v0/sanpo-real/splits/train_session_ids.txt",
+  "total_public_train_ids": 560,
+  "excluded_eval40": 40,
+  "excluded_phase4_tr76": 76,
+  "remaining_unused_count": 444,
+  "real_extra_444": [
+    {
+      "scene": "k7SM64BWbyyZThK-T5fr-8lJQcvGQ8Av",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "rjYpw8awPfgy-JURa4FppspZoYloY-CH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "9m1-lqCg93cYYGzfpXv-n-lQCpu1_yTs",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "eAXv0qwkO9zgffv9lQdSts_uRZCQI3Ro",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "prtHExKdxrEhGHKs3AaKgMkhCigMWx_u",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "LRWTaGC62fB3NflMQaOPXf0HJR1m5Ypp",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "CCG-oMqgJf90LzEhlqj0WkP3xN0dHlXk",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "zTQeHx40GP76j6Nerv3kzTaR52dEfQ3j",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "-PqSDmiEe2pXjmYHgxh4YEBsj0T5LU10",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "C-g5n2_S5wUCaj75l2JdzeHyjxMBDxmv",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "7YTgDkbGXoblYLN1IHcUMGFO2Sa5lyo_",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "huRVT5BlKVdTYbUhQWrr2feodI612PZH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "hITui4New5dOgg5VxGLJBmaRtO2mCDgB",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "bYAxqF9cHadDvQVpTVb2ShohXapW09g-",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "DD9W-6F3D126azdsR_Usvu6zkNqkP8XG",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "75G7mMDsi4csa74ehbypzxLfs3ZJshsX",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "reigDTj3Eqg5IraZfRGRHJTCxvVqMtHh",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "jby020CZB4zrQOSFa9G8HivhbhSYiJ2M",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "c4Mh8piOiKI4EEHHQOLTbFUfCDLlq29P",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "XOjHrx-neyD2GJuPsd5mgT9vNvytEzyL",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "gcyWXbvJVi0vjf4lLgIkR_0txpX8LAx9",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "eeLHCIh4n_wnguIpYNqpD2Ge0l0usqSJ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "eEHioWreeg7NLJkIUOmpLogMb0X0LMDP",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "oCoFhQBFW4tQ-Y6MYaOlsdtwHd4t3XdU",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "GC0nALNWkxktP4oXzRvOLm1lFkt_hlii",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "sgb9jS9iEBepAPRt-Ijrx83GuV2JPat-",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "9e6t9GD8EEnQwpm-zYcFc8OjImoK2D7N",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "qn1eNtR0fm1ZJMypjAeec6yr-c7u2zJy",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "BNzLYFSMk1kYQFqnw8pD0w9_pf0g_4m7",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "vczXAwthxnadTYUS_TiR7IHiqEQrdSJx",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "wHbdubn2UcxgoE5qVOtwQhJJw2AlZLzC",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "8WF0e5NO8I-90SR6uyKZvuB0gz59GUM0",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ncZ-JURAz1ql5KxaJDQenRsPaLaHZ01b",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "1rL8RTbI4jPqRkavZxrQbbM26iRfSLAH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "wBPxyouyX9_6p1hGzIf8sYB9UPqpoBex",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "4Py0fr78AEVfKZAVmaspA7pO36WjMLUl",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "-5OCPnbrwJdu3jH70ieU7pUiFsOJQoeG",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "3ok1zz3n49UtV6i2AGMLv-2gBifNtc56",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "tQDdQuDIPtVd-6P2MQSF-G75j-EP0pqv",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "gie8DH9dneyPGOyjs1un2ymDP0xWrWNH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "bfTbc0atVxbLbnI5MHT3RqWVCj-4u8gp",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "WguegvD3gOx4PuRfGAxoDSOo2wlKjeU4",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "iiEoSDUL0o0Pg3eejq0ktCBdfbWFqBbN",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "yGcmWEL64jMkK-ic2NWpFK4cpsCoJ8pN",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "HEmFiCyijsIoIt_sehLfZ4xyCUq06mss",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "pDqaZ8h0HqfyQZIlyLByCEqDcQIOjvyT",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "2iQ4jyIxwXUInJKDYmBuoDltgad_GKC5",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "53_TnXrp7ttT3xUyMSps6JSXdidyKw6o",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Fhw5qR8o7DO-EAhsnlqxc-y1zp0Y357Y",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "gI9i7jV_rKL5TyY9CoEI9gysGu1W2HXj",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "aS0hVe_uSBiAMtWO1Dqc6zvMZt32j5JH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "edlFaCsuH_AXJsyV4q3dadoV-nh2lj7R",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "N2vCz9-hYT6sPeKYqKXC6LBNNEIiUuDy",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "V3CUuaYiTdyEl-qcIa4OJdLlFwggCKGu",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "KG6YYsHIQiosr82KhLO7g-CiXBP2g69u",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "AUTqqeGB74PPSAJ6waiz6prT8DEVf-A7",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "4P1L1itAREhCiu6ZwFWRmOD5iCUdjcF3",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "RbmdRLuI605cpRaLZzwOwDM9f1N5mfz1",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "kg00o09y82-Kgy_XKrS-FBySUm3VSGjW",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "7X41_wkj6FHIcIpxSuh4tRR6R8P_SAGr",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "DuPv9dnGn0U8eUTL3dRSJ0Rh25jMwg7u",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "SPoj3wSxZDDu1zDcE8RYTRxtxrRP_AMK",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "kPijhP7oiAlbGOkJX4V0k759GIKvJ78y",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "Y1bfx3vT3ky1BNxc2AjRe9Md2jbdvb6N",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "9zhwm8-HDoUub3dkVEp398Xdw9HYTC9m",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "SK1d5RB_ktBZhLvPs9-Q9hXeHojD49u-",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "P1mw_jQi2THNgjGtDW_jskg210PvjupW",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "wXwTZnJHaWsMeYvf-hR0a3ZHrNXH3I0G",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ofHK3nQXlpAOUracjoR7TyUz00U6no0H",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "UGNwBEZMxhzlzXVyl8XUfflcvjGwdpA5",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "khKoBTOWwXPmDIF0m2Snph5GX7BoJamR",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "R-WZzQD8oC4jGO-iBhylUkbCU3DaxqeM",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "dB-D3W80IShuv4pBtc4EPn8JqAVpmQoE",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "oGmaqcOIA2NkQySXCaQe-8b3moo5KiTC",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "9Y_6Ca8FaKEe5yk52Ezdb950oq9n4MGo",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "42oAVogwfmhtMD1390jvwxJ1BUylAzjJ",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "RsV3OheUJZoU9A61SUMfqZZHtxReni4L",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "9V3l4ZMRzXqb7AciKSVZRNiEznxLsNlP",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "P3PKOtSXTQkhN3I2nBe8e7jpU8V0SkGX",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "V58C0wEMiqHrQMJThqKrJ5k1YWDVC_CP",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "KiFrJzvWTZ67sos5kHup266Sg4O_bOIs",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "5ggktqEDHhVh1o4S_p8f1vKNvNXKEHlH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "LrwjvhGlCX62TrTSdIrGXeYytIA138ww",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "5n1pzdkvUSw6VLWXhFwuUzhO_uSVnCIZ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "vdNrFsa3y5b3Yt3S8p3pgw1YhMJ7O43l",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "fJpThkXBQDS5gfpFysqI7WzjJRpXlzXY",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "_iJ7ngGikS2wxvBGWlppsgXjry1F9jkX",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "PPUPOPw_eTMXUJkO5AvYqQ96t0X7Z_fb",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "qb0z4vd8Y2NNVoVRuZzHCZPDMMQSi4hS",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "mUpfSkyytz4fukjsM9O7D8tPtR8ihcnQ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "1TVPazdsE5BT31Oug5438Hqf3FO25F0n",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "6nPprc30jfiI3a9O99afHBfybEqkT1yO",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "iSY4ceKQcR6hxYVV3RwvaWwAp2rVJX0j",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "vzawhRMRJc9LbuzfvZoBeufF6ISZor4A",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Z75EhNRbd2E0-pga05DfMJ1pqNGRjzXs",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "DmG5uTIzcvwsAX-nyZCja2w03Kgfx_Yx",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "9RLDrkaRIq1p7Frzky4jmaoxR_G2zIh8",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "30wQhQerQzff_3q-R3fKTmiJmO1BYETg",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "hB4qYHq6fvSdlQbOdib3nQdNqV2Yihm8",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "yNWbdxXPRJn2IjrMuqTwbBCYQBkoAyVD",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "uy5vEGS6ffqWCQ-RMUtfMjzekw0p1LCG",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "slHJ31IRyUGIffXVjHkrBIkumu09u2a2",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "uqpCZC9IXrCrR23F1hwFoCm5xGhVBv9o",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "vQPpHa0pjXNpX6OpKx_Emdd5POTzbLug",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "SWELFgFF3pP5xx4NnM5YGpLrm8WSONtW",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "vIp8vPcM-fyU2ktEMitwbA2Vsc0A1vtr",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "nXpof7fYcC0vZ-C9vDd6Aoe4tmWB0Agr",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "XerEnevfbkVgstEgolrSCcTM7EDiECm5",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "fkhs0IjcBs5WBrU1MfUfgqQHWbncN8H0",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "zsUwfXG4o3BuNAtINwA_L9O3vNgQ1B0Y",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "KuLzoA0LYjlTOuQyhUwxnc23G5dkrJW3",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "JIQQbNqSvdMSBjiRtLkjMogkZubucnPY",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "uKY31hW60Rf2xoklHN7PICIryxWkhsM0",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "Fg7dTretY_qwKGqHz1gL8HxLH_rydmbv",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "CI7WbRvhJTnOT2gVszCo_UWp9J0USCEW",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "zQ-VwwU4xm4xIXgq_ft51BKRoJruASBa",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "O3D8QETleJcWTKlwIz3IV_Hh1uP5IjLZ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "747mmWVmCDlhmzAcuWmC-hngy1fBDNfY",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "t15vyQMmf2K4jT9whloGQKfD6jg5lM_7",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "UNInI4CZRlVt1TC9p1Y5kW8IC1MPttd2",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "RefJMpa3k3DbO6U_tpd25POcVTbEdxVh",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "RJu8PKs9_9LrVHxpKNy4R4cxFkm6W0kg",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "6ahfAPxjW7k-it2Ud42DQLijyQjjrjBx",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "nFAtDBS8Fez-3ofTkHwHtxFm7RalGKOI",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "YHIZ2gSAMCdq-9sAliYicXln1v45MZS7",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "YndtYKv9ewJkLbyQJyszeO9-mLxyL3tW",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "xwZZW1hxuo6gpcU5Zpe6pkhe99i7YmI_",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "gCiGZRKAGlEg_qtfjTFfljDlu3FdCrRt",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "489R5VLQTD43OHhfmnfq6Om4iWFgbKdF",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "WmGHH-u4wsHU9ukOh5MPeAmZxaq52YI6",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "gj0Ljc96oNdvW3HE_a1y5e5EkLkr7lM1",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "NiTQ4jekm_VCv7lW1kikSNLMLAbWBnAq",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "dKK8ik7Y5ioLJBPEQAuuGZA4b4tvgPfa",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "3onRES1RY1oLbt_edyGGUs9TlyxKnjor",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "bmdWOXFZ19Yky33GZmYAQqVQCHYDbq3y",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "z1FNTrVB7uiW9wZzzH6ODO2Q5dA5KhiX",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "2dVxdA3XmypOsgSWv27dtf3GxjGUkB5A",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "glNQ-TCHyRC3QeKBUbbw38hQXc1rLaXF",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "5Y83EXy8l8JFDDWKrcb2vcsbUbVkQrph",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "2r8tfEea5-Z3_2aiX7TKLKNpt6uji5ko",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "9oUvQB5U4McGGxXA_eMMDhMNY92HDXmE",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "5SRFk0PcrL4Ps2XBMKz1iieFdCnCU0x7",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Itvw6O-yjjP_LQB-GcWXeHkagAWTCrbd",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "DhsjpxdvDg_Vr1gDIlLqeucuawN1XEmJ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "kml0LSBj8FEIJ6_A-mZKMl60bkj0yrHv",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ZYU-uTv7NCS8cghhxLSCDJmCAk6ARrbK",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "DsfSwo0BQ9MPdLdhg7Joj7s6Ao_3EXSX",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "IKO6uZfN9fFM_Q7i-t0-N6cuwUkKSMtH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Vj8flXYMr8u2pzT8LK8P0bIHXizOZqAo",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "yRCAOvT7AcXjFYExZn-E4PhlLYO4654G",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "bbzUJNHouYQEOhfD0cpXLtDz0c2DSt-e",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "_pZ9lL5tkUk30VPMFmDnDiK9-zpFgy4V",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "OauQwDOmUXxbC4W8B_Odv32CKFviZ0Qf",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "asYVAJoVYQkYE7F3a-fBU25lxZelWKjV",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "11tnj2tdX_ElmqXEv6kwSXI34_ZWXv-N",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "x3XYa59SAGo-tWQwbLiZj3cinp9BcxPU",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "BY-Y6r_csUzf6flfnTqv2k9Q9jrR3uRw",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "f-JGXSprz9W1eHWgQ6h0jkWuoHfqk7xO",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "1LbUU9SOByRL-rJKCqx-uFVVt1ovfyRM",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "TuVcTZxJici8fJC_HpwP-BIzOCBcP4mJ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "IZ1AxkV9a1OPMN1BbRbxG0M3-WyhUJI-",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "y7ZkdaEW1YnMP0T-_9fNfRtx7p9Cu2vI",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "8jIyGxn8wADhd6-CKTZXJczl5B3d3ZY9",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "SWW4uN9dpS5MLx4sQU5QdzZPe8Vbn1OG",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "pXiOg7c-G-z7Z6GmGMGqQMlFXOckwaoc",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "YkLxJJsFJ91bO8NaCofUY-adqblXK_ey",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "Y_lAnC7lcaZzmiI21CWNZcJDWStR-dSS",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ASkMDWwjRW4iUW4pRS4JX1D8U6ZpW3zu",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Ex6a-ADqd9ScH3tPae_x2LzuDKV4q8vy",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "0zEhKDk1j7KSuUQYR_rmCLmlbb5FCYG6",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "vQQb0mRpkVOlWkGiDk2rM4KO4NIiGHNC",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "5WiZ9vFwtK2qdSiU2I1z2ad2nmSjswpD",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "yKMdFKTo1-u2b66AKlu6m623h5WorZFj",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "KCDWvFEBj3tnPnJgQA07K_WXhPnQSIBx",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "xQgMSVOoFpzRO1uVZV-5w4MO2uaG7s6j",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ejphwqKTZdEL4MSgLnTSO1nDFbhom-zF",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "BIhF8TbataV9YsahueJKTIdx1oSqV9Sh",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "L5pxmOgWaTb-TxZqxT4l4yEPHTXlQVka",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "30S_d-kuvDkznn3Rhea0G3FoBQc5rXoA",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "FfeaH7vNDtdcaNWlsgvExIWQp8KGY744",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Yz9r95Sjzz10D8l6iIoLiPOsIfPHn1hC",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "rnAF9qpm-UkGREf9shKX4gXZJvxxrNCl",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "QI3Y0FyjFIyUc-fFal4gXZewtiTQRfwT",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "RcjvtYy30wvKuz25iSjZ3pmqhz7t9_r-",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "rh8DI_ycaCHwNQv3qxmpSYDYJX_78TiT",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ViITZ31kBCtYXyniyFQoynSZfvAGJPXr",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "fqPKKSuX5-S5wEjiceRCpubD8DemWMvG",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "j-IVY4HsoNbg9UxYV2kALYRZK9rZgX70",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "eDD4YHsx4xR1bhHxIe_WZ164eppCx06E",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "OLLkkVZ1LbJ9S0ZxoMfgjOkCZa4_psRU",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "xY8toV8mKYLyEBJ4guhdJbYjJ9mCundm",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "HAdrnBBLnn9mQM_WhgmVaqbFf1rtSiVP",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "XXn0uDRpVVsIV_yKTDD37VGCa9HdLyKV",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "DbY_zNmU-N9JygpIJmVaA4K7BiwK6i7w",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "-PXxwecxoR8mWhFQ09j-lddcSMLO_0K2",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "bZRMDhpRpyU7nhn3dBVgs258ptT6JZlJ",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "hRhayYLnIBB-_BRAHdq_mWMwhp0HZt4r",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "-MnIHGYpsPvn4CF_iAKGfRQewKSEZGv1",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "O-W76TuA87rnwNsQyrvE_zovXSpQGBO0",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "G5cL560OcIOvZYpVDutOFIZLVvvQ7f43",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "t0dGsEvxqyRwJj7Y12X2ZQzXxsD3l54u",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "atIg5ANUF3-U-qtg6rr4-C_LU-PzH4xY",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "M-DsjqPJu8vzUh_jojd_0TZaX9ZMk8ro",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "g7pB3rS0QKBWtTGHEcC2fFIU_BhjC52_",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "RwN5Cc_QtkpF78t_mkUfLqkzbpn12mA9",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "rDmxQWE373Pv-Nq51wo2GOif8XiVbDgj",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "UH8Q5hXB3AVKvFIicmP9hD08z2eg44wh",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "XECPue0dZnMnnhACEe3AOU3VtlxFrSX8",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "TmNjA5xAx-JwXtw77NVCTGDv80VdO38W",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "xcYGnrtBHdZpXbTM6CDF6uesDhndyJMe",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Ghd_fV-tJOTaiQRAVefqIPuk9bmc1uML",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "_ggFVZ4NWnq3yVzHGvrhzEVt1sIXD_Oo",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "wgsnTNpm8JF03ZXchpOwS2ph0JKVOk8q",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "HnbJgvODI8MMvwjYanYqzQzue6Li3Ni3",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "5f9oaGDdrLFg2M1_FUZWnDd-NUaEqiub",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "YvXhyU3Lt7Dz-XG0Gydt3zI5_DnxWeTK",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "O6iDxMOJz0pkf0HQ7pP4n9g4hT5-e58I",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "FG-IiG-nm99Zt52saahEU5lIAn6b4bPe",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "3JB37A63XdIqYlAWJJiDsW5iP31Pmubf",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "x6NrEpjKMLZGnjvX90q6YJv4_WCqBWhp",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "bxcyoiUrS7rQxcbLF8kwirN0nRr-mmb8",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "dvYjJ8-gYAkWTH01I4FBAj67or-23YCN",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "CVz9IWwaJc8hqphv7KXu8_E2hrrSD1uI",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "CwAGeyByH0uN0PX4iQQ6731OxalzPH9R",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "oTc35OYrAu58zq4-EGRREZnJ_E73KM8N",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "1uta1HvNU3-ba-cqLtGifCvQO3ZC5bEK",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "oKxogrrXwa6GmopdX6QEz15aXeT42fUy",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "aeu6u2kPRp9Rc-BXh-iaLEZJsaNCbbfe",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "tFooNIS4CR1DA6HG8nQJP-0vcXVdltfR",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "I4YsscYdbKs9wZ4bIGp5LE3Ok8CgJ8vH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "pQcPNekoeomg-A4HksVQAQEBypnbVm0Z",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "QHLSOH3Q_oJgHy1GlJpMllPdbBZb-OoC",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "2PNXmbUT8NLjjdWsbaTNUTZChIw0VZDQ",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "NmwYNLfqjwd07w3pQugKlGkokZenROgX",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "OjNHYVXoMqwGKXWFzKmBoWoehyoSjeNz",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "UfliyS4e08rZZE10xwN8zGpczHewe8aX",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "FKk8f9oCPnk_wHpb4PXWF5yjlxg_WbEj",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ZEo3anzBmJOQVr6Hem_LXWNc-l6jxy6z",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "A2p4rmpZgD4qNFIQiPjwhgb6taf5Kj74",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "CsGAG79roZxR8LNMK9HJdoxyhGdexdsy",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "JTSsbejeR9-2BL5x-zfmGA0fsWmVs7Q9",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "A0YxGHQ10bHw0qVM8gloTs5btvAhbDkV",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "_4QWSKrmqvyIETbT05MZEkidA8Xxjz1j",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "-aAwyxNyh11M5W0DQ8YPcSfdkbvvctaV",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "GCV2vQ7-nfSPvXzpqRl0jIJRg-86Y_Wk",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "-zfzmmr-bSvsDqVuBJM8GGMUBKXvBGZR",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "kXoRO6edKW6g_HINjZFbIA9qfqPKvR_m",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "QEL6J7EaGBBoTDafGAwKfX3oyoL5Xl77",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "IyfOZ95teqcntZaKLyg9c6yzm-Nc6MMU",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "jla8SCRyCOsKpxV9a7Bqq98ZU0wfznpM",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "1kpnVCiFPJYF9bju4JjDjTXB9M5BcAPY",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "aXSUdKW98WD4Z0EplO9WQcE-PImZqA0f",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "CA5XblcaNP_PNAqfIVJQZ6_VeRaTyC1F",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "GYTOruYhQQnUq6tmsHvIaquiCHdiZ2-W",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "y5olBQBtP0v4gVUzPWT5yzNYB3izUO9D",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "S7fRZ1juIqgNgdb9L-uCBZvOULzrdkuM",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "2bYF53x7c2mOhjKvuwaM7vJHJaLxxR5V",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "xowZ4XVruB_wP4WssRYa0U0f5eyM_oMC",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "2G1HEWW6tZx5ag8x3t6GeSC_7AAa48Cl",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "fwYdLjnwBOpEZ_fpyn8Lrvv5EwEouzD3",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "3SKDbivHalPmDw20hQ5uaAFczlam9Llx",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "7BbcsLcMXJXCes98R2M2tdkAJkRJhkDa",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ZhMerchxcIW_gDH1Jse4FNoyvsgX7rzy",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "nLaqyAdEdnOxf4dN_g4pS4lissch9Qvw",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ta-gPhNA8O_O-kjpKTubxCPEjbLsbuv4",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ewqBiG-iXu0acM9kS9r1_HNkwyRkH9fD",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "k8kGdjkszX1feHlOHUwr0fW1_owwO34d",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "BHu1m-6aVxrh_Nilov-XQqtRg-ebLVRI",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "qLebWa5ET1WXUImsobk5gK-IpYF_jtmW",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "fW4Wyb6jJfDclcboPNWVvL7oQBLZWwNn",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "9uSM4Uud-7EEMmBVvSGtSaK9lIMI6MJp",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ssoVt8zR5P5Fk7o6Z1P-G4Lc7vBua0al",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "mLmahoWdeGlIfQDbvzUxRWqelEUkUKl-",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "msyklzdTpQ81cQwHlhKDrchnpYroynGV",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "NES-PJSUabzYMlm5PLuPlohkBzy8FQRw",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ReaqfKEqEf7NPdxTb0PWnR9qXAW2WmqB",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "RGHp4b9cJl9HTrQgQdZY2Wzph3QZcJxr",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "6iA1MuZri4BlEyQrfn2Vi-rYSac89Lth",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "zwFpi237Mq1QQNfIdljxBeck50WxNNqQ",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "pBhDitR4Hi5kiqHQ7S-DiWG8XVcr8TdV",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Ha5L10CQhfJPzsElsTF9xiCJXIy_lzCt",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "HZXMnm2JYxcibnWtiIDjaxmnS231i79h",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "NYq-4WwpKH9WZJTbcUDlwnzMLUmyLYFs",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "i9aP-QugCLjLvne3S-oeJsych4YLnZGw",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ou5qRcSlpTtC0MF72ybFDUoEBvPS3XuA",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "lqZS9JzZESXu4Iy8cQi193n2Ci6B36vQ",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "7li1pwkFmCcqtEIk1O3t2HrxrMOq4wHh",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "SFcvHM_1TIs9X0gpXihUFharwIZtpQOQ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "5irMpB_kpUuzTleEgYawD5hlEp1Gl5L1",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "Ph3lDal1OhCKR-ZMdfGoxYdeIZMKNM3N",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Q373lp_AjjAnhWN_vCF_HcnIw6n17YtQ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "upkh_gIMMOjMLorYidzO57Rz3oYmW-8e",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "4dmtUOZ0DViqKjDa-NjcLRrZ4c9sj6tn",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "dVP9_sYSGnkBOXR1iuwz5mTwbNtOZVPF",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "BMdZBHtjHF3PfJlRhm6jLJo7KeQE8p24",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "-aP-f2zTmsBIgoHTHAWqHW8PjpUcGr55",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "BzioyyXfmDbI7XMmbEFOU40iUfsyc-hH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "NwpwbZGN37li0KRGZGy_kJjfZbs1cgK_",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Xlm-uoSvoGylhBqG7zS5BA5DSil9C5tF",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "gRhotr4JpxVh47xyb-kxKWRTBZhMR440",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "YbRiG1PXqikFiTWGlOnC3-of3NImIKt2",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ip5sEH_7HWpp0U89VqC6aG6ctX2imuWh",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "iUO7JcZzyAHd-JMJK6Z14KMDnowfoFLc",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "n9yY3I8yzD4WsuyLUEk2UIrC-GGXxhOn",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "J8OzAiQdCepdhB46JjJXEJ1wG7vouWQX",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "mkIHKOI6hNeb1mB-DVaHpGlo1pWveY6d",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "Sq26QZestD7-FT8EncRHwHV29wKPn7H4",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "IzhhT1o56B3S7yiQO8uuQZ0AecpWdKw1",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "8gHQ_KoPSWJfnocATEjdDihzKKPDqvMA",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "_ODMwNlYU0bv5liZ_KIBccFXprs83O9j",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "9RAnB6HhOUL_UwbKzndTCxt1VKmATiJH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "gQUct2fV6y3SDfae0tZ0YX1_J9HqGr7k",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "hxjQ4bB_GAN9CFO7KkLO4eihH2uuELpt",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "bSVNyEkNunWN711VEwmnMX-OHxNZmnQH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "q8thcTX-0dmCGl6IF_aOisDvEdKk22mq",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "dZSSXPJTCynSjFRCdC6jmh1B_jvNXiuU",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "wt8n-4XzZxS_daJM-oZiE7RPArdIMrHX",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "plXmT9aemqyrMCNF2frO60lmGgKWgFX1",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "lgiUd0YlrxeyrR-2a5avmjiTr_k8Sjn2",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "AnbLWRzP4soHC1ZxbgwBmfL2flx7V_Rc",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Y9DwcKE3c7y_ZEUzj04ipPzOurWLLK6P",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "WxwU5CFkSObAhIherM2g1dJLuTH1LnyX",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "fOGNlooMCMNoFAHKvp_rpPgiqrfkOFf1",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "S7hN6gMvXDMugu5x8iXCvDTCdlxtmxE1",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "k-uwZbaUbSfwU8MUjMXvK_9A3OFTK-Zy",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "UBrLATxbl0K1G6kZMh9BFfhebCcYofDx",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "bzO2F521jd8AxOCYb62ZNNsIwLhCtQRo",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "h9uXYC5d8CWa4ePBB6hBZVcSS3LuxKRu",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "oI2m1FrnWm5N2AhC0ACUY3H6drv_1jN8",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "-ntHYNDCyszR2s3qrVaXF0QgQtWtzt17",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "0zlY0PpjObYEKA2MIUXUzaBtrG1EeXGm",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "lJQpQ9mfO5etB2HVMdcDgCb6uhOq8yhd",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "ArTeVD6AZCgfTCp-OErjvGMgE2t6ZKc1",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "ZyFqXovpCd55j1jdSHq23N3x_6fkrxoF",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "6aIZyXvuAXTQblYQzPbSf5ug4aRaWZj5",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "H-O1-s_QwFkJ12_dyxY84h-8ozd70Pss",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "ttVp1BQwHnEXHl3mf5AdjXv-ibURSPkl",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "UMUQLUnHPKSc8c-P5_yHZKvrdJIiTot6",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "MbIQlKm8STuUKe-cdezcf11jJ2nB6IgB",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "QEnw7Luyragmzh8YqK-mRbpDQ32L-w7c",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "qNBdh6pUkHPoCtxqvB8e0mZtAAQVgOfJ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "aNn63wpyo-35IZjJW62ia1POfdoDrNb9",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "kddYWMPmgyTJeVSmMyG1lROhbKq0-SR3",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "NrwyPJTLRJXNk7cKIMEx9OXOem9Ryh6J",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "k1ElOc9vJeCeiP_G5awMB8kUOcS4611C",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "pFJzgGxDtCuGSpsidNaOp9Om-apL5cIg",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "DGTZ7ga3Ktw5giWLvJOvPIbgf3N0cVMh",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "oOsHOKWxouIymwQItTJwBHfBWTcTEZ7C",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "acElTTYDfk9tpyq3TNM0Gdcp0KmGkH2y",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "9ZXJRXWxuKzuKSLN8LFTMwWZGn0DEOn3",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "hS08nuIkpHFAM6mEZAnFyqeao8YGjYG5",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "4a3qdpYcYNR6PZBMKIv3Qqn0Lu06ZM6g",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "3Pw7oEr-t1YjVXFUAEIkOU1UOxOTUPky",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "l5yZFJ3Z6LXrw4QDfC8kIbFZu4P87HzX",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "WwSUNtr6DxVDwu_EfUUGM-3GCaXbQ73a",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "CG0wwC0at8bM0Jp9vwDu1wTAzMf7BjZp",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "ZkyuHBvjielTTEVMLjv7fkIMYzAxXGle",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "kpmkGO6LWJS89tPfk5aUoPk4Tvp67nVg",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "xnM8CCBOtC95_czx9coNRhRgn0L1UvL6",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "IoIRMMufEJeBbR0NTBF771EQmRbq3fFi",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "eMOt6M_TanahLx37tyVEF1wd30WG4VQ3",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "OwIhHoKmklKrnuFkwGGtbc5Lwfd2KLUi",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "XorRSaQ4AXQeEfawA7lR22_tCUBvTHjw",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "PAI-Lzi-G0BTqe-jCoRC3Dj43EsnjGhe",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "GDKmn49cc-iZ0UaW0esr_0Xe-3YGsAML",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "EmUvfKbc-gaUCV0NmT11jLxT0b8O3Hie",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "zjjsAoWh9z326KWr0Mp_1pwN0UoPvO_p",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "A-d9NSdx2GiWxCI0oSnoQe0r6i_z-ZWz",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "12KBw74zlZrX7OftxToP9-jbVlQNC2MO",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "GiXf5Gm7QbpP6cZR04jpOBIOq2Q5kttq",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "K7eMgWDzeYtqCc4hje0wN7m3sbWwJRk2",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "hyhpm7kn1UjPu6L6r3SzlIapcBgLLBG0",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "tire65ix5vRZ5959LBNEdprPG8Lf8JB1",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "_VlAS3dHSENRsNireUX314lOt1XosKse",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "rL565tkXvzD1FARfwoRscaTvw5xTVkM3",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "la1V4CM-Ia6TlulovKob0Ea7TIOwU0gm",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "Re9LxRhGdunf-83rgZL-7iK4v-lAclAI",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "XGAIMFohY4Z8atimRrHtcPU28xTe5-km",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "EQsmDBtPXj0K0gjvZznTtfA_CcEGOR-2",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "wWyl_kHZjg_yLHgA9dh9RQGKz0SLl8PY",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "QTtz_6gVhJmQJNdI3A97Fg4Hddu2U4HR",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "fJfPwv7c12yYlmv821PvLT0i80blDY-B",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Ana1yr8Pvh2MyBDmQXDIEL8v67OeMPFz",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "JjqolT5G8dH-u5RZa0jr6bQNnZiRDin1",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "Iq2WJmNd4ASsqW1OJ_9GMu5xT7G2tgan",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "UaNP6lcVxQEh9wmKUjZUaU34yitEq5QW",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "jaFq58LAV1bO4zUMp_B4NxE0PnrO3lWx",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "GMBhdIW2wgMNZlkOL9nrWZklQz2fxKXa",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "1Lq8lR7hV5tj2NVJMsanXs24eQcWV15O",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "7ev2OVWs3MBb1wbpFOU6qZLmqILvSm0D",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "CCOQeLblEBD4ICLpXikheOgdG1ALcZdM",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "2AW-Pora1HXc7oVRGfY6O9b3acAV-Yze",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "XWrVqaw3Xnzw-PK0NwwtLs-RndTNKZQu",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "653eSeXetkK4IkXWLUH0DQz0pJ4D57LG",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "8EUvQm79eMm0hZEmrC-Ug7zjyw1a1iO5",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "4-XY-LnChCeZpv6lk_5XqTpvfwctXoUB",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "L8i1h_QePuO2_JpcS2YVbB9BZFjLo41g",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "DfLiLI19CEFsSbzOZX9DeCjZ4V0u_yaZ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "0mU__C16Co2okDPKWkNyDdymsZYKjUFr",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "j2FTNK7VF64uO-WJ8wmRInfXpiORA7Pz",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "yBLFav9AA0F-4jXVC81yICIJQW-t05Dd",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "z5iYpzTS2u7i5lehVMuGQPaZucm7aRyp",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "J30YHSYhXb5mimpOYoTi4WcJV0uEjBi5",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "Skto8GsujSbrYUDz6lbgRggREmRbG63m",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "qu_9254AGAKuERYRydJu9xI9EVMw8AIG",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "EJBVhR0hP_omB5L_ZrZ5jyA7xxQmExXm",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "AmkUYJ5jqpGE9MyRb1i8SFbLgEng5_U3",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "XIgek0ISd6wBmW9h2JKZlROpPecoTiNb",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "nydohpXaujB4-ypWtW28zyN9HL32m6B_",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "8xZbveqywxrob7Y0aittqlk56AzTvUpQ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "GU5vqZV_5ZbDnpzUECynt10Avot7_yyP",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "60_ibYCD9plAr45fi9Hk96_agYJhZeTR",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "znCVhOUdd8pEQSoTCgTwX_2glfBKncwW",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "CPh3rjh_EDxe2NVdUvZ5lPE89FwEShTJ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "f8_Fa4KdBypZlUdTsioxhiYBanV77hbB",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "O3pZzBnZUcKWQfo2hEjhC2AjKxcxzRkl",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "jSokwhOqI8ddZGwASdpCpbwO8s-bzDp9",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "MAQpSWzA9qHtyW-nWyvdBSU23ZkDzxDz",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "VWw2W_obR6zEafYeF_snujhcGroiwb0T",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "mAhOUl3fk4a3x7frvAX4UaWIgxRonqJv",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "3ZidwAnpu7FKf37SYJx_VKECzfG_Ftod",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "wDtxm3UCt1gmodkU-lhpkHhAl4ALvFPH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "3Ug16NmBGy0496lTVfvP3mCOm-tlT0qy",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "F5PjLx0NP55l2JT1Z_jMfIZvQ898K15U",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "AAEOWHxELzR3-s-clycIDujO3gMUcBKH",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "GTz00ckTgX_sFZL8m1VrMZMcto6u_Pb2",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "NcX1p3UtjvhYUPQARsmmFKhUUQh_46Rg",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "me9999Ha8ed6HKkQvQQzgnqwgXEpJOZa",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "hbK_M8tkfhWmNK-nNwOpTPEJsOl_luyh",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "N2tKPgRBWLgkjCntd7RVV4KtcslWPkBK",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "DVKpZk7QFPBkHacUEFLEOGkNYAL1g1o9",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "0pf0qM0kG_5fZ0HLO2CDDXmfuMG8aiyR",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "09DmsCqUndyjripTruXvN4uH7mbF6zSe",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "Z2ONR-bjyCLh20aSZwHjZvk_wPxEQEO2",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "2bFG3R4YqBQbkItjkehNK9Gd_t35U_mb",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "TFubbcziMpxyAk_bDbSv5GCcmD6f0sP9",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "TTFKzqGh0oCtxGtHcml0nrjfKnrCSuNV",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "B0uBxNujFSoWXKL2-WuP1tF1j-YkKrC6",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "2MT1r4_ydPrwc2gaaobWbm0CABXmB7Tr",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "FDESM-gXV7eUb3fg5IMh5FZtFC9rdonr",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "vF7MGqytfLg-sfzVb5p9z6gz3cn2lDaJ",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "PbY69lq6PB3YKz84w11v_pBzermtDcss",
+      "cam": "camera_head"
+    },
+    {
+      "scene": "9_t59BK_wI5eesEFQJZs8cSlUMdSihkR",
+      "cam": "camera_chest"
+    },
+    {
+      "scene": "HfUrNcBq2jQ_Q5m5cp373cUtJPtFactP",
+      "cam": "camera_head"
+    }
+  ],
+  "note": "Strictly disjoint from frozen eval40, phase4 train76, and official SANPO-Real test split; 70% camera_head / 30% camera_chest."
+}
