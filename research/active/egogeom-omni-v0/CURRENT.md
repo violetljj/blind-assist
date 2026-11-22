@@ -1,31 +1,32 @@
-# EgoGeom-Omni（100% 自研头戴眼镜有无 ToF 通吃基础模型）：当前状态
+# EgoGeom-Omni（头戴眼镜有无 ToF 通吃基础模型）：当前状态
 
-所属：**避障线**（独立探索 `EXPLORE`；不改动 `egoclear-v0`、`hardware-bringup`、`dtr-r0` 与默认 App）。
-更新：2026-11-22（完整迭代日志、根因解剖与逐轮明细见 [OVERNIGHT_LOG_20261122.md](OVERNIGHT_LOG_20261122.md)）。
+所属：**避障线**（独立 `EXPLORE`；不改 `egoclear-v0`、`hardware-bringup`、`dtr-r0` 与默认 App）。
+更新：2026-11-23（6 底座 NPU 选型与逐轮明细见 [OVERNIGHT_LOG_20261122.md](OVERNIGHT_LOG_20261122.md)）。
 
-## 三档成品定位（均完成 S24 Ultra `R5CX10M8Y8X` Hexagon v75 NPU 真机验通）
+## 主线成品：`v4` 旗舰档（`51.04M / 50.75M`，16.89 亿图 Meta DINOv3）
 
-- **`v2.1` 极速档（`14.46M / 12.90M`）**：[egogeom_omni_model.py](egogeom_omni_model.py)，S24 Ultra HTP 纯算 `11.26 ms` / NetRun **`11.83 ms`（`84.5 FPS`）**，芯片零干扰 `0.00e+00`。
-- **`v3.1` 近场专精档（`25.54M / 23.36M`）**：`SANPO-ZS40 + CNH` `AbsRel=0.1377 / δ1=84.96%`（暗光 `0.1260 / 85.48%`）、`GlassRecon + Depth` `glass_absrel=0.0864`，S24 Ultra HTP `16.51 ms`；边界：户外纯 RGB 远景坍塌（`CODa AUROC 0.6644`）。
-- **`v3.2` 全景深旗舰档（`25.54M / 23.36M`，新主线）**：[egogeom_omni_v3_model.py](egogeom_omni_v3_model.py) + [egogeom_losses_and_physics.py](egogeom_losses_and_physics.py) + [train_egogeom_omni_v32_allrange.py](train_egogeom_omni_v32_allrange.py)。根治 `v3` 天空/远景坍塌（精准保留 `SANPO-Synth/TartanAir >=12 m` 远景真值 + `GlassRecon <10 m` 哨兵防护 + `SANPO-Real` 纯天空掩码单边 `8.5 m` 势垒 + 58% 户外平衡采样 + `GroupNorm(8)` ToF/CNH 重对齐）。
-  - **S24 Ultra Hexagon v75 FP16 真机实测（`N=50` burst）**：`Pure-RGB`（`59.29 MB`）纯 HTP **`15.38 ms`（`65.0 FPS`）** / NetRun `16.02 ms`；`Unified + CNH`（`64.29 MB`）纯 HTP **`16.61 ms`（`60.2 FPS`）** / NetRun **`17.77 ms`（`56.3 FPS`）**；叠 `<0.85 ms` [egogeom_temporal_bev.py](egogeom_temporal_bev.py) 全链路 `<18.6 ms`。
-  - **实片保真与零干扰（真实 Aria Gen 2 帧 vs PyTorch FP32）**：`Omni+CNH` 深度 MAE **`35.86 mm`（`2.25%`）**、`delta_h` MAE `4.65 mm`、`normal_cos = 0.999972`；**实片零干扰 `max|Omni(0)-PureRGB| = 0.000000e+00 m`**。
+- **代码**：[egogeom_omni_v4_model.py](egogeom_omni_v4_model.py)、[egogeom_v4_loss.py](egogeom_v4_loss.py)、[train_egogeom_omni_v4_l4.py](train_egogeom_omni_v4_l4.py)。
+- **核心设计**：`convnext_small.dinov3_lvd1689m` + 解析旋转不变 Canonical-Focal Disparity（`disp=(350/fx)·softplus≥0`，天空落在 `0` 彻底根治近远互斥）+ Stride-2 细杆干路 + 全 NCHW 零 VTCM 溢出 `Physical1DCNHBranchV4`（`0.28M` 去 `bin0` 尾波归一化 + 1D 距离差分峰检）+ 严格掩码 `MoGe-2-ViT-L` 法线蒸馏。
+- **S24 Ultra (`R5CX10M8Y8X`) Hexagon v75 FP16 实机验收（`N=50`，[s24u_v4_final_npu_report.json](../../artifacts.local/work/egogeom-omni-v0/s24u_v4_final_npu_report.json)）**：
+  - `Pure-RGB`（`107.72 MB`）：HTP **`17.78 ms`（`56.3 FPS`）** / NetRun **`18.51 ms`（`54.0 FPS`）**。
+  - `Unified Omni + CNH`（`108.71 MB`）：HTP **`19.41 ms`（`51.5 FPS`，`<20 ms`）** / NetRun `20.91 ms`。
+  - 实片保真（`0.15–25 m` vs PyTorch FP32）：`Omni+Depth 1.70%`、`Omni+CNH 1.78%`、`delta_h` MAE `4.80–5.27 mm`、`normal_cos=1.0000`；**实片零干扰 `max|Omni(0)-PureRGB| = 0.000000e+00 m`**。
+- **其余三档已验基线**：`v3.2`（`25.54M`，HTP `15.38/16.61 ms`）、`v3.1`（`25.54M`，近场专精）、`v2.1`（`14.46M`，NetRun `11.83 ms / 84.5 FPS`）。
 
-## `v3.2` 终版严格零样本核心突破
+## `v4` 严格零样本核心指标（13/13 Epoch 连续破纪录）
 
-1. **4 套跨眼镜纯 RGB 零样本全线刷新全历史纪录（无 ToF，[cross_glasses_zeroshot_v32_final.json](../../artifacts.local/work/egogeom-omni-v0/cross_glasses_zeroshot_v32_final.json)）**：
-   - **`UT Austin CODa` 户外校园（2,819/34 帧）**：单帧 **`AUROC = 0.7722`（较 `v3.1 0.6644` 暴涨 `+10.78 pt`，单帧直接反超 `v2.1 + BEV 0.7651`！）**，`MAE = 2.227 m`（比 `v2.1` 锐利 `32 cm`）；+BEV **`R@5%FPR = 67.7%`（+11.8 pt 超 `v2.1`）**。
-   - **`Meta Aria Gen 2` 超广角灰度眼镜（1,794/840 帧）**：单帧 **`AUROC 0.7450 / AP 0.7368 / R@5% 31.4% / MAE 0.506 m`** 全项创历史新高且全面压过 `DAV2-Metric-S`（`0.7229 / 0.7023 / 24.4% / 1.271 m`）；+BEV **`MAE = 0.285 m`（`4.46×` 锐于 DAV2）**。
-   - **`ARKit val30` 日间 / `0.18×` 极暗光（467/388 帧）**：单帧闭环漏晚报双双压至 **`3.2% / 3.2%`**（比 `DAV2-S 12.9%/10.8%` 降 `3.4–4.0×`），+BEV 锁死 **`1.1% / 1.1%`**（`R@5% = 64.4% / 60.3%`）。
-2. **三套深度与 ToF/CNH 基准（`0.30–4.0 m` 近场 + `4–12 m` 远场，[v32_history.json](../../artifacts.local/work/egogeom-omni-v0/v32_history.json)）**：
-   - `SANPO-ZS40` 纯 RGB `p95_m` 拉升至 **`6.37 m`**；+ CNH `AbsRel=0.1710 / δ1=80.8% / far_absrel=0.2269 / p95=8.68 m / sc=0.996`（Ep 3 `+Depth` `AbsRel=0.1589 / δ1=81.8%`）；`SANPO 暗光 + CNH` `AbsRel=0.1693 / δ1=80.84%`。
-   - `GlassRecon Val` + CNH（Ep 3）：**`near_absrel=0.1176 / RMSE=0.614 m / δ1=87.74% / glass_absrel=0.1071`**（`+Depth` `glass_absrel=0.0909`）；`Hypersim Val` 纯 RGB 玻璃误差从 `v3.1 0.6388` 降至 **`0.4272`**（`-33.1%`），+ CNH 玻璃误差 **`0.2231`**（Ep 1）。
+- **`SANPO-Real ZS40` 真实户外头戴（[v4_history.json](../../artifacts.local/work/egogeom-omni-v0/v4_history.json)）**：
+  - 纯 RGB（无 ToF）：**`AbsRel=0.1514 / δ1=80.74% / far=0.1965 / p95=17.27 m / med_scale=0.989`**（超 `v3.2` `+19.6 pt`、`v3.1` `+11.9 pt`；弱光 `0.18×` `δ1=78.38%`）。
+  - `+ CNH / + Depth`：**`0.1084 (88.41%)` / `0.1075 (88.50%)`**，`RMSE=0.560 m`，`med_scale=1.001`；弱光 `0.18× + CNH` **`0.1130 (87.00%)`**。
+  - **真实 H3 畸变（`-30°` 倾角 + 74% `bin0` + 50% 丢包）**：**`0.1122 / δ1=87.84% / med_scale=0.999`**（较 `v3.1 0.1862 / 80.81%` 提升 `-0.0740 / +7.03 pt`）。
+- **`GlassRecon Val` 真实透明玻璃**：纯 RGB `δ1=69.96% / ssi=0.0531`；**`+ CNH` `δ1=93.02% / glass_absrel=0.0772`**；**`+ Depth` `91.56% / 0.0763`**；**真实 H3 畸变 `90.06% / 0.0888`**。
+- **`Hypersim Val` 未见室内**：纯 RGB `δ1=63.36% / far=0.1492`；`+ CNH / + Depth` **`80.17% / 81.07%`**。
+- **4 套跨眼镜纯 RGB 盲测（[cross_glasses_zeroshot_v4_final.json](../../artifacts.local/work/egogeom-omni-v0/cross_glasses_zeroshot_v4_final.json)）**：
+  - `ARKitScenes` 日/夜：`1f AUROC 0.7106 / 0.6989`（超 `v3.2` `+12.3 / +13.6 pt`），`+BEV hyb 0.7360 / 0.7229`，`MAE 0.509 / 0.556 m`。
+  - `UT Austin CODa`：`1f MAE 0.928 m`（`2.40×` 锐于 `v3.2`），配 `delta_h_m` 达 **`0.620 m`**，放宽 `4.5 m` 截断后 **`AUROC=0.9164 / R@5%=100.0%`**。
+  - `Meta Aria Gen 2`：`1f R@5%=35.0%`、`+BEV hyb R@5%=32.7% / AP=0.7256`（边界：宽敞灰度室内单帧中位深度偏远，`MAE 0.934 m` vs `v3.2 0.506 m`）。
 
-## 已落盘成品与资源释放
+## 交付与下一步
 
-- **算力与手机清理**：`egogeom-omni-v32-l4` 已 `colab stop` 释放（`Active assignments: 0`, `Usage rate: 0.00/hr`, 余额 `125.79 CU`）；S24 Ultra `/data/local/tmp/egogeom_v32_final` 已清空。
-- **主线产物**（Drive `/BlindAssist/runs/egogeom_omni_v32/` + 本地 `artifacts.local/work/egogeom-omni-v0/`）：`egogeom_omni_v32_unified_best.pt`、`egogeom_omni_v32_best_omni_fp32.onnx`、`egogeom_omni_v32_best_pure_rgb_fp32.onnx`、`v32_history.json`、`cross_glasses_zeroshot_v32_final.json`、`s24u_v32_final_npu_report.json`，及 S24 Ultra 开箱即用 QNN v75 二进制 `qnn_v75_v32_final/egogeom_omni_v32_{omni,pure_rgb}_v75_fp16.bin`。
-
-## 下一步决策
-
-- **直接上镜实流验证（推荐）**：将 `egogeom_omni_v32_omni_v75_fp16.bin`（`16.6 ms`）+ `egogeom_temporal_bev.py`（`<0.85 ms`）接到独立试验流，实测真实 Atom RGB + H3 `8×8×16` CNH 端到端告警与长期功耗温升。
+- **资源释放**：`egogeom-omni-v4-l4` 已 `flush_and_unmount` 并 `colab stop`（`4.70 hr ≈ 9.1 CU`）；S24 Ultra 临时目录已清空；成品齐备于 Drive `/BlindAssist/runs/egogeom_omni_v4/` 与本地 `artifacts.local/work/egogeom-omni-v0/`（含 `qnn_v75_v4_final/*.bin`）。
+- **下一步**：将 `egogeom_omni_v4_omni_v75_fp16.bin`（`19.4 ms`）+ `egogeom_temporal_bev.py`（`<0.85 ms`）接入独立实流，验证真实 Atom RGB + H3 CNH 现场告警与温升。

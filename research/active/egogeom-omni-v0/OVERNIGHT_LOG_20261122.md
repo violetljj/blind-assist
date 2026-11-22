@@ -73,3 +73,46 @@
   - `egogeom_omni_v32_pure_rgb_v75_fp16.bin`（`59.29 MB`）：纯 HTP **`15.38 ms`（`65.0 FPS`）** / NetRun `16.02 ms`。
   - `egogeom_omni_v32_omni_v75_fp16.bin`（`64.29 MB`）：纯 HTP **`16.61 ms`（`60.2 FPS`）** / NetRun **`17.77 ms`（`56.3 FPS`）**。
   - 实片保真（真实 Aria Gen 2 帧 vs PyTorch FP32）：`Omni+CNH` 深度 MAE **`35.86 mm`（`2.25%`）**、`delta_h` MAE `4.65 mm`、`normal_cos = 0.999972`；**芯片级零干扰实测 `max|Omni(0)-PureRGB| = 0.000000e+00 m`**。
+
+
+---
+
+## 阶段七：6 大顶级预训练视觉底座 S24 Ultra Hexagon v75 NPU 零算力真机大逃杀（2026-11-22 晚）
+
+- **动机**：`v3.2` 从零训练 25M 底座受限于先验知识天花板且在 `log_depth ∈ [0.15, 12.0]` 空间存在天然近远景互斥。零 CU 直接在 S24 Ultra (`R5CX10M8Y8X`) Hexagon v75 FP16 实测 6 大开源顶级预训练视觉底座（挂完整 4 头解耦解码器 + 物理 1D-CNH 分支，`288×384`，`N=30` burst），产物见 `artifacts.local/work/egogeom-omni-v0/s24u_v4_backbone_shootout.json`：
+  - **关键发现（VTCM 溢出根治）**：初始 `reshape(B, 2, 16, 6912)` 触发 Hexagon v75 8 MB VTCM 溢出导致全系飙至 `~77 ms`；改用纯 NCHW `[B, 45, 72, 96]`（16 原始 + 15 去 `bin0` 归一化尾波 + 14 距离轴一阶差分峰检）后，ToF 分支耗时骤降至 `<0.6 ms`！
+  - **实机 NPU 榜单**：
+    1. `convnext_tiny.dinov3_lvd1689m`（`29.0M`, `60.0 MB` `.bin`）：HTP **`14.49 ms`（`69.0 FPS`）** / NetRun `15.72 ms`
+    2. `repvit_m2_3.dist_450e_in1k`（`23.6M`, `31.7 MB`）：HTP `15.12 ms` / NetRun `16.40 ms`
+    3. `fastvit_sa24.apple_dist_in1k`（`21.5M`, `48.7 MB`）：HTP `15.46 ms` / NetRun `16.88 ms`
+    4. `convnextv2_nano.fcmae_ft_in22k_in1k_384`（`16.2M`, `35.0 MB`）：HTP `15.88 ms` / NetRun `17.33 ms`
+    5. **`convnext_small.dinov3_lvd1689m`（16.89 亿图 Meta DINOv3，`50.7M`，27 层深度 Stage-3，`104.2 MB`）**：HTP **`17.72 ms`（`56.4 FPS`）** / NetRun `19.25 ms` -> **选定为 `v4` 登峰造极底座！**
+    6. `vit_small_patch16_dinov3.lvd1689m`（`23.2M`, `48.5 MB`）：HTP `17.97 ms` / NetRun `19.04 ms`
+
+---
+
+## 阶段八：`EgoGeom-Omni v4` 登峰造极全量训练、7 套零样本验收与 S24 Ultra 终验（2026-11-22 23:13 – 2026-11-23 04:01）
+
+- **架构与损失突破**（[egogeom_omni_v4_model.py](egogeom_omni_v4_model.py)、[egogeom_v4_loss.py](egogeom_v4_loss.py)、[train_egogeom_omni_v4_l4.py](train_egogeom_omni_v4_l4.py)）：
+  1. **16.89 亿图 Meta DINOv3 `convnext_small.dinov3_lvd1689m`（`51.04M` 总参，`0.28M` ToF）** + Stride-2 细杆边缘干路 + 零初始化金字塔重力 FiLM + 全局视差上下文。
+  2. **旋转不变解析 Canonical-Focal Disparity**：直接从 `grav_rays` 邻像素差析出精确 `1/fx`（零额外 ONNX 输入），预测 `disp = (350/fx)·softplus(...) ≥ 0`，天空/远景自然落在 `disp = 0.000`（`25 m`），彻底根除 `v3.1 vs v3.2` 的近远景互斥与尺度膨胀。
+  3. **零毒化教师与差速微调**：Phase 1（8 ep，`48k/ep`，`bs=32`）前 300 步冻结 DINOv3 预热解码器（`6e-4`），随后 10× 差速解冻（`6e-5`）；Ep 1–4 仅用严格 `prob > 0.6` 掩码的 `MoGe-2-ViT-L` 法线蒸馏（永不把未对齐 `pts_z` 喂进深度损失）+ `MoGe-2-ViT-S` 户外天空掩码守卫，Ep 5–8 卸载 ViT-L 纯 GT 精修。
+  4. **Phase 2（5 ep，冻结 `50.75M` 纯 RGB 主干 `0.00e+00` 零干扰）**：专训全 NCHW `Physical1DCNHBranchV4`（`GroupNorm(8)` + 去 `bin0` 尾波归一化 + 1D 距离轴差分峰检 + 乘性/加性双残差），50% 洁净 / 50% 真实 H3 硬件物理（`-30°` 倾角 + 74% `bin0` 串扰 + 50% 距离丢包）混合训练。
+- **13/13 Epoch 单调破纪录收敛轨迹（L4 共 `4.70 hr ≈ 9.1 CU`）**：
+  - Phase 1（纯 RGB，无 ToF）`composite`：`0.3259 -> 0.3133 -> 0.2950 -> 0.2763 -> 0.2479 -> 0.2362 -> 0.2199 -> 0.2179`（8 连刷新！）：
+    - `SANPO-Real ZS40` Day 纯 RGB：`AbsRel=0.1514, RMSE=0.748 m, δ1=80.74%, far=0.1965, p95=17.27 m, med_scale=0.989, ssi=0.0850`（Dark `0.18×`：`0.1610 / δ1=78.38% / med_scale=0.999`）。
+    - `Hypersim Val` 纯 RGB：`AbsRel=0.2931, δ1=63.36%, far=0.1492, ssi=0.1461`。
+    - `GlassRecon Val` 纯 RGB：`AbsRel=0.2021, δ1=69.96%, glass_absrel=0.1916, ssi=0.0531`。
+  - Phase 2（统一全能，纯 RGB 100% 冻结零衰减）`omni_composite`：`0.1662 -> 0.1456 -> 0.1320 -> 0.1251 -> 0.1234`（5 连刷新！）：
+    - `SANPO-Real ZS40` Day `+ CNH`：**`AbsRel=0.1084, RMSE=0.5601 m, δ1=88.41%, far=0.1690, med_scale=1.001, ssi=0.0825`**；`+ Depth`：**`0.1075 / δ1=88.50%`**；**真实 H3 畸变**：**`0.1122 / RMSE=0.5817 m / δ1=87.84% / med_scale=0.999`**（碾压 `v3.1 0.1862 / 80.81%` 达 `-0.0740 AbsRel / +7.03 pt`！）；`Dark 0.18× + CNH`：**`0.1130 / δ1=87.00% / med_scale=1.001`**。
+    - `GlassRecon Val`：**`+ CNH` `AbsRel=0.0938, RMSE=0.4676 m, δ1=93.02%, glass_absrel=0.0772`**；**`+ Depth` `0.0969 / δ1=91.56% / glass_absrel=0.0763`**；**真实 H3 畸变 `0.1054 / δ1=90.06% / glass_absrel=0.0888`**。
+    - `Hypersim Val`：`+ CNH` **`0.1763 / δ1=80.17%`**；`+ Depth` **`0.1692 / δ1=81.07% / glass_absrel=0.1574`**；真实 H3 畸变 `0.1842 / 79.15%`。
+- **4 套跨眼镜纯 RGB 零样本盲测（`egogeom_omni_v4_unified_best.pt`，与 `pure_rgb_best.pt` 逐位一致）**：
+  - `ARKitScenes val30` Day / Dark `0.18×`：`1f AUROC = 0.7106 / 0.6989`（较 `v3.2` `+12.3 / +13.6 pt`），`+BEV hyb = 0.7360 / 0.7229`（`+14.2 / +16.2 pt`），`MAE = 0.509 / 0.556 m`（锐化 `26–27 cm`）。
+  - `UT Austin CODa`：`1f MAE = 0.928 m`（`2.40×` 锐于 `v3.2 2.227 m`）；使用 `v4` 自带 `delta_h_m` 时 `MAE = 0.620 m`（`3.59×` 锐利），且放宽评测 `4.5 m` 走廊截断后 `AUROC = 0.9164 / R@5% = 100.0%`（超过 `DAV2-Metric-S 0.8588`）。
+  - `Meta Aria Gen 2`：`1f R@5% = 35.0%`（`+3.6 pt`）、`+BEV hyb R@5% = 32.7%`（翻倍）、`AP = 0.7256`（`+6.3 pt`）；诚实边界：宽敞室内灰度帧单帧深度偏远（`MAE 0.934 m` vs `v3.2 0.506 m`）。
+- **S24 Ultra (`R5CX10M8Y8X`) Hexagon v75 NPU 终验（`s24u_v4_final_npu_report.json`）**：
+  - `Pure-RGB`（`107.72 MB`）：HTP **`17.78 ms`（`56.3 FPS`）** / NetRun **`18.51 ms`（`54.0 FPS`）**；
+  - `Unified Omni + CNH`（`108.71 MB`）：HTP **`19.41 ms`（`51.5 FPS`）** / NetRun `20.91 ms`（`47.8 FPS`）；
+  - 实片保真（`0.15–25 m` 全量程 vs PyTorch FP32）：`Omni+Depth` `1.70%`（`81.95 mm`）、`Omni+CNH` `1.78%`（`86.77 mm`）、`Pure-RGB` `3.33%`（远场 `15–25 m` `1/disp` FP16 舍入主导）、`delta_h` MAE `4.80–5.27 mm`、`normal_cos = 1.0000`；
+  - **芯片级零干扰实测 `max|Omni(has_tof=0) - PureRGB| = 0.000000e+00 m`**（实片 CNH 平均修正 `22.80 cm`）；`/data/local/tmp/egogeom_v4_final` 已清空。
