@@ -1,7 +1,7 @@
 # EgoGeom-Omni（头戴眼镜有无 ToF 通吃基础模型）：当前状态
 
 所属：**避障线**（独立 `EXPLORE`；不改 `egoclear-v0`、`hardware-bringup`、`dtr-r0` 与默认 App）。
-更新：2026-11-23（6 底座 NPU 选型与逐轮明细见 [OVERNIGHT_LOG_20261122.md](OVERNIGHT_LOG_20261122.md)）。
+更新于 2026-11-24。6 个底座的 NPU 选型与逐轮明细见 [OVERNIGHT_LOG_20261122.md](OVERNIGHT_LOG_20261122.md)。
 
 ## 主线成品：`v4` 旗舰档（`51.04M / 50.75M`，16.89 亿图 Meta DINOv3）
 
@@ -28,7 +28,7 @@
 
 ## 交付与下一步
 
-- **2026-11-24 [五组数学问题与 v4 实证](math_theory/RESULTS.md)**：保留原 v4。8 位深度输出头在 ORT CPU 上穷举全量程 FP32 视差的最坏相对误差为 1.00857%，RGB／Omni 均已离线编译到 v75，下次上机需测实际误差和耗时。公制位姿尺度校正在 ARKit 日／暗光回放中将 BEV 晚报各从 7.5% 降到 1.1%，但 BEV 距离误差变大，Aria 未达标。真实 H3、在线校准与动态避障的适用条件和失败对照见分题记录。
+- **2026-11-24　五组数学问题第二轮。** 原 S24 Ultra 上，零重训替换 Softplus 和焦距计算后，16 张跨条件开发图的纯 RGB 设备深度相对 FP32 误差从 **3.522% 降至 0.535%**。归档帧的 HTP 耗时从 17.86 降至 16.56 ms；Omni 加 CNH 同帧误差从 1.782% 降至 0.519%。双修正进入导出候选，默认系统沿用原 v4。Aria 的局部三角测量改善在 CODa 反转；清路计费和远距标签边界限制告警结论。[五题结果](math_theory/RESULTS.md) · [实机测量](math_theory/m5_info_geom_quant_reparam/SILICON_FOLLOWUP.md)
 
 - **资源释放**：`egogeom-omni-v4-l4` 已 `flush_and_unmount` 并 `colab stop`（`4.70 hr ≈ 9.1 CU`）；S24 Ultra 临时目录已清空；成品齐备于 Drive `/BlindAssist/runs/egogeom_omni_v4/` 与本地 `artifacts.local/work/egogeom-omni-v0/`（含 `qnn_v75_v4_final/*.bin`）。
 - **下一步**：将 `egogeom_omni_v4_omni_v75_fp16.bin`（`19.4 ms`）+ `egogeom_temporal_bev.py`（`<0.85 ms`）接入独立实流，验证真实 Atom RGB + H3 CNH 现场告警与温升。

@@ -159,17 +159,17 @@ def read_context_info(binary_dir, binary, env):
     return target
 
 
-def qairt_convert(sdk, python, source):
+def qairt_convert(sdk, python, source, *, extra_args=()):
     binary_dir = sdk / "bin/x86_64-windows-msvc"
     env = dict(os.environ, QAIRT_SDK_ROOT=str(sdk), QNN_SDK_ROOT=str(sdk), PYTHONUTF8="1",
                PYTHONPATH=str(sdk/"lib/python"), PYTHONDONTWRITEBYTECODE="1")
     env["PATH"] = os.pathsep.join(map(str,[sdk/"lib/x86_64-windows-msvc", binary_dir, env["PATH"]]))
     dlc = source.with_suffix(".dlc")
     cmd = [str(python), str(binary_dir/"qairt-converter"), "--input_network", str(source),
-           "--output_path", str(dlc)]
+           "--output_path", str(dlc), *extra_args]
     log = source.with_suffix(".converter.log")
     with log.open("wb") as stream:
-        result = subprocess.run(cmd, cwd=OUT, env=env, stdout=stream, stderr=subprocess.STDOUT, check=False)
+        result = subprocess.run(cmd, cwd=source.parent, env=env, stdout=stream, stderr=subprocess.STDOUT, check=False)
     converted = {"exit_code":result.returncode, "log":log.name,
                  "dlc_bytes":dlc.stat().st_size if result.returncode == 0 and dlc.is_file() else 0}
     if converted["dlc_bytes"]:
@@ -187,9 +187,9 @@ def qairt_convert(sdk, python, source):
         binary = source.with_name(source.stem + "_v75.bin")
         cmd = [str(binary_dir/"qnn-context-binary-generator.exe"), "--backend",str(lib/"QnnHtp.dll"),
                "--model",str(lib/"QnnModelDlc.dll"), "--dlc_path",str(dlc),
-               "--config_file",str(ext), "--binary_file",binary.stem, "--output_dir",str(OUT)]
+               "--config_file",str(ext), "--binary_file",binary.stem, "--output_dir",str(source.parent)]
         with htp_log.open("wb") as stream:
-            build = subprocess.run(cmd, cwd=OUT, env=env, stdout=stream, stderr=subprocess.STDOUT, check=False)
+            build = subprocess.run(cmd, cwd=source.parent, env=env, stdout=stream, stderr=subprocess.STDOUT, check=False)
         converted["htp_v75_build"] = {"exit_code":build.returncode, "log":htp_log.name,
                                      "bytes":binary.stat().st_size if build.returncode == 0 and binary.is_file() else 0}
         if converted["htp_v75_build"]["bytes"]:
