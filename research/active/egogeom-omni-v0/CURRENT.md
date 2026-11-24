@@ -31,7 +31,7 @@
 
 ## 历史基线与交付状态
 
-2026-11-24 [V5 九题实测与反例](math_theory/RESULTS_V5.md)：保留 v4.1 FP16。S24 Ultra W8A8 虽达 4.51/4.96 ms，深度保真和零 ToF 一致性均未达标。几何告警的收益集中在 ARKit，Aria 的低误报召回仍受限。Oxford 保持同一视场时延伸边界颜色使三个开发序列的深度误差均下降，列为独立复验候选。
+2026-11-24 [V5 九题实测与反例](math_theory/RESULTS_V5.md)支持保留 v4.1 FP16。S24 Ultra W8A8 虽达 4.51/4.96 ms，深度保真和零 ToF 一致性均未达标。[Oxford 跨录像复验](math_theory/m14_conformal_s2_atlas_equivariance/sequence_transfer/RESULTS.md)中，最近有效颜色填充在 9/9 段录像降低深度误差，四地点等权为 1.674→1.513 m；[已审定清路窗](math_theory/m14_conformal_s2_atlas_equivariance/alert_transfer/RESULTS.md)的误报时刻却由 6/22 增至 8/22。保留为深度开发候选。[Aria 逐事件诊断](math_theory/m9_pgl4_frobenius_integrability/aria_alert_support/RESULTS.md)发现 v4.1 在 96/129 个仍来得及提示的危险组合中已有接近真值的历史点簇，原 BEV 最终距离仅在 27/129 个组合内达到相同容差。点簇对应哪个物体尚待确认。
 
 - **已验档位**：`v4`（`51.04M`，洁净 CNH 玻璃特化 `93.02%`，HTP `17.78/19.41 ms`）、`v3.2`/`v3.1`（`25.54M`）、`v2.1`（`14.46M`，NetRun `11.83 ms`）。
 - **算力与清理**：`v4.1` 于 `violjjet` Pro+ L4 完成训练（实耗 **`7.82 CU`**，跨账号 `rclone` 零授权弹窗同步 `gdrive:BlindAssist`），会话已停机核销（`在线实例=0 / 0.00 CU/hr`），S24 Ultra `/data/local/tmp/egogeom_v41_final` 已清空。产物齐备于 Drive `/BlindAssist/runs/egogeom_omni_v41/` 与本地 `artifacts.local/work/egogeom-omni-v0/`（含 `qnn_v75_v41_final/*.bin`）。
