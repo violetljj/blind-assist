@@ -31,6 +31,7 @@ from egogeom_losses_and_physics import compute_gravity_aligned_ray_map
 from egogeom_omni_model import EgoGeomConfig, EgoGeomOmniNet
 from egogeom_omni_v3_model import EgoGeomOmniV3Net, EgoGeomV3Config
 from egogeom_omni_v4_model import EgoGeomOmniV4Net, EgoGeomV4Config
+from egogeom_omni_v41_model import EgoGeomOmniV41Net, EgoGeomV41Config
 from egogeom_temporal_bev import TemporalBEVConfig, run_bev_on_clip
 from eval_cross_glasses_zeroshot import (
     BW_SPEEDS_PROXY,
@@ -165,14 +166,16 @@ def eval_model_on_suite(model, npz_paths: list[Path], device: torch.device, dark
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--ckpt", required=True)
-    p.add_argument("--arch", choices=["v2", "v3", "v4"], default="v3")
+    p.add_argument("--arch", choices=["v2", "v3", "v4", "v41"], default="v3")
     p.add_argument("--out-json", required=True)
     args = p.parse_args()
 
     t0 = time.time()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     ck = torch.load(args.ckpt, map_location=device, weights_only=False)
-    if args.arch == "v4":
+    if args.arch == "v41":
+        model = EgoGeomOmniV41Net(EgoGeomV41Config(**ck["cfg"]), pretrained_backbone=False).to(device).eval()
+    elif args.arch == "v4":
         model = EgoGeomOmniV4Net(EgoGeomV4Config(**ck["cfg"]), pretrained_backbone=False).to(device).eval()
     elif args.arch == "v3":
         model = EgoGeomOmniV3Net(EgoGeomV3Config(**ck["cfg"]), include_teacher_heads=False).to(device).eval()

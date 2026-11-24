@@ -116,3 +116,33 @@
   - `Unified Omni + CNH`（`108.71 MB`）：HTP **`19.41 ms`（`51.5 FPS`）** / NetRun `20.91 ms`（`47.8 FPS`）；
   - 实片保真（`0.15–25 m` 全量程 vs PyTorch FP32）：`Omni+Depth` `1.70%`（`81.95 mm`）、`Omni+CNH` `1.78%`（`86.77 mm`）、`Pure-RGB` `3.33%`（远场 `15–25 m` `1/disp` FP16 舍入主导）、`delta_h` MAE `4.80–5.27 mm`、`normal_cos = 1.0000`；
   - **芯片级零干扰实测 `max|Omni(has_tof=0) - PureRGB| = 0.000000e+00 m`**（实片 CNH 平均修正 `22.80 cm`）；`/data/local/tmp/egogeom_v4_final` 已清空。
+
+---
+
+## 阶段九：`EgoGeom-Omni v4.1` 硅片精确 + 真实 H3 有符号 CNH 升级、1,209 帧实采回放与 S24 Ultra 终验（2026-11-24 04:58 – 09:08）
+
+- **升级动机与架构突破**（[egogeom_omni_v41_model.py](egogeom_omni_v41_model.py)、[train_egogeom_omni_v41_l4.py](train_egogeom_omni_v41_l4.py)、[CODEX_MATH_SPECS_V4.md](CODEX_MATH_SPECS_V4.md)）：
+  1. **M5 芯片级双修原生入图**：将 Codex 实机验证的 `stable_softplus_htp`（`s = e^{-|x|}/(2+e^{-|x|})` 7 阶有理泰勒）与 4 行解析 `host_focal`（`<3.3e-16` 误差）原生合入 `v4.1` 架构与双份 ONNX-17，消除 Hexagon v75 FP16 的 `Softplus` 与 1 px 焦距差分截断误差。
+  2. **M1 真实 H3 有符号相关 CNH 建模与分支（`Physical1DCNHBranchV41`，`0.43M`）**：统一 20 通道契约 `[log1p(z)*d_m, d_m, sign(h)*log1p(10*|h|), c_m, has_tof]`（完全向后兼容 `v4`），46 通道 NCHW（16 有符号 RMS 归一化全波 + 15 去 `bin0` 正尾 + 15 有符号 1D 距离差分）配完整 `3×3` `GroupNorm(8)` 空间卷积；训练模拟器严格匹配真实 VL53L8CH H3 固件（`300.2784 mm/bin`、Cholesky `ρ=0.25` 跨 bin 相关噪声、13–48% 负值、15–82% `bin0` 串扰、50–92% 距离丢帧、`-30°` 倾角），每 batch 按 `40% Signed-H3 + 30% Std-CNH + 30% Depth` 混合。
+  3. **多账号池 `colabm` + 跨账号 `rclone` 逐集流式落盘**：在 `violjjet` Pro+ L4 免 OAuth 弹窗直连 `gdrive:BlindAssist`，途中捕获并就地修复 236 GB 盘满（升级为逐集拉取→解压→即删原始包，峰值 `<120 GB`）及 Phase 2 20 通道对齐缺陷（0 秒跳过 7 数据集与 Phase 1 热续跑），全程实耗 **`7.82 CU`**，停机后 `colabm dashboard` 核实 `在线实例=0 / 0.00 CU/hr`。
+- **训练收敛轨迹（[v41_history.json](../../artifacts.local/work/egogeom-omni-v0/v41_history.json)）**：
+  - **Phase 1（4 Ep 温启动纯 RGB 室内/广角尺度精修，`composite 0.2532 → 0.2306`）**：
+    - `SANPO-Real ZS40` Day 纯 RGB：**`AbsRel=0.1386, RMSE=0.6827 m, δ1=83.07%, far=0.1810, p95=18.13 m, med_scale=1.001`**（全面压制 `v4` `0.1514 / 0.748 m / 80.74%`）；Dark `0.18×`：`0.1521 / 0.725 m / δ1=78.78% / med_scale=1.001`。
+    - `Hypersim Val` 纯 RGB：`AbsRel=0.2816, RMSE=0.7811 m, δ1=66.85%, med_scale=1.137`（较 `v4` `δ1 +3.49 pt`）。
+    - `GlassRecon Val` 纯 RGB：`AbsRel=0.1913, δ1=74.09%, glass_absrel=0.1689, ssi=0.0487`（较 `v4` `δ1 +4.13 pt`、`glass -11.8%`）。
+  - **Phase 2（5 Ep 锁定 `50.75M` 纯 RGB 主干，`474` 键 `max_diff=0.0`，`omni_composite 0.1733 → 0.1603 → 0.1465 → 0.1344`）**：
+    - `SANPO-Real ZS40` Day：`+ Signed-H3`（Best `Ep 4`）**`0.1148 / RMSE=0.5895 m / δ1=87.85% / far=0.1622 / med_scale=0.996`**（`Ep 5` 达 `0.1113 / 88.42% / 0.5756 m`），`+ CNH` **`0.1136 / 87.61%`**，`+ Depth` **`0.1151 / 87.77%`**；Dark `0.18× + Signed-H3` `0.1286 / 84.93%`（`Ep 5` `0.1233 / 85.81%`）。
+    - `Hypersim Val`：`+ Signed-H3` **`0.1956 / δ1=77.62%`**，`+ Depth` **`0.1908 / 78.18%`**。
+    - `GlassRecon Val`：`+ Signed-H3` **`0.1284 / δ1=86.78% / glass=0.1135`**（全面优于同权重 `+ Std-CNH` `0.1308 / 85.46%`），`+ Depth` `0.1267 / 85.98% / glass=0.1009`。
+- **4 套跨眼镜纯 RGB 零样本盲测（全胜 `v4`，[cross_glasses_zeroshot_v41_final.json](../../artifacts.local/work/egogeom-omni-v0/cross_glasses_zeroshot_v41_final.json)）**：
+  - `Meta Aria Gen 2`：`1f MAE = 0.910 m`（vs `v4 0.934 m`），`+BEV v1 MAE = 0.599 m / R@5% = 37.6%`（vs `35.0%`），`+BEV hyb AUROC = 0.7060`。
+  - `UT Austin CODa`：`1f MAE = 0.915 m`（vs `v4 0.928 m`），`+BEV hyb AUROC = 0.7284`。
+  - `ARKitScenes val30` Day / Dark `0.18×`：`1f AUROC = 0.7160 / 0.7090`（vs `v4 0.7106 / 0.6989`），`+BEV hyb AUROC = 0.7368 / 0.7283`，`AP = 0.9199 / 0.9285`，`Late@5 = 7.5%`。
+- **1,209 帧真实 ST VL53L8CH H3 实采录像回放（[real_h3_signed_replay_v41.json](../../artifacts.local/work/egogeom-omni-v0/real_h3_signed_replay_v41.json)，0 NaN）**：
+  - 真实走廊 3 段（`d_val = 2.9% / 13.7% / 0.6%`、负值 `34.9% / 26.6% / 35.5%`、`bin0 = 81.5–86.4%`）：`v4.1` 帧间标准差 `±0.8 / ±1.0 / ±1.9 cm` vs `v4` `±6.3 / ±6.0 / ±11.4 cm`（**6.0–7.9× 降噪**）。
+  - 真实 0.64 m 机柜 4 段：`cabinet_init` 偏差减半（`v4 0.761 m → v4.1 0.703 m`），放物 `cabinet_obj` 近移 `-5.7 cm` 且抖动减半（`±3.5 cm` vs `±6.5 cm`），`cabinet_restored` 复原误差 **`0.000 m`**。
+- **S24 Ultra (`R5CX10M8Y8X`) Hexagon v75 FP16 实机终验（[s24u_v41_final_npu_report.json](../../artifacts.local/work/egogeom-omni-v0/s24u_v41_final_npu_report.json)）**：
+  - `Pure-RGB`（`107.7 MB`）：HTP **`16.51 ms`（`60.6 FPS`）** / NetRun **`17.18 ms`**（较 `v4 17.78 / 18.51 ms` 再快 `1.27–1.33 ms`）；
+  - `Unified Omni + Signed-H3`（`109.1 MB`）：HTP **`19.11 ms`（`52.3 FPS`）** / NetRun `20.69 ms`（较 `v4 19.41 ms` 快 `0.30 ms`）；
+  - 实片保真（`0.15–25 m` vs PyTorch FP32）：`Pure-RGB` **`0.788%`（`33.97 mm`，较 `v4 3.33%` 降 4.23×）**、`Omni+SignedH3` **`0.601%`（`27.67 mm`）**、`Omni+StdCNH` **`0.591%`（降 3.01×）**、`Omni+Depth` **`0.598%`**、`dh_MAE = 4.87–5.30 mm`、`normal_cos = 1.0000`；
+  - **芯片级零干扰实测 `max|Omni(has_tof=0) - PureRGB| = 0.000000e+00 m`**（实片 Signed-H3 平均修正 `10.45 cm`）；`/data/local/tmp/egogeom_v41_final` 已清空。
