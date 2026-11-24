@@ -31,6 +31,8 @@
 
 ## 历史基线与交付状态
 
+2026-11-24 [V5 九题实测与反例](math_theory/RESULTS_V5.md)：保留 v4.1 FP16。S24 Ultra W8A8 虽达 4.51/4.96 ms，深度保真和零 ToF 一致性均未达标。几何告警的收益集中在 ARKit，Aria 的低误报召回仍受限。Oxford 保持同一视场时延伸边界颜色使三个开发序列的深度误差均下降，列为独立复验候选。
+
 - **已验档位**：`v4`（`51.04M`，洁净 CNH 玻璃特化 `93.02%`，HTP `17.78/19.41 ms`）、`v3.2`/`v3.1`（`25.54M`）、`v2.1`（`14.46M`，NetRun `11.83 ms`）。
 - **算力与清理**：`v4.1` 于 `violjjet` Pro+ L4 完成训练（实耗 **`7.82 CU`**，跨账号 `rclone` 零授权弹窗同步 `gdrive:BlindAssist`），会话已停机核销（`在线实例=0 / 0.00 CU/hr`），S24 Ultra `/data/local/tmp/egogeom_v41_final` 已清空。产物齐备于 Drive `/BlindAssist/runs/egogeom_omni_v41/` 与本地 `artifacts.local/work/egogeom-omni-v0/`（含 `qnn_v75_v41_final/*.bin`）。
 - **下一步**：将 `egogeom_omni_v41_omni_v75_fp16.bin`（`19.1 ms`、`0.60%` 实片保真）+ `egogeom_temporal_bev.py` 接入实流，开展真实 Atom RGB + H3 有符号 CNH 现场联调与温升测试。
