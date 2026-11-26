@@ -7,5 +7,10 @@
             android:name=".ui.compose.ComposeTestActivity"
             android:exported="false"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".debug.EgoGeomWearableDemoActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
     </application>
 </manifest>
