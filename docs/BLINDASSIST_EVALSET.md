@@ -36,15 +36,15 @@
 缺少的 COCO val2017 图片会按需从 `http://images.cocodataset.org/val2017/` 下载。输出目录形如：
 
 ```text
-test-artifacts.local/datasets/blindassist-evalset-YYYYMMDD-HHMMSS/
+artifacts.local/evidence/datasets/blindassist-evalset-YYYYMMDD-HHMMSS/
 ```
 
-该目录被 `.gitignore` 中的 `test-artifacts*/` 忽略，原图仅用于本机内部评测，不提交 Git。
+该目录被 `.gitignore` 中的 `artifacts.local/` 忽略，原图仅用于本机内部评测，不提交 Git。
 
 ## 输出结构
 
 ```text
-test-artifacts.local/datasets/blindassist-evalset-*/
+artifacts.local/evidence/datasets/blindassist-evalset-*/
   dataset_spec.json
   generation_records.jsonl
   manifest.jsonl
@@ -100,7 +100,7 @@ test-artifacts.local/datasets/blindassist-evalset-*/
 第一版生成脚本使用 COCO 2017 validation 图片和实例标注。当前首版本地目录为：
 
 ```text
-test-artifacts.local/datasets/blindassist-evalset-20260527-impl/
+artifacts.local/evidence/datasets/blindassist-evalset-20260527-impl/
 ```
 
 连续场景扩展已于 2026-07-11 启动，首批使用官方 SANPO-Real CC BY 4.0 数据，流程见 [SANPO 连续场景试验集](SANPO_SEQUENCE_EVALSET.md)。该工作流将 15 FPS 原始序列重采样到现有 benchmark 对齐的 10 FPS，保留全部 SANPO 分割区域，但 GPT/Codex 共识复核前不生成 canonical `manifest.jsonl`。

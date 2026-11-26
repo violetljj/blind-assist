@@ -21,7 +21,7 @@ pwsh -NoProfile -File scripts/run_android_gradle.ps1 :device-benchmark:connected
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\run_detector_ab_device_benchmark.ps1 `
   -DatasetKind BlindAssistEvalSet `
-  -DatasetRoot test-artifacts.local\datasets\sanpo-v3-regression-90f `
+  -DatasetRoot artifacts.local\evidence\datasets\sanpo-v3-regression-90f `
   -ComparisonMode SegmentationCandidate `
   -SegmentationModelPath apps\benchmarks\device-benchmark\benchmark-assets.local\segmentation\mobilenetv3_lraspp_int8_256.tflite `
   -ImageLimit 90
@@ -109,7 +109,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchm
 如需使用 BlindAssist 专用评测集，指定 `BlindAssistEvalSet` 和评测集目录：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchmark.ps1 -DatasetKind BlindAssistEvalSet -DatasetRoot test-artifacts.local\datasets\blindassist-evalset-20260527-impl
+powershell -ExecutionPolicy Bypass -File .\scripts\run_detector_ab_device_benchmark.ps1 -DatasetKind BlindAssistEvalSet -DatasetRoot artifacts.local\evidence\datasets\blindassist-evalset-20260527-impl
 ```
 
 该模式从 `manifest.jsonl` 读取真实助行风险预期字段，同时保留 AP50、precision、recall 等检测指标。设备端 `benchmark.json` 和 `benchmark.md` 会额外输出 `centerRiskRecall`、`alertRecall`、`eventAlertRecall`、`criticalEventMissCount`、`alertFalsePositiveRate`、`passedWindowFalseAlertCount`、`parallelCurbFalseAlertCount`、距离/风险准确率及融合原因计数。事件交付统计进一步区分 `deliveredRepeatedAlertCount/Rate`（用户实际收到的第二次及以后提醒）与 `suppressedDuplicateAttemptCount`（事件层挡下的重复尝试），并报告 `postEventClearanceRate`、`eventRegenerationCount` 与通过窗口的告警时延；连续序列还输出 `eventAlertCount`、`criticalEventCount`、有效 `sequenceDurationMs`、`falseAlertCount` 与 `falseAlertsPerMinute`，避免把逐帧 FP 比例误当作每分钟误报。`eventAlertRecall` 以 `attributes.risk_event_id`（缺失时回退 `sequence_id`）分组：同一事件的全部 `expected_should_alert=true` 帧构成窗口，任一实际提醒即命中；`centerRiskRecall`、`alertRecall` 与 `criticalMissCount` 保留为逐帧诊断，不再作为候选晋级门槛。`attributes.scene_bucket=parallel_curb` 会在所有输入来源上报告平行路沿提醒数与标注帧数。候选晋级仍同时约束检测质量、事件级关键漏报、误提醒率及其他 BlindAssist 指标。
@@ -168,7 +168,7 @@ risk-mismatches.json
 .downloads/detector-lab/models/      # 候选 .pt 权重
 .downloads/detector-lab/exports/     # 候选 TFLite 导出
 .downloads/detector-lab/datasets/    # 小型评测图片集
-test-artifacts.local/detector-benchmark/<timestamp>/  # benchmark 结果
+artifacts.local/evidence/detector-benchmark/<timestamp>/  # benchmark 结果
 ```
 
 `.downloads/` 和 `test-artifacts*/` 已由 `.gitignore` 忽略，适合保存本机可复盘证据。

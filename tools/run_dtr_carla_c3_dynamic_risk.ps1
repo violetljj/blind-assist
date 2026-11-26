@@ -54,7 +54,7 @@ $scenePath = Resolve-TaskPath -Value $SceneRegistry
 $pythonPath = Resolve-TaskPath -Value $CarlaPython
 $evidenceRoot = Resolve-TaskPath -Value $RawEvidenceRoot
 $evidencePath = [IO.Path]::GetFullPath((Join-Path $evidenceRoot $RunId))
-$compileBase = Join-Path $repoRoot 'artifacts.local/carla-c3-compiled'
+$compileBase = Join-Path $repoRoot 'artifacts.local/work/carla-c3-compiled'
 $compilePath = [IO.Path]::GetFullPath((Join-Path $compileBase $RunId))
 $compilePrefix = [IO.Path]::GetFullPath($compileBase).TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
 if (-not $compilePath.StartsWith($compilePrefix, [StringComparison]::OrdinalIgnoreCase)) {

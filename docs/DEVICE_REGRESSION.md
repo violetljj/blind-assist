@@ -15,7 +15,7 @@
 - `-RunConnectedAndroidTest`：额外运行 connected Compose 测试。
 - `-AdbPath`：在仓库本地 Android SDK 不可用时指定某个 `adb.exe`。
 
-输出会写入带时间戳的 `test-artifacts.local/device-regression/<timestamp>/` 目录。这些目录只作为本机后续回归对比证据：保留在工作电脑上，不提交到 Git。
+输出会写入带时间戳的 `artifacts.local/evidence/device-regression/<timestamp>/` 目录。这些目录只作为本机后续回归对比证据：保留在工作电脑上，不提交到 Git。
 
 ## 无障碍回归矩阵
 
