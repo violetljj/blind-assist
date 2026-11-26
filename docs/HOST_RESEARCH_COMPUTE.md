@@ -3,6 +3,8 @@
 This route covers local or remote training, offline evaluation, and other long
 research jobs. It does not define Android/device execution and contains no
 credentials or SSH endpoints; machine configuration remains in ignored files.
+For multi-account Colab GPU compute (`colabm`) and zero-prompt Google Drive sync (`rclone`),
+see [Cloud compute runbook](operations/CLOUD_COMPUTE_COLABM.md).
 
 ## Efficiency and primary-machine responsiveness
 

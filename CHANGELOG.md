@@ -1,9 +1,12 @@
 # BlindAssist 更新记录
 
-> 本文件只记录已发布或用户可见的变化。研究候选、数据采集和未晋级实验不构成 release note；其当前状态见 [SANPO_CURRENT_STATUS.md](docs/SANPO_CURRENT_STATUS.md)，迁出的旧研究记录见[项目材料历史](docs/history/project-materials/README.md)。
+> 本文件只记录已发布或用户可见的变化。研究候选、数据采集和未晋级实验不构成 release note；其当前状态见 [项目一页状态](docs/PROJECT_STATE.md) 与 [总研究决定](docs/CURRENT_DECISION.md)，迁出的旧研究记录见[历史索引](docs/history-index.md)。
 
 ## Unreleased
 
+- 融合演示页（`10.20.1` 增量）：新增“深度模型”切换开关，支持在默认的 DAV2-S + ToF 仿射与方向 A（Atom 固化射线 `658×490` HTP 版 UniDepth-V2-S × `ToF → 自身地面 → 沿用` 尺度链）间切换；实时佩戴三路联调待眼镜硬件到位。
+- EgoGeom-Omni 端侧接入（隔离于 debug 源集与 `:core:vision`）：新增纯 Kotlin 时序 BEV v3 / 穿戴风险引擎、原生 QNN HTP JNI 运行库与独立 `EgoGeomWearableDemoActivity`，不改动默认首页与 release 构建。
+- 独立演示与可教应用：新增全 NPU 纯视觉演示模块 `:egoclear-demo-app`（预装 `EgoClear-v14 / v6.6`）与 `:egoclear-device-canary`；`:teachable-object-app` 新增精确增量 B 教学持久化缓存、嵌入复用、保存前预警撤销与成对展示试次。
 - 无障碍：大字体下首页提醒频率与设置选项改为纵向排列，补充独立选项语义与触控目标；感谢 [@Vaishnavi220506](https://github.com/Vaishnavi220506) 的 [PR #49](https://github.com/violetljj/blind-assist/pull/49)。TalkBack、显示缩放与权限恢复的剩余验证见[审计清单](docs/accessibility/DEFAULT_FLOW_AUDIT.md)。
 - 开源维护新增公开治理规则、引用元数据、Dependabot、默认模型卡和 SHA256/provenance 机器清单；CI 会拒绝社区文件或默认公开资产身份漂移。
 - 新增 tag 驱动的 fail-closed GitHub Release 工作流，自动校验 debug evaluation APK 并生成 `SHA256SUMS`、机器 manifest 和证据边界说明；不产生生产签名或安全证明。

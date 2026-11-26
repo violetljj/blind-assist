@@ -61,7 +61,12 @@ leaving them as current prohibitions. Preserve clean prior text in exact Git his
 - `DEVELOPMENT_LOG.md` at most 200 lines and 100 KiB;
 - no generated dataset ledger, checkpoint, model, APK, or raw result in tracked
   source;
-- no machine-specific absolute path in hot documentation or active route files.
+- no machine-specific absolute path in hot documentation or active route files;
+- new multi-experiment subtopics under active routes must live in dedicated topic
+  subdirectories (e.g. `math_theory/`, `cane_blind_band_probe/`) instead of
+  flattening dated scripts and reports into the route root; retained/closed routes
+  stay path-stable to preserve historical reproducibility and are labeled in
+  `PROJECT_STATE.md`, `CURRENT_DECISION.md` and `docs/README.md`.
 
 Run `scripts/check_project_structure.ps1` after layout changes and
 `scripts/check_docs_index.ps1` after editing hot navigation. For wording-only

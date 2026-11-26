@@ -57,8 +57,8 @@ Tests live in each owning module's `src/test/` and, where present,
 
 | Working area | Start here |
 | --- | --- |
-| EgoGeom-Omni wearable geometry foundation (with/without ToF) | [EgoGeom-Omni current](../research/active/egogeom-omni-v0/CURRENT.md) → [wearable architecture](../research/active/egogeom-omni-v0/cane_blind_band_probe/CAMERA_IMU_OPT_TOF_ARCHITECTURE.md) |
-| EgoClear pure-vision collision perception | [EgoClear current](../research/active/egoclear-v0/CURRENT.md) → [126-scene blind probe](../research/active/egoclear-v0/PHASE20_FRESH_UNSEEN_BLIND_PROBE_20261122.md) |
+| EgoGeom-Omni wearable geometry foundation (with/without ToF) | [EgoGeom-Omni current](../research/active/egogeom-omni-v0/CURRENT.md) → [route index](../research/active/egogeom-omni-v0/README.md) |
+| EgoClear pure-vision collision perception | [EgoClear current](../research/active/egoclear-v0/CURRENT.md) → [route index](../research/active/egoclear-v0/README.md) |
 | Sensor capture, calibration, firmware and mobile-fusion evidence | [Hardware current](../research/active/hardware-bringup/CURRENT.md) → [hardware ledger](../research/active/hardware-bringup/README.md) |
 | Forward obstacle perception and retained DTR work | [DTR current](../research/active/dtr-r0/CURRENT.md) → [DTR ledger](../research/active/dtr-r0/README.md) |
 | Closed alert-policy & multi-frame memory exploration | [Walk-alert summary (closed)](../research/active/walk-alert-r0/STAGE_SUMMARY_20261117.md) |

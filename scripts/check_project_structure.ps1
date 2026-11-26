@@ -20,6 +20,12 @@ foreach ($file in @(
     'research/active/l10-r0/CURRENT.md',
     'research/active/hardware-bringup/README.md',
     'research/active/hardware-bringup/CURRENT.md',
+    'research/active/egoclear-v0/README.md',
+    'research/active/egoclear-v0/CURRENT.md',
+    'research/active/egogeom-omni-v0/README.md',
+    'research/active/egogeom-omni-v0/CURRENT.md',
+    'research/active/walk-alert-r0/CURRENT.md',
+    'docs/operations/CLOUD_COMPUTE_COLABM.md',
     'research/active/l10-r0/l10_r0.py',
     'research/active/l10-r0/benchmark.py',
     'research/active/l10-r0/artvideo_replay.py',
@@ -38,7 +44,7 @@ $trackedActiveFiles = @(& git -C $repoRoot ls-files -- 'research/active/*')
 $active = @($trackedActiveFiles | ForEach-Object {
     if ($_ -match '^research/active/([^/]+)/') { $Matches[1] }
 } | Sort-Object -Unique)
-$expectedActive = @('dtr-r0', 'hardware-bringup', 'l10-r0')
+$expectedActive = @('dtr-r0', 'egoclear-v0', 'egogeom-omni-v0', 'hardware-bringup', 'l10-r0', 'walk-alert-r0')
 if (($active -join ',') -ne ($expectedActive -join ',')) {
     $failures.Add("Expected active routes $($expectedActive -join ','); found $($active -join ',').")
 }
@@ -57,7 +63,10 @@ $compactBudgets = @(
     [pscustomobject]@{ Path = 'docs/CURRENT_DECISION.md'; Lines = 200; Bytes = 20480 },
     [pscustomobject]@{ Path = 'research/active/l10-r0/CURRENT.md'; Lines = 150; Bytes = 16384 },
     [pscustomobject]@{ Path = 'research/active/hardware-bringup/CURRENT.md'; Lines = 150; Bytes = 16384 },
-    [pscustomobject]@{ Path = 'research/active/dtr-r0/CURRENT.md'; Lines = 150; Bytes = 16384 }
+    [pscustomobject]@{ Path = 'research/active/dtr-r0/CURRENT.md'; Lines = 150; Bytes = 16384 },
+    [pscustomobject]@{ Path = 'research/active/egoclear-v0/CURRENT.md'; Lines = 150; Bytes = 16384 },
+    [pscustomobject]@{ Path = 'research/active/egogeom-omni-v0/CURRENT.md'; Lines = 150; Bytes = 16384 },
+    [pscustomobject]@{ Path = 'research/active/walk-alert-r0/CURRENT.md'; Lines = 150; Bytes = 16384 }
 )
 foreach ($budget in $compactBudgets) {
     $path = Join-Path $repoRoot $budget.Path
@@ -95,6 +104,10 @@ $hotFiles = @(
     'AGENTS.md', 'README.md', 'docs/PROJECT_STATE.md',
     'docs/CURRENT_DECISION.md', 'research/active/dtr-r0/CURRENT.md',
     'research/active/l10-r0/CURRENT.md',
+    'research/active/hardware-bringup/CURRENT.md',
+    'research/active/egoclear-v0/CURRENT.md',
+    'research/active/egogeom-omni-v0/CURRENT.md',
+    'research/active/walk-alert-r0/CURRENT.md',
     'config/local.example.toml'
 )
 foreach ($relative in $hotFiles) {

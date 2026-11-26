@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $repoRoot = (& git rev-parse --show-toplevel 2>$null | Select-Object -First 1).Trim()
 if (-not $repoRoot) { throw 'Run inside the BlindAssist Git checkout.' }
 $sources = @(
@@ -12,7 +12,12 @@ $sources = @(
     'research/active/l10-r0/CURRENT.md',
     'research/active/hardware-bringup/README.md',
     'research/active/hardware-bringup/CURRENT.md',
-    'research/active/dtr-r0/CURRENT.md'
+    'research/active/dtr-r0/CURRENT.md',
+    'research/active/egoclear-v0/README.md',
+    'research/active/egoclear-v0/CURRENT.md',
+    'research/active/egogeom-omni-v0/README.md',
+    'research/active/egogeom-omni-v0/CURRENT.md',
+    'research/active/walk-alert-r0/CURRENT.md'
 )
 $failures = [Collections.Generic.List[string]]::new()
 $checked = 0
