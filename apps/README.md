@@ -18,6 +18,7 @@
 | `demos/` | [`:known-height-capture-app`](demos/known-height-capture-app/README.md) | 已知高度采集 |
 | `demos/` | [`:goal-capture-app`](demos/goal-capture-app/README.md) | 目标任务采集 |
 | `demos/` | [`:semantic-anchor-demo-app`](demos/semantic-anchor-demo-app/) | 语义锚点演示 |
+| `demos/` | [`:teachable-object-app`](demos/teachable-object-app/README.md) | 个人可教物体识别（精确增量 B 教学、缓存复用与预警撤销） |
 | `candidates/` | [`:npu-candidate`](candidates/npu-candidate/) | 隔离的 NPU 候选应用 |
 
 规则：

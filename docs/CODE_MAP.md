@@ -42,7 +42,8 @@ physical paths. Build variants and app dependencies live in
 | Phone capture screen and session | [PhoneCaptureActivity](../app/src/main/java/com/linnan/blindassist/PhoneCaptureActivity.kt), [PhoneCaptureController](../core/device/src/main/java/com/linnan/blindassist/capture/PhoneCaptureController.kt) |
 | Capture files and background ZIP export | [PhoneCaptureStore](../core/device/src/main/java/com/linnan/blindassist/capture/PhoneCaptureStore.kt), [CaptureExportService](../app/src/main/java/com/linnan/blindassist/CaptureExportService.kt) |
 | Mobile fusion experiment | [MobileFusionSession](../app/src/main/java/com/linnan/blindassist/MobileFusionSession.kt), [MobileFusionActivity](../app/src/main/java/com/linnan/blindassist/MobileFusionActivity.kt) |
-| RGB preview pixels and depth runtime | [AtomPreviewPixels](../app/src/main/java/com/linnan/blindassist/vision/AtomPreviewPixels.kt), [Dav2DepthRuntime](../app/src/main/java/com/linnan/blindassist/vision/Dav2DepthRuntime.kt) |
+| RGB preview pixels and depth runtimes | [AtomPreviewPixels](../app/src/main/java/com/linnan/blindassist/vision/AtomPreviewPixels.kt), [Dav2DepthRuntime](../app/src/main/java/com/linnan/blindassist/vision/Dav2DepthRuntime.kt), [UniDepthSnpeRuntime](../app/src/dav2Snpe/java/com/linnan/blindassist/vision/UniDepthSnpeRuntime.kt), [EgoGeomQnnRuntime](../app/src/dav2Snpe/java/com/linnan/blindassist/vision/EgoGeomQnnRuntime.kt) |
+| EgoGeom Kotlin temporal BEV & wearable risk engine | [EgoGeomTemporalBevV3](../core/vision/src/main/java/com/linnan/blindassist/vision/egogeom/EgoGeomTemporalBevV3.kt), [EgoGeomWearableRiskEngine](../core/vision/src/main/java/com/linnan/blindassist/vision/egogeom/EgoGeomWearableRiskEngine.kt), [EgoGeomWearableDemoActivity](../app/src/debug/java/com/linnan/blindassist/debug/EgoGeomWearableDemoActivity.kt) |
 | Assist lifecycle and effects | [AssistRuntimeController](../feature/assist/src/main/java/com/linnan/blindassist/runtime/AssistRuntimeController.kt) |
 | Risk decisions and feedback policy | [RiskAnalyzer](../core/assist/src/main/java/com/linnan/blindassist/risk/RiskAnalyzer.kt), [FeedbackPlanner](../core/assist/src/main/java/com/linnan/blindassist/feedback/FeedbackPlanner.kt) |
 | H3 connection and local hardware runtime | [H3RangeAdapter](../core/device/src/main/java/com/linnan/blindassist/device/glasses/H3RangeAdapter.kt), [HardwareLocalRuntime](../core/device/src/main/java/com/linnan/blindassist/device/glasses/HardwareLocalRuntime.kt) |
@@ -56,8 +57,11 @@ Tests live in each owning module's `src/test/` and, where present,
 
 | Working area | Start here |
 | --- | --- |
+| EgoGeom-Omni wearable geometry foundation (with/without ToF) | [EgoGeom-Omni current](../research/active/egogeom-omni-v0/CURRENT.md) → [wearable architecture](../research/active/egogeom-omni-v0/cane_blind_band_probe/CAMERA_IMU_OPT_TOF_ARCHITECTURE.md) |
+| EgoClear pure-vision collision perception | [EgoClear current](../research/active/egoclear-v0/CURRENT.md) → [126-scene blind probe](../research/active/egoclear-v0/PHASE20_FRESH_UNSEEN_BLIND_PROBE_20261122.md) |
 | Sensor capture, calibration, firmware and mobile-fusion evidence | [Hardware current](../research/active/hardware-bringup/CURRENT.md) → [hardware ledger](../research/active/hardware-bringup/README.md) |
 | Forward obstacle perception and retained DTR work | [DTR current](../research/active/dtr-r0/CURRENT.md) → [DTR ledger](../research/active/dtr-r0/README.md) |
+| Closed alert-policy & multi-frame memory exploration | [Walk-alert summary (closed)](../research/active/walk-alert-r0/STAGE_SUMMARY_20261117.md) |
 | Paused ten-meter goal-completion work | [L10 current](../research/active/l10-r0/CURRENT.md) → [L10 ledger](../research/active/l10-r0/README.md) |
 
 These are stable directory names, not a shared project version or a declaration

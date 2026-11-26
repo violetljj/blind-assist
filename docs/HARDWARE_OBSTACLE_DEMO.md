@@ -4,6 +4,11 @@
 
 演示请装 `demo` 包：`pwsh -NoProfile -File scripts/run_android_gradle.ps1 :app:assembleDemo`，安装后执行 `adb shell cmd package compile -m speed -f com.linnan.blindassist`。调试包可调试、只能 JIT，ToF 推理会慢到丢帧。需要 run-as 取数时再装回调试包（同签名，可覆盖，数据保留）。
 
+### 2026-11 增量入口（方向 A 切换 & EgoGeom Debug 演示）
+
+- **方向 A（UniDepth-V2-S × 单一尺度链，已合入 10.20.1）**：融合页新增“深度模型”开关，可在 **DAV2-S + ToF 仿射（默认）** 与 **UniDepth-V2-S（Atom 固化射线 `658×490` HTP）× 单一尺度链（`ToF → 自身地面 → 沿用`）** 之间切换；部署模型用 `scripts/install_mobile_fusion_assets.ps1 -WithUniDepth`，demo 包 S24 Ultra 实测中位 `130 ms + 16 ms`。[接入与回放记录](../research/active/hardware-bringup/DIRECTION_A_APP_INTEGRATION_20261118.md)
+- **EgoGeom-Omni 穿戴实时调试页（仅 debug 构建）**：`app/src/debug/` 提供隔离的 `EgoGeomWearableDemoActivity`（`adb shell am start -n com.linnan.blindassist/.debug.EgoGeomWearableDemoActivity`），用于直接试跑 `v4.1 pc_fp16dec_a16 + G2` QNN HTP 实时 Camera + IMU 链路，不改动默认 `MainActivity` 与 release 构建。[EgoGeom 当前状态](../research/active/egogeom-omni-v0/CURRENT.md)
+
 ### 10.20.0 说明
 
 首页"融合演示"直达融合页，点"开始演示"才连接。默认"演示规则"= 外参俯仰 0° + v7w 走/停提醒距离（走 1.8 m、停 0.8 m，IMU 2 秒加速度幅值标准差 ≥0.015 g 判为走；ToF 报警若无落入盒内的固件区则保留）；停止后可关闭，回到冻结 v2。语音/震动只在 2/3 确认报警时触发，持续每 6 秒重复。报警框为 1 m / 2 m 处盒面投影，仅作显示。这些规则只有开发证据，正式评价仍按冻结脚本。

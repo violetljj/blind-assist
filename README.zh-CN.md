@@ -89,8 +89,11 @@ flowchart LR
 | --- | --- |
 | 系统现状、指标与主要缺口 | [中文一页状态](docs/PROJECT_STATE.md) |
 | 当前研究选择与下一步 | [总研究决定](docs/CURRENT_DECISION.md) |
-| 前视感知与保留的 DTR 研究 | [前视感知当前状态](research/active/dtr-r0/CURRENT.md) |
+| EgoGeom-Omni 头戴有无 ToF 通吃几何基础模型 | [EgoGeom-Omni 当前状态](research/active/egogeom-omni-v0/CURRENT.md) |
+| EgoClear 纯视觉碰撞感知（v0–v14） | [EgoClear 当前状态](research/active/egoclear-v0/CURRENT.md) |
 | 传感器接入、标定与实机证据 | [硬件研究当前状态](research/active/hardware-bringup/CURRENT.md) |
+| 前视感知与保留的 DTR 研究 | [前视感知当前状态](research/active/dtr-r0/CURRENT.md) |
+| 提醒策略与多帧记忆探索（已关闭） | [walk-alert-r0 阶段总结](research/active/walk-alert-r0/STAGE_SUMMARY_20261117.md) |
 | 已暂停的 L10 结果 | [L10 保留证据](research/active/l10-r0/CURRENT.md) |
 | 完整文档与历史复现 | [文档地图](docs/README.md) · [历史索引](docs/history-index.md) |
 

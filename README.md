@@ -89,8 +89,11 @@ flowchart LR
 | --- | --- |
 | System status, measurements and main gaps | [One-page project status](docs/PROJECT_STATE.md) |
 | Current research choices and next steps | [Research decisions](docs/CURRENT_DECISION.md) |
-| Forward perception and retained DTR research | [Forward perception status](research/active/dtr-r0/CURRENT.md) |
+| EgoGeom-Omni wearable geometry foundation (with/without ToF) | [EgoGeom-Omni status](research/active/egogeom-omni-v0/CURRENT.md) |
+| EgoClear pure-vision collision perception (v0–v14) | [EgoClear status](research/active/egoclear-v0/CURRENT.md) |
 | Sensor integration, calibration and device evidence | [Hardware research status](research/active/hardware-bringup/CURRENT.md) |
+| Forward perception and retained DTR research | [Forward perception status](research/active/dtr-r0/CURRENT.md) |
+| Closed alert-policy & multi-frame memory study | [Walk-alert summary (closed)](research/active/walk-alert-r0/STAGE_SUMMARY_20261117.md) |
 | Paused L10 results | [Retained L10 evidence](research/active/l10-r0/CURRENT.md) |
 | Documentation and historical reproduction | [Documentation map](docs/README.md) · [History index](docs/history-index.md) |
 

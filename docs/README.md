@@ -26,8 +26,11 @@ workspace; see [work lines](WORK_LINES.md) for its entry and shared resources.
 
 | Line | Area | Current status | Detailed records |
 | --- | --- | --- | --- |
+| 避障 | EgoGeom-Omni wearable geometry foundation (with/without ToF) | [EgoGeom-Omni current](../research/active/egogeom-omni-v0/CURRENT.md) | [Overnight log](../research/active/egogeom-omni-v0/OVERNIGHT_LOG_20261122.md) · [Wearable architecture](../research/active/egogeom-omni-v0/cane_blind_band_probe/CAMERA_IMU_OPT_TOF_ARCHITECTURE.md) |
+| 避障 | EgoClear pure-vision collision perception (v0–v14) | [EgoClear current](../research/active/egoclear-v0/CURRENT.md) | [126-scene blind probe](../research/active/egoclear-v0/PHASE20_FRESH_UNSEEN_BLIND_PROBE_20261122.md) · [Runs](../research/active/egoclear-v0/RUNS.md) |
 | 避障 | Hardware, calibration and mobile fusion | [Hardware current](../research/active/hardware-bringup/CURRENT.md) | [Hardware ledger](../research/active/hardware-bringup/README.md) · [Runs](../research/active/hardware-bringup/RUNS.md) |
 | 避障 | Cane-complementary forward perception / retained DTR history | [Forward perception current](../research/active/dtr-r0/CURRENT.md) | [DTR ledger](../research/active/dtr-r0/README.md) |
+| — | Closed alert-policy & multi-frame memory exploration (`walk-alert-r0`) | [Stage summary (closed)](../research/active/walk-alert-r0/STAGE_SUMMARY_20261117.md) | [Walk-alert current](../research/active/walk-alert-r0/CURRENT.md) |
 | — | Paused L10-R0 Goal-Lock evidence | [L10 current](../research/active/l10-r0/CURRENT.md) | [L10 ledger](../research/active/l10-r0/README.md) |
 
 [Research workflow](../research/WORKFLOW.md) describes experiment execution;
